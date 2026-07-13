@@ -1,0 +1,639 @@
+.pageContainer {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Animated background blobs - hidden on mobile */
+.bgBlob1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  animation: float 20s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.bgBlob2 {
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  animation: float 25s ease-in-out infinite reverse;
+  pointer-events: none;
+}
+
+.bgBlob3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 50%;
+  animation: pulse 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-50px, 30px) scale(1.05); }
+  50% { transform: translate(30px, -20px) scale(0.95); }
+  75% { transform: translate(-20px, 50px) scale(1.02); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* Paper styles - responsive */
+.paper {
+  padding: 2.5rem 2rem;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.paper:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 30px 60px -12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Tablet styles */
+.paperTablet {
+  max-width: 480px;
+  padding: 2.25rem 1.75rem;
+}
+
+/* Mobile styles */
+.paperMobile {
+  max-width: 100%;
+  padding: 1.5rem 1.25rem;
+  border-radius: 20px;
+  margin: 0.75rem;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 
+    0 20px 40px -12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.paperMobile:hover {
+  transform: translateY(-2px);
+}
+
+/* Top decorative bar */
+.topBar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.barDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
+}
+
+.barDot:first-child { background: #ff6b6b; }
+.barDot:nth-child(2) { background: #ffc107; }
+.barDot:nth-child(3) { background: #4caf50; }
+
+/* Header styles - responsive */
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.headerMobile {
+  margin-bottom: 1.75rem;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 0.75rem;
+}
+
+.logoWrapperMobile {
+  gap: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.title {
+  font-weight: 700;
+  font-size: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  text-shadow: none;
+}
+
+/* Mobile title */
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.subtitle {
+  color: #5a6a7e;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  font-size: 0.95rem;
+}
+
+/* Mobile subtitle */
+@media (max-width: 600px) {
+  .subtitle {
+    font-size: 0.85rem;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.formMobile {
+  gap: 1rem;
+}
+
+.inputField {
+  margin-bottom: 0.25rem;
+}
+
+/* Fix for label positioning */
+.inputField :global(.MuiOutlinedInput-root) {
+  border-radius: 14px;
+  background: #f8f9fc;
+  transition: all 0.3s ease;
+  border: 2px solid #e2e8f0;
+  position: relative;
+}
+
+.inputField :global(.MuiOutlinedInput-root:hover) {
+  background: #f0f2f7;
+  border-color: #cbd5e0;
+}
+
+.inputField :global(.MuiOutlinedInput-root.Mui-focused) {
+  background: #ffffff;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.inputField :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border: none;
+}
+
+/* Mobile input styles */
+@media (max-width: 600px) {
+  .inputField :global(.MuiOutlinedInput-root) {
+    border-radius: 12px;
+  }
+  
+  .inputField :global(.MuiInputBase-input) {
+    font-size: 0.9rem;
+    padding: 12px 12px;
+  }
+}
+
+/* Label styling */
+.inputLabel {
+  color: #4a5568 !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  background: transparent !important;
+  padding: 0 4px !important;
+}
+
+.inputField :global(.MuiInputLabel-root) {
+  color: #4a5568;
+  font-weight: 500;
+  transform: translate(14px, 16px) scale(1);
+  background: transparent;
+  padding: 0 4px;
+}
+
+.inputField :global(.MuiInputLabel-root.Mui-focused) {
+  color: #667eea;
+  transform: translate(14px, -9px) scale(0.75);
+  background: white;
+  padding: 0 4px;
+}
+
+.inputField :global(.MuiInputLabel-root.MuiFormLabel-filled) {
+  transform: translate(14px, -9px) scale(0.75);
+  background: white;
+  padding: 0 4px;
+}
+
+.inputField :global(.MuiInputBase-input) {
+  color: #2d3748;
+  padding: 16px 14px;
+  font-size: 0.95rem;
+}
+
+.inputField :global(.MuiInputBase-input::placeholder) {
+  color: #a0aec0;
+  opacity: 1;
+}
+
+.inputField :global(.MuiFormHelperText-root) {
+  margin-left: 0;
+  font-size: 0.75rem;
+  color: #e53e3e;
+  font-weight: 500;
+}
+
+.inputIcon {
+  color: #a0aec0;
+  font-size: 20px;
+}
+
+.inputField :global(.Mui-focused) .inputIcon {
+  color: #667eea;
+}
+
+.passwordToggle {
+  color: #a0aec0;
+  padding: 4px;
+}
+
+.passwordToggle:hover {
+  color: #4a5568;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Mobile password toggle */
+@media (max-width: 600px) {
+  .passwordToggle {
+    padding: 2px;
+  }
+}
+
+.forgotPasswordWrapper {
+  text-align: right;
+  margin-top: -0.5rem;
+}
+
+.forgotPassword {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.forgotPassword:hover {
+  color: #5a67d8;
+}
+
+.forgotPasswordMobile {
+  font-size: 0.8rem;
+}
+
+.loginButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.875rem;
+  border-radius: 14px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.loginButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.5s ease;
+}
+
+.loginButton:hover::before {
+  left: 100%;
+}
+
+.loginButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46a1 100%);
+}
+
+.loginButton:active {
+  transform: translateY(0);
+}
+
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Mobile login button */
+.loginButtonMobile {
+  padding: 0.7rem;
+  font-size: 0.9rem;
+  border-radius: 12px;
+}
+
+.dividerWrapper {
+  margin: 0.25rem 0;
+}
+
+.divider {
+  width: 100%;
+  margin: 0;
+}
+
+.divider :global(.MuiDivider-root) {
+  border-color: #e2e8f0;
+}
+
+.dividerText {
+  color: #a0aec0;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.socialButtons {
+  margin-top: 0.25rem;
+}
+
+.socialButton {
+  border-radius: 14px;
+  padding: 0.7rem;
+  border: 1px solid #e2e8f0;
+  color: #4a5568;
+  font-weight: 500;
+  text-transform: none;
+  transition: all 0.3s ease;
+  background: #f8f9fc;
+}
+
+.socialButton:hover {
+  border-color: #667eea;
+  background: #f0f2ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+}
+
+.socialButton :global(.MuiButton-startIcon) {
+  margin-right: 0.5rem;
+  color: #667eea;
+}
+
+/* Mobile social buttons */
+.socialButtonMobile {
+  padding: 0.6rem;
+  font-size: 0.85rem;
+  border-radius: 12px;
+}
+
+.signupWrapper {
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.signupText {
+  color: #5a6a7e;
+  font-size: 0.875rem;
+}
+
+.signupTextMobile {
+  font-size: 0.8rem;
+}
+
+.signupLink {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signupLink:hover {
+  color: #5a67d8;
+}
+
+.signupLinkMobile {
+  font-size: 0.8rem;
+}
+
+/* Bottom decorative bar */
+.bottomBar {
+  display: flex;
+  gap: 6px;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  justify-content: center;
+}
+
+.barLine {
+  width: 30px;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.barLine:nth-child(2) {
+  width: 60px;
+}
+
+.paper:hover .barLine {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive adjustments for all devices */
+
+/* Small phones (portrait) */
+@media (max-width: 400px) {
+  .paperMobile {
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+    margin: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1.35rem;
+  }
+  
+  .logoWrapperMobile {
+    gap: 8px;
+  }
+  
+  .formMobile {
+    gap: 0.85rem;
+  }
+  
+  .loginButtonMobile {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 960px) {
+  .paperTablet {
+    max-width: 440px;
+    padding: 2rem 1.75rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+  .paper {
+    max-width: 440px;
+    padding: 2.75rem 2.25rem;
+  }
+  
+  .title {
+    font-size: 2.25rem;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1600px) {
+  .paper {
+    max-width: 480px;
+    padding: 3rem 2.5rem;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    font-size: 1.05rem;
+  }
+}
+
+/* Landscape mode for phones */
+@media (max-height: 600px) and (orientation: landscape) {
+  .paperMobile {
+    padding: 1rem 1.5rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .headerMobile {
+    margin-bottom: 1rem;
+  }
+  
+  .logoWrapperMobile {
+    margin-bottom: 0.25rem;
+  }
+  
+  .formMobile {
+    gap: 0.7rem;
+  }
+  
+  .topBar, .bottomBar {
+    display: none;
+  }
+}
+
+/* Touch devices - larger touch targets */
+@media (hover: none) {
+  .loginButton:hover {
+    transform: none;
+  }
+  
+  .socialButton:hover {
+    transform: none;
+  }
+  
+  .paper:hover {
+    transform: none;
+  }
+}
+
+/* Accessibility - reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bgBlob1, .bgBlob2, .bgBlob3 {
+    animation: none;
+  }
+  
+  .logoIcon {
+    animation: none;
+  }
+  
+  .loginButton::before {
+    display: none;
+  }
+}
