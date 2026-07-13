@@ -42,11 +42,24 @@ function App() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />  
-          <Route path="/signup" element={<Signup />} />  
-          <Route path="/login" element={<Login />} />  
-          <Route path="*" element={<NotFound />} />  
+          {/* Public Routes - No Layout */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          {/* Protected Routes with Layout */}
+          <Route path="/" element={
+            <Layout>
+              <Home />
+            </Layout>
+          } />
+          <Route path="/home" element={
+            <Layout>
+              <Home />
+            </Layout>
+          } />
+          
+          {/* 404 Not Found - No Layout */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </ThemeProvider>

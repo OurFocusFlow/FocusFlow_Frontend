@@ -1,0 +1,703 @@
+.root {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fc;
+}
+
+/* Drawer Styles */
+.drawerPaper {
+  width: 280px;
+  background: #ffffff;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.04);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Drawer Header */
+.drawerHeader {
+  padding: 1.5rem 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  z-index: 1;
+}
+
+.logoWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+.logoSubtext {
+  color: #94a3b8;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.65rem;
+  display: block;
+  margin-top: -2px;
+}
+
+.closeDrawerButton {
+  color: #94a3b8;
+  padding: 4px;
+  margin: -8px -8px -8px 0;
+}
+
+.closeDrawerButton:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: #475569;
+}
+
+/* Divider */
+.divider {
+  margin: 0 1rem;
+  border-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Navigation List */
+.navList {
+  padding: 0.5rem 0.75rem;
+  flex: 1;
+}
+
+.navItem {
+  border-radius: 12px;
+  margin-bottom: 2px;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.navItem:hover {
+  background: rgba(102, 126, 234, 0.06);
+}
+
+.navItem:hover .navIcon {
+  color: #667eea;
+}
+
+.navItem:hover .navTextPrimary {
+  color: #1a202c;
+}
+
+.activeNavItem {
+  background: rgba(102, 126, 234, 0.1) !important;
+  position: relative;
+}
+
+.activeNavItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0 4px 4px 0;
+}
+
+.activeNavItem .navIcon {
+  color: #667eea;
+}
+
+.activeNavItem .navTextPrimary {
+  color: #1a202c;
+  font-weight: 600;
+}
+
+.navIcon {
+  min-width: 40px;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.navText {
+  margin: 0;
+}
+
+.navTextPrimary {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #475569;
+  transition: color 0.2s ease;
+}
+
+.badge :global(.MuiBadge-badge) {
+  background: #ef4444;
+  font-size: 0.65rem;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+}
+
+/* New Task Button */
+.newTaskWrapper {
+  padding: 0.75rem 1rem;
+}
+
+.newTaskButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 0.6rem;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+.newTaskButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46a1 100%);
+}
+
+/* Bottom Navigation */
+.bottomNavList {
+  padding: 0.5rem 0.75rem;
+  margin-top: auto;
+}
+
+.subNavItem {
+  padding-left: 3rem !important;
+  padding-top: 0.3rem !important;
+  padding-bottom: 0.3rem !important;
+  border-radius: 8px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.subNavItem:hover {
+  background: rgba(102, 126, 234, 0.06);
+}
+
+.subNavItem:hover .subNavTextPrimary {
+  color: #1a202c;
+}
+
+.subNavText {
+  margin: 0;
+}
+
+.subNavTextPrimary {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.expandIcon {
+  color: #94a3b8;
+  padding: 4px;
+}
+
+.expandIcon:hover {
+  color: #475569;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* User Section */
+.userSection {
+  margin-top: auto;
+  padding: 0.5rem 0.75rem 1rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.userInfo:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.userText {
+  flex: 1;
+  min-width: 0;
+}
+
+.userName {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+
+.userEmail {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  display: block;
+  margin-top: 1px;
+}
+
+/* Mobile Drawer */
+.mobileDrawer {
+  display: block;
+}
+
+.mobileDrawer .drawerPaper {
+  width: 85%;
+  max-width: 320px;
+  border-radius: 0 16px 16px 0;
+}
+
+/* Tablet Drawer */
+.tabletDrawer {
+  display: block;
+}
+
+.tabletDrawer .drawerPaper {
+  width: 280px;
+}
+
+/* Desktop Drawer */
+.desktopDrawer {
+  display: block;
+  flex-shrink: 0;
+  width: 280px;
+}
+
+.desktopDrawer .drawerPaper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  z-index: 1200;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  min-height: 100vh;
+  padding: 2rem;
+  background: #f8f9fc;
+  transition: margin-left 0.3s ease;
+}
+
+.mainContentMobile {
+  margin-left: 0;
+  padding: 1rem;
+  padding-top: 4.5rem;
+  min-height: calc(100vh - 56px);
+}
+
+.mainContentTablet {
+  margin-left: 0;
+  padding: 1.25rem;
+  padding-top: 4.5rem;
+  min-height: calc(100vh - 56px);
+}
+
+.mainContentDesktop {
+  margin-left: 280px;
+  padding: 2rem;
+}
+
+/* App Bar - Mobile & Tablet */
+.appBar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  z-index: 1100;
+}
+
+.toolbar {
+  padding: 0 1rem;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menuButton {
+  margin-right: 0.5rem;
+  color: #475569;
+  padding: 8px;
+}
+
+.menuButton:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.mobileLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.mobileLogoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileLogoText {
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.1rem;
+}
+
+.mobileAvatar {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+}
+
+.mobileBadge {
+  margin-right: 0.25rem;
+}
+
+.mobileBadge :global(.MuiBadge-badge) {
+  background: #ef4444;
+  font-size: 0.6rem;
+  height: 16px;
+  min-width: 16px;
+  padding: 0 3px;
+}
+
+.mobileIcon {
+  color: #64748b;
+  font-size: 20px;
+}
+
+/* Responsive Breakpoints */
+
+/* Small phones (portrait) */
+@media (max-width: 400px) {
+  .drawerPaper {
+    width: 280px;
+  }
+
+  .mobileDrawer .drawerPaper {
+    width: 90%;
+    max-width: 300px;
+  }
+
+  .mainContentMobile {
+    padding: 0.75rem;
+    padding-top: 4rem;
+  }
+
+  .drawerHeader {
+    padding: 1rem 1rem 0.75rem;
+  }
+
+  .logoText {
+    font-size: 1.1rem;
+  }
+
+  .logoSubtext {
+    font-size: 0.55rem;
+  }
+
+  .navItem {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .navTextPrimary {
+    font-size: 0.8rem;
+  }
+
+  .newTaskButton {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .toolbar {
+    padding: 0 0.75rem;
+    min-height: 50px;
+  }
+
+  .mobileLogoText {
+    font-size: 1rem;
+  }
+
+  .mobileAvatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .userInfo {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .userName {
+    font-size: 0.8rem;
+  }
+
+  .userEmail {
+    font-size: 0.65rem;
+  }
+}
+
+/* Medium phones and small tablets */
+@media (min-width: 401px) and (max-width: 600px) {
+  .mobileDrawer .drawerPaper {
+    width: 80%;
+    max-width: 320px;
+  }
+
+  .mainContentMobile {
+    padding: 1rem;
+    padding-top: 4.5rem;
+  }
+
+  .drawerHeader {
+    padding: 1.25rem 1.25rem 0.875rem;
+  }
+}
+
+/* Tablets */
+@media (min-width: 601px) and (max-width: 960px) {
+  .tabletDrawer .drawerPaper {
+    width: 300px;
+  }
+
+  .mainContentTablet {
+    padding: 1.5rem;
+    padding-top: 4.5rem;
+  }
+
+  .drawerHeader {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+  .mainContentDesktop {
+    padding: 2.5rem;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1600px) {
+  .desktopDrawer {
+    width: 320px;
+  }
+
+  .desktopDrawer .drawerPaper {
+    width: 320px;
+  }
+
+  .mainContentDesktop {
+    margin-left: 320px;
+    padding: 3rem;
+  }
+
+  .logoText {
+    font-size: 1.5rem;
+  }
+
+  .navTextPrimary {
+    font-size: 1rem;
+  }
+
+  .navItem {
+    padding: 0.6rem 0.85rem;
+  }
+
+  .newTaskButton {
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+}
+
+/* Landscape mode for phones */
+@media (max-height: 600px) and (orientation: landscape) {
+  .mobileDrawer .drawerPaper {
+    width: 70%;
+    max-width: 280px;
+  }
+
+  .mainContentMobile {
+    padding-top: 3.5rem;
+  }
+
+  .toolbar {
+    min-height: 48px;
+  }
+
+  .drawerHeader {
+    padding: 0.75rem 1rem 0.5rem;
+  }
+
+  .logoText {
+    font-size: 0.9rem;
+  }
+
+  .logoSubtext {
+    font-size: 0.5rem;
+  }
+
+  .navItem {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .navTextPrimary {
+    font-size: 0.75rem;
+  }
+
+  .navIcon {
+    min-width: 32px;
+  }
+
+  .newTaskWrapper {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .newTaskButton {
+    padding: 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .userSection {
+    padding: 0.25rem 0.5rem 0.5rem;
+  }
+
+  .userInfo {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.65rem;
+  }
+
+  .userName {
+    font-size: 0.7rem;
+  }
+
+  .userEmail {
+    font-size: 0.6rem;
+  }
+}
+
+/* Accessibility - reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .navItem {
+    transition: none;
+  }
+
+  .newTaskButton {
+    transition: none;
+  }
+
+  .mainContent {
+    transition: none;
+  }
+
+  .newTaskButton:hover {
+    transform: none;
+  }
+}
+
+/* Touch devices - larger touch targets */
+@media (hover: none) {
+  .navItem {
+    min-height: 44px;
+  }
+
+  .navItem:hover {
+    background: transparent;
+  }
+
+  .navItem:hover .navIcon {
+    color: #94a3b8;
+  }
+
+  .navItem:hover .navTextPrimary {
+    color: #475569;
+  }
+
+  .subNavItem {
+    min-height: 40px;
+  }
+
+  .subNavItem:hover {
+    background: transparent;
+  }
+
+  .subNavItem:hover .subNavTextPrimary {
+    color: #64748b;
+  }
+
+  .newTaskButton:hover {
+    transform: none;
+  }
+
+  .userInfo:hover {
+    background: transparent;
+  }
+
+  .closeDrawerButton {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
