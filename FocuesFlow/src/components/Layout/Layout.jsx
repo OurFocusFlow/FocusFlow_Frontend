@@ -14,10 +14,10 @@ import {
   useMediaQuery,
   useTheme,
   Drawer,
-  AppBar,
-  Toolbar,
   Collapse,
   SwipeableDrawer,
+  Tooltip,
+  alpha,
 } from '@mui/material';
 import {
   Inbox as InboxIcon,
@@ -28,12 +28,14 @@ import {
   Add as AddIcon,
   Settings as SettingsIcon,
   Help as SupportIcon,
-  ChevronLeft as ChevronLeftIcon,
-  Menu as MenuIcon,
   ExpandLess,
   ExpandMore,
   Close as CloseIcon,
+  Menu as MenuIcon,
+  TrendingUp as TrendingUpIcon,
+  NotificationsNone as NotificationsNoneIcon,
 } from '@mui/icons-material';
+import Navbar from '../Navbar/Navbar';
 import styles from './Layout.module.css';
 
 const Layout = ({ children }) => {
@@ -45,7 +47,8 @@ const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
   const [activeItem, setActiveItem] = useState('Inbox');
-  const [collapsed, setCollapsed] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -57,13 +60,35 @@ const Layout = ({ children }) => {
 
   const handleNavItemClick = (text) => {
     setActiveItem(text);
-    if (isMobile) {
+    if (isMobile || isTablet) {
       setMobileOpen(false);
     }
   };
 
   const handleCloseDrawer = () => {
     setMobileOpen(false);
+  };
+
+  // Navbar handlers
+  const handleSearch = (value) => {
+    console.log('Searching for:', value);
+  };
+
+  const handleNotificationClick = (notification) => {
+    console.log('Notification clicked:', notification);
+  };
+
+  const handleProfileClick = (action) => {
+    console.log('Profile action:', action);
+  };
+
+  const handleLogout = () => {
+    console.log('User logged out');
+  };
+
+  const handleThemeToggle = (mode) => {
+    setIsDarkMode(mode);
+    console.log('Theme toggled:', mode);
   };
 
   const navigationItems = [
@@ -79,17 +104,31 @@ const Layout = ({ children }) => {
     { text: 'Support', icon: <SupportIcon /> },
   ];
 
+  const userData = {
+    name: 'Alex Rivera',
+    email: 'alex@company.com',
+    avatar: 'AR',
+    accountType: 'PRO ACCOUNT',
+  };
+
+  const notifications = [
+    { id: 1, text: 'New task assigned to you', time: '2 min ago', read: false },
+    { id: 2, text: 'Project deadline approaching', time: '1 hour ago', read: false },
+    { id: 3, text: 'Team member completed a task', time: '3 hours ago', read: true },
+    { id: 4, text: 'You have a new message', time: '5 hours ago', read: true },
+  ];
+
   const drawerContent = (
     <Box className={styles.drawerContent}>
-      {/* Header */}
+      {/* Modern Header with Glass Effect */}
       <Box className={styles.drawerHeader}>
         <Box className={styles.logoWrapper}>
           <Box className={styles.logoIcon}>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-              <path d="M10 16L14 20L22 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <rect width="36" height="36" rx="10" fill="url(#gradient)" />
+              <path d="M11 18L16 23L25 13" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               <defs>
-                <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+                <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
                   <stop offset="0%" stopColor="#667eea" />
                   <stop offset="100%" stopColor="#764ba2" />
                 </linearGradient>
@@ -101,11 +140,11 @@ const Layout = ({ children }) => {
               FocusFlow
             </Typography>
             <Typography variant="caption" className={styles.logoSubtext}>
-              Personal Workspace
+              Workspace
             </Typography>
           </Box>
         </Box>
-        {isMobile && (
+        {(isMobile || isTablet) && (
           <IconButton className={styles.closeDrawerButton} onClick={handleCloseDrawer}>
             <CloseIcon />
           </IconButton>
@@ -114,37 +153,41 @@ const Layout = ({ children }) => {
 
       <Divider className={styles.divider} />
 
-      {/* Navigation */}
+      {/* Navigation with Modern Icons */}
       <List className={styles.navList}>
         {navigationItems.map((item) => (
-          <ListItem
-            key={item.text}
-            className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
-            onClick={() => handleNavItemClick(item.text)}
-          >
-            <ListItemIcon className={styles.navIcon}>
-              {item.badge ? (
-                <Badge badgeContent={item.badge} color="error" className={styles.badge}>
-                  {item.icon}
-                </Badge>
-              ) : (
-                item.icon
+          <Tooltip key={item.text} title={item.text} placement="right" arrow>
+            <ListItem
+              className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
+              onClick={() => handleNavItemClick(item.text)}
+            >
+              <ListItemIcon className={styles.navIcon}>
+                {item.badge ? (
+                  <Badge badgeContent={item.badge} color="error" className={styles.badge}>
+                    {item.icon}
+                  </Badge>
+                ) : (
+                  item.icon
+                )}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text} 
+                className={styles.navText}
+                primaryTypographyProps={{
+                  className: styles.navTextPrimary,
+                }}
+              />
+              {activeItem === item.text && (
+                <Box className={styles.activeIndicator} />
               )}
-            </ListItemIcon>
-            <ListItemText 
-              primary={item.text} 
-              className={styles.navText}
-              primaryTypographyProps={{
-                className: styles.navTextPrimary,
-              }}
-            />
-          </ListItem>
+            </ListItem>
+          </Tooltip>
         ))}
       </List>
 
       <Divider className={styles.divider} />
 
-      {/* New Task Button */}
+      {/* Modern New Task Button */}
       <Box className={styles.newTaskWrapper}>
         <Button
           fullWidth
@@ -158,7 +201,7 @@ const Layout = ({ children }) => {
 
       <Divider className={styles.divider} />
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation with Modern Design */}
       <List className={styles.bottomNavList}>
         {bottomItems.map((item) => (
           <React.Fragment key={item.text}>
@@ -213,10 +256,14 @@ const Layout = ({ children }) => {
         ))}
       </List>
 
-      {/* User Avatar at bottom */}
+      {/* Modern User Profile Section */}
       <Box className={styles.userSection}>
         <Divider className={styles.divider} />
-        <Box className={styles.userInfo}>
+        <Box 
+          className={styles.userInfo}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <Avatar className={styles.avatar}>JD</Avatar>
           <Box className={styles.userText}>
             <Typography variant="body2" className={styles.userName}>
@@ -226,6 +273,7 @@ const Layout = ({ children }) => {
               john@company.com
             </Typography>
           </Box>
+          <Box className={styles.userStatus} />
         </Box>
       </Box>
     </Box>
@@ -233,105 +281,86 @@ const Layout = ({ children }) => {
 
   return (
     <Box className={styles.root}>
-      {/* Mobile App Bar */}
-      {(isMobile || isTablet) && (
-        <AppBar position="fixed" className={styles.appBar}>
-          <Toolbar className={styles.toolbar}>
-            <IconButton
-              color="inherit"
-              edge="start"
-              onClick={handleDrawerToggle}
-              className={styles.menuButton}
-              aria-label="Open drawer"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Box className={styles.mobileLogo}>
-              <Box className={styles.mobileLogoIcon}>
-                <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-                  <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-                  <path d="M10 16L14 20L22 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  <defs>
-                    <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                      <stop offset="0%" stopColor="#667eea" />
-                      <stop offset="100%" stopColor="#764ba2" />
-                    </linearGradient>
-                  </defs>
-                </svg>
+      <Box className={styles.layoutContainer}>
+        {/* Desktop Sidebar with Modern Design */}
+        {isDesktop && (
+          <Drawer
+            variant="permanent"
+            className={styles.desktopDrawer}
+            classes={{
+              paper: styles.drawerPaper,
+            }}
+            anchor="left"
+          >
+            {drawerContent}
+          </Drawer>
+        )}
+
+        <Box className={styles.contentArea}>
+          {/* Modern Navbar */}
+          <Box className={styles.navbarWrapper}>
+            <Box className={styles.navbarContainer}>
+              {(isMobile || isTablet) && (
+                <Tooltip title="Open menu" arrow>
+                  <IconButton
+                    className={styles.menuButton}
+                    onClick={handleDrawerToggle}
+                    edge="start"
+                    aria-label="Open drawer"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Box className={styles.navbarFlex}>
+                <Navbar
+                  onSearch={handleSearch}
+                  user={userData}
+                  notifications={notifications}
+                  onNotificationClick={handleNotificationClick}
+                  onProfileClick={handleProfileClick}
+                  onLogout={handleLogout}
+                  onThemeToggle={handleThemeToggle}
+                  isDarkMode={isDarkMode}
+                  showThemeToggle={true}
+                  showNotifications={true}
+                  showProfile={true}
+                />
               </Box>
-              <Typography variant="h6" className={styles.mobileLogoText}>
-                FocusFlow
-              </Typography>
             </Box>
-            <Box sx={{ flexGrow: 1 }} />
-            <Badge badgeContent={3} color="error" className={styles.mobileBadge}>
-              <InboxIcon className={styles.mobileIcon} />
-            </Badge>
-            <Avatar className={styles.mobileAvatar}>JD</Avatar>
-          </Toolbar>
-        </AppBar>
-      )}
+          </Box>
 
-      {/* Mobile Drawer - Swipeable for better UX */}
-      {isMobile && (
-        <SwipeableDrawer
-          anchor="left"
-          open={mobileOpen}
-          onClose={handleCloseDrawer}
-          onOpen={() => setMobileOpen(true)}
-          className={styles.mobileDrawer}
-          classes={{
-            paper: styles.drawerPaper,
-          }}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          disableBackdropTransition={false}
-          disableDiscovery={false}
-        >
-          {drawerContent}
-        </SwipeableDrawer>
-      )}
-
-      {/* Tablet Drawer */}
-      {isTablet && (
-        <Drawer
-          variant="temporary"
-          anchor="left"
-          open={mobileOpen}
-          onClose={handleCloseDrawer}
-          className={styles.tabletDrawer}
-          classes={{
-            paper: styles.drawerPaper,
-          }}
-          ModalProps={{
-            keepMounted: true,
-          }}
-        >
-          {drawerContent}
-        </Drawer>
-      )}
-
-      {/* Desktop Drawer - Permanent */}
-      {isDesktop && (
-        <Drawer
-          variant="permanent"
-          className={styles.desktopDrawer}
-          classes={{
-            paper: styles.drawerPaper,
-          }}
-          anchor="left"
-        >
-          {drawerContent}
-        </Drawer>
-      )}
-
-      {/* Main Content */}
-      <Box
-        component="main"
-        className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''} ${isDesktop ? styles.mainContentDesktop : ''}`}
-      >
-        {children}
+          {/* Main Content with Modern Background */}
+          <Box
+            component="main"
+            className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''}`}
+          >
+            {(isMobile || isTablet) && (
+              <SwipeableDrawer
+                anchor="left"
+                open={mobileOpen}
+                onClose={handleCloseDrawer}
+                onOpen={() => setMobileOpen(true)}
+                className={styles.mobileDrawer}
+                classes={{
+                  paper: styles.drawerPaper,
+                }}
+                ModalProps={{
+                  keepMounted: true,
+                }}
+                disableBackdropTransition={false}
+                disableDiscovery={false}
+              >
+                {drawerContent}
+              </SwipeableDrawer>
+            )}
+            
+            {/* Modern Content Container */}
+            <Box className={styles.contentContainer}>
+              {children}
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
