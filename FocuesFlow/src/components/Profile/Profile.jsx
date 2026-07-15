@@ -59,7 +59,7 @@ const Profile = () => {
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-
+  
   const [userData, setUserData] = useState({
     fullName: 'Alex Rivera',
     email: 'alex@company.com',
@@ -69,7 +69,7 @@ const Profile = () => {
     role: 'Senior Product Designer',
     joinDate: 'January 2024',
   });
-
+  
   const [preferences, setPreferences] = useState({
     darkMode: false,
     emailNotifications: true,
@@ -78,19 +78,19 @@ const Profile = () => {
     language: 'English',
     timezone: 'America/Los_Angeles',
   });
-
+  
   const [security, setSecurity] = useState({
     twoFactorAuth: false,
     sessionTimeout: '30 minutes',
     activeSessions: ['Chrome - Windows', 'Safari - MacBook', 'Chrome - Android'],
   });
-
+  
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
-
+  
   const [passwordErrors, setPasswordErrors] = useState({});
 
   const handleTabChange = (event, newValue) => {
@@ -185,10 +185,10 @@ const Profile = () => {
     focusHours: 324,
   };
 
-  // Delete Confirmation Modal 
+  // Delete Confirmation Modal
   const DeleteConfirmationModal = () => (
-    <Dialog 
-      open={showDeleteDialog} 
+    <Dialog
+      open={showDeleteDialog}
       onClose={() => setShowDeleteDialog(false)}
       maxWidth="xs"
       fullWidth
@@ -208,13 +208,13 @@ const Profile = () => {
           This action cannot be undone. All your data, projects, and tasks will be permanently removed.
         </Typography>
         <Box className={styles.deleteDialogActions}>
-          <Button 
+          <Button
             onClick={() => setShowDeleteDialog(false)}
             className={styles.deleteDialogCancel}
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             onClick={handleDeleteAccount}
             className={styles.deleteDialogConfirm}
             startIcon={<DeleteIcon />}
@@ -237,7 +237,8 @@ const Profile = () => {
         <div className={styles.profileBgGlow} />
       </div>
 
-      <Container maxWidth="lg" className={styles.profileContent}>
+      {/* Changed maxWidth from "lg" to "xl" to allow wider layout */}
+      <Container maxWidth="xl" className={styles.profileContent}>
         {/* Profile Header */}
         <Box className={styles.profileHeader}>
           <Box className={styles.profileHeaderContent}>
@@ -274,7 +275,6 @@ const Profile = () => {
                 </Box>
               </Box>
             </Box>
-
             <Box className={styles.quickStats}>
               {[
                 { number: stats.tasksCompleted, label: 'Tasks Done' },
@@ -355,9 +355,7 @@ const Profile = () => {
                   </Box>
                 )}
               </Box>
-
               <Divider className={styles.tabDivider} />
-
               <Box className={styles.profileGrid}>
                 {/* Left Column */}
                 <Box className={styles.profileLeftColumn}>
@@ -396,7 +394,6 @@ const Profile = () => {
                       </Box>
                     </Box>
                   </Box>
-
                   <Box className={styles.statsGrid}>
                     <Box className={styles.statCard}>
                       <Box className={styles.statCardIconWrapper}>
@@ -435,7 +432,6 @@ const Profile = () => {
                       </Box>
                     </Box>
                   </Box>
-
                   <Box className={styles.memberCard}>
                     <Box className={styles.memberCardContent}>
                       <Box className={styles.memberCardIconWrapper}>
@@ -512,7 +508,6 @@ const Profile = () => {
                       />
                     </Box>
                   </Box>
-
                   <Box className={styles.formCard}>
                     <Box className={styles.formCardHeader}>
                       <Typography variant="subtitle2" className={styles.formCardTitle}>
@@ -586,9 +581,7 @@ const Profile = () => {
                   Preferences
                 </Typography>
               </Box>
-
               <Divider className={styles.tabDivider} />
-
               <Box className={styles.preferencesSection}>
                 <Box className={styles.preferenceGroup}>
                   <Typography variant="subtitle1" className={styles.sectionTitle}>
@@ -605,10 +598,10 @@ const Profile = () => {
                           className={styles.preferenceSwitch}
                           sx={{
                             '&.Mui-checked': {
-                              color: '#667eea',
+                              color: '#885210',
                             },
                             '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#667eea',
+                              backgroundColor: '#885210',
                             },
                           }}
                         />
@@ -626,10 +619,10 @@ const Profile = () => {
                           className={styles.preferenceSwitch}
                           sx={{
                             '&.Mui-checked': {
-                              color: '#667eea',
+                              color: '#885210',
                             },
                             '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#667eea',
+                              backgroundColor: '#885210',
                             },
                           }}
                         />
@@ -647,10 +640,10 @@ const Profile = () => {
                           className={styles.preferenceSwitch}
                           sx={{
                             '&.Mui-checked': {
-                              color: '#667eea',
+                              color: '#885210',
                             },
                             '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#667eea',
+                              backgroundColor: '#885210',
                             },
                           }}
                         />
@@ -659,9 +652,7 @@ const Profile = () => {
                     />
                   </Box>
                 </Box>
-
                 <Divider className={styles.preferenceDivider} />
-
                 <Box className={styles.preferenceGroup}>
                   <Typography variant="subtitle1" className={styles.sectionTitle}>
                     <PaletteIcon className={styles.sectionIcon} />
@@ -677,10 +668,10 @@ const Profile = () => {
                           className={styles.preferenceSwitch}
                           sx={{
                             '&.Mui-checked': {
-                              color: '#667eea',
+                              color: '#885210',
                             },
                             '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#667eea',
+                              backgroundColor: '#885210',
                             },
                           }}
                         />
@@ -694,9 +685,7 @@ const Profile = () => {
                     />
                   </Box>
                 </Box>
-
                 <Divider className={styles.preferenceDivider} />
-
                 <Box className={styles.preferenceGroup}>
                   <Typography variant="subtitle1" className={styles.sectionTitle}>
                     <LanguageIcon className={styles.sectionIcon} />
@@ -731,9 +720,7 @@ const Profile = () => {
                   Security
                 </Typography>
               </Box>
-
               <Divider className={styles.tabDivider} />
-
               <Box className={styles.securitySection}>
                 <Box className={styles.securityItem}>
                   <Box className={styles.securityItemHeader}>
@@ -755,9 +742,7 @@ const Profile = () => {
                     Change Password
                   </Button>
                 </Box>
-
                 <Divider className={styles.securityDivider} />
-
                 <Box className={styles.securityItem}>
                   <Box className={styles.securityItemHeader}>
                     <SecurityIcon className={styles.securityIcon} />
@@ -781,10 +766,10 @@ const Profile = () => {
                         className={styles.securitySwitch}
                         sx={{
                           '&.Mui-checked': {
-                            color: '#667eea',
+                            color: '#885210',
                           },
                           '&.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#667eea',
+                            backgroundColor: '#885210',
                           },
                         }}
                       />
@@ -792,9 +777,7 @@ const Profile = () => {
                     label="Enable 2FA"
                   />
                 </Box>
-
                 <Divider className={styles.securityDivider} />
-
                 <Box className={styles.securityItem}>
                   <Box className={styles.securityItemHeader}>
                     <Typography variant="subtitle1" className={styles.securityItemTitle}>
@@ -827,9 +810,7 @@ const Profile = () => {
                     ))}
                   </Box>
                 </Box>
-
                 <Divider className={styles.securityDivider} />
-
                 <Box className={styles.securityItem}>
                   <Button
                     variant="contained"
