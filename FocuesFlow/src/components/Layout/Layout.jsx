@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -17,7 +18,6 @@ import {
   Collapse,
   SwipeableDrawer,
   Tooltip,
-  alpha,
 } from '@mui/material';
 import {
   Inbox as InboxIcon,
@@ -32,23 +32,35 @@ import {
   ExpandMore,
   Close as CloseIcon,
   Menu as MenuIcon,
-  TrendingUp as TrendingUpIcon,
-  NotificationsNone as NotificationsNoneIcon,
 } from '@mui/icons-material';
 import Navbar from '../Navbar/Navbar';
 import styles from './Layout.module.css';
 
 const Layout = ({ children }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
-  const [activeItem, setActiveItem] = useState('Inbox');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Get active item based on current path
+  const getActiveItem = () => {
+    const path = location.pathname;
+    if (path === '/' || path === '/home') return 'Inbox';
+    if (path === '/my-tasks') return 'My Tasks';
+    if (path === '/projects') return 'Projects';
+    if (path === '/calendar') return 'Calendar';
+    if (path === '/team') return 'Team';
+    return 'Inbox';
+  };
+
+  const [activeItem, setActiveItem] = useState(getActiveItem());
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -58,8 +70,11 @@ const Layout = ({ children }) => {
     setOpenSettings(!openSettings);
   };
 
-  const handleNavItemClick = (text) => {
+  const handleNavItemClick = (text, path) => {
     setActiveItem(text);
+    if (path) {
+      navigate(path);
+    }
     if (isMobile || isTablet) {
       setMobileOpen(false);
     }
@@ -84,6 +99,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     console.log('User logged out');
+    navigate('/login');
   };
 
   const handleThemeToggle = (mode) => {
@@ -92,11 +108,11 @@ const Layout = ({ children }) => {
   };
 
   const navigationItems = [
-    { text: 'Inbox', icon: <InboxIcon />, badge: 3 },
-    { text: 'My Tasks', icon: <TasksIcon />, badge: 12 },
-    { text: 'Projects', icon: <ProjectsIcon /> },
-    { text: 'Calendar', icon: <CalendarIcon /> },
-    { text: 'Team', icon: <TeamIcon /> },
+    { text: 'Inbox', icon: <InboxIcon />, badge: 3, path: '/' },
+    { text: 'My Tasks', icon: <TasksIcon />, badge: 12, path: '/my-tasks' },
+    { text: 'Projects', icon: <ProjectsIcon />, path: '/projects' },
+    { text: 'Calendar', icon: <CalendarIcon />, path: '/calendar' },
+    { text: 'Team', icon: <TeamIcon />, path: '/team' },
   ];
 
   const bottomItems = [
@@ -105,9 +121,9 @@ const Layout = ({ children }) => {
   ];
 
   const userData = {
-    name: 'Alex Rivera',
-    email: 'alex@company.com',
-    avatar: 'AR',
+    name: 'John Doe',
+    email: 'john@company.com',
+    avatar: 'JD',
     accountType: 'PRO ACCOUNT',
   };
 
@@ -122,7 +138,7 @@ const Layout = ({ children }) => {
     <Box className={styles.drawerContent}>
       {/* Modern Header with Glass Effect */}
       <Box className={styles.drawerHeader}>
-        <Box className={styles.logoWrapper}>
+        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Inbox', '/')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect width="36" height="36" rx="10" fill="url(#gradient)" />
@@ -159,7 +175,7 @@ const Layout = ({ children }) => {
           <Tooltip key={item.text} title={item.text} placement="right" arrow>
             <ListItem
               className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
-              onClick={() => handleNavItemClick(item.text)}
+              onClick={() => handleNavItemClick(item.text, item.path)}
             >
               <ListItemIcon className={styles.navIcon}>
                 {item.badge ? (
@@ -194,6 +210,7 @@ const Layout = ({ children }) => {
           variant="contained"
           startIcon={<AddIcon />}
           className={styles.newTaskButton}
+          onClick={() => navigate('/my-tasks')}
         >
           New Task
         </Button>
@@ -282,7 +299,7 @@ const Layout = ({ children }) => {
   return (
     <Box className={styles.root}>
       <Box className={styles.layoutContainer}>
-        {/* Desktop Sidebar with Modern Design */}
+        {/* Desktop Sidebar */}
         {isDesktop && (
           <Drawer
             variant="permanent"
@@ -297,7 +314,7 @@ const Layout = ({ children }) => {
         )}
 
         <Box className={styles.contentArea}>
-          {/* Modern Navbar */}
+          {/* Navbar */}
           <Box className={styles.navbarWrapper}>
             <Box className={styles.navbarContainer}>
               {(isMobile || isTablet) && (
@@ -330,7 +347,7 @@ const Layout = ({ children }) => {
             </Box>
           </Box>
 
-          {/* Main Content with Modern Background */}
+          {/* Main Content - This is where all pages will render */}
           <Box
             component="main"
             className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''}`}
@@ -355,7 +372,7 @@ const Layout = ({ children }) => {
               </SwipeableDrawer>
             )}
             
-            {/* Modern Content Container */}
+            {/* Page Content Container */}
             <Box className={styles.contentContainer}>
               {children}
             </Box>

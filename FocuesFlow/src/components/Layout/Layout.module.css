@@ -1,55 +1,40 @@
-/* Root Layout - Full height with modern gradient background */
+/* ==================== ROOT LAYOUT ==================== */
 .root {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
   height: 100vh;
   overflow: hidden;
-  position: relative;
-}
-
-/* Animated background decoration */
-.root::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
+  background: #f8fafc;
   width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.03) 0%, transparent 70%);
-  animation: floatBackground 20s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes floatBackground {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-5%, -5%) scale(1.1); }
+  max-width: 100%;
 }
 
 .layoutContainer {
   display: flex;
   flex: 1;
   width: 100%;
+  max-width: 100%;
   height: 100vh;
   overflow: hidden;
-  position: relative;
-  z-index: 1;
 }
 
-/* Content Area */
+/* ==================== CONTENT AREA ==================== */
 .contentArea {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Modern Navbar */
+/* ==================== NAVBAR ==================== */
 .navbarWrapper {
   flex-shrink: 0;
   width: 100%;
+  max-width: 100%;
   z-index: 100;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
@@ -57,6 +42,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
   padding: 0.25rem 0;
+  overflow: hidden;
 }
 
 .navbarContainer {
@@ -64,14 +50,18 @@
   align-items: center;
   padding: 0 1.5rem;
   gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .navbarFlex {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-/* Modern Menu Button */
 .menuButton {
   color: #475569;
   padding: 10px;
@@ -90,18 +80,17 @@
   transform: scale(1.05);
 }
 
-.menuButton:active {
-  transform: scale(0.95);
-}
-
-/* Main Content */
+/* ==================== MAIN CONTENT ==================== */
 .mainContent {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   background: transparent;
   overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
   position: relative;
+  width: 100%;
+  max-width: 100%;
 }
 
 .mainContentMobile {
@@ -112,22 +101,32 @@
   padding: 1.25rem;
 }
 
-/* Modern Content Container */
+/* ==================== CONTENT CONTAINER - FULL WIDTH ==================== */
 .contentContainer {
-  max-width: 1400px;
-  margin: 0 auto;
   width: 100%;
-  animation: fadeIn 0.5s ease;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Modern Drawer */
+/* ==================== DRAWER ==================== */
 .drawerPaper {
   width: 280px;
+  max-width: 280px;
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -149,9 +148,11 @@
   padding: 0;
   overflow-y: auto;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* Modern Drawer Header */
+/* ==================== DRAWER HEADER ==================== */
 .drawerHeader {
   padding: 1.75rem 1.5rem 1.25rem;
   display: flex;
@@ -163,6 +164,8 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 1;
+  width: 100%;
+  max-width: 100%;
 }
 
 .logoWrapper {
@@ -170,6 +173,8 @@
   align-items: center;
   gap: 14px;
   width: 100%;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .logoIcon {
@@ -194,6 +199,7 @@
   line-height: 1.2;
   letter-spacing: -0.5px;
   font-size: 1.35rem;
+  white-space: nowrap;
 }
 
 .logoSubtext {
@@ -212,6 +218,7 @@
   margin: -8px -8px -8px 0;
   border-radius: 12px;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .closeDrawerButton:hover {
@@ -220,17 +227,18 @@
   transform: rotate(90deg);
 }
 
-/* Modern Divider */
+/* ==================== DIVIDER ==================== */
 .divider {
   margin: 0 1rem;
   border-color: rgba(0, 0, 0, 0.04);
   border-width: 2px;
 }
 
-/* Modern Navigation */
+/* ==================== NAVIGATION ==================== */
 .navList {
   padding: 0.5rem 0.75rem;
   flex: 1;
+  overflow: hidden;
 }
 
 .navItem {
@@ -241,6 +249,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 .navItem::before {
@@ -294,8 +304,14 @@
 }
 
 @keyframes slideIn {
-  from { transform: scaleY(0); opacity: 0; }
-  to { transform: scaleY(1); opacity: 1; }
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
 }
 
 .activeNavItem .navIcon {
@@ -315,6 +331,7 @@
 
 .navText {
   margin: 0;
+  overflow: hidden;
 }
 
 .navTextPrimary {
@@ -322,6 +339,9 @@
   font-weight: 500;
   color: #475569;
   transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .badge :global(.MuiBadge-badge) {
@@ -339,14 +359,19 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 4px;
   animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
-/* Modern New Task Button */
+/* ==================== NEW TASK BUTTON ==================== */
 .newTaskWrapper {
   padding: 0.75rem 1rem;
 }
@@ -363,6 +388,7 @@
   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .newTaskButton::before {
@@ -389,7 +415,7 @@
   transform: translateY(0) scale(0.98);
 }
 
-/* Bottom Navigation */
+/* ==================== BOTTOM NAVIGATION ==================== */
 .bottomNavList {
   padding: 0.5rem 0.75rem;
   margin-top: auto;
@@ -431,6 +457,7 @@
   padding: 4px;
   border-radius: 8px;
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .expandIcon:hover {
@@ -438,7 +465,7 @@
   background: rgba(0, 0, 0, 0.04);
 }
 
-/* Modern User Section */
+/* ==================== USER SECTION ==================== */
 .userSection {
   margin-top: auto;
   padding: 0.5rem 0.75rem 1.25rem;
@@ -453,6 +480,9 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .userInfo:hover {
@@ -470,6 +500,7 @@
   border: 2px solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .userInfo:hover .avatar {
@@ -479,6 +510,7 @@
 .userText {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
 }
 
 .userName {
@@ -486,6 +518,9 @@
   color: #1a202c;
   font-size: 0.875rem;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .userEmail {
@@ -493,6 +528,9 @@
   font-size: 0.7rem;
   display: block;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .userStatus {
@@ -503,14 +541,19 @@
   border: 2px solid white;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
   animation: statusPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes statusPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
-/* Mobile Drawer */
+/* ==================== MOBILE DRAWER ==================== */
 .mobileDrawer {
   display: block;
 }
@@ -529,11 +572,12 @@
   -webkit-backdrop-filter: blur(30px);
 }
 
-/* Desktop Drawer */
+/* ==================== DESKTOP DRAWER ==================== */
 .desktopDrawer {
   display: block;
   flex-shrink: 0;
   width: 280px;
+  max-width: 280px;
 }
 
 .desktopDrawer .drawerPaper {
@@ -542,12 +586,15 @@
   height: 100vh;
   border-right: 1px solid rgba(255, 255, 255, 0.3);
   overflow-y: auto;
+  overflow-x: hidden;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+  width: 280px;
+  max-width: 280px;
 }
 
-/* Scrollbar Styling */
+/* ==================== SCROLLBAR ==================== */
 .drawerContent::-webkit-scrollbar,
 .mainContent::-webkit-scrollbar {
   width: 4px;
@@ -569,204 +616,38 @@
   background: rgba(102, 126, 234, 0.4);
 }
 
-/* Responsive Breakpoints */
-
-/* Small phones */
-@media (max-width: 400px) {
-  .mobileDrawer .drawerPaper {
-    width: 90%;
-    max-width: 300px;
-  }
-
-  .mainContentMobile {
-    padding: 0.75rem;
-  }
-
-  .drawerHeader {
-    padding: 1.25rem 1rem 0.75rem;
-  }
-
-  .logoText {
-    font-size: 1.1rem;
-  }
-
-  .logoSubtext {
-    font-size: 0.5rem;
-  }
-
-  .navItem {
-    padding: 0.4rem 0.6rem;
-  }
-
-  .navTextPrimary {
-    font-size: 0.8rem;
-  }
-
-  .newTaskButton {
-    padding: 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  .navbarContainer {
-    padding: 0 0.75rem;
-  }
-
-  .menuButton {
-    padding: 6px;
-    margin-right: 0.25rem;
-  }
-}
-
-/* Medium phones */
-@media (min-width: 401px) and (max-width: 600px) {
-  .mobileDrawer .drawerPaper {
-    width: 80%;
-    max-width: 320px;
-  }
-
-  .mainContentMobile {
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .mainContent {
     padding: 1rem;
   }
 
   .navbarContainer {
     padding: 0 1rem;
   }
-}
 
-/* Tablets */
-@media (min-width: 601px) and (max-width: 960px) {
-  .mobileDrawer .drawerPaper {
-    width: 300px;
-  }
-
-  .mainContentTablet {
-    padding: 1.25rem;
-  }
-
-  .navbarContainer {
-    padding: 0 1.25rem;
+  .menuButton {
+    padding: 8px;
+    margin-right: 0.25rem;
   }
 }
 
-/* Large screens */
-@media (min-width: 1200px) {
-  .mainContent {
-    padding: 2.5rem;
-  }
-}
-
-/* Extra large screens */
-@media (min-width: 1600px) {
-  .drawerPaper {
-    width: 320px;
-  }
-
-  .desktopDrawer {
-    width: 320px;
-  }
-
-  .desktopDrawer .drawerPaper {
-    width: 320px;
-  }
-
-  .mainContent {
-    padding: 3rem;
-  }
-
-  .logoText {
-    font-size: 1.5rem;
-  }
-
-  .navTextPrimary {
-    font-size: 1rem;
-  }
-
-  .navItem {
-    padding: 0.7rem 1rem;
-  }
-
-  .newTaskButton {
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-}
-
-/* Landscape mode */
-@media (max-height: 600px) and (orientation: landscape) {
-  .mobileDrawer .drawerPaper {
-    width: 70%;
-    max-width: 280px;
-  }
-
+@media (max-width: 480px) {
   .mainContent {
     padding: 0.75rem;
-  }
-
-  .drawerHeader {
-    padding: 0.75rem 1rem 0.5rem;
-  }
-
-  .logoText {
-    font-size: 0.9rem;
-  }
-
-  .logoSubtext {
-    font-size: 0.5rem;
-  }
-
-  .navItem {
-    padding: 0.25rem 0.5rem;
-  }
-
-  .navTextPrimary {
-    font-size: 0.75rem;
-  }
-
-  .navIcon {
-    min-width: 32px;
-  }
-
-  .newTaskWrapper {
-    padding: 0.4rem 0.75rem;
-  }
-
-  .newTaskButton {
-    padding: 0.3rem;
-    font-size: 0.75rem;
-  }
-
-  .userSection {
-    padding: 0.25rem 0.5rem 0.75rem;
-  }
-
-  .navbarWrapper {
-    padding: 0.15rem 0;
   }
 
   .navbarContainer {
     padding: 0 0.75rem;
   }
 
-  .menuButton {
-    padding: 4px;
-  }
-
-  .avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 0.75rem;
-  }
-
-  .userName {
-    font-size: 0.75rem;
-  }
-
-  .userEmail {
-    font-size: 0.6rem;
+  .mobileDrawer .drawerPaper {
+    width: 90%;
+    max-width: 300px;
   }
 }
 
-/* Accessibility - Reduced Motion */
+/* ==================== ACCESSIBILITY ==================== */
 @media (prefers-reduced-motion: reduce) {
   .navItem,
   .newTaskButton,
@@ -781,10 +662,6 @@
   }
 
   .activeNavItem::after {
-    animation: none;
-  }
-
-  .root::before {
     animation: none;
   }
 
@@ -803,7 +680,7 @@
   }
 }
 
-/* Touch Devices - Better Touch Targets */
+/* Touch Devices */
 @media (hover: none) {
   .navItem {
     min-height: 48px;
