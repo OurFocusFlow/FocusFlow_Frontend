@@ -9,6 +9,7 @@ import NotFound from '../src/components/NotFound/NotFound';
 import Layout from '../src/components/Layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import MyTasks from './components/MyTasks/MyTasks';
+import Profile from './components/Profile/Profile';
 
 import './App.css';  
 
@@ -68,6 +69,14 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <MyTasks />
+              </Layout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
               </Layout>
             </ProtectedRoute>
           } />
