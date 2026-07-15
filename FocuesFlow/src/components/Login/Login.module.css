@@ -637,3 +637,35 @@
     display: none;
   }
 }
+
+/* Add these styles for the clickable spans */
+.forgotPassword {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.forgotPassword:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.signupLink {
+  color: #667eea;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.signupLink:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+.signupLinkMobile {
+  font-size: 0.8rem;
+}

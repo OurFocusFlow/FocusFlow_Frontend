@@ -9,7 +9,6 @@ import {
   Paper,
   InputAdornment,
   IconButton,
-  Link,
   Stack,
   Fade,
   CircularProgress,
@@ -25,10 +24,12 @@ import {
   Lock as LockIcon,
   ArrowForward as ArrowForwardIcon,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 
 const Login = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -78,11 +79,21 @@ const Login = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       setIsLoading(false);
       console.log('Login attempt with:', { email, password });
+      // Navigate to dashboard after successful login
+      navigate('/');
     }
   };
 
   const handleSocialLogin = (provider) => {
     console.log(`Login with ${provider}`);
+  };
+
+  const handleNavigateToSignup = () => {
+    navigate('/signup');
+  };
+
+  const handleNavigateToForgotPassword = () => {
+    navigate('/forgot-password');
   };
 
   return (
@@ -196,9 +207,19 @@ const Login = () => {
               />
 
               <Box className={styles.forgotPasswordWrapper}>
-                <Link href="#" className={`${styles.forgotPassword} ${isMobile ? styles.forgotPasswordMobile : ''}`}>
+                <span 
+                  className={`${styles.forgotPassword} ${isMobile ? styles.forgotPasswordMobile : ''}`}
+                  onClick={handleNavigateToForgotPassword}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleNavigateToForgotPassword();
+                    }
+                  }}
+                >
                   Forgot password?
-                </Link>
+                </span>
               </Box>
 
               <Button
@@ -255,9 +276,19 @@ const Login = () => {
               <Box className={styles.signupWrapper}>
                 <Typography variant="body2" className={`${styles.signupText} ${isMobile ? styles.signupTextMobile : ''}`}>
                   Don't have an account?{' '}
-                  <Link href="#" className={`${styles.signupLink} ${isMobile ? styles.signupLinkMobile : ''}`}>
+                  <span 
+                    className={`${styles.signupLink} ${isMobile ? styles.signupLinkMobile : ''}`}
+                    onClick={handleNavigateToSignup}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleNavigateToSignup();
+                      }
+                    }}
+                  >
                     Sign up for free
-                  </Link>
+                  </span>
                 </Typography>
               </Box>
             </form>
