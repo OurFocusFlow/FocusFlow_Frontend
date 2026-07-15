@@ -156,6 +156,7 @@ const theme = createTheme({
           border: '1px solid rgba(230, 226, 223, 0.3)',
           borderRadius: 16,
           boxShadow: '0 4px 24px rgba(51, 35, 29, 0.06)',
+          transition: 'all 0.5s ease',
         },
       },
     },
