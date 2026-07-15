@@ -20,7 +20,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import {
-  Inbox as InboxIcon,
+  Dashboard as DashboardIcon,
   Assignment as TasksIcon,
   Folder as ProjectsIcon,
   CalendarToday as CalendarIcon,
@@ -52,12 +52,12 @@ const Layout = ({ children }) => {
   // Get active item based on current path
   const getActiveItem = () => {
     const path = location.pathname;
-    if (path === '/' || path === '/home') return 'Inbox';
+    if (path === '/dashboard') return 'Dashboard';
     if (path === '/my-tasks') return 'My Tasks';
     if (path === '/projects') return 'Projects';
     if (path === '/calendar') return 'Calendar';
     if (path === '/team') return 'Team';
-    return 'Inbox';
+    return 'Dashboard';
   };
 
   const [activeItem, setActiveItem] = useState(getActiveItem());
@@ -108,7 +108,7 @@ const Layout = ({ children }) => {
   };
 
   const navigationItems = [
-    { text: 'Inbox', icon: <InboxIcon />, badge: 3, path: '/' },
+    { text: 'Dashboard', icon: <DashboardIcon />, badge: 0, path: '/dashboard' },
     { text: 'My Tasks', icon: <TasksIcon />, badge: 12, path: '/my-tasks' },
     { text: 'Projects', icon: <ProjectsIcon />, path: '/projects' },
     { text: 'Calendar', icon: <CalendarIcon />, path: '/calendar' },
@@ -138,15 +138,15 @@ const Layout = ({ children }) => {
     <Box className={styles.drawerContent}>
       {/* Modern Header with Glass Effect */}
       <Box className={styles.drawerHeader}>
-        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Inbox', '/')} style={{ cursor: 'pointer' }}>
+        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Dashboard', '/dashboard')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect width="36" height="36" rx="10" fill="url(#gradient)" />
               <path d="M11 18L16 23L25 13" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               <defs>
                 <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
-                  <stop offset="0%" stopColor="#667eea" />
-                  <stop offset="100%" stopColor="#764ba2" />
+                  <stop offset="0%" stopColor="#885210" />
+                  <stop offset="100%" stopColor="#4B3832" />
                 </linearGradient>
               </defs>
             </svg>
@@ -178,7 +178,7 @@ const Layout = ({ children }) => {
               onClick={() => handleNavItemClick(item.text, item.path)}
             >
               <ListItemIcon className={styles.navIcon}>
-                {item.badge ? (
+                {item.badge > 0 ? (
                   <Badge badgeContent={item.badge} color="error" className={styles.badge}>
                     {item.icon}
                   </Badge>
@@ -210,6 +210,7 @@ const Layout = ({ children }) => {
           variant="contained"
           startIcon={<AddIcon />}
           className={styles.newTaskButton}
+          style={{ transition: 'all 0.2s ease' , backgroundColor: "#875211"}}
           onClick={() => navigate('/my-tasks')}
         >
           New Task

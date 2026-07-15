@@ -4,7 +4,7 @@
   min-height: 100vh;
   height: 100vh;
   overflow: hidden;
-  background: #f8fafc;
+  background: #FAF5F2;
   width: 100%;
   max-width: 100%;
 }
@@ -36,11 +36,11 @@
   width: 100%;
   max-width: 100%;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(253, 248, 245, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid rgba(230, 226, 223, 0.3);
+  box-shadow: 0 4px 24px rgba(51, 35, 29, 0.06);
   padding: 0.25rem 0;
   overflow: hidden;
 }
@@ -63,7 +63,7 @@
 }
 
 .menuButton {
-  color: #475569;
+  color: #7E7471;
   padding: 10px;
   margin-right: 0.5rem;
   flex-shrink: 0;
@@ -75,8 +75,8 @@
 }
 
 .menuButton:hover {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(136, 82, 16, 0.08);
+  color: #885210;
   transform: scale(1.05);
 }
 
@@ -101,7 +101,7 @@
   padding: 1.25rem;
 }
 
-/* ==================== CONTENT CONTAINER - FULL WIDTH ==================== */
+/* ==================== CONTENT CONTAINER ==================== */
 .contentContainer {
   width: 100%;
   max-width: 100%;
@@ -127,11 +127,11 @@
 .drawerPaper {
   width: 280px;
   max-width: 280px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(253, 248, 245, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.04);
+  border-right: 1px solid rgba(230, 226, 223, 0.3);
+  box-shadow: 4px 0 30px rgba(51, 35, 29, 0.04);
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
@@ -160,7 +160,7 @@
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(253, 248, 245, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 1;
@@ -182,7 +182,6 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 12px rgba(102, 126, 234, 0.3));
   transition: transform 0.3s ease;
 }
 
@@ -192,10 +191,7 @@
 
 .logoText {
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #33231D;
   line-height: 1.2;
   letter-spacing: -0.5px;
   font-size: 1.35rem;
@@ -203,7 +199,7 @@
 }
 
 .logoSubtext {
-  color: #94a3b8;
+  color: #7E7471;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -213,7 +209,7 @@
 }
 
 .closeDrawerButton {
-  color: #94a3b8;
+  color: #7E7471;
   padding: 8px;
   margin: -8px -8px -8px 0;
   border-radius: 12px;
@@ -222,16 +218,16 @@
 }
 
 .closeDrawerButton:hover {
-  background: rgba(102, 126, 234, 0.08);
-  color: #667eea;
+  background: rgba(136, 82, 16, 0.08);
+  color: #885210;
   transform: rotate(90deg);
 }
 
 /* ==================== DIVIDER ==================== */
 .divider {
   margin: 0 1rem;
-  border-color: rgba(0, 0, 0, 0.04);
-  border-width: 2px;
+  border-color: #E6E2DF;
+  border-width: 1px;
 }
 
 /* ==================== NAVIGATION ==================== */
@@ -242,7 +238,7 @@
 }
 
 .navItem {
-  border-radius: 14px;
+  border-radius: 16px;
   margin-bottom: 4px;
   padding: 0.6rem 0.85rem;
   cursor: pointer;
@@ -260,7 +256,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(136, 82, 16, 0.08) 0%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s ease, height 0.6s ease;
@@ -272,21 +268,21 @@
 }
 
 .navItem:hover {
-  background: rgba(102, 126, 234, 0.06);
+  background: rgba(136, 82, 16, 0.06);
   transform: translateX(4px);
 }
 
 .navItem:hover .navIcon {
-  color: #667eea;
+  color: #885210;
   transform: scale(1.1);
 }
 
 .navItem:hover .navTextPrimary {
-  color: #1a202c;
+  color: #33231D;
 }
 
 .activeNavItem {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.12) 0%, rgba(118, 75, 162, 0.12) 100%) !important;
+  background: rgba(136, 82, 16, 0.08) !important;
   position: relative;
   transform: translateX(4px);
 }
@@ -298,7 +294,7 @@
   top: 20%;
   height: 60%;
   width: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #885210;
   border-radius: 0 4px 4px 0;
   animation: slideIn 0.4s ease;
 }
@@ -315,17 +311,17 @@
 }
 
 .activeNavItem .navIcon {
-  color: #667eea;
+  color: #885210;
 }
 
 .activeNavItem .navTextPrimary {
-  color: #1a202c;
+  color: #33231D;
   font-weight: 600;
 }
 
 .navIcon {
   min-width: 44px;
-  color: #94a3b8;
+  color: #7E7471;
   transition: all 0.3s ease;
 }
 
@@ -337,7 +333,7 @@
 .navTextPrimary {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #475569;
+  color: #7E7471;
   transition: all 0.3s ease;
   white-space: nowrap;
   overflow: hidden;
@@ -345,7 +341,7 @@
 }
 
 .badge :global(.MuiBadge-badge) {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background: #ef4444;
   font-size: 0.6rem;
   height: 20px;
   min-width: 20px;
@@ -356,7 +352,7 @@
 .activeIndicator {
   width: 4px;
   height: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #885210;
   border-radius: 4px;
   animation: pulse 2s ease-in-out infinite;
   flex-shrink: 0;
@@ -377,18 +373,19 @@
 }
 
 .newTaskButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 14px;
+  background: #4B3832;
+  color: #FFFFFF;
+  border-radius: 16px;
   padding: 0.7rem;
   text-transform: none;
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 24px rgba(75, 56, 50, 0.25);
   position: relative;
   overflow: hidden;
   width: 100%;
+  border: none;
 }
 
 .newTaskButton::before {
@@ -408,11 +405,21 @@
 
 .newTaskButton:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 28px rgba(75, 56, 50, 0.35);
+  background: #4A382E;
 }
 
 .newTaskButton:active {
   transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(75, 56, 50, 0.2);
+}
+
+.newTaskButton :global(.MuiButton-startIcon) {
+  margin-right: 8px;
+}
+
+.newTaskButton :global(.MuiSvgIcon-root) {
+  font-size: 20px;
 }
 
 /* ==================== BOTTOM NAVIGATION ==================== */
@@ -433,12 +440,12 @@
 }
 
 .subNavItem:hover {
-  background: rgba(102, 126, 234, 0.06);
+  background: rgba(136, 82, 16, 0.06);
   transform: translateX(4px);
 }
 
 .subNavItem:hover .subNavTextPrimary {
-  color: #1a202c;
+  color: #33231D;
 }
 
 .subNavText {
@@ -448,12 +455,12 @@
 .subNavTextPrimary {
   font-size: 0.85rem;
   font-weight: 400;
-  color: #64748b;
+  color: #7E7471;
   transition: all 0.3s ease;
 }
 
 .expandIcon {
-  color: #94a3b8;
+  color: #7E7471;
   padding: 4px;
   border-radius: 8px;
   transition: all 0.3s ease;
@@ -461,7 +468,7 @@
 }
 
 .expandIcon:hover {
-  color: #475569;
+  color: #33231D;
   background: rgba(0, 0, 0, 0.04);
 }
 
@@ -476,7 +483,7 @@
   align-items: center;
   gap: 14px;
   padding: 0.6rem 0.85rem;
-  border-radius: 14px;
+  border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   cursor: pointer;
@@ -486,19 +493,19 @@
 }
 
 .userInfo:hover {
-  background: rgba(102, 126, 234, 0.06);
+  background: rgba(136, 82, 16, 0.06);
   transform: translateX(4px);
 }
 
 .avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #4B3832;
+  color: #FFFFFF;
   font-weight: 700;
   font-size: 0.9rem;
   border: 2px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 4px 24px rgba(75, 56, 50, 0.15);
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
@@ -515,7 +522,7 @@
 
 .userName {
   font-weight: 600;
-  color: #1a202c;
+  color: #33231D;
   font-size: 0.875rem;
   line-height: 1.2;
   white-space: nowrap;
@@ -524,7 +531,7 @@
 }
 
 .userEmail {
-  color: #94a3b8;
+  color: #7E7471;
   font-size: 0.7rem;
   display: block;
   margin-top: 2px;
@@ -536,10 +543,10 @@
 .userStatus {
   width: 8px;
   height: 8px;
-  background: #10b981;
+  background: #34d399;
   border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
   animation: statusPulse 2s ease-in-out infinite;
   flex-shrink: 0;
 }
@@ -567,7 +574,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(253, 248, 245, 0.95);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
 }
@@ -584,10 +591,10 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  border-right: 1px solid rgba(230, 226, 223, 0.3);
   overflow-y: auto;
   overflow-x: hidden;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(253, 248, 245, 0.85);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   width: 280px;
@@ -607,13 +614,13 @@
 
 .drawerContent::-webkit-scrollbar-thumb,
 .mainContent::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.2);
+  background: rgba(136, 82, 16, 0.2);
   border-radius: 4px;
 }
 
 .drawerContent::-webkit-scrollbar-thumb:hover,
 .mainContent::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.4);
+  background: rgba(136, 82, 16, 0.4);
 }
 
 /* ==================== RESPONSIVE ==================== */
@@ -692,12 +699,12 @@
   }
 
   .navItem:hover .navIcon {
-    color: #94a3b8;
+    color: #7E7471;
     transform: none;
   }
 
   .navItem:hover .navTextPrimary {
-    color: #475569;
+    color: #7E7471;
   }
 
   .subNavItem {
