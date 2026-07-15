@@ -212,7 +212,6 @@ export default function MyTasks() {
   };
 
   const handleSaveTask = (taskData) => {
-    // Validate required fields
     let hasError = false;
     let errorMessage = '';
     let errorTitle = '';
@@ -235,28 +234,23 @@ export default function MyTasks() {
       errorMessage = 'Please add at least one category to the task.';
     }
 
-    // If there's an error, show toast but keep modal open
     if (hasError) {
       showToast('error', errorMessage, errorTitle);
       return;
     }
 
-    // If all validations pass, create the task
     setIsSubmitting(true);
     console.log('New task created:', taskData);
     
-    // Show success toast
     showToast(
       'success',
       `Task "${taskData.title}" has been created successfully.`,
       'Task Created!'
     );
 
-    // Close the modal after a short delay
     setTimeout(() => {
       setIsModalOpen(false);
       setIsSubmitting(false);
-      // Here you would add the task to your state/backend
     }, 1000);
   };
 
