@@ -1,9 +1,47 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
+import { CircularProgress, Box } from '@mui/material';
 
-export default function ProtectedRoute() {
+const ProtectedRoute = ({ children }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Simulate checking authentication
+    const checkAuth = async () => {
+    try {
+        // Check if token exists
+        const token = localStorage.getItem('authToken');
+        setIsAuthenticated(token !== null);
+    } catch (error) {
+        setIsAuthenticated(false);
+    } finally {
+        setIsLoading(false);
+    }
+    };
+
+    checkAuth();
+}, []);
+
+if (isLoading) {
+    // Show loading spinner while checking authentication
     return (
-        <div>
-        
-        </div>
-    )
+    <Box 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        minHeight="100vh"
+        >
+        <CircularProgress />
+    </Box>
+    );
 }
+
+if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+}
+
+    return children;
+};
+
+export default ProtectedRoute;
