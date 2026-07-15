@@ -1,0 +1,578 @@
+.nf-page {
+  --nf-indigo: #4f46e5;
+  --nf-indigo-dark: #3730a3;
+  --nf-navy: #0f172a;
+  --nf-muted: #64748b;
+  --nf-border: #e2e8f0;
+  --nf-amber: #f59e0b;
+  --nf-bg-start: #eef0fc;
+  --nf-bg-end: #ffffff;
+
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, var(--nf-bg-start) 0%, var(--nf-bg-end) 55%);
+  color: var(--nf-navy);
+  overflow: hidden;
+}
+
+/* Vignette — pulls the eye to center, like a viewfinder */
+.nf-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    transparent 45%,
+    rgba(79, 70, 229, 0.05) 100%
+  );
+}
+
+/* Header */
+.nf-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  border-bottom: 1px solid var(--nf-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nf-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--nf-indigo);
+  white-space: nowrap;
+}
+
+.nf-logo-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  animation: nf-spin 3s linear infinite;
+}
+
+.nf-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.nf-nav a {
+  color: var(--nf-navy);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.nf-nav a:hover {
+  color: var(--nf-indigo);
+}
+
+/* Main */
+.nf-main {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px 80px;
+  width: 100%;
+  box-sizing: border-box;
+  animation: nf-rise 0.6s ease both;
+}
+
+/* Scope — ring + clock, the focus-pull signature */
+.nf-scope {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+.nf-ring {
+  position: absolute;
+  inset: -10px;
+  animation: nf-ring-spin 40s linear infinite;
+}
+
+.nf-clock {
+  position: absolute;
+  inset: 0;
+}
+
+.nf-clock-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 20px 50px -15px rgba(79, 70, 229, 0.25);
+  filter: blur(2.5px);
+  animation: nf-focus-pull 6s ease-in-out infinite;
+  transition: filter 0.3s ease;
+}
+
+.nf-scope:hover .nf-clock-face {
+  filter: blur(0);
+  animation-play-state: paused;
+}
+
+.nf-clock-face::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 2px solid #d9dcf7;
+}
+
+.nf-clock-12 {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  color: #c7cbf0;
+  font-size: 15px;
+}
+
+.nf-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 4px;
+}
+
+.nf-hand-hour {
+  width: 5px;
+  height: 55px;
+  background: var(--nf-navy);
+  transform: translateX(-50%) rotate(-25deg);
+}
+
+.nf-hand-minute {
+  width: 4px;
+  height: 78px;
+  background: var(--nf-indigo);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.nf-hand-minute::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--nf-indigo);
+}
+
+.nf-hand-second {
+  width: 2px;
+  height: 92px;
+  background: var(--nf-amber);
+  transform: translateX(-50%) rotate(52deg);
+  animation: nf-tick 6s steps(6) infinite;
+}
+
+.nf-clock-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--nf-indigo);
+  transform: translate(-50%, -50%);
+}
+
+.nf-clock-corner {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #d9dcf7;
+  border-radius: 3px;
+}
+
+/* Timer-style error chip */
+.nf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  background: var(--nf-navy);
+  margin-bottom: 20px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.nf-rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--nf-amber);
+  animation: nf-pulse 1.6s ease-in-out infinite;
+}
+
+.nf-chip-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.nf-chip-digits {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--nf-amber);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Title */
+.nf-title {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 16px;
+  max-width: 640px;
+  width: 100%;
+}
+
+.nf-em {
+  color: var(--nf-indigo);
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--nf-amber);
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+.nf-subtitle {
+  max-width: 480px;
+  width: 100%;
+  color: var(--nf-muted);
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin: 0 0 36px;
+}
+
+/* Buttons */
+.nf-actions {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 64px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.nf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  flex: 1 1 auto;
+  white-space: nowrap;
+}
+
+.nf-btn-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.nf-btn:hover .nf-btn-icon {
+  transform: scale(1.15);
+}
+
+.nf-btn:hover .nf-btn-icon-arrow {
+  transform: translateX(-3px);
+}
+
+.nf-btn-primary {
+  background: var(--nf-indigo);
+  color: #fff;
+  box-shadow: 0 8px 20px -8px rgba(79, 70, 229, 0.6);
+}
+
+.nf-btn-primary:hover {
+  background: var(--nf-indigo-dark);
+  transform: translateY(-1px);
+}
+
+.nf-btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.nf-btn-secondary {
+  background: #fff;
+  color: var(--nf-navy);
+  border-color: var(--nf-border);
+}
+
+.nf-btn-secondary:hover {
+  border-color: #cbd0f5;
+  transform: translateY(-1px);
+}
+
+.nf-btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Bottom skeleton cards */
+.nf-skeletons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 640px;
+}
+
+.nf-skeleton-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border: 1px solid var(--nf-border);
+  border-radius: 12px;
+  background: #fff;
+  color: #94a3b8;
+  flex: 1 1 130px;
+}
+
+.nf-skeleton-card svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.nf-skeleton-bar {
+  width: 80px;
+  max-width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    #e2e8f0 25%,
+    #eef0fc 50%,
+    #e2e8f0 75%
+  );
+  background-size: 200% 100%;
+  animation: nf-shimmer 2.2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes nf-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nf-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nf-tick {
+  to {
+    transform: translateX(-50%) rotate(412deg);
+  }
+}
+
+@keyframes nf-focus-pull {
+  0%,
+  100% {
+    filter: blur(2.5px);
+  }
+  50% {
+    filter: blur(0);
+  }
+}
+
+@keyframes nf-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes nf-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes nf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nf-logo-icon,
+  .nf-ring,
+  .nf-clock-face,
+  .nf-hand-second,
+  .nf-rec-dot,
+  .nf-skeleton-bar,
+  .nf-main {
+    animation: none !important;
+  }
+  .nf-clock-face {
+    filter: blur(0);
+  }
+}
+
+/* ===== Responsive breakpoints ===== */
+
+@media (max-width: 1024px) {
+  .nf-header {
+    padding: 18px 32px;
+  }
+  .nf-main {
+    padding: 48px 20px 64px;
+  }
+  .nf-title {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nf-header {
+    padding: 16px 24px;
+  }
+  .nf-nav {
+    gap: 20px;
+  }
+  .nf-scope {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 24px;
+  }
+  .nf-title {
+    font-size: 32px;
+  }
+  .nf-subtitle {
+    font-size: 14.5px;
+    margin-bottom: 28px;
+  }
+  .nf-actions {
+    margin-bottom: 48px;
+  }
+  .nf-btn {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nf-header {
+    padding: 14px 16px;
+    justify-content: center;
+  }
+  .nf-nav {
+    gap: 16px;
+    font-size: 14px;
+  }
+  .nf-logo {
+    font-size: 19px;
+  }
+  .nf-main {
+    padding: 36px 16px 48px;
+  }
+  .nf-scope {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+  }
+  .nf-clock-12 {
+    top: 24px;
+    font-size: 12px;
+  }
+  .nf-hand-hour {
+    height: 38px;
+  }
+  .nf-hand-minute {
+    height: 54px;
+  }
+  .nf-hand-second {
+    height: 64px;
+  }
+  .nf-clock-corner {
+    bottom: 26px;
+    left: 26px;
+  }
+  .nf-chip {
+    font-size: 11px;
+  }
+  .nf-title {
+    font-size: 26px;
+  }
+  .nf-subtitle {
+    font-size: 14px;
+  }
+  .nf-actions {
+    flex-direction: column;
+    max-width: 280px;
+  }
+  .nf-btn {
+    width: 100%;
+  }
+  .nf-skeletons {
+    gap: 10px;
+  }
+  .nf-skeleton-card {
+    padding: 10px 14px;
+    flex: 1 1 45%;
+  }
+}
+
+@media (max-width: 360px) {
+  .nf-title {
+    font-size: 22px;
+  }
+  .nf-scope {
+    width: 130px;
+    height: 130px;
+  }
+}
