@@ -1,0 +1,44 @@
+/* ==================== GLOBAL RESET ==================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent horizontal scroll on all elements */
+* {
+  max-width: 100%;
+}
+
+/* Ensure images and media don't overflow */
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix for MUI components */
+.MuiDrawer-paper {
+  overflow-x: hidden !important;
+}
+
+.MuiList-root {
+  overflow: hidden !important;
+}

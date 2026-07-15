@@ -8,6 +8,7 @@ import Signup from '../src/components/Signup/Signup';
 import NotFound from '../src/components/NotFound/NotFound';
 import Layout from '../src/components/Layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import MyTasks from './components/MyTasks/MyTasks';
 
 import './App.css';  
 
@@ -48,14 +49,27 @@ function App() {
           
           {/* Protected Routes with Layout */}
           <Route path="/" element={
-            <Layout>
-              <Home />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectedRoute>
           } />
+          
           <Route path="/home" element={
-            <Layout>
-              <Home />
-            </Layout>
+            <ProtectedRoute>
+              <Layout>
+                <Home />
+              </Layout>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/my-tasks" element={
+            <ProtectedRoute>
+              <Layout>
+                <MyTasks />
+              </Layout>
+            </ProtectedRoute>
           } />
           
           {/* 404 Not Found - No Layout */}
