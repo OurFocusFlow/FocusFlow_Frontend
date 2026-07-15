@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./MyTasks.module.css";
+import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function Icon({ name, className }) {
   const paths = {
@@ -89,6 +91,9 @@ export default function MyTasks() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterPriority, setFilterPriority] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const tasks = [
     {
@@ -187,6 +192,74 @@ export default function MyTasks() {
     highPriority: tasks.filter(t => t.priority === "High" && !t.completed).length,
   };
 
+  // Modal handlers
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setToast(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsSubmitting(false);
+    setToast(null);
+  };
+
+  const showToast = (type, message, title) => {
+    setToast({ type, message, title });
+    setTimeout(() => {
+      setToast(null);
+    }, 5000);
+  };
+
+  const handleSaveTask = (taskData) => {
+    // Validate required fields
+    let hasError = false;
+    let errorMessage = '';
+    let errorTitle = '';
+
+    if (!taskData.title.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Title';
+      errorMessage = 'Please enter a task title to continue.';
+    } else if (!taskData.description.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Description';
+      errorMessage = 'Please provide a description for the task.';
+    } else if (!taskData.dueDate) {
+      hasError = true;
+      errorTitle = 'Missing Due Date';
+      errorMessage = 'Please select a due date for the task.';
+    } else if (taskData.categories.length === 0) {
+      hasError = true;
+      errorTitle = 'Missing Categories';
+      errorMessage = 'Please add at least one category to the task.';
+    }
+
+    // If there's an error, show toast but keep modal open
+    if (hasError) {
+      showToast('error', errorMessage, errorTitle);
+      return;
+    }
+
+    // If all validations pass, create the task
+    setIsSubmitting(true);
+    console.log('New task created:', taskData);
+    
+    // Show success toast
+    showToast(
+      'success',
+      `Task "${taskData.title}" has been created successfully.`,
+      'Task Created!'
+    );
+
+    // Close the modal after a short delay
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsSubmitting(false);
+      // Here you would add the task to your state/backend
+    }, 1000);
+  };
+
   const filteredTasks = tasks
     .filter((task) => {
       if (activeTab === "all") return true;
@@ -245,7 +318,10 @@ export default function MyTasks() {
                 Manage and track all your tasks in one place
               </p>
             </div>
-            <button className={styles["mytasks-new-task-btn"]}>
+            <button 
+              className={styles["mytasks-new-task-btn"]}
+              onClick={handleOpenModal}
+            >
               <Icon name="plus" className={styles["mytasks-new-task-icon"]} />
               New Task
             </button>
@@ -504,6 +580,24 @@ export default function MyTasks() {
           )}
         </div>
       </div>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveTask}
+        isSubmitting={isSubmitting}
+      />
+
+      {/* Toast Notification */}
+      {toast && (
+        <ToastNotification
+          type={toast.type}
+          message={toast.message}
+          title={toast.title}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
