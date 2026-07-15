@@ -101,7 +101,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               onChange={handleInputChange}
               placeholder="e.g. Design System Documentation"
               className={styles.formInput}
-              required
               disabled={isSubmitting}
             />
           </div>
@@ -120,7 +119,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 disabled={isSubmitting}
-                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -205,7 +203,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               className={styles.formTextarea}
               rows="4"
               disabled={isSubmitting}
-              required
             />
           </div>
 
