@@ -30,17 +30,19 @@ export default function NotFound({
 
       <main className={styles["nf-main"]}>
         <div className={styles["nf-scope"]}>
-          <svg className={styles["nf-ring"]} viewBox="0 0 240 240" aria-hidden="true">
-            <circle
-              cx="120"
-              cy="120"
-              r="118"
-              fill="none"
-              stroke="var(--nf-amber)"
-              strokeWidth="1.5"
-              strokeDasharray="2 10"
-            />
-          </svg>
+          <div className={styles["nf-ring-wrapper"]}>
+            <svg className={styles["nf-ring"]} viewBox="0 0 240 240" aria-hidden="true">
+              <circle
+                cx="120"
+                cy="120"
+                r="118"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeDasharray="3 11"
+              />
+            </svg>
+          </div>
 
           <div className={styles["nf-clock"]} aria-hidden="true">
             <div className={styles["nf-clock-face"]}>
