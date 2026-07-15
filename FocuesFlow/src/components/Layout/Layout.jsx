@@ -25,6 +25,7 @@ import {
   Folder as ProjectsIcon,
   CalendarToday as CalendarIcon,
   People as TeamIcon,
+  Person as PersonIcon,
   Add as AddIcon,
   Settings as SettingsIcon,
   Help as SupportIcon,
@@ -49,6 +50,9 @@ const Layout = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Check if current page is Profile
+  const isProfilePage = location.pathname === '/profile';
+
   // Get active item based on current path
   const getActiveItem = () => {
     const path = location.pathname;
@@ -57,6 +61,7 @@ const Layout = ({ children }) => {
     if (path === '/projects') return 'Projects';
     if (path === '/calendar') return 'Calendar';
     if (path === '/team') return 'Team';
+    if (path === '/profile') return 'Profile';
     return 'Dashboard';
   };
 
@@ -95,6 +100,9 @@ const Layout = ({ children }) => {
 
   const handleProfileClick = (action) => {
     console.log('Profile action:', action);
+    if (action === 'open' || action === 'click') {
+      navigate('/profile');
+    }
   };
 
   const handleLogout = () => {
@@ -113,6 +121,7 @@ const Layout = ({ children }) => {
     { text: 'Projects', icon: <ProjectsIcon />, path: '/projects' },
     { text: 'Calendar', icon: <CalendarIcon />, path: '/calendar' },
     { text: 'Team', icon: <TeamIcon />, path: '/team' },
+    { text: 'Profile', icon: <PersonIcon />, path: '/profile' },
   ];
 
   const bottomItems = [
@@ -210,7 +219,6 @@ const Layout = ({ children }) => {
           variant="contained"
           startIcon={<AddIcon />}
           className={styles.newTaskButton}
-          style={{ transition: 'all 0.2s ease' , backgroundColor: "#875211"}}
           onClick={() => navigate('/my-tasks')}
         >
           New Task
@@ -256,7 +264,13 @@ const Layout = ({ children }) => {
                     <ListItem
                       key={subItem}
                       className={styles.subNavItem}
-                      onClick={() => handleNavItemClick(subItem)}
+                      onClick={() => {
+                        if (subItem === 'Profile') {
+                          handleNavItemClick(subItem, '/profile');
+                        } else {
+                          handleNavItemClick(subItem);
+                        }
+                      }}
                     >
                       <ListItemText 
                         primary={subItem}
@@ -281,6 +295,7 @@ const Layout = ({ children }) => {
           className={styles.userInfo}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          onClick={() => handleNavItemClick('Profile', '/profile')}
         >
           <Avatar className={styles.avatar}>JD</Avatar>
           <Box className={styles.userText}>
@@ -315,43 +330,45 @@ const Layout = ({ children }) => {
         )}
 
         <Box className={styles.contentArea}>
-          {/* Navbar */}
-          <Box className={styles.navbarWrapper}>
-            <Box className={styles.navbarContainer}>
-              {(isMobile || isTablet) && (
-                <Tooltip title="Open menu" arrow>
-                  <IconButton
-                    className={styles.menuButton}
-                    onClick={handleDrawerToggle}
-                    edge="start"
-                    aria-label="Open drawer"
-                  >
-                    <MenuIcon />
-                  </IconButton>
-                </Tooltip>
-              )}
-              <Box className={styles.navbarFlex}>
-                <Navbar
-                  onSearch={handleSearch}
-                  user={userData}
-                  notifications={notifications}
-                  onNotificationClick={handleNotificationClick}
-                  onProfileClick={handleProfileClick}
-                  onLogout={handleLogout}
-                  onThemeToggle={handleThemeToggle}
-                  isDarkMode={isDarkMode}
-                  showThemeToggle={true}
-                  showNotifications={true}
-                  showProfile={true}
-                />
+          {/* Navbar - Hide on Profile Page */}
+          {!isProfilePage && (
+            <Box className={styles.navbarWrapper}>
+              <Box className={styles.navbarContainer}>
+                {(isMobile || isTablet) && (
+                  <Tooltip title="Open menu" arrow>
+                    <IconButton
+                      className={styles.menuButton}
+                      onClick={handleDrawerToggle}
+                      edge="start"
+                      aria-label="Open drawer"
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
+                <Box className={styles.navbarFlex}>
+                  <Navbar
+                    onSearch={handleSearch}
+                    user={userData}
+                    notifications={notifications}
+                    onNotificationClick={handleNotificationClick}
+                    onProfileClick={handleProfileClick}
+                    onLogout={handleLogout}
+                    onThemeToggle={handleThemeToggle}
+                    isDarkMode={isDarkMode}
+                    showThemeToggle={true}
+                    showNotifications={true}
+                    showProfile={true}
+                  />
+                </Box>
               </Box>
             </Box>
-          </Box>
+          )}
 
           {/* Main Content - This is where all pages will render */}
           <Box
             component="main"
-            className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''}`}
+            className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''} ${isProfilePage ? styles.mainContentNoNavbar : ''}`}
           >
             {(isMobile || isTablet) && (
               <SwipeableDrawer

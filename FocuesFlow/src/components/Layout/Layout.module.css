@@ -93,6 +93,11 @@
   max-width: 100%;
 }
 
+/* No Navbar - Full Width */
+.mainContentNoNavbar {
+  padding: 0;
+}
+
 .mainContentMobile {
   padding: 1rem;
 }
@@ -101,7 +106,15 @@
   padding: 1.25rem;
 }
 
-/* ==================== CONTENT CONTAINER ==================== */
+.mainContentNoNavbar.mainContentMobile {
+  padding: 0;
+}
+
+.mainContentNoNavbar.mainContentTablet {
+  padding: 0;
+}
+
+/* ==================== CONTENT CONTAINER - FULL WIDTH ==================== */
 .contentContainer {
   width: 100%;
   max-width: 100%;
@@ -110,6 +123,11 @@
   flex-direction: column;
   animation: fadeIn 0.4s ease;
   overflow: hidden;
+}
+
+/* When no navbar, content container takes full width */
+.mainContentNoNavbar .contentContainer {
+  padding: 0;
 }
 
 @keyframes fadeIn {
@@ -629,6 +647,10 @@
     padding: 1rem;
   }
 
+  .mainContentNoNavbar {
+    padding: 0;
+  }
+
   .navbarContainer {
     padding: 0 1rem;
   }
@@ -642,6 +664,10 @@
 @media (max-width: 480px) {
   .mainContent {
     padding: 0.75rem;
+  }
+
+  .mainContentNoNavbar {
+    padding: 0;
   }
 
   .navbarContainer {
