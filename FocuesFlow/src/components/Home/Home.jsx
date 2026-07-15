@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Home.module.css";
+import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function Icon({ name, className }) {
   const paths = {
@@ -58,6 +60,9 @@ function Icon({ name, className }) {
         <path d="M12 3v2M18.364 5.636l-1.414 1.414M21 12h-2M18.364 18.364l-1.414-1.414M12 21v-2M5.636 18.364l1.414-1.414M3 12h2M5.636 5.636l1.414 1.414" strokeLinecap="round" />
       </>
     ),
+    close: (
+      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
+    ),
   };
   return (
     <svg
@@ -78,6 +83,9 @@ export default function Home() {
   const [hoveredTask, setHoveredTask] = useState(null);
   const [animatedProgress, setAnimatedProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const tasks = [
     {
@@ -144,6 +152,75 @@ export default function Home() {
     setCurrentTime(greeting);
   }, []);
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    // Clear any previous toast when opening modal
+    setToast(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsSubmitting(false);
+    // Clear any toast when closing modal
+    setToast(null);
+  };
+
+  const showToast = (type, message, title) => {
+    setToast({ type, message, title });
+    setTimeout(() => {
+      setToast(null);
+    }, 5000);
+  };
+
+  const handleSaveTask = (taskData) => {
+    // Validate required fields
+    let hasError = false;
+    let errorMessage = '';
+    let errorTitle = '';
+
+    if (!taskData.title.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Title';
+      errorMessage = 'Please enter a task title to continue.';
+    } else if (!taskData.description.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Description';
+      errorMessage = 'Please provide a description for the task.';
+    } else if (!taskData.dueDate) {
+      hasError = true;
+      errorTitle = 'Missing Due Date';
+      errorMessage = 'Please select a due date for the task.';
+    } else if (taskData.categories.length === 0) {
+      hasError = true;
+      errorTitle = 'Missing Categories';
+      errorMessage = 'Please add at least one category to the task.';
+    }
+
+    // If there's an error, show toast but keep modal open
+    if (hasError) {
+      showToast('error', errorMessage, errorTitle);
+      // Don't close modal - keep it open so user can fix errors
+      return;
+    }
+
+    // If all validations pass, create the task
+    setIsSubmitting(true);
+    console.log('New task created:', taskData);
+    
+    // Show success toast
+    showToast(
+      'success',
+      `Task "${taskData.title}" has been created successfully.`,
+      'Task Created!'
+    );
+
+    // Close the modal after a short delay to show success
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsSubmitting(false);
+    }, 1000);
+  };
+
   const filteredTasks = tasks.filter((task) => {
     if (activeTab === "all") return true;
     if (activeTab === "todo") return !task.completed;
@@ -186,7 +263,10 @@ export default function Home() {
             </div>
 
             <div className={styles["home-actions"]}>
-              <button className={styles["home-action-btn"]}>
+              <button 
+                className={styles["home-action-btn"]}
+                onClick={handleOpenModal}
+              >
                 <Icon name="plus" className={styles["home-action-icon"]} />
                 <span>New Task</span>
               </button>
@@ -418,6 +498,24 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveTask}
+        isSubmitting={isSubmitting}
+      />
+
+      {/* Toast Notification */}
+      {toast && (
+        <ToastNotification
+          type={toast.type}
+          message={toast.message}
+          title={toast.title}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }
