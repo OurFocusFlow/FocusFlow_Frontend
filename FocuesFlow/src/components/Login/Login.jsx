@@ -1,310 +1,215 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-  Paper,
-  InputAdornment,
-  IconButton,
-  Stack,
-  Fade,
-  CircularProgress,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import {
-  Google as GoogleIcon,
-  GitHub as GitHubIcon,
-  Visibility,
-  VisibilityOff,
-  Email as EmailIcon,
-  Lock as LockIcon,
-  ArrowForward as ArrowForwardIcon,
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import styles from './Login.module.css';
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import styles from './Login.module.css'
 
-const Login = () => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [remember, setRemember] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [form, setForm] = useState({ email: '', password: '' })
+  const navigate = useNavigate()
+  const location = useLocation()
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // Check for success message from location state
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message)
+      // Pre-fill email if provided
+      if (location.state?.email) {
+        setForm(prev => ({ ...prev, email: location.state.email }))
+      }
+      // Clear the state after showing message
+      window.history.replaceState({}, document.title)
+    }
+  }, [location])
 
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+    setError('')
+  }
 
-  const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setIsLoading(true)
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    let isValid = true;
-
-    if (!email) {
-      setEmailError('Email is required');
-      isValid = false;
-    } else if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
-      isValid = false;
-    } else {
-      setEmailError('');
+    // Basic validation
+    if (!form.email || !form.password) {
+      setError('Please fill in all fields')
+      setIsLoading(false)
+      return
     }
 
-    if (!password) {
-      setPasswordError('Password is required');
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError('Password must be at least 6 characters');
-      isValid = false;
-    } else {
-      setPasswordError('');
+    try {
+      // Simulate API call to authenticate user
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      
+      // For demo: accept any email/password combination
+      // In real app, you'd verify against your backend
+      console.log('Sign in with', form, 'remember:', remember)
+      
+      // Store user session (in real app, use proper auth)
+      localStorage.setItem('isAuthenticated', 'true')
+      localStorage.setItem('userEmail', form.email)
+      
+      // Navigate to dashboard
+      navigate('/dashboard')
+    } catch (err) {
+      setError('Invalid email or password. Please try again.')
+    } finally {
+      setIsLoading(false)
     }
-
-    if (isValid) {
-      setIsLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setIsLoading(false);
-      console.log('Login attempt with:', { email, password });
-      // Navigate to dashboard after successful login
-      navigate('/');
-    }
-  };
-
-  const handleSocialLogin = (provider) => {
-    console.log(`Login with ${provider}`);
-  };
-
-  const handleNavigateToSignup = () => {
-    navigate('/signup');
-  };
-
-  const handleNavigateToForgotPassword = () => {
-    navigate('/forgot-password');
-  };
+  }
 
   return (
-    <Box className={styles.pageContainer}>
-      {!isMobile && (
-        <>
-          <div className={styles.bgBlob1} />
-          <div className={styles.bgBlob2} />
-          <div className={styles.bgBlob3} />
-        </>
-      )}
-      
-      <Container 
-        maxWidth={isMobile ? false : "sm"} 
-        className={styles.container}
-        disableGutters={isMobile}
-      >
-        <Fade in timeout={800}>
-          <Paper elevation={0} className={`${styles.paper} ${isMobile ? styles.paperMobile : ''} ${isTablet ? styles.paperTablet : ''}`}>
-            {isDesktop && (
-              <Box className={styles.topBar}>
-                <span className={styles.barDot} />
-                <span className={styles.barDot} />
-                <span className={styles.barDot} />
-              </Box>
-            )}
+    <div className={styles.page}>
+      <div className={styles.blobTopLeft} />
+      <div className={styles.blobBottomRight} />
 
-            <Box className={`${styles.header} ${isMobile ? styles.headerMobile : ''}`}>
-              <Box className={`${styles.logoWrapper} ${isMobile ? styles.logoWrapperMobile : ''}`}>
-                <Box className={styles.logoIcon}>
-                  <svg width={isMobile ? "28" : "32"} height={isMobile ? "28" : "32"} viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-                    <path d="M10 16L14 20L22 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs>
-                      <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                        <stop offset="0%" stopColor="#667eea" />
-                        <stop offset="100%" stopColor="#764ba2" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </Box>
-                <Typography variant={isMobile ? "h5" : "h4"} component="h1" className={styles.title}>
-                  FocusFlow
-                </Typography>
-              </Box>
-              <Typography variant={isMobile ? "body2" : "body1"} className={styles.subtitle}>
-                Your workspace for disciplined performance.
-              </Typography>
-            </Box>
+      <div className={styles.header}>
+        <div className={styles.brand}>
+          <span className={styles.logoMark}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 9h13a3 3 0 0 1 0 6h-1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+              <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M7 6c0-1 1-1 1-2M11 6c0-1 1-1 1-2" stroke="white" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </span>
+          <h1 className={styles.brandName}>BrewTask</h1>
+        </div>
+        <p className={styles.tagline}>Enter your sanctuary of productivity.</p>
+      </div>
 
-            <form onSubmit={handleLogin} className={`${styles.form} ${isMobile ? styles.formMobile : ''}`}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={!!emailError}
-                helperText={emailError}
-                placeholder="name@company.com"
-                variant="outlined"
-                className={styles.inputField}
-                size={isMobile ? "small" : "medium"}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
-              />
+      <form className={styles.card} onSubmit={handleSubmit}>
+        {/* Success message from signup */}
+        {successMessage && (
+          <div className={styles.successMessage}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#059669" strokeWidth="2" />
+              <path d="M8 12l3 3 5-5" stroke="#059669" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {successMessage}
+          </div>
+        )}
 
-              <TextField
-                fullWidth
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={!!passwordError}
-                helperText={passwordError}
-                variant="outlined"
-                className={styles.inputField}
-                size={isMobile ? "small" : "medium"}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleTogglePassword}
-                        edge="end"
-                        size={isMobile ? "small" : "medium"}
-                        className={styles.passwordToggle}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
-              />
+        {/* Error message */}
+        {error && (
+          <div className={styles.errorMessage}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#e74c3c" strokeWidth="2" />
+              <path d="M12 8v4M12 16h.01" stroke="#e74c3c" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            {error}
+          </div>
+        )}
 
-              <Box className={styles.forgotPasswordWrapper}>
-                <span 
-                  className={`${styles.forgotPassword} ${isMobile ? styles.forgotPasswordMobile : ''}`}
-                  onClick={handleNavigateToForgotPassword}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleNavigateToForgotPassword();
-                    }
-                  }}
-                >
-                  Forgot password?
-                </span>
-              </Box>
+        <div className={styles.field}>
+          <label className={styles.label} htmlFor="email">Email address</label>
+          <div className={styles.inputWrap}>
+            <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+              <path d="M2 6l10 7 10-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="name@company.com"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size={isMobile ? "medium" : "large"}
-                disabled={isLoading}
-                className={`${styles.loginButton} ${isMobile ? styles.loginButtonMobile : ''}`}
-                endIcon={!isLoading && <ArrowForwardIcon />}
-              >
-                {isLoading ? (
-                  <CircularProgress size={isMobile ? 20 : 24} color="inherit" />
-                ) : (
-                  'Login to Workspace'
-                )}
-              </Button>
+        <div className={styles.field}>
+          <div className={styles.labelRow}>
+            <label className={styles.label} htmlFor="password">Password</label>
+            <Link to="/forgot-password" className={styles.forgotLink}>Forgot?</Link>
+          </div>
+          <div className={styles.inputWrap}>
+            <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
+              <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2" />
+            </svg>
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              className={styles.eyeButton}
+              onClick={() => setShowPassword((s) => !s)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke="currentColor" strokeWidth="2" />
+                <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-              <Box className={styles.dividerWrapper}>
-                <Divider className={styles.divider}>
-                  <Typography variant="caption" className={styles.dividerText}>
-                    or continue with
-                  </Typography>
-                </Divider>
-              </Box>
+        <div className={styles.checkboxRow}>
+          <input
+            type="checkbox"
+            id="remember"
+            checked={remember}
+            onChange={() => setRemember(!remember)}
+            className={styles.checkbox}
+          />
+          <label htmlFor="remember">Remember me for 30 days</label>
+        </div>
 
-              <Stack 
-                direction={isMobile ? "column" : "row"} 
-                spacing={isMobile ? 1.5 : 2} 
-                className={styles.socialButtons}
-              >
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<GoogleIcon />}
-                  onClick={() => handleSocialLogin('Google')}
-                  className={`${styles.socialButton} ${isMobile ? styles.socialButtonMobile : ''}`}
-                  size={isMobile ? "medium" : "large"}
-                >
-                  Google
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<GitHubIcon />}
-                  onClick={() => handleSocialLogin('GitHub')}
-                  className={`${styles.socialButton} ${isMobile ? styles.socialButtonMobile : ''}`}
-                  size={isMobile ? "medium" : "large"}
-                >
-                  GitHub
-                </Button>
-              </Stack>
+        <button type="submit" className={styles.submitButton} disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <span className={styles.spinner} />
+              Signing in...
+            </>
+          ) : (
+            'Sign In'
+          )}
+        </button>
 
-              <Box className={styles.signupWrapper}>
-                <Typography variant="body2" className={`${styles.signupText} ${isMobile ? styles.signupTextMobile : ''}`}>
-                  Don't have an account?{' '}
-                  <span 
-                    className={`${styles.signupLink} ${isMobile ? styles.signupLinkMobile : ''}`}
-                    onClick={handleNavigateToSignup}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleNavigateToSignup();
-                      }
-                    }}
-                  >
-                    Sign up for free
-                  </span>
-                </Typography>
-              </Box>
-            </form>
+        <div className={styles.divider}>
+          <span />
+          <p>or continue with</p>
+          <span />
+        </div>
 
-            {isDesktop && (
-              <Box className={styles.bottomBar}>
-                <span className={styles.barLine} />
-                <span className={styles.barLine} />
-                <span className={styles.barLine} />
-              </Box>
-            )}
-          </Paper>
-        </Fade>
-      </Container>
-    </Box>
-  );
-};
+        <div className={styles.oauthRow}>
+          <button type="button" className={styles.oauthButton}>
+            <svg width="16" height="16" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.27-2.09 3.55-5.17 3.55-8.87z" />
+              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.3v3.09A12 12 0 0 0 12 24z" />
+              <path fill="#FBBC05" d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.3a12 12 0 0 0 0 10.76z" />
+              <path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.3 6.62l3.97 3.09c.95-2.85 3.6-4.96 6.73-4.96z" />
+            </svg>
+            Google
+          </button>
+          <button type="button" className={styles.oauthButton}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16.365 1.43c0 1.14-.462 2.24-1.216 3.03-.83.87-2.15 1.53-3.24 1.44-.15-1.1.42-2.26 1.19-3.02.83-.85 2.28-1.5 3.27-1.45zM20.6 17.24c-.53 1.22-.78 1.77-1.46 2.85-.95 1.5-2.29 3.37-3.95 3.39-1.47.02-1.85-.96-3.85-.95-2 .01-2.42.97-3.9.95-1.66-.02-2.93-1.71-3.88-3.2-2.68-4.2-2.96-9.13-1.31-11.75 1.17-1.87 3.02-2.97 4.76-2.97 1.77 0 2.89.98 4.35.98 1.42 0 2.29-.98 4.35-.98 1.55 0 3.2.85 4.37 2.31-3.84 2.11-3.22 7.61.52 9.37z" />
+            </svg>
+            Apple
+          </button>
+        </div>
+      </form>
 
-export default Login;
+      <div className={styles.footer}>
+        <p className={styles.signupPrompt}>
+          Don&apos;t have an account? <Link to="/signup" className={styles.signupLink}>Start your free trial</Link>
+        </p>
+        <p className={styles.copyright}>© 2024 BrewTask. Crafted for focused minds.</p>
+      </div>
+    </div>
+  )
+}

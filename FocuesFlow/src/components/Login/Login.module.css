@@ -1,671 +1,406 @@
-.pageContainer {
+/* Page - Updated to match Signup page */
+.page {
+  position: relative;
   min-height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-  padding: 0;
+  background: #fdf5ef; /* Changed from #f8f5f1 to match Signup */
   overflow: hidden;
+  padding: 64px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif; /* Added to match Signup */
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Animated background blobs - hidden on mobile */
-.bgBlob1 {
+/* Box sizing fix */
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.page button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.page input {
+  font-family: inherit;
+}
+
+.page a {
+  text-decoration: none;
+}
+
+/* Blobs - Updated to match Signup page */
+.blobTopLeft {
   position: absolute;
-  top: -10%;
-  right: -5%;
-  width: 500px;
-  height: 500px;
-  background: rgba(255, 255, 255, 0.05);
+  top: -180px;
+  left: -10%;
+  width: 60vw;
+  height: 480px;
   border-radius: 50%;
-  animation: float 20s ease-in-out infinite;
-  pointer-events: none;
+  background: radial-gradient(circle, rgba(247, 197, 173, 0.5) 0%, rgba(247, 197, 173, 0) 70%);
+  filter: blur(10px);
 }
 
-.bgBlob2 {
+.blobBottomRight {
   position: absolute;
-  bottom: -10%;
-  left: -5%;
-  width: 400px;
-  height: 400px;
-  background: rgba(255, 255, 255, 0.05);
+  bottom: -160px;
+  right: -10%;
+  width: 60vw;
+  height: 480px;
   border-radius: 50%;
-  animation: float 25s ease-in-out infinite reverse;
-  pointer-events: none;
+  background: radial-gradient(circle, rgba(240, 175, 108, 0.45) 0%, rgba(240, 175, 108, 0) 70%);
+  filter: blur(10px);
 }
 
-.bgBlob3 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 50%;
-  animation: pulse 15s ease-in-out infinite;
-  pointer-events: none;
+/* Header */
+.header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 32px;
+  z-index: 1;
 }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(-50px, 30px) scale(1.05); }
-  50% { transform: translate(30px, -20px) scale(0.95); }
-  75% { transform: translate(-20px, 50px) scale(1.02); }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
-}
-
-.container {
+.brand {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  margin: 0 auto;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.logoMark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: #4a3427;
+}
+
+.brandName {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #2e2018; /* Updated to match Signup */
+}
+
+.tagline {
+  font-size: 15px;
+  color: #8a7566; /* Updated to match Signup */
+}
+
+/* Card */
+.card {
   position: relative;
   z-index: 1;
   width: 100%;
+  max-width: 420px; /* Increased to match Signup */
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 36px 36px; /* Updated to match Signup */
+  box-shadow: 0 30px 60px -25px rgba(74, 52, 39, 0.22); /* Updated to match Signup */
+  display: flex;
+  flex-direction: column;
+  gap: 22px; /* Updated to match Signup */
 }
 
-/* Paper styles - responsive */
-.paper {
-  padding: 2.5rem 2rem;
-  border-radius: 24px;
-  width: 100%;
-  max-width: 420px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Fields */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; /* Updated to match Signup */
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #4a3427;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.forgotLink {
+  font-size: 13px;
+  font-weight: 500;
+  color: #c17a3f;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.inputWrap {
   position: relative;
+  display: flex;
+  align-items: center;
+  background: #f3e9df; /* Updated to match Signup */
+  border-radius: 10px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  transition: border-color 0.15s ease;
+  width: 100%;
   overflow: hidden;
 }
 
-.paper:hover {
-  transform: translateY(-4px);
-  box-shadow: 
-    0 30px 60px -12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+.inputWrap:focus-within {
+  border-color: #c17a3f;
 }
 
-/* Tablet styles */
-.paperTablet {
-  max-width: 480px;
-  padding: 2.25rem 1.75rem;
+.icon {
+  flex-shrink: 0;
+  color: #a3907e;
 }
 
-/* Mobile styles */
-.paperMobile {
-  max-width: 100%;
-  padding: 1.5rem 1.25rem;
-  border-radius: 20px;
-  margin: 0.75rem;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 
-    0 20px 40px -12px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-.paperMobile:hover {
-  transform: translateY(-2px);
-}
-
-/* Top decorative bar */
-.topBar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.barDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.1);
-  transition: background 0.3s ease;
-}
-
-.barDot:first-child { background: #ff6b6b; }
-.barDot:nth-child(2) { background: #ffc107; }
-.barDot:nth-child(3) { background: #4caf50; }
-
-/* Header styles - responsive */
-.header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.headerMobile {
-  margin-bottom: 1.75rem;
-}
-
-.logoWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 0.75rem;
-}
-
-.logoWrapperMobile {
-  gap: 10px;
-  margin-bottom: 0.5rem;
-}
-
-.logoIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: logoFloat 3s ease-in-out infinite;
-}
-
-@keyframes logoFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-.title {
-  font-weight: 700;
-  font-size: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-  text-shadow: none;
-}
-
-/* Mobile title */
-@media (max-width: 600px) {
-  .title {
-    font-size: 1.5rem;
-  }
-}
-
-.subtitle {
-  color: #5a6a7e;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  font-size: 0.95rem;
-}
-
-/* Mobile subtitle */
-@media (max-width: 600px) {
-  .subtitle {
-    font-size: 0.85rem;
-  }
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.formMobile {
-  gap: 1rem;
-}
-
-.inputField {
-  margin-bottom: 0.25rem;
-}
-
-/* Fix for label positioning */
-.inputField :global(.MuiOutlinedInput-root) {
-  border-radius: 14px;
-  background: #f8f9fc;
-  transition: all 0.3s ease;
-  border: 2px solid #e2e8f0;
-  position: relative;
-}
-
-.inputField :global(.MuiOutlinedInput-root:hover) {
-  background: #f0f2f7;
-  border-color: #cbd5e0;
-}
-
-.inputField :global(.MuiOutlinedInput-root.Mui-focused) {
-  background: #ffffff;
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-}
-
-.inputField :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+.inputWrap input {
+  flex: 1;
+  min-width: 0;
   border: none;
-}
-
-/* Mobile input styles */
-@media (max-width: 600px) {
-  .inputField :global(.MuiOutlinedInput-root) {
-    border-radius: 12px;
-  }
-  
-  .inputField :global(.MuiInputBase-input) {
-    font-size: 0.9rem;
-    padding: 12px 12px;
-  }
-}
-
-/* Label styling */
-.inputLabel {
-  color: #4a5568 !important;
-  font-weight: 500 !important;
-  font-size: 0.9rem !important;
-  background: transparent !important;
-  padding: 0 4px !important;
-}
-
-.inputField :global(.MuiInputLabel-root) {
-  color: #4a5568;
-  font-weight: 500;
-  transform: translate(14px, 16px) scale(1);
+  outline: none;
   background: transparent;
-  padding: 0 4px;
+  padding: 12px 10px;
+  font-size: 14px;
+  color: #3d2b1f;
+  width: 100%;
 }
 
-.inputField :global(.MuiInputLabel-root.Mui-focused) {
-  color: #667eea;
-  transform: translate(14px, -9px) scale(0.75);
-  background: white;
-  padding: 0 4px;
+.inputWrap input::placeholder {
+  color: #b5a598;
 }
 
-.inputField :global(.MuiInputLabel-root.MuiFormLabel-filled) {
-  transform: translate(14px, -9px) scale(0.75);
-  background: white;
-  padding: 0 4px;
-}
-
-.inputField :global(.MuiInputBase-input) {
-  color: #2d3748;
-  padding: 16px 14px;
-  font-size: 0.95rem;
-}
-
-.inputField :global(.MuiInputBase-input::placeholder) {
-  color: #a0aec0;
-  opacity: 1;
-}
-
-.inputField :global(.MuiFormHelperText-root) {
-  margin-left: 0;
-  font-size: 0.75rem;
-  color: #e53e3e;
-  font-weight: 500;
-}
-
-.inputIcon {
-  color: #a0aec0;
-  font-size: 20px;
-}
-
-.inputField :global(.Mui-focused) .inputIcon {
-  color: #667eea;
-}
-
-.passwordToggle {
-  color: #a0aec0;
+.eyeButton {
+  background: none;
+  border: none;
+  color: #a3907e;
+  display: flex;
+  align-items: center;
   padding: 4px;
 }
 
-.passwordToggle:hover {
-  color: #4a5568;
-  background: rgba(0, 0, 0, 0.05);
+.eyeButton:hover {
+  color: #4a3427;
 }
 
-/* Mobile password toggle */
-@media (max-width: 600px) {
-  .passwordToggle {
-    padding: 2px;
+/* Checkbox - Updated to match Signup */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #5c4433; /* Updated to match Signup */
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #4a3427;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #4a3427;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  transition: background 0.15s ease;
+}
+
+.submitButton:hover {
+  background: #3a281d;
+}
+
+/* Divider - Updated to match Signup */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider span {
+  flex: 1;
+  height: 1px;
+  background: #ece2d8;
+}
+
+.divider p {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b5a598;
+  white-space: nowrap;
+}
+
+/* OAuth Buttons - Updated to match Signup */
+.oauthRow {
+  display: flex;
+  justify-content: center;
+  gap: 48px; /* Updated to match Signup */
+}
+
+.oauthButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3d2b1f;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.oauthButton:hover {
+  background: #f8f2ec;
+}
+
+/* Footer - Updated to match Signup */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 28px;
+}
+
+.signupPrompt {
+  font-size: 13px;
+  color: #5c4433; /* Updated to match Signup */
+  margin-bottom: 20px;
+}
+
+.signupLink {
+  color: #c17a3f;
+  font-weight: 600;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  font-size: 12px;
+  color: #b5a598;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .oauthRow {
+    gap: 24px;
   }
 }
 
-.forgotPasswordWrapper {
-  text-align: right;
-  margin-top: -0.5rem;
+/* Success Message */
+.successMessage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.forgotPassword {
-  color: #667eea;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: color 0.3s ease;
+.successMessage svg {
+  flex-shrink: 0;
 }
 
-.forgotPassword:hover {
-  color: #5a67d8;
+/* Success Message */
+.successMessage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 10px;
+  color: #065f46;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.forgotPasswordMobile {
-  font-size: 0.8rem;
+.successMessage svg {
+  flex-shrink: 0;
 }
 
-.loginButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 0.875rem;
-  border-radius: 14px;
-  font-weight: 600;
-  text-transform: none;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  border: none;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+/* Error Message */
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fde8e8;
+  border: 1px solid #f5c6c6;
+  border-radius: 10px;
+  color: #c0392b;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.loginButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
+.errorMessage svg {
+  flex-shrink: 0;
+}
+
+/* Spinner for loading state */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Update submit button to handle disabled state */
+.submitButton {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-  transition: left 0.5s ease;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #4a3427;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.loginButton:hover::before {
-  left: 100%;
+.submitButton:hover:not(:disabled) {
+  background: #3a281d;
 }
 
-.loginButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
-  background: linear-gradient(135deg, #5a67d8 0%, #6b46a1 100%);
-}
-
-.loginButton:active {
-  transform: translateY(0);
-}
-
-.loginButton:disabled {
+.submitButton:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-}
-
-/* Mobile login button */
-.loginButtonMobile {
-  padding: 0.7rem;
-  font-size: 0.9rem;
-  border-radius: 12px;
-}
-
-.dividerWrapper {
-  margin: 0.25rem 0;
-}
-
-.divider {
-  width: 100%;
-  margin: 0;
-}
-
-.divider :global(.MuiDivider-root) {
-  border-color: #e2e8f0;
-}
-
-.dividerText {
-  color: #a0aec0;
-  font-size: 0.7rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.socialButtons {
-  margin-top: 0.25rem;
-}
-
-.socialButton {
-  border-radius: 14px;
-  padding: 0.7rem;
-  border: 1px solid #e2e8f0;
-  color: #4a5568;
-  font-weight: 500;
-  text-transform: none;
-  transition: all 0.3s ease;
-  background: #f8f9fc;
-}
-
-.socialButton:hover {
-  border-color: #667eea;
-  background: #f0f2ff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
-}
-
-.socialButton :global(.MuiButton-startIcon) {
-  margin-right: 0.5rem;
-  color: #667eea;
-}
-
-/* Mobile social buttons */
-.socialButtonMobile {
-  padding: 0.6rem;
-  font-size: 0.85rem;
-  border-radius: 12px;
-}
-
-.signupWrapper {
-  text-align: center;
-  margin-top: 0.25rem;
-}
-
-.signupText {
-  color: #5a6a7e;
-  font-size: 0.875rem;
-}
-
-.signupTextMobile {
-  font-size: 0.8rem;
-}
-
-.signupLink {
-  color: #667eea;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.signupLink:hover {
-  color: #5a67d8;
-}
-
-.signupLinkMobile {
-  font-size: 0.8rem;
-}
-
-/* Bottom decorative bar */
-.bottomBar {
-  display: flex;
-  gap: 6px;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  justify-content: center;
-}
-
-.barLine {
-  width: 30px;
-  height: 3px;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
-}
-
-.barLine:nth-child(2) {
-  width: 60px;
-}
-
-.paper:hover .barLine {
-  background: rgba(0, 0, 0, 0.12);
-}
-
-/* Responsive adjustments for all devices */
-
-/* Small phones (portrait) */
-@media (max-width: 400px) {
-  .paperMobile {
-    padding: 1.25rem 1rem;
-    border-radius: 16px;
-    margin: 0.5rem;
-  }
-  
-  .title {
-    font-size: 1.35rem;
-  }
-  
-  .logoWrapperMobile {
-    gap: 8px;
-  }
-  
-  .formMobile {
-    gap: 0.85rem;
-  }
-  
-  .loginButtonMobile {
-    padding: 0.6rem;
-    font-size: 0.85rem;
-  }
-}
-
-/* Tablets */
-@media (min-width: 601px) and (max-width: 960px) {
-  .paperTablet {
-    max-width: 440px;
-    padding: 2rem 1.75rem;
-  }
-}
-
-/* Large screens */
-@media (min-width: 1200px) {
-  .paper {
-    max-width: 440px;
-    padding: 2.75rem 2.25rem;
-  }
-  
-  .title {
-    font-size: 2.25rem;
-  }
-}
-
-/* Extra large screens */
-@media (min-width: 1600px) {
-  .paper {
-    max-width: 480px;
-    padding: 3rem 2.5rem;
-  }
-  
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .subtitle {
-    font-size: 1.05rem;
-  }
-}
-
-/* Landscape mode for phones */
-@media (max-height: 600px) and (orientation: landscape) {
-  .paperMobile {
-    padding: 1rem 1.5rem;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  
-  .headerMobile {
-    margin-bottom: 1rem;
-  }
-  
-  .logoWrapperMobile {
-    margin-bottom: 0.25rem;
-  }
-  
-  .formMobile {
-    gap: 0.7rem;
-  }
-  
-  .topBar, .bottomBar {
-    display: none;
-  }
-}
-
-/* Touch devices - larger touch targets */
-@media (hover: none) {
-  .loginButton:hover {
-    transform: none;
-  }
-  
-  .socialButton:hover {
-    transform: none;
-  }
-  
-  .paper:hover {
-    transform: none;
-  }
-}
-
-/* Accessibility - reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .bgBlob1, .bgBlob2, .bgBlob3 {
-    animation: none;
-  }
-  
-  .logoIcon {
-    animation: none;
-  }
-  
-  .loginButton::before {
-    display: none;
-  }
-}
-
-/* Add these styles for the clickable spans */
-.forgotPassword {
-  color: #667eea;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.875rem;
-  transition: color 0.3s ease;
-  cursor: pointer;
-}
-
-.forgotPassword:hover {
-  color: #5a67d8;
-  text-decoration: underline;
-}
-
-.signupLink {
-  color: #667eea;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.2s ease;
-  cursor: pointer;
-}
-
-.signupLink:hover {
-  color: #5a67d8;
-  text-decoration: underline;
-}
-
-.signupLinkMobile {
-  font-size: 0.8rem;
 }
