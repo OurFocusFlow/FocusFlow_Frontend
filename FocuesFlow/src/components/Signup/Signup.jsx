@@ -1,468 +1,261 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Divider,
-  Paper,
-  InputAdornment,
-  IconButton,
-  Stack,
-  Fade,
-  CircularProgress,
-  Checkbox,
-  FormControlLabel,
-  useMediaQuery,
-  useTheme,
-  Alert,
-} from '@mui/material';
-import {
-  Google as GoogleIcon,
-  GitHub as GitHubIcon,
-  Visibility,
-  VisibilityOff,
-  Email as EmailIcon,
-  Lock as LockIcon,
-  Person as PersonIcon,
-  ArrowForward as ArrowForwardIcon,
-  CheckCircle as CheckCircleIcon,
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import styles from './Signup.module.css';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import styles from './Signup.module.css'
 
-const Signup = () => {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  const [formData, setFormData] = useState({
-    fullName: '',
+export default function Signup() {
+  const [agree, setAgree] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    agreeTerms: false,
-  });
-  
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
+  })
+  const navigate = useNavigate()
 
-  const handleInputChange = (e) => {
-    const { name, value, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: name === 'agreeTerms' ? checked : value
-    }));
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required';
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = 'Name must be at least 2 characters';
-    }
-    
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    
-    if (!formData.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Password must contain uppercase, lowercase, and number';
-    }
-    
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = 'Passwords do not match';
-    }
-    
-    if (!formData.agreeTerms) {
-      newErrors.agreeTerms = 'You must agree to the terms';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+    setError('')
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
+    e.preventDefault()
+    setError('')
+
+    // Validate passwords match
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match')
+      return
     }
-    
-    setIsLoading(true);
-    
+
+    // Validate password length
+    if (form.password.length < 8) {
+      setError('Password must be at least 8 characters')
+      return
+    }
+
+    // Validate terms agreement
+    if (!agree) {
+      setError('Please agree to the Terms of Service and Privacy Policy')
+      return
+    }
+
+    setIsLoading(true)
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSuccessMessage('Account created successfully! Redirecting...');
+      // Simulate API call to create account
+      await new Promise(resolve => setTimeout(resolve, 1500))
       
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
-    } catch (error) {
-      setErrors({ submit: 'Something went wrong. Please try again.' });
+      console.log('Create account with', form, 'agree:', agree)
+      
+      // Navigate to login page with success message
+      navigate('/login', { 
+        state: { 
+          message: 'Account created successfully! Please sign in.',
+          email: form.email 
+        } 
+      })
+    } catch (err) {
+      setError('Something went wrong. Please try again.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-
-  const handleSocialSignup = (provider) => {
-    console.log(`Signing up with ${provider}`);
-  };
-
-  const handleNavigateToLogin = () => {
-    navigate('/login');
-  };
-
-  const handleNavigateToTerms = () => {
-    navigate('/terms');
-  };
-
-  const handleNavigateToPrivacy = () => {
-    navigate('/privacy');
-  };
+  }
 
   return (
-    <Box className={styles.pageContainer}>
-      <div className={styles.bgBlob1} />
-      <div className={styles.bgBlob2} />
-      <div className={styles.bgBlob3} />
-      
-      <Container maxWidth="xs" className={styles.container}>
-        <Fade in timeout={600}>
-          <Paper elevation={0} className={styles.paper}>
-            <Box className={styles.topBar}>
-              <span className={styles.barDot} />
-              <span className={styles.barDot} />
-              <span className={styles.barDot} />
-            </Box>
+    <div className={styles.page}>
+      {/* Floating back button */}
+      <Link to="/login" className={styles.floatButton}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Back to Login
+      </Link>
 
-            <Box className={styles.header}>
-              <Box className={styles.logoWrapper}>
-                <Box className={styles.logoIcon}>
-                  <svg width={isMobile ? "28" : "32"} height={isMobile ? "28" : "32"} viewBox="0 0 32 32" fill="none">
-                    <rect width="32" height="32" rx="8" fill="url(#gradient)" />
-                    <path d="M10 16L14 20L22 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs>
-                      <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
-                        <stop offset="0%" stopColor="#667eea" />
-                        <stop offset="100%" stopColor="#764ba2" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </Box>
-                <Typography variant="h5" component="h1" className={styles.title}>
-                  FocusFlow
-                </Typography>
-              </Box>
-              <Typography variant="body2" className={styles.subtitle}>
-                Create your account
-              </Typography>
-            </Box>
+      <div className={styles.blobTopLeft} />
 
-            {successMessage && (
-              <Alert 
-                icon={<CheckCircleIcon />} 
-                severity="success" 
-                className={styles.successAlert}
-                onClose={() => setSuccessMessage('')}
-              >
-                {successMessage}
-              </Alert>
-            )}
+      <div className={styles.layout}>
+        {/* Left: marketing panel */}
+        <div className={styles.promo}>
+          <span className={styles.badge}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+              <path d="M4 9h13a3 3 0 0 1 0 6h-1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Premium Focus
+          </span>
 
-            {errors.submit && (
-              <Alert 
-                severity="error" 
-                className={styles.errorAlert}
-                onClose={() => setErrors(prev => ({ ...prev, submit: '' }))}
-              >
-                {errors.submit}
-              </Alert>
-            )}
+          <h1 className={styles.headline}>Brew Your Most Productive Self.</h1>
 
-            <form onSubmit={handleSubmit} className={styles.form}>
-              <TextField
-                fullWidth
-                label="Full Name"
-                name="fullName"
+          <p className={styles.subtext}>
+            Join 50,000+ professionals using BrewTask to cultivate deep focus and master their daily rituals.
+          </p>
+
+          <div className={styles.proofRow}>
+            <div className={styles.testimonialCard}>
+              <div className={styles.avatars}>
+                <span className={styles.avatar} style={{ background: '#f3ece2' }} />
+                <span className={styles.avatar} style={{ background: '#cfc6bb' }} />
+                <span className={styles.avatar} style={{ background: '#e8d9c4' }} />
+              </div>
+              <p className={styles.quote}>&quot;The only task manager that actually feels calm.&quot;</p>
+            </div>
+
+            <div className={styles.ratingCard}>
+              <p className={styles.ratingScore}>4.9/5</p>
+              <p className={styles.ratingLabel}>App Store Rating</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: form panel */}
+        <form className={styles.card} onSubmit={handleSubmit}>
+          <div className={styles.cardHeader}>
+            <h2 className={styles.cardTitle}>Create Account</h2>
+            <p className={styles.cardSubtext}>Start your journey toward intentional productivity today.</p>
+          </div>
+
+          {error && <div className={styles.errorMessage}>{error}</div>}
+
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="name">Full name</label>
+            <div className={styles.inputWrap}>
+              <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+                <path d="M4 20c0-4 3.58-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              <input
+                id="name"
+                name="name"
                 type="text"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                error={!!errors.fullName}
-                helperText={errors.fullName}
-                placeholder="John Doe"
-                variant="outlined"
-                size="small"
-                className={styles.inputField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
+                placeholder="Elias Thorne"
+                value={form.name}
+                onChange={handleChange}
+                required
               />
+            </div>
+          </div>
 
-              <TextField
-                fullWidth
-                label="Email Address"
+          <div className={styles.field}>
+            <label className={styles.label} htmlFor="email">Email address</label>
+            <div className={styles.inputWrap}>
+              <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
+                <path d="M2 6l10 7 10-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <input
+                id="email"
                 name="email"
                 type="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                error={!!errors.email}
-                helperText={errors.email}
-                placeholder="name@company.com"
-                variant="outlined"
-                size="small"
-                className={styles.inputField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
+                placeholder="elias@brewtask.com"
+                value={form.email}
+                onChange={handleChange}
+                required
               />
+            </div>
+          </div>
 
-              <TextField
-                fullWidth
-                label="Password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={handleInputChange}
-                error={!!errors.password}
-                helperText={errors.password}
-                variant="outlined"
-                size="small"
-                className={styles.inputField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                        size="small"
-                        className={styles.passwordToggle}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
-              />
-
-              <TextField
-                fullWidth
-                label="Confirm Password"
-                name="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
-                variant="outlined"
-                size="small"
-                className={styles.inputField}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon className={styles.inputIcon} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        edge="end"
-                        size="small"
-                        className={styles.passwordToggle}
-                      >
-                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                  className: styles.inputLabel,
-                }}
-              />
-
-              <Box className={styles.termsWrapper}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      name="agreeTerms"
-                      checked={formData.agreeTerms}
-                      onChange={handleInputChange}
-                      className={styles.termsCheckbox}
-                      size="small"
-                      sx={{
-                        '&.Mui-checked': {
-                          color: '#667eea',
-                        },
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography variant="body2" className={styles.termsLabel}>
-                      I agree to the{' '}
-                      <span 
-                        className={styles.termsLink}
-                        onClick={handleNavigateToTerms}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            handleNavigateToTerms();
-                          }
-                        }}
-                      >
-                        Terms
-                      </span>
-                      {' '}&{' '}
-                      <span 
-                        className={styles.termsLink}
-                        onClick={handleNavigateToPrivacy}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            handleNavigateToPrivacy();
-                          }
-                        }}
-                      >
-                        Privacy Policy
-                      </span>
-                    </Typography>
-                  }
+          <div className={styles.fieldRow}>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="password">Password</label>
+              <div className={styles.inputWrap}>
+                <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
+                  <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
                 />
-                {errors.agreeTerms && (
-                  <Typography variant="caption" className={styles.termsError}>
-                    {errors.agreeTerms}
-                  </Typography>
-                )}
-              </Box>
+              </div>
+            </div>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="medium"
-                disabled={isLoading}
-                className={styles.signupButton}
-                endIcon={!isLoading && <ArrowForwardIcon />}
-              >
-                {isLoading ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : (
-                  'Create Account'
-                )}
-              </Button>
+            <div className={styles.field}>
+              <label className={styles.label} htmlFor="confirmPassword">Confirm</label>
+              <div className={styles.inputWrap}>
+                <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                  <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={form.confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
 
-              <Box className={styles.dividerWrapper}>
-                <Divider className={styles.divider}>
-                  <Typography variant="caption" className={styles.dividerText}>
-                    or
-                  </Typography>
-                </Divider>
-              </Box>
+          <label className={styles.checkboxRow}>
+            <span
+              className={`${styles.customCheckbox} ${agree ? styles.checked : ''}`}
+              onClick={() => setAgree((a) => !a)}
+              role="checkbox"
+              aria-checked={agree}
+              tabIndex={0}
+            />
+            <span>
+              I agree to the <Link to="/terms" className={styles.inlineLink}>Terms of Service</Link> and{' '}
+              <Link to="/privacy" className={styles.inlineLink}>Privacy Policy</Link>.
+            </span>
+          </label>
 
-              <Stack direction="row" spacing={1.5} className={styles.socialButtons}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<GoogleIcon />}
-                  onClick={() => handleSocialSignup('Google')}
-                  size="small"
-                  className={styles.socialButton}
-                >
-                  Google
-                </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<GitHubIcon />}
-                  onClick={() => handleSocialSignup('GitHub')}
-                  size="small"
-                  className={styles.socialButton}
-                >
-                  GitHub
-                </Button>
-              </Stack>
+          <button type="submit" className={styles.submitButton} disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <span className={styles.spinner} />
+                Creating Account...
+              </>
+            ) : (
+              <>
+                Begin My Ritual
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </>
+            )}
+          </button>
 
-              <Box className={styles.signinWrapper}>
-                <Typography variant="body2" className={styles.signinText}>
-                  Already have an account?{' '}
-                  <span 
-                    className={styles.signinLink}
-                    onClick={handleNavigateToLogin}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleNavigateToLogin();
-                      }
-                    }}
-                  >
-                    Sign in
-                  </span>
-                </Typography>
-              </Box>
+          <div className={styles.divider}>
+            <span />
+            <p>or join with</p>
+            <span />
+          </div>
 
-              <Box className={styles.trialInfo}>
-                <Typography variant="caption" className={styles.trialText}>
-                  Free 14-day trial. No credit card required.
-                </Typography>
-              </Box>
-            </form>
+          <div className={styles.oauthRow}>
+            <button type="button" className={styles.oauthButton}>
+              <svg width="16" height="16" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.27-2.09 3.55-5.17 3.55-8.87z" />
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.3v3.09A12 12 0 0 0 12 24z" />
+                <path fill="#FBBC05" d="M5.27 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.3a12 12 0 0 0 0 10.76z" />
+                <path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.79l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.3 6.62l3.97 3.09c.95-2.85 3.6-4.96 6.73-4.96z" />
+              </svg>
+              Google
+            </button>
+            <button type="button" className={styles.oauthButton}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16.365 1.43c0 1.14-.462 2.24-1.216 3.03-.83.87-2.15 1.53-3.24 1.44-.15-1.1.42-2.26 1.19-3.02.83-.85 2.28-1.5 3.27-1.45zM20.6 17.24c-.53 1.22-.78 1.77-1.46 2.85-.95 1.5-2.29 3.37-3.95 3.39-1.47.02-1.85-.96-3.85-.95-2 .01-2.42.97-3.9.95-1.66-.02-2.93-1.71-3.88-3.2-2.68-4.2-2.96-9.13-1.31-11.75 1.17-1.87 3.02-2.97 4.76-2.97 1.77 0 2.89.98 4.35.98 1.42 0 2.29-.98 4.35-.98 1.55 0 3.2.85 4.37 2.31-3.84 2.11-3.22 7.61.52 9.37z" />
+              </svg>
+              Apple
+            </button>
+          </div>
 
-            <Box className={styles.bottomBar}>
-              <span className={styles.barLine} />
-              <span className={styles.barLine} />
-              <span className={styles.barLine} />
-            </Box>
-          </Paper>
-        </Fade>
-      </Container>
-    </Box>
-  );
-};
-
-export default Signup;
+          <p className={styles.loginPrompt}>
+            Already part of the community? <Link to="/login" className={styles.loginLink}>Log in here</Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  )
+}
