@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Home from '../src/components/Home/Home'; 
@@ -11,32 +11,35 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import MyTasks from './components/MyTasks/MyTasks';
 import Profile from './components/Profile/Profile';
 import Dashboard from './components/Dashboard/Dashboard';
+import ForgotPassword from './components/ForgetPassword/ForgetPassword';
+import ResetPassword from './components/ResetPassword/ResetPassword';
+import Verification from './components/VerificationComponent/VerificationComponent';
 
 import './App.css';  
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4B3832', // Brown Surface
+      main: '#4B3832',
       light: '#4A382E',
       dark: '#33231D',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#885210', // Accent Orange
+      main: '#885210',
       light: '#A66D2A',
       dark: '#6B3F0C',
       contrastText: '#FFFFFF',
     },
     background: {
-      default: '#FAF5F2', // Cream BG
-      paper: '#FDF8F5', // Cream Light
+      default: '#FAF5F2',
+      paper: '#FDF8F5',
     },
     text: {
-      primary: '#33231D', // Dark Brown
-      secondary: '#7E7471', // Text Muted
+      primary: '#33231D',
+      secondary: '#7E7471',
     },
-    divider: '#E6E2DF', // Gray Card
+    divider: '#E6E2DF',
     error: {
       main: '#dc2626',
     },
@@ -221,6 +224,9 @@ const theme = createTheme({
 });
 
 function App() {
+  // Check if user is authenticated
+  const isAuthenticated = localStorage.getItem('authToken') !== null;
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -230,8 +236,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
-          {/* Landing Page - No Layout (Public) */}
+          {/* Forgot Password & Reset Password Routes */}
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify" element={<Verification />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
+          
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           
           {/* Protected Routes with Layout */}
           <Route path="/dashboard" element={
