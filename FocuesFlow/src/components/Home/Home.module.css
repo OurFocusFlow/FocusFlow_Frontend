@@ -147,12 +147,18 @@
 .bentoGrid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
 
 .bentoCardLight {
-  background: #fff; border-radius: 16px; padding: 32px;
-  display: flex; flex-direction: column;
+  background: #fff; 
+  border-radius: 16px;
+  padding: 32px 32px 20px;
+  display: flex; 
+  flex-direction: column;
   box-shadow: 0 1px 2px rgba(51,35,29,0.04);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
-.bentoCardLight:hover { box-shadow: 0 16px 40px rgba(51,35,29,0.09); transform: translateY(-3px); }
+.bentoCardLight:hover { 
+  box-shadow: 0 16px 40px rgba(51,35,29,0.09); 
+  transform: translateY(-3px); 
+}
 
 .bentoRight { display: flex; flex-direction: column; gap: 20px; }
 
@@ -176,11 +182,6 @@
 .bentoTitleLight { font-size: 17px; font-weight: 700; margin: 0 0 8px; color: #fff; }
 .bentoText { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
 .bentoTextLight { color: #D8CABB; font-size: 13px; line-height: 1.5; }
-
-.bentoImage {
-  margin-top: 20px; height: 180px; border-radius: 12px;
-  background: linear-gradient(135deg, #C9AE8C, #5E4531);
-}
 
 .avatarStack { display: flex; margin-top: 16px; }
 .stackAvatar {
@@ -217,7 +218,7 @@
 .checklist li svg { color: var(--accent); flex-shrink: 0; }
 
 /* CTA */
-.ctaSection { background: var(--brown); color: #fff; text-align: center; padding: 96px 24px; }
+.ctaSection { background: var(--brown); color: #fff; text-align: center; padding: 45px 24px; }
 .ctaTitle { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
 .ctaSubtitle { color: #D8CABB; margin-bottom: 32px; }
 
@@ -235,20 +236,6 @@
 }
 .ctaButton:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(136,82,16,0.35); }
 .ctaNote { color: #A89988; font-size: 13px; margin-top: 14px; }
-
-/* Footer */
-.footer {
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--cream-light); color: var(--dark);
-  padding: 24px 48px; border-top: 1px solid #ECDFD0; flex-wrap: wrap; gap: 16px;
-}
-.footerLogo { font-weight: 800; font-size: 16px; }
-.footerCopy { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
-.footerLinks { display: flex; gap: 24px; font-size: 13px; flex-wrap: wrap; }
-.footerLinks a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
-.footerLinks a:hover { color: var(--dark); }
-.footerLinkActive { color: var(--accent) !important; }
-.footerIcons { display: flex; gap: 14px; color: var(--text-muted); }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
@@ -272,4 +259,211 @@
   .features { padding: 56px 20px; }
   .ctaInput { width: 100%; }
   .footer { flex-direction: column; text-align: center; padding: 24px 20px; }
+}
+
+/* Avatar Dropdown */
+.avatarWrapper {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #E6E2DF;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  min-width: 220px;
+  padding: 8px 0;
+  z-index: 100;
+  animation: dropdownFade 0.2s ease;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.dropdownAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FDB56C, #4B3832);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.dropdownUserInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownUserName {
+  font-weight: 600;
+  font-size: 14px;
+  color: #33231D;
+}
+
+.dropdownUserEmail {
+  font-size: 12px;
+  color: #7E7471;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: #E6E2DF;
+  margin: 4px 12px;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #33231D;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-family: inherit;
+}
+
+.dropdownItem:hover {
+  background: #FAF5F2;
+}
+
+.dropdownItemLogout {
+  color: #dc2626;
+}
+
+.dropdownItemLogout:hover {
+  background: #fef2f2;
+}
+
+/* Auth Buttons */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loginBtn {
+  padding: 8px 20px;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 8px;
+  background: transparent;
+  color: #33231D;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.loginBtn:hover {
+  border-color: #4B3832;
+  background: rgba(75, 56, 50, 0.05);
+}
+
+.signupBtn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #4B3832;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.signupBtn:hover {
+  background: #3a281d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(75, 56, 50, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .authButtons {
+    gap: 6px;
+  }
+  
+  .loginBtn, .signupBtn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+  
+  .dropdownMenu {
+    right: -10px;
+    min-width: 180px;
+  }
+}
+
+/* Remove scroll bar completely */
+.page {
+  overflow-y: hidden; /* Removes scroll bar */
+}
+
+/* Or use this to hide scroll bar but keep scrolling functionality */
+.page::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+/* Image inside bento */
+.bentoImage {
+  margin-top: 20px;
+  height: 340px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bentoImageContent {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.bentoCardLight:hover .bentoImageContent {
+  transform: scale(1.03);
+}
+
+/* Split Image */
+.splitImage {
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+
+.splitImage:hover {
+  transform: scale(1.015);
+}
+
+.splitImageContent {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

@@ -1,5 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Home.module.css';
+// Import images
+import snoozeImage from '../../assets/Images/The-Snooze-Button-Testt-Spotting-the-Decisions-You-Keep-Deferring.jpg';
+import splitImage from '../../assets/Images/Image3.png';
 
 function useReveal() {
   const ref = useRef(null);
@@ -31,29 +35,184 @@ function CheckIcon() {
 }
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const r1 = useReveal();
   const r2 = useReveal();
   const r3 = useReveal();
   const r4 = useReveal();
+  
+  // Check if user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Check authentication status from localStorage
+    const token = localStorage.getItem('authToken');
+    const name = localStorage.getItem('userName') || 'John Doe';
+    setIsAuthenticated(token !== null);
+    setUserName(name);
+  }, []);
+
+  useEffect(() => {
+    // Close dropdown when clicking outside
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
+    setIsAuthenticated(false);
+    setShowDropdown(false);
+    navigate('/');
+  };
+
+  const handleAvatarClick = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleStartBrewing = () => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    } else {
+      navigate('/login');
+    }
+  };
 
   return (
     <div className={styles.page}>
       {/* Navbar */}
       <nav className={styles.navbar}>
-        <div className={styles.logo}>BrewTask</div>
-        <div className={styles.navLinks}>
-          <a href="#" className={styles.navLinkActive}>Dashboard</a>
-          <a href="#" className={styles.navLink}>Projects</a>
-          <a href="#" className={styles.navLink}>Calendar</a>
+        <div className={styles.logo} onClick={() => handleNavigate('/')} style={{ cursor: 'pointer' }}>
+          BrewTask
         </div>
-        <div className={styles.navRight}>
-          <div className={styles.searchBox}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input type="text" placeholder="Search tasks..." className={styles.searchInput} />
+        
+        {/* Show nav links only if authenticated */}
+        {isAuthenticated && (
+          <div className={styles.navLinks}>
+            <a 
+              href="#"
+              className={styles.navLink}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('/dashboard');
+              }}
+            >
+              Dashboard
+            </a>
+            <a 
+              href="#"
+              className={styles.navLink}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('/projects');
+              }}
+            >
+              Projects
+            </a>
+            <a 
+              href="#"
+              className={styles.navLink}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigate('/calendar');
+              }}
+            >
+              Calendar
+            </a>
           </div>
+        )}
+
+        <div className={styles.navRight}>
+          {/* Search - only show if authenticated */}
+          {isAuthenticated && (
+            <div className={styles.searchBox}>
+              <span className={styles.searchIcon}>🔍</span>
+              <input type="text" placeholder="Search tasks..." className={styles.searchInput} />
+            </div>
+          )}
+
+          {/* Theme toggle - always visible */}
           <button className={styles.iconBtn} aria-label="Toggle theme">🌙</button>
-          <button className={styles.iconBtn} aria-label="Notifications">🔔</button>
-          <div className={styles.avatar} />
+
+          {/* Notifications - only show if authenticated */}
+          {isAuthenticated && (
+            <button className={styles.iconBtn} aria-label="Notifications">🔔</button>
+          )}
+
+          {/* Avatar / Auth Buttons */}
+          {isAuthenticated ? (
+            <div className={styles.avatarWrapper} ref={dropdownRef}>
+              <div 
+                className={styles.avatar} 
+                onClick={handleAvatarClick}
+                style={{ cursor: 'pointer' }}
+              />
+              {showDropdown && (
+                <div className={styles.dropdownMenu}>
+                  <div className={styles.dropdownHeader}>
+                    <div className={styles.dropdownAvatar}>JD</div>
+                    <div className={styles.dropdownUserInfo}>
+                      <span className={styles.dropdownUserName}>{userName}</span>
+                      <span className={styles.dropdownUserEmail}>john@company.com</span>
+                    </div>
+                  </div>
+                  <div className={styles.dropdownDivider} />
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => {
+                      setShowDropdown(false);
+                      handleNavigate('/profile');
+                    }}
+                  >
+                    <span>👤</span> Profile
+                  </button>
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => {
+                      setShowDropdown(false);
+                      handleNavigate('/settings');
+                    }}
+                  >
+                    <span>⚙️</span> Settings
+                  </button>
+                  <div className={styles.dropdownDivider} />
+                  <button 
+                    className={`${styles.dropdownItem} ${styles.dropdownItemLogout}`}
+                    onClick={handleLogout}
+                  >
+                    <span>🚪</span> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={styles.authButtons}>
+              <button 
+                className={styles.loginBtn}
+                onClick={() => handleNavigate('/login')}
+              >
+                Log In
+              </button>
+              <button 
+                className={styles.signupBtn}
+                onClick={() => handleNavigate('/signup')}
+              >
+                Sign Up
+              </button>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -75,8 +234,12 @@ export default function HomePage() {
           of intentional productivity.
         </p>
         <div className={styles.heroActions}>
-          <button className={styles.primaryBtn}>Start Brewing Free</button>
-          <button className={styles.secondaryBtn}>View Demo</button>
+          <button 
+            className={styles.primaryBtn} 
+            onClick={handleStartBrewing}
+          >
+            {isAuthenticated ? 'Go to Dashboard' : 'Start Brewing Free'}
+          </button>
         </div>
 
         <div className={styles.logoStrip}>
@@ -106,7 +269,13 @@ export default function HomePage() {
               timers tuned to the perfect brew cycle. Sync your
               productivity with your physical rituals.
             </p>
-            <div className={styles.bentoImage} />
+            <div className={styles.bentoImage}>
+              <img 
+                src={snoozeImage} 
+                alt="Snooze Button Decisions - Spotting the Decisions You Keep Deferring"
+                className={styles.bentoImageContent}
+              />
+            </div>
           </div>
 
           <div className={styles.bentoRight}>
@@ -142,7 +311,13 @@ export default function HomePage() {
 
       {/* Split section */}
       <section ref={r3} className={`${styles.splitSection} ${styles.reveal}`}>
-        <div className={styles.splitImage} />
+        <div className={styles.splitImage}>
+          <img 
+            src={splitImage} 
+            alt="BrewTask - Elevate Your Coffee Rituals"
+            className={styles.splitImageContent}
+          />
+        </div>
         <div className={styles.splitContent}>
           <span className={styles.eyebrow}>THE AESTHETIC OF WORK</span>
           <h2 className={styles.splitTitle}>A Workspace That Respects Your Mind</h2>
@@ -169,28 +344,15 @@ export default function HomePage() {
         </p>
         <div className={styles.ctaForm}>
           <input type="email" placeholder="Enter your email" className={styles.ctaInput} />
-          <button className={styles.ctaButton}>Get Started</button>
+          <button 
+            className={styles.ctaButton}
+            onClick={handleStartBrewing}
+          >
+            {isAuthenticated ? 'Go to Dashboard' : 'Get Started'}
+          </button>
         </div>
         <p className={styles.ctaNote}>No credit card required. Free 14-day trial.</p>
       </section>
-
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div>
-          <div className={styles.footerLogo}>BrewTask</div>
-          <p className={styles.footerCopy}>© 2024 BrewTask. Crafted for focused minds.</p>
-        </div>
-        <div className={styles.footerLinks}>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Changelog</a>
-          <a href="#" className={styles.footerLinkActive}>Status</a>
-        </div>
-        <div className={styles.footerIcons}>
-          <span>@</span>
-          <span>🌐</span>
-        </div>
-      </footer>
     </div>
   );
 }
