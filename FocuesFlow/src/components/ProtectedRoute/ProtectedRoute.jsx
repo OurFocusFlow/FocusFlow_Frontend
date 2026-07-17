@@ -7,12 +7,11 @@ const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Simulate checking authentication
     const checkAuth = async () => {
       try {
-        // Check if token exists (using 'authToken' as in your ProtectedRoute)
+        // Check if token exists in localStorage
         const token = localStorage.getItem('authToken');
-        setIsAuthenticated(token !== null);
+        setIsAuthenticated(token !== null && token !== '');
       } catch (error) {
         setIsAuthenticated(false);
       } finally {
@@ -27,10 +26,12 @@ const ProtectedRoute = ({ children }) => {
     // Show loading spinner while checking authentication
     return (
       <Box 
-        display="flex" 
-        justifyContent="center" 
-        alignItems="center" 
-        minHeight="100vh"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+        }}
       >
         <CircularProgress />
       </Box>
