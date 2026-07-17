@@ -16,11 +16,9 @@ export default function Login() {
   useEffect(() => {
     if (location.state?.message) {
       setSuccessMessage(location.state.message)
-      // Pre-fill email if provided
       if (location.state?.email) {
         setForm(prev => ({ ...prev, email: location.state.email }))
       }
-      // Clear the state after showing message
       window.history.replaceState({}, document.title)
     }
   }, [location])
@@ -35,7 +33,6 @@ export default function Login() {
     setError('')
     setIsLoading(true)
 
-    // Basic validation
     if (!form.email || !form.password) {
       setError('Please fill in all fields')
       setIsLoading(false)
@@ -46,16 +43,15 @@ export default function Login() {
       // Simulate API call to authenticate user
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      // For demo: accept any email/password combination
-      // In real app, you'd verify against your backend
       console.log('Sign in with', form, 'remember:', remember)
       
-      // Store user session (in real app, use proper auth)
-      localStorage.setItem('isAuthenticated', 'true')
+      // Store user session
+      localStorage.setItem('authToken', 'demo-token-123456')
       localStorage.setItem('userEmail', form.email)
+      localStorage.setItem('userName', form.email.split('@')[0]) // Use email prefix as name
       
       // Navigate to dashboard
-      navigate('/dashboard')
+      navigate('/home')
     } catch (err) {
       setError('Invalid email or password. Please try again.')
     } finally {
@@ -83,7 +79,6 @@ export default function Login() {
       </div>
 
       <form className={styles.card} onSubmit={handleSubmit}>
-        {/* Success message from signup */}
         {successMessage && (
           <div className={styles.successMessage}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -94,7 +89,6 @@ export default function Login() {
           </div>
         )}
 
-        {/* Error message */}
         {error && (
           <div className={styles.errorMessage}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
