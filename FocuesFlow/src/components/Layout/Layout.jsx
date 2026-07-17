@@ -33,6 +33,7 @@ import {
   ExpandMore,
   Close as CloseIcon,
   Menu as MenuIcon,
+  Home,
 } from '@mui/icons-material';
 import Navbar from '../Navbar/Navbar';
 import styles from './Layout.module.css';
@@ -56,6 +57,7 @@ const Layout = ({ children }) => {
   // Get active item based on current path
   const getActiveItem = () => {
     const path = location.pathname;
+    if (path === '/home') return 'Home';
     if (path === '/dashboard') return 'Dashboard';
     if (path === '/my-tasks') return 'My Tasks';
     if (path === '/projects') return 'Projects';
@@ -116,6 +118,7 @@ const Layout = ({ children }) => {
   };
 
   const navigationItems = [
+    { text: 'Home', icon: <Home />, path: '/home' },
     { text: 'Dashboard', icon: <DashboardIcon />, badge: 0, path: '/dashboard' },
     { text: 'My Tasks', icon: <TasksIcon />, badge: 12, path: '/my-tasks' },
     { text: 'Projects', icon: <ProjectsIcon />, path: '/projects' },
@@ -147,7 +150,7 @@ const Layout = ({ children }) => {
     <Box className={styles.drawerContent}>
       {/* Modern Header with Glass Effect */}
       <Box className={styles.drawerHeader}>
-        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Dashboard', '/dashboard')} style={{ cursor: 'pointer' }}>
+        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/home')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect width="36" height="36" rx="10" fill="url(#gradient)" />
