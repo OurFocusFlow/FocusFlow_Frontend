@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTasks } from "../Context/TaskContext";
 import styles from "./MyTasks.module.css";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
 import ToastNotification from "../ToastNotification/ToastNotification";
@@ -69,6 +70,21 @@ function Icon({ name, className }) {
         <rect x="14" y="14" width="7" height="7" rx="1" />
       </>
     ),
+    edit: (
+      <path
+        d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
+    trash: (
+      <path
+        d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    ),
+    x: <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />,
   };
   return (
     <svg
@@ -85,6 +101,16 @@ function Icon({ name, className }) {
 }
 
 export default function MyTasks() {
+  const { 
+    tasks, 
+    addTask, 
+    updateTask, 
+    deleteTask, 
+    getTaskCount, 
+    getPendingCount, 
+    getCompletedCount 
+  } = useTasks();
+  
   const [activeTab, setActiveTab] = useState("all");
   const [viewMode, setViewMode] = useState("list");
   const [hoveredTask, setHoveredTask] = useState(null);
@@ -94,101 +120,31 @@ export default function MyTasks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const tasks = [
-    {
-      id: 1,
-      title: "Design System Update",
-      priority: "High",
-      description:
-        "Finalize the color palette for the app. Ensure all semantic tokens are mapped to the new Indigo brand core.",
-      dueDate: "Oct 24, 2023",
-      attachments: 2,
-      comments: 4,
-      completed: false,
-      category: "Design",
-      assignees: ["AR", "JD"],
-      created: "Oct 20, 2023",
-    },
-    {
-      id: 2,
-      title: "Quarterly Review Deck",
-      priority: "Medium",
-      description:
-        "Gather user engagement metrics from the last 3 months to present to the product steering committee.",
-      dueDate: "Oct 26, 2023",
-      attachments: 0,
-      comments: 2,
-      completed: false,
-      category: "Marketing",
-      assignees: ["AR"],
-      created: "Oct 18, 2023",
-    },
-    {
-      id: 3,
-      title: "Onboarding Email Sequence",
-      priority: "Low",
-      description:
-        "Draft initial copy for the 5-day welcome sequence for new professional tier users.",
-      dueDate: null,
-      attachments: 0,
-      comments: 1,
-      completed: true,
-      category: "Content",
-      assignees: ["JD", "SM"],
-      created: "Oct 15, 2023",
-    },
-    {
-      id: 4,
-      title: "API Integration Testing",
-      priority: "High",
-      description:
-        "Test all API endpoints for the new microservices architecture. Ensure proper error handling and response times.",
-      dueDate: "Oct 28, 2023",
-      attachments: 3,
-      comments: 5,
-      completed: false,
-      category: "Development",
-      assignees: ["AR", "JD", "SM"],
-      created: "Oct 22, 2023",
-    },
-    {
-      id: 5,
-      title: "User Research Interviews",
-      priority: "Medium",
-      description:
-        "Conduct user interviews to gather feedback on the new feature set. Prepare interview questions and schedule sessions.",
-      dueDate: "Nov 2, 2023",
-      attachments: 1,
-      comments: 3,
-      completed: false,
-      category: "Research",
-      assignees: ["JD"],
-      created: "Oct 19, 2023",
-    },
-    {
-      id: 6,
-      title: "Documentation Update",
-      priority: "Low",
-      description:
-        "Update the API documentation with the latest changes and endpoints. Include code examples and usage guides.",
-      dueDate: "Oct 30, 2023",
-      attachments: 0,
-      comments: 0,
-      completed: false,
-      category: "Documentation",
-      assignees: ["SM"],
-      created: "Oct 21, 2023",
-    },
-  ];
+  
+  // Edit state
+  const [editingTask, setEditingTask] = useState(null);
+  const [editForm, setEditForm] = useState({ 
+    title: '', 
+    description: '', 
+    dueDate: '', 
+    priority: 'Medium', 
+    category: 'Design',
+    assignees: ''
+  });
+  const [showEditModal, setShowEditModal] = useState(false);
+  
+  // Delete state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const categories = ["All", "Design", "Marketing", "Content", "Development", "Research", "Documentation"];
   const priorities = ["All", "High", "Medium", "Low"];
 
+  // Stats from context
   const stats = {
-    total: tasks.length,
-    completed: tasks.filter(t => t.completed).length,
-    inProgress: tasks.filter(t => !t.completed).length,
+    total: getTaskCount(),
+    completed: getCompletedCount(),
+    inProgress: getPendingCount(),
     highPriority: tasks.filter(t => t.priority === "High" && !t.completed).length,
   };
 
@@ -240,7 +196,25 @@ export default function MyTasks() {
     }
 
     setIsSubmitting(true);
-    console.log('New task created:', taskData);
+    
+    // Create new task
+    const newTask = {
+      id: Date.now(),
+      title: taskData.title,
+      description: taskData.description,
+      dueDate: taskData.dueDate,
+      dueSort: 0,
+      priority: taskData.categories[0] || 'Medium',
+      status: 'Pending',
+      category: taskData.categories[0] || 'General',
+      completed: false,
+      assignees: ['You'],
+      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      attachments: 0,
+      comments: 0,
+    };
+    
+    addTask(newTask);
     
     showToast(
       'success',
@@ -254,6 +228,76 @@ export default function MyTasks() {
     }, 1000);
   };
 
+  // ==================== EDIT FUNCTIONS ====================
+  const handleEditClick = (task) => {
+    setEditingTask(task);
+    setEditForm({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate || '',
+      priority: task.priority,
+      category: task.category,
+      assignees: task.assignees ? task.assignees.join(', ') : '',
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditChange = (e) => {
+    setEditForm({ ...editForm, [e.target.name]: e.target.value });
+  };
+
+  const handleEditSubmit = () => {
+    if (!editForm.title.trim()) {
+      showToast('error', 'Please enter a task title.', 'Missing Title');
+      return;
+    }
+
+    const updatedTask = {
+      title: editForm.title,
+      description: editForm.description,
+      dueDate: editForm.dueDate,
+      priority: editForm.priority,
+      category: editForm.category,
+      assignees: editForm.assignees ? editForm.assignees.split(',').map(s => s.trim()).filter(s => s) : [],
+    };
+    
+    updateTask(editingTask.id, updatedTask);
+    
+    setShowEditModal(false);
+    setEditingTask(null);
+    showToast('success', `Task "${editForm.title}" has been updated.`, 'Task Updated!');
+  };
+
+  // ==================== DELETE FUNCTIONS ====================
+  const handleDeleteClick = (task) => {
+    setTaskToDelete(task);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    deleteTask(taskToDelete.id);
+    setShowDeleteModal(false);
+    showToast('success', `Task "${taskToDelete.title}" has been deleted.`, 'Task Deleted!');
+    setTaskToDelete(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setTaskToDelete(null);
+  };
+
+  // ==================== TOGGLE COMPLETE ====================
+  const toggleTaskComplete = (id) => {
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+      updateTask(id, { 
+        completed: !task.completed,
+        status: !task.completed ? 'Completed' : 'Pending'
+      });
+    }
+  };
+
+  // ==================== FILTERING ====================
   const filteredTasks = tasks
     .filter((task) => {
       if (activeTab === "all") return true;
@@ -275,6 +319,7 @@ export default function MyTasks() {
              task.description.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
+  // ==================== HELPERS ====================
   const priorityClass = (priority) =>
     ({ High: "priority-high", Medium: "priority-medium", Low: "priority-low" }[priority] || "");
 
@@ -290,6 +335,13 @@ export default function MyTasks() {
     return map[category] || "📋";
   };
 
+  const getStatusIcon = (status) => {
+    if (status === "In Progress") return "🔄";
+    if (status === "Pending") return "⏳";
+    if (status === "Completed") return "✅";
+    return "📋";
+  };
+
   return (
     <div className={styles["mytasks-container"]}>
       {/* Background */}
@@ -301,7 +353,6 @@ export default function MyTasks() {
         <div className={styles["mytasks-bg-glow"]} />
       </div>
 
-      {/* Content */}
       <div className={styles["mytasks-content-wrapper"]}>
         {/* Header */}
         <div className={styles["mytasks-header-section"]}>
@@ -321,23 +372,50 @@ export default function MyTasks() {
             </button>
           </div>
 
-          {/* Stats Bar */}
-          <div className={styles["mytasks-stats-bar"]}>
-            <div className={styles["mytasks-stat-item"]}>
-              <span className={styles["mytasks-stat-number"]}>{stats.total}</span>
-              <span className={styles["mytasks-stat-label"]}>Total</span>
+          {/* Stats Row */}
+          <div className={styles["mytasks-stats-row"]}>
+            <div className={styles["mytasks-stat-box"]}>
+              <div className={styles["mytasks-stat-top"]}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-total"]}`}>
+                  <Icon name="list" className={styles["mytasks-stat-icon"]} />
+                </div>
+                <span className={styles["mytasks-stat-trend"]}>Total</span>
+              </div>
+              <span className={styles["mytasks-stat-label"]}>All Tasks</span>
+              <span className={styles["mytasks-stat-value"]}>{stats.total}</span>
             </div>
-            <div className={styles["mytasks-stat-item"]}>
-              <span className={styles["mytasks-stat-number"]}>{stats.inProgress}</span>
+
+            <div className={styles["mytasks-stat-box"]}>
+              <div className={styles["mytasks-stat-top"]}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-progress"]}`}>
+                  <Icon name="clock" className={styles["mytasks-stat-icon"]} />
+                </div>
+                <span className={styles["mytasks-stat-trend"]}>Active</span>
+              </div>
               <span className={styles["mytasks-stat-label"]}>In Progress</span>
+              <span className={styles["mytasks-stat-value"]}>{stats.inProgress}</span>
             </div>
-            <div className={styles["mytasks-stat-item"]}>
-              <span className={styles["mytasks-stat-number"]}>{stats.completed}</span>
+
+            <div className={styles["mytasks-stat-box"]}>
+              <div className={styles["mytasks-stat-top"]}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-completed"]}`}>
+                  <Icon name="check" className={styles["mytasks-stat-icon"]} />
+                </div>
+                <span className={styles["mytasks-stat-trend"]}>Done</span>
+              </div>
               <span className={styles["mytasks-stat-label"]}>Completed</span>
+              <span className={styles["mytasks-stat-value"]}>{stats.completed}</span>
             </div>
-            <div className={styles["mytasks-stat-item"]}>
-              <span className={styles["mytasks-stat-number"]}>{stats.highPriority}</span>
+
+            <div className={styles["mytasks-stat-box"]}>
+              <div className={styles["mytasks-stat-top"]}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-high"]}`}>
+                  <Icon name="alertCircle" className={styles["mytasks-stat-icon"]} />
+                </div>
+                <span className={`${styles["mytasks-stat-trend"]} ${styles["trend-urgent"]}`}>Urgent</span>
+              </div>
               <span className={styles["mytasks-stat-label"]}>High Priority</span>
+              <span className={`${styles["mytasks-stat-value"]} ${styles["value-urgent"]}`}>{stats.highPriority}</span>
             </div>
           </div>
         </div>
@@ -451,7 +529,7 @@ export default function MyTasks() {
                   <input
                     type="checkbox"
                     checked={task.completed}
-                    readOnly
+                    onChange={() => toggleTaskComplete(task.id)}
                     className={styles["mytasks-task-checkbox"]}
                   />
                 </div>
@@ -479,29 +557,33 @@ export default function MyTasks() {
                           {task.dueDate}
                         </span>
                       )}
-                      {task.attachments > 0 && (
-                        <span className={styles["mytasks-task-meta-item"]}>
-                          <Icon name="paperclip" className={styles["mytasks-meta-icon"]} />
-                          {task.attachments}
-                        </span>
-                      )}
-                      {task.comments > 0 && (
-                        <span className={styles["mytasks-task-meta-item"]}>
-                          <Icon name="message" className={styles["mytasks-meta-icon"]} />
-                          {task.comments}
-                        </span>
-                      )}
                       <span className={styles["mytasks-task-meta-item"]}>
-                        📅 {task.created}
+                        {getStatusIcon(task.status)} {task.status || 'Pending'}
                       </span>
                     </div>
                     <div className={styles["mytasks-task-meta-right"]}>
                       <div className={styles["mytasks-task-avatars"]}>
-                        {task.assignees.map((initials, i) => (
+                        {task.assignees && task.assignees.map((initials, i) => (
                           <span key={i} className={styles["mytasks-avatar"]} style={{ zIndex: task.assignees.length - i }}>
                             {initials}
                           </span>
                         ))}
+                      </div>
+                      <div className={styles["mytasks-task-actions"]}>
+                        <button 
+                          className={styles["mytasks-edit-btn"]}
+                          onClick={() => handleEditClick(task)}
+                          aria-label="Edit task"
+                        >
+                          <Icon name="edit" className={styles["mytasks-action-icon"]} />
+                        </button>
+                        <button 
+                          className={styles["mytasks-delete-btn"]}
+                          onClick={() => handleDeleteClick(task)}
+                          aria-label="Delete task"
+                        >
+                          <Icon name="trash" className={styles["mytasks-action-icon"]} />
+                        </button>
                       </div>
                       {task.completed && (
                         <span className={styles["mytasks-task-completed-badge"]}>
@@ -530,7 +612,7 @@ export default function MyTasks() {
                       <input
                         type="checkbox"
                         checked={task.completed}
-                        readOnly
+                        onChange={() => toggleTaskComplete(task.id)}
                         className={styles["mytasks-grid-checkbox"]}
                       />
                     </div>
@@ -552,13 +634,25 @@ export default function MyTasks() {
                           {task.dueDate}
                         </span>
                       )}
+                      <span className={styles["mytasks-grid-status-text"]}>
+                        {getStatusIcon(task.status)} {task.status || 'Pending'}
+                      </span>
                     </div>
-                    <div className={styles["mytasks-grid-assignees"]}>
-                      {task.assignees.map((initials, i) => (
-                        <span key={i} className={styles["mytasks-avatar"]} style={{ zIndex: task.assignees.length - i }}>
-                          {initials}
-                        </span>
-                      ))}
+                    <div className={styles["mytasks-grid-actions"]}>
+                      <button 
+                        className={styles["mytasks-edit-btn"]}
+                        onClick={() => handleEditClick(task)}
+                        aria-label="Edit task"
+                      >
+                        <Icon name="edit" className={styles["mytasks-action-icon"]} />
+                      </button>
+                      <button 
+                        className={styles["mytasks-delete-btn"]}
+                        onClick={() => handleDeleteClick(task)}
+                        aria-label="Delete task"
+                      >
+                        <Icon name="trash" className={styles["mytasks-action-icon"]} />
+                      </button>
                     </div>
                   </div>
 
@@ -574,6 +668,141 @@ export default function MyTasks() {
           )}
         </div>
       </div>
+
+      {/* ==================== EDIT MODAL ==================== */}
+      {showEditModal && editingTask && (
+        <div className={styles["mytasks-modal-overlay"]} onClick={() => setShowEditModal(false)}>
+          <div className={styles["mytasks-modal"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["mytasks-modal-header"]}>
+              <h2>Edit Task</h2>
+              <button 
+                className={styles["mytasks-modal-close"]}
+                onClick={() => setShowEditModal(false)}
+              >
+                <Icon name="x" className={styles["mytasks-modal-close-icon"]} />
+              </button>
+            </div>
+            
+            <div className={styles["mytasks-modal-body"]}>
+              <div className={styles["mytasks-modal-field"]}>
+                <label>Task Title</label>
+                <input
+                  name="title"
+                  value={editForm.title}
+                  onChange={handleEditChange}
+                  placeholder="Enter task title"
+                />
+              </div>
+              
+              <div className={styles["mytasks-modal-field"]}>
+                <label>Description</label>
+                <textarea
+                  name="description"
+                  value={editForm.description}
+                  onChange={handleEditChange}
+                  placeholder="Enter task description"
+                  rows="3"
+                />
+              </div>
+              
+              <div className={styles["mytasks-modal-row"]}>
+                <div className={styles["mytasks-modal-field"]}>
+                  <label>Due Date</label>
+                  <input
+                    name="dueDate"
+                    type="text"
+                    value={editForm.dueDate}
+                    onChange={handleEditChange}
+                    placeholder="Oct 24, 2024"
+                  />
+                </div>
+                
+                <div className={styles["mytasks-modal-field"]}>
+                  <label>Priority</label>
+                  <select
+                    name="priority"
+                    value={editForm.priority}
+                    onChange={handleEditChange}
+                  >
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className={styles["mytasks-modal-row"]}>
+                <div className={styles["mytasks-modal-field"]}>
+                  <label>Category</label>
+                  <select
+                    name="category"
+                    value={editForm.category}
+                    onChange={handleEditChange}
+                  >
+                    {categories.filter(c => c !== "All").map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className={styles["mytasks-modal-field"]}>
+                  <label>Assignees (comma separated)</label>
+                  <input
+                    name="assignees"
+                    value={editForm.assignees}
+                    onChange={handleEditChange}
+                    placeholder="JD, AR"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className={styles["mytasks-modal-footer"]}>
+              <button 
+                className={styles["mytasks-modal-cancel"]}
+                onClick={() => setShowEditModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                className={styles["mytasks-modal-save"]}
+                onClick={handleEditSubmit}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== DELETE MODAL ==================== */}
+      {showDeleteModal && taskToDelete && (
+        <div className={styles["mytasks-modal-overlay"]} onClick={handleDeleteCancel}>
+          <div className={styles["mytasks-delete-modal"]} onClick={(e) => e.stopPropagation()}>
+            <div className={styles["mytasks-delete-icon"]}>🗑️</div>
+            <h3>Delete Task?</h3>
+            <p>
+              Are you sure you want to delete <strong>"{taskToDelete.title}"</strong>?
+              <br />
+              This action cannot be undone.
+            </p>
+            <div className={styles["mytasks-delete-actions"]}>
+              <button 
+                className={styles["mytasks-delete-cancel"]}
+                onClick={handleDeleteCancel}
+              >
+                Cancel
+              </button>
+              <button 
+                className={styles["mytasks-delete-confirm"]}
+                onClick={handleDeleteConfirm}
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Create Task Modal */}
       <CreateTaskModal
