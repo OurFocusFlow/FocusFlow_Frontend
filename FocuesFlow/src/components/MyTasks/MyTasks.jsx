@@ -184,7 +184,11 @@ export default function MyTasks() {
     let hasError = false;
     let errorMessage = '';
     let errorTitle = '';
-
+    
+    // Handle both old format (categories array) and new format (category string)
+    const categories = taskData.categories || [taskData.category || 'General'];
+    const category = categories[0] || 'General';
+    
     if (!taskData.title.trim()) {
       hasError = true;
       errorTitle = 'Missing Title';
@@ -201,17 +205,13 @@ export default function MyTasks() {
       hasError = true;
       errorTitle = 'Invalid Due Date';
       errorMessage = 'Due date cannot be in the past. Please select a future date.';
-    } else if (taskData.categories.length === 0) {
-      hasError = true;
-      errorTitle = 'Missing Categories';
-      errorMessage = 'Please add at least one category to the task.';
     }
-
+  
     if (hasError) {
       showToast('error', errorMessage, errorTitle);
       return;
     }
-
+  
     setIsSubmitting(true);
     
     // Create new task with formatted due date
@@ -221,9 +221,9 @@ export default function MyTasks() {
       description: taskData.description,
       dueDate: formatDate(taskData.dueDate),
       dueSort: new Date(taskData.dueDate + 'T00:00:00').getTime(),
-      priority: taskData.categories[0] || 'Medium',
+      priority: taskData.priority || 'Medium',  // Use the priority from form, not category
       status: 'Pending',
-      category: taskData.categories[0] || 'General',
+      category: category,  // Use the category from form
       completed: false,
       assignees: ['You'],
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
@@ -238,7 +238,7 @@ export default function MyTasks() {
       `Task "${taskData.title}" has been created successfully.`,
       'Task Created!'
     );
-
+  
     setTimeout(() => {
       setIsModalOpen(false);
       setIsSubmitting(false);
