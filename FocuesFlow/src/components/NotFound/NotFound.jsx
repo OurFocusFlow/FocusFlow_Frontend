@@ -20,7 +20,7 @@ export default function NotFound({
           >
             <path d="M12 2a10 10 0 1 0 10 10" strokeLinecap="round" />
           </svg>
-          <span>FocusFlow</span>
+          <span>BrewTask</span>
         </div>
         <nav className={styles["nf-nav"]}>
           <a href="/support">Support</a>
