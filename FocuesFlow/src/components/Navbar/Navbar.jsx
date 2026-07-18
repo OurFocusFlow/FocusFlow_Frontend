@@ -31,6 +31,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Star as StarIcon,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
 
 const Navbar = ({ 
@@ -48,6 +49,7 @@ const Navbar = ({
   className = '',
 }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   
@@ -66,16 +68,10 @@ const Navbar = ({
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    if (onProfileClick) {
-      onProfileClick('open');
-    }
   };
 
   const handleProfileMenuClose = () => {
     setAnchorEl(null);
-    if (onProfileClick) {
-      onProfileClick('close');
-    }
   };
 
   const handleNotificationOpen = (event) => {
@@ -91,6 +87,8 @@ const Navbar = ({
       onLogout();
     } else {
       console.log('Logging out...');
+      // Navigate to login on logout
+      navigate('/login');
     }
     handleProfileMenuClose();
   };
@@ -103,6 +101,25 @@ const Navbar = ({
     }
   };
 
+  // Navigation handlers for menu items
+  const handleProfileNavigation = () => {
+    handleProfileMenuClose();
+    navigate('/profile');
+    if (onProfileClick) {
+      onProfileClick('navigate');
+    }
+  };
+
+  const handleSettingsNavigation = () => {
+    handleProfileMenuClose();
+    navigate('/settings');
+  };
+
+  const handleHelpNavigation = () => {
+    handleProfileMenuClose();
+    navigate('/help');
+  };
+
   // Sample notification data - can be passed as prop
   const notificationData = notifications || [
     { id: 1, text: 'New task assigned to you', time: '2 min ago', read: false },
@@ -112,9 +129,21 @@ const Navbar = ({
   ];
 
   const menuItems = [
-    { icon: <PersonIcon />, text: 'Profile', action: () => console.log('Profile clicked') },
-    { icon: <SettingsIcon />, text: 'Settings', action: () => console.log('Settings clicked') },
-    { icon: <HelpIcon />, text: 'Help', action: () => console.log('Help clicked') },
+    { 
+      icon: <PersonIcon />, 
+      text: 'Profile', 
+      action: handleProfileNavigation 
+    },
+    { 
+      icon: <SettingsIcon />, 
+      text: 'Settings', 
+      action: handleSettingsNavigation 
+    },
+    { 
+      icon: <HelpIcon />, 
+      text: 'Help', 
+      action: handleHelpNavigation 
+    },
   ];
 
   const userData = user || {
@@ -265,10 +294,7 @@ const Navbar = ({
             {menuItems.map((item, index) => (
               <MenuItem 
                 key={index} 
-                onClick={() => {
-                  item.action();
-                  handleProfileMenuClose();
-                }}
+                onClick={item.action}
                 className={styles.menuItem}
               >
                 <ListItemIcon className={styles.menuItemIcon}>
