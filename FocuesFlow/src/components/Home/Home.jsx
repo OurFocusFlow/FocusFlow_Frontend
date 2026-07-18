@@ -44,15 +44,20 @@ export default function HomePage() {
   // Check if user is authenticated
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     // Check authentication status from localStorage
     const token = localStorage.getItem('authToken');
     const name = localStorage.getItem('userName') || 'John Doe';
+    const email = localStorage.getItem('userEmail') || 'john@company.com';
     setIsAuthenticated(token !== null);
     setUserName(name);
+    setUserEmail(email);
   }, []);
 
   useEffect(() => {
@@ -61,6 +66,9 @@ export default function HomePage() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        setMobileMenuOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -68,13 +76,17 @@ export default function HomePage() {
 
   const handleNavigate = (path) => {
     navigate(path);
+    setShowDropdown(false);
+    setMobileMenuOpen(false);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
     setIsAuthenticated(false);
     setShowDropdown(false);
+    setMobileMenuOpen(false);
     navigate('/');
   };
 
@@ -90,6 +102,20 @@ export default function HomePage() {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  // Get initials for avatar
+  const getInitials = (name) => {
+    if (!name) return 'JD';
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return parts[0][0] + parts[1][0];
+    }
+    return name.substring(0, 2).toUpperCase();
+  };
+
   return (
     <div className={styles.page}>
       {/* Navbar */}
@@ -98,7 +124,7 @@ export default function HomePage() {
           BrewTask
         </div>
         
-        {/* Show nav links only if authenticated */}
+        {/* Desktop Nav Links */}
         {isAuthenticated && (
           <div className={styles.navLinks}>
             <a 
@@ -158,36 +184,69 @@ export default function HomePage() {
                 className={styles.avatar} 
                 onClick={handleAvatarClick}
                 style={{ cursor: 'pointer' }}
-              />
+              >
+                {getInitials(userName)}
+              </div>
               {showDropdown && (
                 <div className={styles.dropdownMenu}>
                   <div className={styles.dropdownHeader}>
-                    <div className={styles.dropdownAvatar}>JD</div>
+                    <div className={styles.dropdownAvatar}>{getInitials(userName)}</div>
                     <div className={styles.dropdownUserInfo}>
                       <span className={styles.dropdownUserName}>{userName}</span>
-                      <span className={styles.dropdownUserEmail}>john@company.com</span>
+                      <span className={styles.dropdownUserEmail}>{userEmail}</span>
                     </div>
                   </div>
                   <div className={styles.dropdownDivider} />
+                  
+                  {/* All Navigation Links in Dropdown */}
                   <button 
                     className={styles.dropdownItem}
-                    onClick={() => {
-                      setShowDropdown(false);
-                      handleNavigate('/profile');
-                    }}
+                    onClick={() => handleNavigate('/dashboard')}
+                  >
+                    <span>📊</span> Dashboard
+                  </button>
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigate('/my-tasks')}
+                  >
+                    <span>✅</span> My Tasks
+                  </button>
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigate('/projects')}
+                  >
+                    <span>📁</span> Projects
+                  </button>
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigate('/calendar')}
+                  >
+                    <span>📅</span> Calendar
+                  </button>
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigate('/team')}
+                  >
+                    <span>👥</span> Team
+                  </button>
+                  
+                  <div className={styles.dropdownDivider} />
+                  
+                  <button 
+                    className={styles.dropdownItem}
+                    onClick={() => handleNavigate('/profile')}
                   >
                     <span>👤</span> Profile
                   </button>
                   <button 
                     className={styles.dropdownItem}
-                    onClick={() => {
-                      setShowDropdown(false);
-                      handleNavigate('/settings');
-                    }}
+                    onClick={() => handleNavigate('/settings')}
                   >
                     <span>⚙️</span> Settings
                   </button>
+                  
                   <div className={styles.dropdownDivider} />
+                  
                   <button 
                     className={`${styles.dropdownItem} ${styles.dropdownItemLogout}`}
                     onClick={handleLogout}
@@ -215,6 +274,136 @@ export default function HomePage() {
           )}
         </div>
       </nav>
+
+      {/* Mobile Menu - All Links Included */}
+      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`} ref={mobileMenuRef}>
+        <div className={styles.mobileMenuHeader}>
+          <span className={styles.mobileMenuLogo}>BrewTask</span>
+          <button className={styles.mobileMenuClose} onClick={toggleMobileMenu}>✕</button>
+        </div>
+        <div className={styles.mobileMenuLinks}>
+          {/* Always show Home link */}
+          <a 
+            href="#"
+            className={styles.mobileNavLink}
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigate('/');
+            }}
+          >
+            🏠 Home
+          </a>
+          
+          {isAuthenticated ? (
+            <>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/dashboard');
+                }}
+              >
+                📊 Dashboard
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/my-tasks');
+                }}
+              >
+                ✅ My Tasks
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/projects');
+                }}
+              >
+                📁 Projects
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/calendar');
+                }}
+              >
+                📅 Calendar
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/team');
+                }}
+              >
+                👥 Team
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/profile');
+                }}
+              >
+                👤 Profile
+              </a>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/settings');
+                }}
+              >
+                ⚙️ Settings
+              </a>
+              <div className={styles.mobileDivider} />
+              <a 
+                href="#"
+                className={`${styles.mobileNavLink} ${styles.mobileNavLinkLogout}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleLogout();
+                }}
+              >
+                🚪 Logout
+              </a>
+            </>
+          ) : (
+            <>
+              <a 
+                href="#"
+                className={styles.mobileNavLink}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/login');
+                }}
+              >
+                🔐 Log In
+              </a>
+              <a 
+                href="#"
+                className={`${styles.mobileNavLink} ${styles.mobileNavLinkSignup}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavigate('/signup');
+                }}
+              >
+                ✨ Sign Up
+              </a>
+            </>
+          )}
+        </div>
+      </div>
 
       {/* Hero */}
       <section className={styles.hero}>
