@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useTasks } from "../Context/TaskContext";
 import styles from "./Dashboard.module.css";
 import bannerImage from "../../assets/Images/Image4.png";
 import ToastNotification from "../ToastNotification/ToastNotification";
@@ -62,15 +63,8 @@ function Icon({ name, className }) {
 const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([
-    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "2024-10-24", dueSort: 1, priority: "High", category: "Design", completed: false },
-    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "2024-10-25", dueSort: 2, priority: "Medium", category: "Marketing", completed: false },
-    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "2024-10-23", dueSort: 0, priority: "Low", category: "Development", completed: true },
-    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "2024-10-26", dueSort: 3, priority: "High", category: "Design", completed: false },
-    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "2024-10-27", dueSort: 4, priority: "Medium", category: "Development", completed: false },
-    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "2024-10-22", dueSort: -1, priority: "Low", category: "Content", completed: true },
-  ]);
-
+  const { tasks, updateTask, deleteTask, toggleTaskComplete } = useTasks();
+  
   const [filterPriority, setFilterPriority] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
@@ -91,11 +85,30 @@ export default function Dashboard() {
   // Category options
   const categoryOptions = ["Design", "Marketing", "Content", "Development", "Research", "Documentation"];
 
+  // Helper function to format date from "Oct 24, 2024" to "2024-10-24"
+  const formatDateToInput = (dateString) => {
+    if (!dateString) return '';
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return '';
+      return date.toISOString().split('T')[0];
+    } catch {
+      return '';
+    }
+  };
+
   // Helper function to format date for display
   const formatDateForDisplay = (dateString) => {
     if (!dateString) return 'No date';
-    const date = new Date(dateString + 'T00:00:00');
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    try {
+      // If it's already in a readable format, return as is
+      if (dateString.includes(' ')) return dateString;
+      const date = new Date(dateString + 'T00:00:00');
+      if (isNaN(date.getTime())) return 'Invalid date';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch {
+      return 'Invalid date';
+    }
   };
 
   // Toast helper
@@ -117,10 +130,10 @@ export default function Dashboard() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleTask = (id) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+  const toggleTaskCompleteHandler = (id) => {
     const task = tasks.find(t => t.id === id);
     if (task) {
+      toggleTaskComplete(id);
       const status = !task.completed ? 'completed' : 'uncompleted';
       showToast('success', `Task "${task.title}" marked as ${status}`, 'Task Updated');
     }
@@ -132,7 +145,7 @@ export default function Dashboard() {
 
   const confirmDelete = (id) => {
     const task = tasks.find(t => t.id === id);
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+    deleteTask(id);
     setShowDeleteConfirm(null);
     if (task) {
       showToast('success', `Task "${task.title}" has been deleted.`, 'Task Deleted');
@@ -148,7 +161,7 @@ export default function Dashboard() {
     setEditForm({
       title: task.title,
       description: task.description,
-      dueDate: task.dueDate || '',
+      dueDate: formatDateToInput(task.dueDate) || '',
       priority: task.priority,
       category: task.category || 'Design',
     });
@@ -182,21 +195,20 @@ export default function Dashboard() {
       return;
     }
 
+    // Format date for display
+    const dateObj = new Date(editForm.dueDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
     const updatedTask = {
-      ...tasks.find(t => t.id === id),
       title: editForm.title,
       description: editForm.description,
-      dueDate: editForm.dueDate || '',
-      dueSort: editForm.dueDate ? new Date(editForm.dueDate + 'T00:00:00').getTime() : 0,
+      dueDate: formattedDate,
+      dueSort: new Date(editForm.dueDate + 'T00:00:00').getTime(),
       priority: editForm.priority,
       category: editForm.category,
     };
 
-    setTasks((prev) =>
-      prev.map((t) =>
-        t.id === id ? updatedTask : t
-      )
-    );
+    updateTask(id, updatedTask);
     setEditingTask(null);
     showToast('success', `Task "${updatedTask.title}" has been updated.`, 'Task Updated');
   };
@@ -421,7 +433,7 @@ export default function Dashboard() {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={() => toggleTask(task.id)}
+                  onChange={() => toggleTaskCompleteHandler(task.id)}
                   className={styles["home-ritual-checkbox"]}
                 />
 
