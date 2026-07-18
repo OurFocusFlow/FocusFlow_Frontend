@@ -63,20 +63,20 @@ const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([
-    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "2024-10-24", dueSort: 1, priority: "High", status: "In Progress", completed: false },
-    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "2024-10-25", dueSort: 2, priority: "Medium", status: "Pending", completed: false },
-    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "2024-10-23", dueSort: 0, priority: "Low", status: "Completed", completed: true },
-    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "2024-10-26", dueSort: 3, priority: "High", status: "Pending", completed: false },
-    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "2024-10-27", dueSort: 4, priority: "Medium", status: "In Progress", completed: false },
-    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "2024-10-22", dueSort: -1, priority: "Low", status: "Completed", completed: true },
+    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "2024-10-24", dueSort: 1, priority: "High", category: "Design", completed: false },
+    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "2024-10-25", dueSort: 2, priority: "Medium", category: "Marketing", completed: false },
+    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "2024-10-23", dueSort: 0, priority: "Low", category: "Development", completed: true },
+    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "2024-10-26", dueSort: 3, priority: "High", category: "Design", completed: false },
+    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "2024-10-27", dueSort: 4, priority: "Medium", category: "Development", completed: false },
+    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "2024-10-22", dueSort: -1, priority: "Low", category: "Content", completed: true },
   ]);
 
   const [filterPriority, setFilterPriority] = useState("all");
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterCategory, setFilterCategory] = useState("all");
   const [sortBy, setSortBy] = useState("default");
   const [openMenu, setOpenMenu] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
-  const [editForm, setEditForm] = useState({ title: '', description: '', dueDate: '', priority: 'Medium', status: 'Pending' });
+  const [editForm, setEditForm] = useState({ title: '', description: '', dueDate: '', priority: 'Medium', category: 'Design' });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
   
   // Toast state
@@ -87,6 +87,9 @@ export default function Dashboard() {
 
   // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
+
+  // Category options
+  const categoryOptions = ["Design", "Marketing", "Content", "Development", "Research", "Documentation"];
 
   // Helper function to format date for display
   const formatDateForDisplay = (dateString) => {
@@ -147,7 +150,7 @@ export default function Dashboard() {
       description: task.description,
       dueDate: task.dueDate || '',
       priority: task.priority,
-      status: task.status,
+      category: task.category || 'Design',
     });
   };
 
@@ -186,7 +189,7 @@ export default function Dashboard() {
       dueDate: editForm.dueDate || '',
       dueSort: editForm.dueDate ? new Date(editForm.dueDate + 'T00:00:00').getTime() : 0,
       priority: editForm.priority,
-      status: editForm.status,
+      category: editForm.category,
     };
 
     setTasks((prev) =>
@@ -212,11 +215,11 @@ export default function Dashboard() {
   };
 
   const priorityClass = (p) => ({ High: styles["badge-high"], Medium: styles["badge-medium"], Low: styles["badge-low"] }[p] || "");
-  const statusClass = (s) => ({ "In Progress": styles["status-progress"], Pending: styles["status-pending"], Completed: styles["status-completed"] }[s] || "");
+  const categoryClass = (c) => ({ Design: styles["category-design"], Marketing: styles["category-marketing"], Content: styles["category-content"], Development: styles["category-development"], Research: styles["category-research"], Documentation: styles["category-documentation"] }[c] || "");
 
   let visibleTasks = tasks.filter((t) => {
     if (filterPriority !== "all" && t.priority !== filterPriority) return false;
-    if (filterStatus !== "all" && t.status !== filterStatus) return false;
+    if (filterCategory !== "all" && t.category !== filterCategory) return false;
     return true;
   });
 
@@ -226,11 +229,11 @@ export default function Dashboard() {
     visibleTasks = [...visibleTasks].sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
   }
 
-  const activeFilterCount = (filterPriority !== "all" ? 1 : 0) + (filterStatus !== "all" ? 1 : 0);
+  const activeFilterCount = (filterPriority !== "all" ? 1 : 0) + (filterCategory !== "all" ? 1 : 0);
 
   const clearFilters = () => {
     setFilterPriority("all");
-    setFilterStatus("all");
+    setFilterCategory("all");
   };
 
   return (
@@ -334,15 +337,15 @@ export default function Dashboard() {
                       {filterPriority === p && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
                     </button>
                   ))}
-                  <span className={styles["home-dropdown-label"]}>Status</span>
-                  {["all", "In Progress", "Pending", "Completed"].map((s) => (
+                  <span className={styles["home-dropdown-label"]}>Category</span>
+                  {["all", ...categoryOptions].map((c) => (
                     <button
-                      key={s}
+                      key={c}
                       className={styles["home-dropdown-item"]}
-                      onClick={() => setFilterStatus(s)}
+                      onClick={() => setFilterCategory(c)}
                     >
-                      {s === "all" ? "All statuses" : s}
-                      {filterStatus === s && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                      {c === "all" ? "All categories" : c}
+                      {filterCategory === c && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
                     </button>
                   ))}
                 </div>
@@ -461,14 +464,14 @@ export default function Dashboard() {
                         <option value="Low">Low</option>
                       </select>
                       <select
-                        name="status"
-                        value={editForm.status}
+                        name="category"
+                        value={editForm.category}
                         onChange={handleEditChange}
                         className={styles["home-edit-select"]}
                       >
-                        <option value="In Progress">In Progress</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Completed">Completed</option>
+                        {categoryOptions.map((cat) => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
                       </select>
                     </div>
                     <div className={styles["home-edit-actions"]}>
@@ -495,7 +498,7 @@ export default function Dashboard() {
 
                     <div className={styles["home-ritual-badges"]}>
                       <span className={`${styles["home-badge"]} ${priorityClass(task.priority)}`}>{task.priority}</span>
-                      <span className={`${styles["home-badge"]} ${statusClass(task.status)}`}>{task.status}</span>
+                      <span className={`${styles["home-badge"]} ${categoryClass(task.category)}`}>{task.category}</span>
                     </div>
 
                     <div className={styles["home-ritual-actions"]}>
