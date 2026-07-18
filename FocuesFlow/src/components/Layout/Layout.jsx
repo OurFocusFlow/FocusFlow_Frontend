@@ -196,16 +196,12 @@ const Layout = ({ children }) => {
   };
 
   // ==================== NEW TASK HANDLER ====================
-  // Navigate to My Tasks page, set active, then open modal
   const handleNewTaskClick = () => {
-    // If already on My Tasks page, just open modal
     if (location.pathname === '/my-tasks') {
       handleOpenModal();
     } else {
-      // Navigate to My Tasks page, set active, then open modal after navigation
       setActiveItem('My Tasks');
       navigate('/my-tasks');
-      // Open modal after navigation (using setTimeout to ensure navigation completes)
       setTimeout(() => {
         handleOpenModal();
       }, 300);
@@ -500,7 +496,40 @@ const Layout = ({ children }) => {
             </Box>
           )}
 
-          {/* Main Content - This is where all pages will render */}
+          {/* Show only menu icon on Profile page for mobile/tablet */}
+          {isProfilePage && (isMobile || isTablet) && (
+            <Box className={styles.profileNavbarWrapper}>
+              <Box className={styles.profileNavbarContainer}>
+                <Tooltip title="Open menu" arrow>
+                  <IconButton
+                    className={styles.menuButton}
+                    onClick={handleDrawerToggle}
+                    edge="start"
+                    aria-label="Open drawer"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Tooltip>
+                <Box className={styles.profileLogo}>
+                  <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+                    <rect width="36" height="36" rx="10" fill="url(#gradient)" />
+                    <path d="M11 18L16 23L25 13" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                    <defs>
+                      <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
+                        <stop offset="0%" stopColor="#885210" />
+                        <stop offset="100%" stopColor="#4B3832" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <Typography variant="h6" className={styles.profileLogoText}>
+                    BrewTask
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          )}
+
+          {/* Main Content */}
           <Box
             component="main"
             className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''} ${isProfilePage ? styles.mainContentNoNavbar : ''}`}
