@@ -467,17 +467,6 @@ export default function MyTasks() {
 
             <div className={styles["mytasks-stat-box"]}>
               <div className={styles["mytasks-stat-top"]}>
-                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-progress"]}`}>
-                  <Icon name="clock" className={styles["mytasks-stat-icon"]} />
-                </div>
-                <span className={styles["mytasks-stat-trend"]}>Active</span>
-              </div>
-              <span className={styles["mytasks-stat-label"]}>In Progress</span>
-              <span className={styles["mytasks-stat-value"]}>{stats.inProgress}</span>
-            </div>
-
-            <div className={styles["mytasks-stat-box"]}>
-              <div className={styles["mytasks-stat-top"]}>
                 <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-completed"]}`}>
                   <Icon name="check" className={styles["mytasks-stat-icon"]} />
                 </div>
@@ -485,6 +474,17 @@ export default function MyTasks() {
               </div>
               <span className={styles["mytasks-stat-label"]}>Completed</span>
               <span className={styles["mytasks-stat-value"]}>{stats.completed}</span>
+            </div>
+
+            <div className={styles["mytasks-stat-box"]}>
+              <div className={styles["mytasks-stat-top"]}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-progress"]}`}>
+                  <Icon name="clock" className={styles["mytasks-stat-icon"]} />
+                </div>
+                <span className={styles["mytasks-stat-trend"]}>Active</span>
+              </div>
+              <span className={styles["mytasks-stat-label"]}>In Progress</span>
+              <span className={styles["mytasks-stat-value"]}>{stats.inProgress}</span>
             </div>
 
             <div className={styles["mytasks-stat-box"]}>
