@@ -156,7 +156,19 @@ export default function Dashboard() {
   };
 
   const saveEdit = (id) => {
-    // Validate due date is not empty and not in the past
+    // Validate Title
+    if (!editForm.title.trim()) {
+      showToast('error', 'Please enter a task title.', 'Missing Title');
+      return;
+    }
+
+    // Validate Description
+    if (!editForm.description.trim()) {
+      showToast('error', 'Please enter a task description.', 'Missing Description');
+      return;
+    }
+
+    // Validate Due Date
     if (!editForm.dueDate) {
       showToast('error', 'Please select a due date.', 'Missing Due Date');
       return;
