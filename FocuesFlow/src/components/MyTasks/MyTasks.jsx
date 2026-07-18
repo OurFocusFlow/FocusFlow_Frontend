@@ -143,6 +143,9 @@ export default function MyTasks() {
   // Priority order for sorting
   const priorityOrder = { High: 0, Medium: 1, Low: 2 };
 
+  // Get today's date for validation
+  const today = new Date().toISOString().split('T')[0];
+
   // Stats from context
   const stats = {
     total: getTaskCount(),
@@ -170,6 +173,13 @@ export default function MyTasks() {
     }, 5000);
   };
 
+  // Helper function to format date
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
   const handleSaveTask = (taskData) => {
     let hasError = false;
     let errorMessage = '';
@@ -187,6 +197,10 @@ export default function MyTasks() {
       hasError = true;
       errorTitle = 'Missing Due Date';
       errorMessage = 'Please select a due date for the task.';
+    } else if (taskData.dueDate < today) {
+      hasError = true;
+      errorTitle = 'Invalid Due Date';
+      errorMessage = 'Due date cannot be in the past. Please select a future date.';
     } else if (taskData.categories.length === 0) {
       hasError = true;
       errorTitle = 'Missing Categories';
@@ -200,13 +214,13 @@ export default function MyTasks() {
 
     setIsSubmitting(true);
     
-    // Create new task
+    // Create new task with formatted due date
     const newTask = {
       id: Date.now(),
       title: taskData.title,
       description: taskData.description,
-      dueDate: taskData.dueDate,
-      dueSort: 0,
+      dueDate: formatDate(taskData.dueDate),
+      dueSort: new Date(taskData.dueDate + 'T00:00:00').getTime(),
       priority: taskData.categories[0] || 'Medium',
       status: 'Pending',
       category: taskData.categories[0] || 'General',
@@ -234,10 +248,23 @@ export default function MyTasks() {
   // ==================== EDIT FUNCTIONS ====================
   const handleEditClick = (task) => {
     setEditingTask(task);
+    // Convert formatted date back to YYYY-MM-DD for input
+    let dueDateValue = '';
+    if (task.dueDate) {
+      const dateParts = task.dueDate.split(' ');
+      const months = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', 
+                      Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
+      if (dateParts.length === 3) {
+        const month = months[dateParts[0]];
+        const day = dateParts[1].replace(',', '').padStart(2, '0');
+        const year = dateParts[2];
+        dueDateValue = `${year}-${month}-${day}`;
+      }
+    }
     setEditForm({
       title: task.title,
       description: task.description,
-      dueDate: task.dueDate || '',
+      dueDate: dueDateValue,
       priority: task.priority,
       category: task.category,
       assignees: task.assignees ? task.assignees.join(', ') : '',
@@ -255,10 +282,17 @@ export default function MyTasks() {
       return;
     }
 
+    // Validate due date if provided
+    if (editForm.dueDate && editForm.dueDate < today) {
+      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Due Date');
+      return;
+    }
+
     const updatedTask = {
       title: editForm.title,
       description: editForm.description,
-      dueDate: editForm.dueDate,
+      dueDate: editForm.dueDate ? formatDate(editForm.dueDate) : '',
+      dueSort: editForm.dueDate ? new Date(editForm.dueDate + 'T00:00:00').getTime() : 0,
       priority: editForm.priority,
       category: editForm.category,
       assignees: editForm.assignees ? editForm.assignees.split(',').map(s => s.trim()).filter(s => s) : [],
@@ -321,12 +355,9 @@ export default function MyTasks() {
       return task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
              task.description.toLowerCase().includes(searchTerm.toLowerCase());
     })
-    // Sort by priority: High first, then Medium, then Low
     .sort((a, b) => {
-      // Completed tasks go to the bottom
       if (a.completed && !b.completed) return 1;
       if (!a.completed && b.completed) return -1;
-      // Sort by priority for non-completed tasks
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
@@ -721,10 +752,10 @@ export default function MyTasks() {
                   <label>Due Date</label>
                   <input
                     name="dueDate"
-                    type="text"
+                    type="date"
                     value={editForm.dueDate}
                     onChange={handleEditChange}
-                    placeholder="Oct 24, 2024"
+                    min={today}
                   />
                 </div>
                 
