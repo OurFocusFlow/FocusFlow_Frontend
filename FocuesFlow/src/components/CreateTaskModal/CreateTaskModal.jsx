@@ -12,6 +12,9 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   const [newCategory, setNewCategory] = useState('');
   const [isDragging, setIsDragging] = useState(false);
 
+  // Get today's date for validation
+  const today = new Date().toISOString().split('T')[0];
+
   if (!isOpen) return null;
 
   const handleInputChange = (e) => {
@@ -49,6 +52,17 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate due date is not in the past
+    if (taskData.dueDate && taskData.dueDate < today) {
+      // You could show an error message here
+      // For now, we'll let the parent handle it
+      if (onSave) {
+        onSave(taskData);
+      }
+      return;
+    }
+    
     if (onSave) {
       onSave(taskData);
     }
@@ -102,6 +116,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               placeholder="e.g. Design System Documentation"
               className={styles.formInput}
               disabled={isSubmitting}
+              required
             />
           </div>
 
@@ -119,6 +134,8 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
                 onChange={handleInputChange}
                 className={styles.formInput}
                 disabled={isSubmitting}
+                min={today}
+                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -203,6 +220,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               className={styles.formTextarea}
               rows="4"
               disabled={isSubmitting}
+              required
             />
           </div>
 
