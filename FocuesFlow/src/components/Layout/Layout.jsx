@@ -297,7 +297,7 @@ const Layout = ({ children }) => {
           </Box>
           <Box>
             <Typography variant="h6" className={styles.logoText}>
-              FocusFlow
+              BrewTask
             </Typography>
             <Typography variant="caption" className={styles.logoSubtext}>
               Workspace
