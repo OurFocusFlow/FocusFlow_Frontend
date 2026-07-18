@@ -140,6 +140,9 @@ export default function MyTasks() {
   const categories = ["All", "Design", "Marketing", "Content", "Development", "Research", "Documentation"];
   const priorities = ["All", "High", "Medium", "Low"];
 
+  // Priority order for sorting
+  const priorityOrder = { High: 0, Medium: 1, Low: 2 };
+
   // Stats from context
   const stats = {
     total: getTaskCount(),
@@ -297,7 +300,7 @@ export default function MyTasks() {
     }
   };
 
-  // ==================== FILTERING ====================
+  // ==================== FILTERING & SORTING ====================
   const filteredTasks = tasks
     .filter((task) => {
       if (activeTab === "all") return true;
@@ -317,6 +320,14 @@ export default function MyTasks() {
       if (!searchTerm) return true;
       return task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
              task.description.toLowerCase().includes(searchTerm.toLowerCase());
+    })
+    // Sort by priority: High first, then Medium, then Low
+    .sort((a, b) => {
+      // Completed tasks go to the bottom
+      if (a.completed && !b.completed) return 1;
+      if (!a.completed && b.completed) return -1;
+      // Sort by priority for non-completed tasks
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
   // ==================== HELPERS ====================
