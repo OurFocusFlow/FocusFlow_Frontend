@@ -139,6 +139,10 @@ const Layout = ({ children }) => {
     let errorMessage = '';
     let errorTitle = '';
 
+    // Handle both old format (categories array) and new format (category string)
+    const categories = taskData.categories || [taskData.category || 'General'];
+    const category = categories[0] || 'General';
+
     if (!taskData.title.trim()) {
       hasError = true;
       errorTitle = 'Missing Title';
@@ -151,10 +155,10 @@ const Layout = ({ children }) => {
       hasError = true;
       errorTitle = 'Missing Due Date';
       errorMessage = 'Please select a due date for the task.';
-    } else if (taskData.categories.length === 0) {
+    } else if (taskData.dueDate < new Date().toISOString().split('T')[0]) {
       hasError = true;
-      errorTitle = 'Missing Categories';
-      errorMessage = 'Please add at least one category to the task.';
+      errorTitle = 'Invalid Due Date';
+      errorMessage = 'Due date cannot be in the past. Please select a future date.';
     }
 
     if (hasError) {
@@ -170,10 +174,10 @@ const Layout = ({ children }) => {
       title: taskData.title,
       description: taskData.description,
       dueDate: taskData.dueDate,
-      dueSort: 0,
-      priority: taskData.categories[0] || 'Medium',
+      dueSort: new Date(taskData.dueDate + 'T00:00:00').getTime(),
+      priority: taskData.priority || 'Medium',  // Use the priority from form
       status: 'Pending',
-      category: taskData.categories[0] || 'General',
+      category: category,  // Use the category from form
       completed: false,
       assignees: ['You'],
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
