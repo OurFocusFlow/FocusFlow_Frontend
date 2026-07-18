@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { TaskProvider } from './components/Context/TaskContext';
 import Home from '../src/components/Home/Home'; 
 import Login from '../src/components/Login/Login';
 import Signup from '../src/components/Signup/Signup';  
@@ -230,50 +231,52 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
-        <Routes>
-          {/* Public Routes - No Layout */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          
-          {/* Forgot Password & Reset Password Routes */}
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/verify" element={<Verification />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+      <TaskProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes - No Layout */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            
+            {/* Forgot Password & Reset Password Routes */}
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify" element={<Verification />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
-          
-          <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />} />
-          
-          {/* Protected Routes with Layout */}
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Layout>
-                <Dashboard />
-              </Layout>
-            </ProtectedRoute>
-          } />
+            {/* Landing Page */}
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            
+            {/* Protected Routes with Layout */}
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            } />
 
-          <Route path="/my-tasks" element={
-            <ProtectedRoute>
-              <Layout>
-                <MyTasks />
-              </Layout>
-            </ProtectedRoute>
-          } />
+            <Route path="/my-tasks" element={
+              <ProtectedRoute>
+                <Layout>
+                  <MyTasks />
+                </Layout>
+              </ProtectedRoute>
+            } />
 
-          <Route path="/profile" element={
-            <ProtectedRoute>
-              <Layout>
-                <Profile />
-              </Layout>
-            </ProtectedRoute>
-          } />
-          
-          {/* 404 Not Found - No Layout */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Profile />
+                </Layout>
+              </ProtectedRoute>
+            } />
+            
+            {/* 404 Not Found - No Layout */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </TaskProvider>
     </ThemeProvider>
   );
 }
