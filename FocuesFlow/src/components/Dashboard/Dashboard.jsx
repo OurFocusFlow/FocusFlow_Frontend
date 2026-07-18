@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Dashboard.module.css";
 import bannerImage from "../../assets/Images/Image4.png";
+import ToastNotification from "../ToastNotification/ToastNotification";
 
 function Icon({ name, className }) {
   const paths = {
@@ -62,12 +63,12 @@ const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([
-    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "Oct 24, 2024", dueSort: 1, priority: "High", status: "In Progress", completed: false },
-    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "Oct 25, 2024", dueSort: 2, priority: "Medium", status: "Pending", completed: false },
-    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "Oct 23, 2024", dueSort: 0, priority: "Low", status: "Completed", completed: true },
-    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "Oct 26, 2024", dueSort: 3, priority: "High", status: "Pending", completed: false },
-    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "Oct 27, 2024", dueSort: 4, priority: "Medium", status: "In Progress", completed: false },
-    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "Oct 22, 2024", dueSort: -1, priority: "Low", status: "Completed", completed: true },
+    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "2024-10-24", dueSort: 1, priority: "High", status: "In Progress", completed: false },
+    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "2024-10-25", dueSort: 2, priority: "Medium", status: "Pending", completed: false },
+    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "2024-10-23", dueSort: 0, priority: "Low", status: "Completed", completed: true },
+    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "2024-10-26", dueSort: 3, priority: "High", status: "Pending", completed: false },
+    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "2024-10-27", dueSort: 4, priority: "Medium", status: "In Progress", completed: false },
+    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "2024-10-22", dueSort: -1, priority: "Low", status: "Completed", completed: true },
   ]);
 
   const [filterPriority, setFilterPriority] = useState("all");
@@ -77,9 +78,30 @@ export default function Dashboard() {
   const [editingTask, setEditingTask] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', dueDate: '', priority: 'Medium', status: 'Pending' });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+  
+  // Toast state
+  const [toast, setToast] = useState(null);
 
   const filterRef = useRef(null);
   const sortRef = useRef(null);
+
+  // Get today's date for validation
+  const today = new Date().toISOString().split('T')[0];
+
+  // Helper function to format date for display
+  const formatDateForDisplay = (dateString) => {
+    if (!dateString) return 'No date';
+    const date = new Date(dateString + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  // Toast helper
+  const showToast = (type, message, title) => {
+    setToast({ type, message, title });
+    setTimeout(() => {
+      setToast(null);
+    }, 5000);
+  };
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -94,6 +116,11 @@ export default function Dashboard() {
 
   const toggleTask = (id) => {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+      const status = !task.completed ? 'completed' : 'uncompleted';
+      showToast('success', `Task "${task.title}" marked as ${status}`, 'Task Updated');
+    }
   };
 
   const handleDelete = (id) => {
@@ -101,8 +128,12 @@ export default function Dashboard() {
   };
 
   const confirmDelete = (id) => {
+    const task = tasks.find(t => t.id === id);
     setTasks((prev) => prev.filter((t) => t.id !== id));
     setShowDeleteConfirm(null);
+    if (task) {
+      showToast('success', `Task "${task.title}" has been deleted.`, 'Task Deleted');
+    }
   };
 
   const cancelDelete = () => {
@@ -114,7 +145,7 @@ export default function Dashboard() {
     setEditForm({
       title: task.title,
       description: task.description,
-      dueDate: task.dueDate,
+      dueDate: task.dueDate || '',
       priority: task.priority,
       status: task.status,
     });
@@ -125,21 +156,34 @@ export default function Dashboard() {
   };
 
   const saveEdit = (id) => {
+    // Validate due date is not empty and not in the past
+    if (!editForm.dueDate) {
+      showToast('error', 'Please select a due date.', 'Missing Due Date');
+      return;
+    }
+    
+    if (editForm.dueDate < today) {
+      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
+      return;
+    }
+
+    const updatedTask = {
+      ...tasks.find(t => t.id === id),
+      title: editForm.title,
+      description: editForm.description,
+      dueDate: editForm.dueDate || '',
+      dueSort: editForm.dueDate ? new Date(editForm.dueDate + 'T00:00:00').getTime() : 0,
+      priority: editForm.priority,
+      status: editForm.status,
+    };
+
     setTasks((prev) =>
       prev.map((t) =>
-        t.id === id
-          ? {
-              ...t,
-              title: editForm.title,
-              description: editForm.description,
-              dueDate: editForm.dueDate,
-              priority: editForm.priority,
-              status: editForm.status,
-            }
-          : t
+        t.id === id ? updatedTask : t
       )
     );
     setEditingTask(null);
+    showToast('success', `Task "${updatedTask.title}" has been updated.`, 'Task Updated');
   };
 
   const cancelEdit = () => {
@@ -379,10 +423,11 @@ export default function Dashboard() {
                       />
                       <input
                         name="dueDate"
+                        type="date"
                         value={editForm.dueDate}
                         onChange={handleEditChange}
                         className={styles["home-edit-input-sm"]}
-                        placeholder="Due date"
+                        min={today}
                       />
                     </div>
                     <div className={styles["home-edit-row"]}>
@@ -433,7 +478,7 @@ export default function Dashboard() {
 
                     <div className={styles["home-ritual-due"]}>
                       <span className={styles["home-due-label"]}>DUE DATE</span>
-                      <span className={styles["home-due-value"]}>{task.dueDate}</span>
+                      <span className={styles["home-due-value"]}>{formatDateForDisplay(task.dueDate)}</span>
                     </div>
 
                     <div className={styles["home-ritual-badges"]}>
@@ -473,6 +518,16 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {toast && (
+        <ToastNotification
+          type={toast.type}
+          message={toast.message}
+          title={toast.title}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

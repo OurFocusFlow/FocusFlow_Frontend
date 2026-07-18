@@ -1151,3 +1151,27 @@
   }
   .home-ritual-item { opacity: 1; transform: none; }
 }
+
+/* ==================== EDIT ERROR ==================== */
+
+/* Update edit input styles */
+.home-edit-input-sm[type="date"] {
+  flex: 0 0 150px;
+  padding: 8px 12px;
+  border: 1px solid #E6E2DF;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #FAF5F2;
+  transition: border-color 0.15s ease;
+  cursor: pointer;
+}
+
+.home-edit-input-sm[type="date"]:focus {
+  border-color: #885210;
+  outline: none;
+}
+
+.home-edit-input-sm[type="date"]:invalid {
+  border-color: #dc2626;
+}
