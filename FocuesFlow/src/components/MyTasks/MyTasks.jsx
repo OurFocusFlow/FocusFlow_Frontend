@@ -133,6 +133,13 @@ export default function MyTasks() {
   });
   const [showEditModal, setShowEditModal] = useState(false);
   
+  // Edit error state
+  const [editErrors, setEditErrors] = useState({
+    title: '',
+    description: '',
+    dueDate: '',
+  });
+  
   // Delete state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
@@ -221,9 +228,9 @@ export default function MyTasks() {
       description: taskData.description,
       dueDate: formatDate(taskData.dueDate),
       dueSort: new Date(taskData.dueDate + 'T00:00:00').getTime(),
-      priority: taskData.priority || 'Medium',  // Use the priority from form, not category
+      priority: taskData.priority || 'Medium',
       status: 'Pending',
-      category: category,  // Use the category from form
+      category: category,
       completed: false,
       assignees: ['You'],
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
@@ -269,22 +276,52 @@ export default function MyTasks() {
       category: task.category,
       assignees: task.assignees ? task.assignees.join(', ') : '',
     });
+    // Reset errors when opening
+    setEditErrors({ title: '', description: '', dueDate: '' });
     setShowEditModal(true);
   };
 
   const handleEditChange = (e) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
+    // Clear error for this field when user types
+    if (editErrors[e.target.name]) {
+      setEditErrors(prev => ({ ...prev, [e.target.name]: '' }));
+    }
   };
 
   const handleEditSubmit = () => {
+    // Reset errors
+    setEditErrors({ title: '', description: '', dueDate: '' });
+    
+    let hasError = false;
+    const errors = { title: '', description: '', dueDate: '' };
+
+    // Validate Title
     if (!editForm.title.trim()) {
-      showToast('error', 'Please enter a task title.', 'Missing Title');
-      return;
+      errors.title = 'Task title is required';
+      hasError = true;
     }
 
-    // Validate due date if provided
-    if (editForm.dueDate && editForm.dueDate < today) {
-      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Due Date');
+    // Validate Description
+    if (!editForm.description.trim()) {
+      errors.description = 'Description is required';
+      hasError = true;
+    }
+
+    // Validate Due Date
+    if (!editForm.dueDate) {
+      errors.dueDate = 'Due date is required';
+      hasError = true;
+    } else if (editForm.dueDate < today) {
+      errors.dueDate = 'Due date cannot be in the past';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setEditErrors(errors);
+      // Show toast for the first error
+      const firstError = errors.title || errors.description || errors.dueDate;
+      showToast('error', firstError, 'Validation Error');
       return;
     }
 
@@ -302,6 +339,7 @@ export default function MyTasks() {
     
     setShowEditModal(false);
     setEditingTask(null);
+    setEditErrors({ title: '', description: '', dueDate: '' });
     showToast('success', `Task "${editForm.title}" has been updated.`, 'Task Updated!');
   };
 
@@ -713,13 +751,19 @@ export default function MyTasks() {
 
       {/* ==================== EDIT MODAL ==================== */}
       {showEditModal && editingTask && (
-        <div className={styles["mytasks-modal-overlay"]} onClick={() => setShowEditModal(false)}>
+        <div className={styles["mytasks-modal-overlay"]} onClick={() => {
+          setShowEditModal(false);
+          setEditErrors({ title: '', description: '', dueDate: '' });
+        }}>
           <div className={styles["mytasks-modal"]} onClick={(e) => e.stopPropagation()}>
             <div className={styles["mytasks-modal-header"]}>
               <h2>Edit Task</h2>
               <button 
                 className={styles["mytasks-modal-close"]}
-                onClick={() => setShowEditModal(false)}
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditErrors({ title: '', description: '', dueDate: '' });
+                }}
               >
                 <Icon name="x" className={styles["mytasks-modal-close-icon"]} />
               </button>
@@ -727,36 +771,48 @@ export default function MyTasks() {
             
             <div className={styles["mytasks-modal-body"]}>
               <div className={styles["mytasks-modal-field"]}>
-                <label>Task Title</label>
+                <label>Task Title <span className={styles["mytasks-required-star"]}>*</span></label>
                 <input
                   name="title"
                   value={editForm.title}
                   onChange={handleEditChange}
                   placeholder="Enter task title"
+                  className={editErrors.title ? styles["mytasks-modal-input-error"] : ''}
                 />
+                {editErrors.title && (
+                  <span className={styles["mytasks-modal-error"]}>{editErrors.title}</span>
+                )}
               </div>
               
               <div className={styles["mytasks-modal-field"]}>
-                <label>Description</label>
+                <label>Description <span className={styles["mytasks-required-star"]}>*</span></label>
                 <textarea
                   name="description"
                   value={editForm.description}
                   onChange={handleEditChange}
                   placeholder="Enter task description"
                   rows="3"
+                  className={editErrors.description ? styles["mytasks-modal-input-error"] : ''}
                 />
+                {editErrors.description && (
+                  <span className={styles["mytasks-modal-error"]}>{editErrors.description}</span>
+                )}
               </div>
               
               <div className={styles["mytasks-modal-row"]}>
                 <div className={styles["mytasks-modal-field"]}>
-                  <label>Due Date</label>
+                  <label>Due Date <span className={styles["mytasks-required-star"]}>*</span></label>
                   <input
                     name="dueDate"
                     type="date"
                     value={editForm.dueDate}
                     onChange={handleEditChange}
                     min={today}
+                    className={editErrors.dueDate ? styles["mytasks-modal-input-error"] : ''}
                   />
+                  {editErrors.dueDate && (
+                    <span className={styles["mytasks-modal-error"]}>{editErrors.dueDate}</span>
+                  )}
                 </div>
                 
                 <div className={styles["mytasks-modal-field"]}>
@@ -802,7 +858,10 @@ export default function MyTasks() {
             <div className={styles["mytasks-modal-footer"]}>
               <button 
                 className={styles["mytasks-modal-cancel"]}
-                onClick={() => setShowEditModal(false)}
+                onClick={() => {
+                  setShowEditModal(false);
+                  setEditErrors({ title: '', description: '', dueDate: '' });
+                }}
               >
                 Cancel
               </button>

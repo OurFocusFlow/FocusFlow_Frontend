@@ -1572,3 +1572,75 @@
   position: relative;
   z-index: 10000;
 }
+
+/* ==================== EDIT MODAL ERROR STYLES ==================== */
+.mytasks-required-star {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.mytasks-modal-input-error {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+.mytasks-modal-input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1) !important;
+}
+
+.mytasks-modal-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Update modal field spacing for errors */
+.mytasks-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.mytasks-modal-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7E7471;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mytasks-modal-field input,
+.mytasks-modal-field textarea,
+.mytasks-modal-field select {
+  padding: 10px 14px;
+  border: 1px solid #E6E2DF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FAF5F2;
+  transition: all 0.2s ease;
+  outline: none;
+  width: 100%;
+}
+
+.mytasks-modal-field input:focus,
+.mytasks-modal-field textarea:focus,
+.mytasks-modal-field select:focus {
+  border-color: #885210;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  background: #FFFFFF;
+}
+
+.mytasks-modal-field textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+/* Error state for labels */
+.mytasks-modal-field .mytasks-modal-input-error + .mytasks-modal-error {
+  margin-top: 4px;
+}
