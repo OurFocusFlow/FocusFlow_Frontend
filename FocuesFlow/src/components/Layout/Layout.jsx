@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTasks } from '../Context/TaskContext';
 import {
   Box,
   Typography,
@@ -33,9 +34,11 @@ import {
   ExpandMore,
   Close as CloseIcon,
   Menu as MenuIcon,
-  Home,
+  Home as HomeIcon,
 } from '@mui/icons-material';
 import Navbar from '../Navbar/Navbar';
+import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
+import ToastNotification from '../ToastNotification/ToastNotification';
 import styles from './Layout.module.css';
 
 const Layout = ({ children }) => {
@@ -45,6 +48,26 @@ const Layout = ({ children }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState(null);
+  
+  // Safe context usage - with error handling
+  let taskContext;
+  try {
+    taskContext = useTasks();
+  } catch (error) {
+    taskContext = {
+      getTaskCount: () => 0,
+      getPendingCount: () => 0,
+      getCompletedCount: () => 0,
+      addTask: () => {},
+    };
+  }
+  
+  const { getTaskCount, getPendingCount, addTask } = taskContext;
   
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
@@ -57,6 +80,7 @@ const Layout = ({ children }) => {
   // Get active item based on current path
   const getActiveItem = () => {
     const path = location.pathname;
+    if (path === '/') return 'Home';
     if (path === '/home') return 'Home';
     if (path === '/dashboard') return 'Dashboard';
     if (path === '/my-tasks') return 'My Tasks';
@@ -91,6 +115,107 @@ const Layout = ({ children }) => {
     setMobileOpen(false);
   };
 
+  // ==================== MODAL HANDLERS ====================
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    setToast(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsSubmitting(false);
+    setToast(null);
+  };
+
+  const showToast = (type, message, title) => {
+    setToast({ type, message, title });
+    setTimeout(() => {
+      setToast(null);
+    }, 5000);
+  };
+
+  const handleSaveTask = (taskData) => {
+    let hasError = false;
+    let errorMessage = '';
+    let errorTitle = '';
+
+    if (!taskData.title.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Title';
+      errorMessage = 'Please enter a task title to continue.';
+    } else if (!taskData.description.trim()) {
+      hasError = true;
+      errorTitle = 'Missing Description';
+      errorMessage = 'Please provide a description for the task.';
+    } else if (!taskData.dueDate) {
+      hasError = true;
+      errorTitle = 'Missing Due Date';
+      errorMessage = 'Please select a due date for the task.';
+    } else if (taskData.categories.length === 0) {
+      hasError = true;
+      errorTitle = 'Missing Categories';
+      errorMessage = 'Please add at least one category to the task.';
+    }
+
+    if (hasError) {
+      showToast('error', errorMessage, errorTitle);
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    // Create new task
+    const newTask = {
+      id: Date.now(),
+      title: taskData.title,
+      description: taskData.description,
+      dueDate: taskData.dueDate,
+      dueSort: 0,
+      priority: taskData.categories[0] || 'Medium',
+      status: 'Pending',
+      category: taskData.categories[0] || 'General',
+      completed: false,
+      assignees: ['You'],
+      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      attachments: 0,
+      comments: 0,
+    };
+    
+    addTask(newTask);
+    
+    showToast(
+      'success',
+      `Task "${taskData.title}" has been created successfully.`,
+      'Task Created!'
+    );
+
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsSubmitting(false);
+    }, 1000);
+  };
+
+  // ==================== NEW TASK HANDLER ====================
+  // Navigate to My Tasks page, set active, then open modal
+  const handleNewTaskClick = () => {
+    // If already on My Tasks page, just open modal
+    if (location.pathname === '/my-tasks') {
+      handleOpenModal();
+    } else {
+      // Navigate to My Tasks page, set active, then open modal after navigation
+      setActiveItem('My Tasks');
+      navigate('/my-tasks');
+      // Open modal after navigation (using setTimeout to ensure navigation completes)
+      setTimeout(() => {
+        handleOpenModal();
+      }, 300);
+    }
+    
+    if (isMobile || isTablet) {
+      setMobileOpen(false);
+    }
+  };
+
   // Navbar handlers
   const handleSearch = (value) => {
     console.log('Searching for:', value);
@@ -109,6 +234,8 @@ const Layout = ({ children }) => {
 
   const handleLogout = () => {
     console.log('User logged out');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
     navigate('/login');
   };
 
@@ -118,9 +245,14 @@ const Layout = ({ children }) => {
   };
 
   const navigationItems = [
-    { text: 'Home', icon: <Home />, path: '/home' },
+    { text: 'Home', icon: <HomeIcon />, badge: 0, path: '/' },
     { text: 'Dashboard', icon: <DashboardIcon />, badge: 0, path: '/dashboard' },
-    { text: 'My Tasks', icon: <TasksIcon />, badge: 12, path: '/my-tasks' },
+    { 
+      text: 'My Tasks', 
+      icon: <TasksIcon />, 
+      badge: getPendingCount ? getPendingCount() : 0,
+      path: '/my-tasks' 
+    },
     { text: 'Projects', icon: <ProjectsIcon />, path: '/projects' },
     { text: 'Calendar', icon: <CalendarIcon />, path: '/calendar' },
     { text: 'Team', icon: <TeamIcon />, path: '/team' },
@@ -150,7 +282,7 @@ const Layout = ({ children }) => {
     <Box className={styles.drawerContent}>
       {/* Modern Header with Glass Effect */}
       <Box className={styles.drawerHeader}>
-        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/home')} style={{ cursor: 'pointer' }}>
+        <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
               <rect width="36" height="36" rx="10" fill="url(#gradient)" />
@@ -222,7 +354,7 @@ const Layout = ({ children }) => {
           variant="contained"
           startIcon={<AddIcon />}
           className={styles.newTaskButton}
-          onClick={() => navigate('/my-tasks')}
+          onClick={handleNewTaskClick}
         >
           New Task
         </Button>
@@ -400,6 +532,24 @@ const Layout = ({ children }) => {
           </Box>
         </Box>
       </Box>
+
+      {/* Create Task Modal */}
+      <CreateTaskModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveTask}
+        isSubmitting={isSubmitting}
+      />
+
+      {/* Toast Notification */}
+      {toast && (
+        <ToastNotification
+          type={toast.type}
+          message={toast.message}
+          title={toast.title}
+          onClose={() => setToast(null)}
+        />
+      )}
     </Box>
   );
 };

@@ -83,7 +83,6 @@
 /* ==================== MAIN CONTENT ==================== */
 .mainContent {
   flex: 1;
-  padding: 1.5rem;
   background: transparent;
   overflow-y: auto;
   overflow-x: hidden;
