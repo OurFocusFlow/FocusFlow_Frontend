@@ -65,7 +65,7 @@ const Profile = () => {
     email: 'alex@company.com',
     bio: 'Product Designer & Creative Director. Passionate about creating beautiful, functional experiences.',
     location: 'San Francisco, CA',
-    company: 'FocusFlow Inc.',
+    company: 'BrewTask Inc.',
     role: 'Senior Product Designer',
     joinDate: 'January 2024',
   });
@@ -123,7 +123,7 @@ const Profile = () => {
       email: 'alex@company.com',
       bio: 'Product Designer & Creative Director. Passionate about creating beautiful, functional experiences.',
       location: 'San Francisco, CA',
-      company: 'FocusFlow Inc.',
+      company: 'BrewTask Inc.',
       role: 'Senior Product Designer',
       joinDate: 'January 2024',
     });
