@@ -1,38 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./Dashboard.module.css";
-import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
-import ToastNotification from "../ToastNotification/ToastNotification";
+import bannerImage from "../../assets/Images/Image4.png";
 
 function Icon({ name, className }) {
   const paths = {
-    dashboard: (
+    clipboard: (
       <>
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        <rect x="6" y="4" width="12" height="17" rx="2" />
+        <rect x="9" y="2" width="6" height="4" rx="1" />
+        <path d="M9 11h6M9 15h6" strokeLinecap="round" />
       </>
-    ),
-    flame: (
-      <path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c1 1 1.5 2.5 1.5 4a4.5 4.5 0 0 1-9 0C7.5 9 12 6 12 2Z" strokeLinecap="round" strokeLinejoin="round" />
-    ),
-    clock: (
-      <>
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
-      </>
-    ),
-    calendar: (
-      <>
-        <rect x="3" y="4" width="18" height="17" rx="2" />
-        <path d="M3 9h18M8 2v4M16 2v4" strokeLinecap="round" />
-      </>
-    ),
-    paperclip: (
-      <path d="M21 12.5 12.5 21a4.5 4.5 0 0 1-6.4-6.4l9-9a3 3 0 0 1 4.3 4.3l-8.9 8.9a1.5 1.5 0 0 1-2.1-2.1l8-8" strokeLinecap="round" strokeLinejoin="round" />
-    ),
-    message: (
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" strokeLinecap="round" strokeLinejoin="round" />
     ),
     check: (
       <>
@@ -40,11 +17,12 @@ function Icon({ name, className }) {
         <path d="m8.5 12.5 2.5 2.5 5-5" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
-    trending: (
-      <path d="M3 17l6-6 4 4 8-8M15 7h6v6" strokeLinecap="round" strokeLinejoin="round" />
-    ),
-    list: (
-      <path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" strokeLinecap="round" strokeLinejoin="round" />
+    hourglass: (
+      <path
+        d="M6 2h12M6 22h12M7 2c0 5 5 6 5 10s-5 5-5 10M17 2c0 5-5 6-5 10s5 5 5 10"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     ),
     alertCircle: (
       <>
@@ -52,176 +30,152 @@ function Icon({ name, className }) {
         <path d="M12 8v5m0 3h.01" strokeLinecap="round" />
       </>
     ),
-    plus: (
-      <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+    filter: <path d="M4 5h16l-6 8v6l-4 2v-8L4 5Z" strokeLinecap="round" strokeLinejoin="round" />,
+    sort: <path d="M7 6h10M7 12h7M7 18h4" strokeLinecap="round" />,
+    edit: (
+      <path
+        d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     ),
-    sparkles: (
-      <>
-        <path d="M12 3v2M18.364 5.636l-1.414 1.414M21 12h-2M18.364 18.364l-1.414-1.414M12 21v-2M5.636 18.364l1.414-1.414M3 12h2M5.636 5.636l1.414 1.414" strokeLinecap="round" />
-      </>
+    trash: (
+      <path
+        d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     ),
-    close: (
-      <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
-    ),
+    chevronDown: <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />,
+    checkSmall: <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />,
+    x: <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />,
+    plus: <path d="M12 5v14M5 12h14" strokeLinecap="round" />,
   };
   return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
       {paths[name]}
     </svg>
   );
 }
 
-export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("all");
-  const [hoveredTask, setHoveredTask] = useState(null);
-  const [animatedProgress, setAnimatedProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [toast, setToast] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
-  const tasks = [
-    {
-      id: 1,
-      title: "Design System Update",
-      priority: "High",
-      description:
-        "Finalize the color palette for the app. Ensure all semantic tokens are mapped to the new Indigo brand core.",
-      dueDate: "Oct 24, 2023",
-      attachments: 2,
-      comments: 4,
-      completed: false,
-      category: "Design",
-      assignees: ["AR", "JD"],
-    },
-    {
-      id: 2,
-      title: "Quarterly Review Deck",
-      priority: "Medium",
-      description:
-        "Gather user engagement metrics from the last 3 months to present to the product steering committee.",
-      dueDate: "Oct 26, 2023",
-      attachments: 0,
-      comments: 2,
-      completed: false,
-      category: "Marketing",
-      assignees: ["AR"],
-    },
-    {
-      id: 3,
-      title: "Onboarding Email Sequence",
-      priority: "Low",
-      description:
-        "Draft initial copy for the 5-day welcome sequence for new professional tier users.",
-      dueDate: null,
-      attachments: 0,
-      comments: 1,
-      completed: true,
-      category: "Content",
-      assignees: ["JD", "SM"],
-    },
-  ];
+export default function Dashboard() {
+  const [tasks, setTasks] = useState([
+    { id: 1, title: "Q4 Marketing Strategy Deck", description: "Refine the final narrative and adjust the budget...", dueDate: "Oct 24, 2024", dueSort: 1, priority: "High", status: "In Progress", completed: false },
+    { id: 2, title: "Coffee Bean Sourcing Audit", description: "Review the sustainability reports from Colombian...", dueDate: "Oct 25, 2024", dueSort: 2, priority: "Medium", status: "Pending", completed: false },
+    { id: 3, title: "Team Synchrony Sync", description: "Weekly check-in with the design and engineering...", dueDate: "Oct 23, 2024", dueSort: 0, priority: "Low", status: "Completed", completed: true },
+    { id: 4, title: "Client Onboarding Flow", description: "Map the first-week experience for new enterprise...", dueDate: "Oct 26, 2024", dueSort: 3, priority: "High", status: "Pending", completed: false },
+    { id: 5, title: "API Rate Limit Review", description: "Audit current thresholds against Q3 traffic spikes...", dueDate: "Oct 27, 2024", dueSort: 4, priority: "Medium", status: "In Progress", completed: false },
+    { id: 6, title: "Newsletter Copy Pass", description: "Tighten subject lines and CTA placement for the...", dueDate: "Oct 22, 2024", dueSort: -1, priority: "Low", status: "Completed", completed: true },
+  ]);
+
+  const [filterPriority, setFilterPriority] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [sortBy, setSortBy] = useState("default");
+  const [openMenu, setOpenMenu] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
+  const [editForm, setEditForm] = useState({ title: '', description: '', dueDate: '', priority: 'Medium', status: 'Pending' });
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+
+  const filterRef = useRef(null);
+  const sortRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (filterRef.current && !filterRef.current.contains(e.target) &&
+          sortRef.current && !sortRef.current.contains(e.target)) {
+        setOpenMenu(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleTask = (id) => {
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
+  };
+
+  const handleDelete = (id) => {
+    setShowDeleteConfirm(id);
+  };
+
+  const confirmDelete = (id) => {
+    setTasks((prev) => prev.filter((t) => t.id !== id));
+    setShowDeleteConfirm(null);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(null);
+  };
+
+  const handleEdit = (task) => {
+    setEditingTask(task.id);
+    setEditForm({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      priority: task.priority,
+      status: task.status,
+    });
+  };
+
+  const handleEditChange = (e) => {
+    setEditForm({ ...editForm, [e.target.name]: e.target.value });
+  };
+
+  const saveEdit = (id) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              title: editForm.title,
+              description: editForm.description,
+              dueDate: editForm.dueDate,
+              priority: editForm.priority,
+              status: editForm.status,
+            }
+          : t
+      )
+    );
+    setEditingTask(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingTask(null);
+  };
 
   const stats = {
-    weeklyProgress: 78,
-    focusHours: 24.5,
-    tasksCompleted: 12,
-    totalTasks: 18,
-    streak: 7,
-    overdue: 3,
+    total: tasks.length,
+    totalTrend: "+12%",
+    completed: tasks.filter((t) => t.completed).length,
+    completedPct: tasks.length > 0 ? `${Math.round((tasks.filter((t) => t.completed).length / tasks.length) * 100)}%` : "0%",
+    pending: tasks.filter((t) => !t.completed).length,
+    overdue: tasks.filter((t) => !t.completed && t.dueSort < 0).length,
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimatedProgress(stats.weeklyProgress);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
+  const priorityClass = (p) => ({ High: styles["badge-high"], Medium: styles["badge-medium"], Low: styles["badge-low"] }[p] || "");
+  const statusClass = (s) => ({ "In Progress": styles["status-progress"], Pending: styles["status-pending"], Completed: styles["status-completed"] }[s] || "");
 
-  useEffect(() => {
-    const now = new Date();
-    const hours = now.getHours();
-    const greeting = hours < 12 ? "Good morning" : hours < 17 ? "Good afternoon" : "Good evening";
-    setCurrentTime(greeting);
-  }, []);
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    setToast(null);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setIsSubmitting(false);
-    setToast(null);
-  };
-
-  const showToast = (type, message, title) => {
-    setToast({ type, message, title });
-    setTimeout(() => {
-      setToast(null);
-    }, 5000);
-  };
-
-  const handleSaveTask = (taskData) => {
-    let hasError = false;
-    let errorMessage = '';
-    let errorTitle = '';
-
-    if (!taskData.title.trim()) {
-      hasError = true;
-      errorTitle = 'Missing Title';
-      errorMessage = 'Please enter a task title to continue.';
-    } else if (!taskData.description.trim()) {
-      hasError = true;
-      errorTitle = 'Missing Description';
-      errorMessage = 'Please provide a description for the task.';
-    } else if (!taskData.dueDate) {
-      hasError = true;
-      errorTitle = 'Missing Due Date';
-      errorMessage = 'Please select a due date for the task.';
-    } else if (taskData.categories.length === 0) {
-      hasError = true;
-      errorTitle = 'Missing Categories';
-      errorMessage = 'Please add at least one category to the task.';
-    }
-
-    if (hasError) {
-      showToast('error', errorMessage, errorTitle);
-      return;
-    }
-
-    setIsSubmitting(true);
-    console.log('New task created:', taskData);
-    
-    showToast(
-      'success',
-      `Task "${taskData.title}" has been created successfully.`,
-      'Task Created!'
-    );
-
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setIsSubmitting(false);
-    }, 1000);
-  };
-
-  const filteredTasks = tasks.filter((task) => {
-    if (activeTab === "all") return true;
-    if (activeTab === "todo") return !task.completed;
-    if (activeTab === "done") return task.completed;
+  let visibleTasks = tasks.filter((t) => {
+    if (filterPriority !== "all" && t.priority !== filterPriority) return false;
+    if (filterStatus !== "all" && t.status !== filterStatus) return false;
     return true;
   });
 
-  const priorityClass = (priority) =>
-    ({ High: "priority-high", Medium: "priority-medium", Low: "priority-low" }[priority] || "");
+  if (sortBy === "dueDate") {
+    visibleTasks = [...visibleTasks].sort((a, b) => a.dueSort - b.dueSort);
+  } else if (sortBy === "priority") {
+    visibleTasks = [...visibleTasks].sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+  }
+
+  const activeFilterCount = (filterPriority !== "all" ? 1 : 0) + (filterStatus !== "all" ? 1 : 0);
+
+  const clearFilters = () => {
+    setFilterPriority("all");
+    setFilterStatus("all");
+  };
 
   return (
     <div className={styles["home-container"]}>
@@ -235,279 +189,290 @@ export default function Dashboard() {
       </div>
 
       <div className={styles["home-content-wrapper"]}>
-        {/* Header */}
-        <div className={styles["home-header-section"]}>
-          <div className={styles["home-greeting"]}>
-            <div className={styles["home-greeting-content"]}>
-              <div className={styles["home-chip"]}>
-                <span className={styles["home-chip-dot"]} />
-                <span className={styles["home-chip-label"]}>FOCUS MODE</span>
-                <span className={styles["home-chip-value"]}>ACTIVE</span>
+        {/* Stat cards */}
+        <div className={styles["home-stats-row"]}>
+          <div className={styles["home-stat-box"]}>
+            <div className={styles["home-stat-top"]}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-total"]}`}>
+                <Icon name="clipboard" className={styles["home-stat-icon"]} />
               </div>
-              <h1>
-                <span className={styles["home-greeting-text"]}>{currentTime},</span>{" "}
-                <span className={styles["home-name-highlight"]}>Alex</span>
-                <span className={styles["home-wave"]}>👋</span>
-              </h1>
-              <p>
-                You have <strong>8 tasks</strong> to focus on today. Let's make it productive.
-              </p>
+              <span className={styles["home-stat-trend"]}>{stats.totalTrend}</span>
+            </div>
+            <span className={styles["home-stat-label"]}>Total Tasks</span>
+            <span className={styles["home-stat-value"]}>{stats.total}</span>
+          </div>
+
+          <div className={styles["home-stat-box"]}>
+            <div className={styles["home-stat-top"]}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-completed"]}`}>
+                <Icon name="check" className={styles["home-stat-icon"]} />
+              </div>
+              <span className={styles["home-stat-trend"]}>{stats.completedPct}</span>
+            </div>
+            <span className={styles["home-stat-label"]}>Completed</span>
+            <span className={styles["home-stat-value"]}>{stats.completed}</span>
+          </div>
+
+          <div className={styles["home-stat-box"]}>
+            <div className={styles["home-stat-top"]}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-pending"]}`}>
+                <Icon name="hourglass" className={styles["home-stat-icon"]} />
+              </div>
+              <span className={styles["home-stat-trend"]}>Active</span>
+            </div>
+            <span className={styles["home-stat-label"]}>Pending</span>
+            <span className={styles["home-stat-value"]}>{stats.pending}</span>
+          </div>
+
+          <div className={styles["home-stat-box"]}>
+            <div className={styles["home-stat-top"]}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-overdue"]}`}>
+                <Icon name="alertCircle" className={styles["home-stat-icon"]} />
+              </div>
+              <span className={`${styles["home-stat-trend"]} ${styles["trend-urgent"]}`}>Urgent</span>
+            </div>
+            <span className={styles["home-stat-label"]}>Overdue</span>
+            <span className={`${styles["home-stat-value"]} ${styles["value-urgent"]}`}>{stats.overdue}</span>
+          </div>
+        </div>
+
+        {/* Section header */}
+        <div className={styles["home-rituals-header"]}>
+          <div>
+            <div className={styles["home-rituals-title-row"]}>
+              <h2 className={styles["home-rituals-title"]}>Daily Rituals</h2>
+              <span className={styles["home-rituals-count"]}>{visibleTasks.length}</span>
+            </div>
+            <p className={styles["home-rituals-sub"]}>Focus on what matters most today.</p>
+          </div>
+
+          <div className={styles["home-rituals-actions"]}>
+            {activeFilterCount > 0 && (
+              <button className={styles["home-clear-btn"]} onClick={clearFilters}>
+                <Icon name="x" className={styles["home-btn-icon"]} />
+                Clear
+              </button>
+            )}
+
+            <div className={styles["home-menu-wrap"]} ref={filterRef}>
+              <button
+                className={`${styles["home-filter-btn"]} ${activeFilterCount > 0 ? styles["btn-active"] : ""}`}
+                onClick={() => setOpenMenu(openMenu === "filter" ? null : "filter")}
+              >
+                <Icon name="filter" className={styles["home-btn-icon"]} />
+                Filter
+                {activeFilterCount > 0 && <span className={styles["home-filter-badge"]}>{activeFilterCount}</span>}
+                <Icon name="chevronDown" className={styles["home-chevron"]} />
+              </button>
+
+              {openMenu === "filter" && (
+                <div className={styles["home-dropdown"]}>
+                  <span className={styles["home-dropdown-label"]}>Priority</span>
+                  {["all", "High", "Medium", "Low"].map((p) => (
+                    <button
+                      key={p}
+                      className={styles["home-dropdown-item"]}
+                      onClick={() => setFilterPriority(p)}
+                    >
+                      {p === "all" ? "All priorities" : p}
+                      {filterPriority === p && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                    </button>
+                  ))}
+                  <span className={styles["home-dropdown-label"]}>Status</span>
+                  {["all", "In Progress", "Pending", "Completed"].map((s) => (
+                    <button
+                      key={s}
+                      className={styles["home-dropdown-item"]}
+                      onClick={() => setFilterStatus(s)}
+                    >
+                      {s === "all" ? "All statuses" : s}
+                      {filterStatus === s && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
-            <div className={styles["home-actions"]}>
-              <button 
-                className={styles["home-action-btn"]}
-                onClick={handleOpenModal}
+            <div className={styles["home-menu-wrap"]} ref={sortRef}>
+              <button
+                className={`${styles["home-sort-btn"]} ${sortBy !== "default" ? styles["btn-active"] : ""}`}
+                onClick={() => setOpenMenu(openMenu === "sort" ? null : "sort")}
               >
-                <Icon name="plus" className={styles["home-action-icon"]} />
-                <span>New Task</span>
+                <Icon name="sort" className={styles["home-btn-icon"]} />
+                Sort
+                <Icon name="chevronDown" className={styles["home-chevron"]} />
               </button>
-              <div className={styles["home-streak"]}>
-                <Icon name="flame" className={styles["home-streak-icon"]} />
-                <div className={styles["home-streak-info"]}>
-                  <span className={styles["home-streak-number"]}>{stats.streak}</span>
-                  <span className={styles["home-streak-label"]}>Day streak</span>
+
+              {openMenu === "sort" && (
+                <div className={styles["home-dropdown"]}>
+                  {[
+                    { key: "default", label: "Default" },
+                    { key: "dueDate", label: "Due date" },
+                    { key: "priority", label: "Priority" },
+                  ].map((opt) => (
+                    <button
+                      key={opt.key}
+                      className={styles["home-dropdown-item"]}
+                      onClick={() => {
+                        setSortBy(opt.key);
+                        setOpenMenu(null);
+                      }}
+                    >
+                      {opt.label}
+                      {sortBy === opt.key && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                    </button>
+                  ))}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Main grid */}
-        <div className={styles["home-grid"]}>
-          {/* Tasks */}
-          <div className={styles["home-tasks-section"]}>
-            <div className={styles["home-tasks-header"]}>
-              <div className={styles["home-tasks-header-left"]}>
-                <h2>Priority Tasks</h2>
-                <span className={styles["home-tasks-count"]}>{filteredTasks.length} tasks</span>
-              </div>
-              <div className={styles["home-tasks-header-right"]}>
-                <button className={styles["home-sort-btn"]}>
-                  <Icon name="list" className={styles["home-sort-icon"]} />
-                  <span>Sort</span>
-                </button>
-              </div>
-            </div>
-
-            <div className={styles["home-tabs"]}>
-              {["all", "todo", "done"].map((tab) => (
-                <button
-                  key={tab}
-                  className={`${styles["home-tab"]} ${activeTab === tab ? styles["home-tab-active"] : ""}`}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  <span className={styles["home-tab-text"]}>
-                    {tab === "all" ? "All" : tab === "todo" ? "Todo" : "Done"}
-                  </span>
-                  <span className={styles["home-tab-badge"]}>
-                    {tab === "all"
-                      ? tasks.length
-                      : tab === "todo"
-                      ? tasks.filter((t) => !t.completed).length
-                      : tasks.filter((t) => t.completed).length}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className={styles["home-task-list"]}>
-              {filteredTasks.map((task, index) => (
-                <div
-                  key={task.id}
-                  className={`${styles["home-task-item"]} ${styles[priorityClass(task.priority)]} ${
-                    task.completed ? styles["home-task-completed"] : ""
-                  } ${hoveredTask === task.id ? styles["home-task-hovered"] : ""}`}
-                  onMouseEnter={() => setHoveredTask(task.id)}
-                  onMouseLeave={() => setHoveredTask(null)}
-                  style={{ animationDelay: `${index * 0.08}s` }}
-                >
-                  <div className={styles["home-task-status"]}>
-                    <input
-                      type="checkbox"
-                      checked={task.completed}
-                      readOnly
-                      className={styles["home-task-checkbox"]}
-                    />
-                  </div>
-
-                  <div className={styles["home-task-content"]}>
-                    <div className={styles["home-task-title-row"]}>
-                      <h3>{task.title}</h3>
-                      <div className={styles["home-task-tags"]}>
-                        <span className={`${styles["home-task-priority"]} ${styles[priorityClass(task.priority)]}`}>
-                          {task.priority}
-                        </span>
-                        <span className={styles["home-task-category"]}>{task.category}</span>
-                      </div>
-                    </div>
-
-                    <p className={styles["home-task-description"]}>{task.description}</p>
-
-                    <div className={styles["home-task-meta"]}>
-                      <div className={styles["home-task-meta-left"]}>
-                        {task.dueDate && (
-                          <span className={styles["home-task-meta-item"]}>
-                            <Icon name="calendar" className={styles["home-meta-icon"]} />
-                            {task.dueDate}
-                          </span>
-                        )}
-                        {task.attachments > 0 && (
-                          <span className={styles["home-task-meta-item"]}>
-                            <Icon name="paperclip" className={styles["home-meta-icon"]} />
-                            {task.attachments}
-                          </span>
-                        )}
-                        {task.comments > 0 && (
-                          <span className={styles["home-task-meta-item"]}>
-                            <Icon name="message" className={styles["home-meta-icon"]} />
-                            {task.comments}
-                          </span>
-                        )}
-                      </div>
-                      <div className={styles["home-task-meta-right"]}>
-                        <div className={styles["home-task-avatars"]}>
-                          {task.assignees.map((initials, i) => (
-                            <span key={i} className={styles["home-avatar"]} style={{ zIndex: task.assignees.length - i }}>
-                              {initials}
-                            </span>
-                          ))}
-                        </div>
-                        {task.completed && (
-                          <span className={styles["home-task-completed-badge"]}>
-                            <Icon name="check" className={styles["home-badge-icon"]} />
-                            Completed
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Task list */}
+        {visibleTasks.length === 0 ? (
+          <div className={styles["home-empty-state"]}>
+            <p>No tasks match these filters.</p>
+            <button className={styles["home-clear-btn"]} onClick={clearFilters}>Clear filters</button>
           </div>
-
-          {/* Sidebar */}
-          <div className={styles["home-sidebar"]}>
-            <div className={`${styles["home-stat-card"]} ${styles["home-stat-card-progress"]}`}>
-              <div className={styles["home-stat-card-header"]}>
-                <h3>Weekly Progress</h3>
-                <span className={styles["home-stat-card-trend"]}>
-                  <Icon name="trending" className={styles["home-trend-icon"]} />
-                  12%
-                </span>
-              </div>
-              <div className={styles["home-stat-progress"]}>
-                <div className={styles["home-progress-ring"]}>
-                  <svg viewBox="0 0 120 120" className={styles["home-progress-svg"]}>
-                    <circle cx="60" cy="60" r="54" fill="none" stroke="#E6E2DF" strokeWidth="8" />
-                    <circle
-                      cx="60"
-                      cy="60"
-                      r="54"
-                      fill="none"
-                      stroke="url(#progressGradient)"
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={`${(animatedProgress / 100) * 339.292} 339.292`}
-                      className={styles["home-progress-circle"]}
-                    />
-                  </svg>
-                  <defs>
-                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#885210" />
-                      <stop offset="100%" stopColor="#4B3832" />
-                    </linearGradient>
-                  </defs>
-                  <div className={styles["home-progress-center"]}>
-                    <span className={styles["home-progress-number"]}>{Math.round(animatedProgress)}%</span>
-                    <span className={styles["home-progress-label"]}>Complete</span>
+        ) : (
+          <div className={styles["home-ritual-list"]}>
+            {visibleTasks.map((task, i) => (
+              <div
+                key={task.id}
+                className={`${styles["home-ritual-item"]} ${task.completed ? styles["home-ritual-completed"] : ""}`}
+                style={{ animationDelay: `${i * 0.05}s` }}
+              >
+                {/* Delete Confirmation Overlay */}
+                {showDeleteConfirm === task.id && (
+                  <div className={styles["home-delete-overlay"]}>
+                    <div className={styles["home-delete-modal"]}>
+                      <p>Are you sure you want to delete this task?</p>
+                      <div className={styles["home-delete-actions"]}>
+                        <button className={styles["home-delete-confirm"]} onClick={() => confirmDelete(task.id)}>
+                          Yes, Delete
+                        </button>
+                        <button className={styles["home-delete-cancel"]} onClick={cancelDelete}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className={styles["home-progress-details"]}>
-                <div className={styles["home-progress-detail"]}>
-                  <span className={styles["home-progress-detail-label"]}>Done</span>
-                  <span className={styles["home-progress-detail-value"]}>{stats.tasksCompleted}</span>
-                </div>
-                <div className={styles["home-progress-detail"]}>
-                  <span className={styles["home-progress-detail-label"]}>Total</span>
-                  <span className={styles["home-progress-detail-value"]}>{stats.totalTasks}</span>
-                </div>
-                <div className={styles["home-progress-detail"]}>
-                  <span className={styles["home-progress-detail-label"]}>Remaining</span>
-                  <span className={styles["home-progress-detail-value"]}>
-                    {stats.totalTasks - stats.tasksCompleted}
-                  </span>
-                </div>
-              </div>
-            </div>
+                )}
 
-            <div className={`${styles["home-stat-card"]} ${styles["home-stat-card-focus"]}`}>
-              <div className={styles["home-stat-card-header"]}>
-                <h3>Focus Hours</h3>
-                <Icon name="clock" className={styles["home-stat-card-icon"]} />
-              </div>
-              <div className={styles["home-stat-value-wrapper"]}>
-                <span className={styles["home-stat-value"]}>{stats.focusHours}</span>
-                <span className={styles["home-stat-value-unit"]}>hrs</span>
-              </div>
-              <p className={styles["home-stat-sub"]}>🎯 {stats.tasksCompleted} tasks completed this week</p>
-              <div className={styles["home-stat-footer"]}>
-                <span className={styles["home-stat-footer-text"]}>+2.5 hrs from last week</span>
-              </div>
-            </div>
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => toggleTask(task.id)}
+                  className={styles["home-ritual-checkbox"]}
+                />
 
-            <div className={styles["home-quick-stats"]}>
-              <div className={styles["home-quick-stat"]}>
-                <div className={styles["home-quick-stat-icon-wrapper"]}>
-                  <Icon name="list" className={styles["home-quick-stat-icon"]} />
-                </div>
-                <div className={styles["home-quick-stat-info"]}>
-                  <span className={styles["home-quick-stat-number"]}>{stats.totalTasks}</span>
-                  <span className={styles["home-quick-stat-label"]}>Tasks</span>
-                </div>
+                {editingTask === task.id ? (
+                  // Edit Mode
+                  <div className={styles["home-edit-form"]}>
+                    <div className={styles["home-edit-row"]}>
+                      <input
+                        name="title"
+                        value={editForm.title}
+                        onChange={handleEditChange}
+                        className={styles["home-edit-input"]}
+                        placeholder="Task title"
+                      />
+                      <input
+                        name="dueDate"
+                        value={editForm.dueDate}
+                        onChange={handleEditChange}
+                        className={styles["home-edit-input-sm"]}
+                        placeholder="Due date"
+                      />
+                    </div>
+                    <div className={styles["home-edit-row"]}>
+                      <input
+                        name="description"
+                        value={editForm.description}
+                        onChange={handleEditChange}
+                        className={styles["home-edit-input"]}
+                        placeholder="Description"
+                      />
+                      <select
+                        name="priority"
+                        value={editForm.priority}
+                        onChange={handleEditChange}
+                        className={styles["home-edit-select"]}
+                      >
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                      </select>
+                      <select
+                        name="status"
+                        value={editForm.status}
+                        onChange={handleEditChange}
+                        className={styles["home-edit-select"]}
+                      >
+                        <option value="In Progress">In Progress</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </div>
+                    <div className={styles["home-edit-actions"]}>
+                      <button className={styles["home-edit-save"]} onClick={() => saveEdit(task.id)}>
+                        Save
+                      </button>
+                      <button className={styles["home-edit-cancel"]} onClick={cancelEdit}>
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  // Display Mode
+                  <>
+                    <div className={styles["home-ritual-content"]}>
+                      <h3 className={styles["home-ritual-title"]}>{task.title}</h3>
+                      <p className={styles["home-ritual-desc"]}>{task.description}</p>
+                    </div>
+
+                    <div className={styles["home-ritual-due"]}>
+                      <span className={styles["home-due-label"]}>DUE DATE</span>
+                      <span className={styles["home-due-value"]}>{task.dueDate}</span>
+                    </div>
+
+                    <div className={styles["home-ritual-badges"]}>
+                      <span className={`${styles["home-badge"]} ${priorityClass(task.priority)}`}>{task.priority}</span>
+                      <span className={`${styles["home-badge"]} ${statusClass(task.status)}`}>{task.status}</span>
+                    </div>
+
+                    <div className={styles["home-ritual-actions"]}>
+                      <button className={styles["home-icon-btn"]} onClick={() => handleEdit(task)} aria-label="Edit task">
+                        <Icon name="edit" className={styles["home-action-icon"]} />
+                      </button>
+                      <button className={styles["home-icon-btn"]} onClick={() => handleDelete(task.id)} aria-label="Delete task">
+                        <Icon name="trash" className={styles["home-action-icon"]} />
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
-              <div className={styles["home-quick-stat"]}>
-                <div className={styles["home-quick-stat-icon-wrapper"]}>
-                  <Icon name="check" className={styles["home-quick-stat-icon"]} />
-                </div>
-                <div className={styles["home-quick-stat-info"]}>
-                  <span className={styles["home-quick-stat-number"]}>{stats.tasksCompleted}</span>
-                  <span className={styles["home-quick-stat-label"]}>Completed</span>
-                </div>
-              </div>
-              <div className={styles["home-quick-stat"]}>
-                <div className={styles["home-quick-stat-icon-wrapper"]}>
-                  <Icon name="alertCircle" className={styles["home-quick-stat-icon"]} />
-                </div>
-                <div className={styles["home-quick-stat-info"]}>
-                  <span className={styles["home-quick-stat-number"]}>{stats.overdue}</span>
-                  <span className={styles["home-quick-stat-label"]}>Overdue</span>
-                </div>
-              </div>
-            </div>
+            ))}
+          </div>
+        )}
+
+        {/* Banner */}
+        <div className={styles["home-banner"]}>
+          <div className={styles["home-banner-overlay"]} />
+          <img 
+            src={bannerImage} 
+            alt="Master your ritual" 
+            className={styles["home-banner-image"]} 
+          />
+          <div className={styles["home-banner-content"]}>
+            <h2 className={styles["home-banner-title"]}>Master your ritual.</h2>
+            <p className={styles["home-banner-desc"]}>
+              Productivity isn't just about finishing tasks. It's about finding rhythm in the work you love.
+            </p>
+            <button className={styles["home-banner-cta"]}>Explore Insights</button>
           </div>
         </div>
       </div>
-
-      {/* Create Task Modal */}
-      <CreateTaskModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSave={handleSaveTask}
-        isSubmitting={isSubmitting}
-      />
-
-      {/* Toast Notification */}
-      {toast && (
-        <ToastNotification
-          type={toast.type}
-          message={toast.message}
-          title={toast.title}
-          onClose={() => setToast(null)}
-        />
-      )}
     </div>
   );
 }
