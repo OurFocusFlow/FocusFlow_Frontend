@@ -6,14 +6,23 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     title: '',
     dueDate: '',
     priority: 'Medium',
-    categories: [],
+    category: 'Design',
     description: '',
   });
-  const [newCategory, setNewCategory] = useState('');
   const [isDragging, setIsDragging] = useState(false);
 
   // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
+
+  // Category options
+  const categoryOptions = [
+    'Design',
+    'Marketing',
+    'Content',
+    'Development',
+    'Research',
+    'Documentation'
+  ];
 
   if (!isOpen) return null;
 
@@ -26,45 +35,29 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     setTaskData(prev => ({ ...prev, priority }));
   };
 
-  const handleAddCategory = () => {
-    if (newCategory.trim() && !taskData.categories.includes(newCategory.trim())) {
-      setTaskData(prev => ({
-        ...prev,
-        categories: [...prev.categories, newCategory.trim()]
-      }));
-      setNewCategory('');
-    }
-  };
-
-  const handleRemoveCategory = (category) => {
-    setTaskData(prev => ({
-      ...prev,
-      categories: prev.categories.filter(c => c !== category)
-    }));
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddCategory();
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     
     // Validate due date is not in the past
     if (taskData.dueDate && taskData.dueDate < today) {
-      // You could show an error message here
-      // For now, we'll let the parent handle it
       if (onSave) {
-        onSave(taskData);
+        // Convert category string to array for compatibility
+        const taskToSave = {
+          ...taskData,
+          categories: [taskData.category]
+        };
+        onSave(taskToSave);
       }
       return;
     }
     
     if (onSave) {
-      onSave(taskData);
+      // Convert category string to array for compatibility
+      const taskToSave = {
+        ...taskData,
+        categories: [taskData.category]
+      };
+      onSave(taskToSave);
     }
   };
 
@@ -116,7 +109,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               placeholder="e.g. Design System Documentation"
               className={styles.formInput}
               disabled={isSubmitting}
-              required
             />
           </div>
 
@@ -135,7 +127,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
                 className={styles.formInput}
                 disabled={isSubmitting}
                 min={today}
-                required
               />
             </div>
             <div className={styles.formGroup}>
@@ -158,52 +149,25 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
             </div>
           </div>
 
-          {/* Categories */}
+          {/* Category - Select Dropdown */}
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>
-              Categories
+              Category
               <span className={styles.requiredStar}>*</span>
             </label>
-            <div className={styles.categoriesContainer}>
-              <div className={styles.categoriesList}>
-                {taskData.categories.map((category) => (
-                  <span key={category} className={styles.categoryTag}>
-                    #{category}
-                    <button
-                      type="button"
-                      className={styles.categoryRemove}
-                      onClick={() => handleRemoveCategory(category)}
-                      disabled={isSubmitting}
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                ))}
-                <div className={styles.categoryInputWrapper}>
-                  <input
-                    type="text"
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Add Category"
-                    className={styles.categoryInput}
-                    disabled={isSubmitting}
-                  />
-                  <button
-                    type="button"
-                    className={styles.categoryAddBtn}
-                    onClick={handleAddCategory}
-                    disabled={isSubmitting}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <select
+              name="category"
+              value={taskData.category}
+              onChange={handleInputChange}
+              className={styles.formSelect}
+              disabled={isSubmitting}
+            >
+              {categoryOptions.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Description */}
@@ -220,7 +184,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               className={styles.formTextarea}
               rows="4"
               disabled={isSubmitting}
-              required
             />
           </div>
 

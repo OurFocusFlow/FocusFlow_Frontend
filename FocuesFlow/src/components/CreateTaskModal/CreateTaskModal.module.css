@@ -666,3 +666,41 @@
   background: transparent;
   color: var(--color-text-muted, #7E7471);
 }
+
+/* Form Select - Dropdown */
+.formSelect {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--color-gray-card, #E6E2DF);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--color-dark-brown, #33231D);
+  background: var(--color-cream-bg, #FAF5F2);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237E7471' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.formSelect:focus {
+  outline: none;
+  border-color: var(--color-accent-orange, #885210);
+  background: var(--color-cream-light, #FDF8F5);
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+.formSelect:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.formSelect option {
+  padding: 8px;
+  color: var(--color-dark-brown, #33231D);
+  background: var(--color-cream-light, #FDF8F5);
+}
