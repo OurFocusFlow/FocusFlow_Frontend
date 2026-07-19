@@ -108,7 +108,8 @@ export default function MyTasks() {
     deleteTask, 
     getTaskCount, 
     getPendingCount, 
-    getCompletedCount 
+    getCompletedCount,
+    isLoading 
   } = useTasks();
   
   const [activeTab, setActiveTab] = useState("all");
@@ -121,7 +122,6 @@ export default function MyTasks() {
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Edit state
   const [editingTask, setEditingTask] = useState(null);
   const [editForm, setEditForm] = useState({ 
     title: '', 
@@ -132,28 +132,20 @@ export default function MyTasks() {
     assignees: ''
   });
   const [showEditModal, setShowEditModal] = useState(false);
-  
-  // Edit error state
   const [editErrors, setEditErrors] = useState({
     title: '',
     description: '',
     dueDate: '',
   });
   
-  // Delete state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
   const categories = ["All", "Design", "Marketing", "Content", "Development", "Research", "Documentation"];
   const priorities = ["All", "High", "Medium", "Low"];
-
-  // Priority order for sorting
   const priorityOrder = { High: 0, Medium: 1, Low: 2 };
-
-  // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
 
-  // Stats from context
   const stats = {
     total: getTaskCount(),
     completed: getCompletedCount(),
@@ -161,7 +153,6 @@ export default function MyTasks() {
     highPriority: tasks.filter(t => t.priority === "High" && !t.completed).length,
   };
 
-  // Modal handlers
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setToast(null);
@@ -180,19 +171,17 @@ export default function MyTasks() {
     }, 5000);
   };
 
-  // Helper function to format date
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString + 'T00:00:00');
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const handleSaveTask = (taskData) => {
+  const handleSaveTask = async (taskData) => {
     let hasError = false;
     let errorMessage = '';
     let errorTitle = '';
     
-    // Handle both old format (categories array) and new format (category string)
     const categories = taskData.categories || [taskData.category || 'General'];
     const category = categories[0] || 'General';
     
@@ -213,15 +202,14 @@ export default function MyTasks() {
       errorTitle = 'Invalid Due Date';
       errorMessage = 'Due date cannot be in the past. Please select a future date.';
     }
-  
+
     if (hasError) {
       showToast('error', errorMessage, errorTitle);
       return;
     }
-  
+
     setIsSubmitting(true);
     
-    // Create new task with formatted due date
     const newTask = {
       id: Date.now(),
       title: taskData.title,
@@ -238,24 +226,30 @@ export default function MyTasks() {
       comments: 0,
     };
     
-    addTask(newTask);
+    const result = await addTask(newTask);
     
-    showToast(
-      'success',
-      `Task "${taskData.title}" has been created successfully.`,
-      'Task Created!'
-    );
-  
+    if (result.success) {
+      showToast(
+        'success',
+        `Task "${taskData.title}" has been created successfully.`,
+        'Task Created!'
+      );
+    } else {
+      showToast(
+        'error',
+        'Failed to create task. Please try again.',
+        'Error'
+      );
+    }
+
     setTimeout(() => {
       setIsModalOpen(false);
       setIsSubmitting(false);
     }, 1000);
   };
 
-  // ==================== EDIT FUNCTIONS ====================
   const handleEditClick = (task) => {
     setEditingTask(task);
-    // Convert formatted date back to YYYY-MM-DD for input
     let dueDateValue = '';
     if (task.dueDate) {
       const dateParts = task.dueDate.split(' ');
@@ -276,39 +270,33 @@ export default function MyTasks() {
       category: task.category,
       assignees: task.assignees ? task.assignees.join(', ') : '',
     });
-    // Reset errors when opening
     setEditErrors({ title: '', description: '', dueDate: '' });
     setShowEditModal(true);
   };
 
   const handleEditChange = (e) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
-    // Clear error for this field when user types
     if (editErrors[e.target.name]) {
       setEditErrors(prev => ({ ...prev, [e.target.name]: '' }));
     }
   };
 
-  const handleEditSubmit = () => {
-    // Reset errors
+  const handleEditSubmit = async () => {
     setEditErrors({ title: '', description: '', dueDate: '' });
     
     let hasError = false;
     const errors = { title: '', description: '', dueDate: '' };
 
-    // Validate Title
     if (!editForm.title.trim()) {
       errors.title = 'Task title is required';
       hasError = true;
     }
 
-    // Validate Description
     if (!editForm.description.trim()) {
       errors.description = 'Description is required';
       hasError = true;
     }
 
-    // Validate Due Date
     if (!editForm.dueDate) {
       errors.dueDate = 'Due date is required';
       hasError = true;
@@ -319,7 +307,6 @@ export default function MyTasks() {
 
     if (hasError) {
       setEditErrors(errors);
-      // Show toast for the first error
       const firstError = errors.title || errors.description || errors.dueDate;
       showToast('error', firstError, 'Validation Error');
       return;
@@ -335,24 +322,32 @@ export default function MyTasks() {
       assignees: editForm.assignees ? editForm.assignees.split(',').map(s => s.trim()).filter(s => s) : [],
     };
     
-    updateTask(editingTask.id, updatedTask);
+    const result = await updateTask(editingTask.id, updatedTask);
     
     setShowEditModal(false);
     setEditingTask(null);
     setEditErrors({ title: '', description: '', dueDate: '' });
-    showToast('success', `Task "${editForm.title}" has been updated.`, 'Task Updated!');
+    
+    if (result.success) {
+      showToast('success', `Task "${editForm.title}" has been updated.`, 'Task Updated!');
+    } else {
+      showToast('error', 'Failed to update task. Please try again.', 'Error');
+    }
   };
 
-  // ==================== DELETE FUNCTIONS ====================
   const handleDeleteClick = (task) => {
     setTaskToDelete(task);
     setShowDeleteModal(true);
   };
 
-  const handleDeleteConfirm = () => {
-    deleteTask(taskToDelete.id);
+  const handleDeleteConfirm = async () => {
+    const result = await deleteTask(taskToDelete.id);
     setShowDeleteModal(false);
-    showToast('success', `Task "${taskToDelete.title}" has been deleted.`, 'Task Deleted!');
+    if (result.success) {
+      showToast('success', `Task "${taskToDelete.title}" has been deleted.`, 'Task Deleted!');
+    } else {
+      showToast('error', 'Failed to delete task. Please try again.', 'Error');
+    }
     setTaskToDelete(null);
   };
 
@@ -361,18 +356,19 @@ export default function MyTasks() {
     setTaskToDelete(null);
   };
 
-  // ==================== TOGGLE COMPLETE ====================
-  const toggleTaskComplete = (id) => {
+  const toggleTaskComplete = async (id) => {
     const task = tasks.find(t => t.id === id);
     if (task) {
-      updateTask(id, { 
+      const result = await updateTask(id, { 
         completed: !task.completed,
         status: !task.completed ? 'Completed' : 'Pending'
       });
+      if (!result.success) {
+        showToast('error', 'Failed to update task status', 'Error');
+      }
     }
   };
 
-  // ==================== FILTERING & SORTING ====================
   const filteredTasks = tasks
     .filter((task) => {
       if (activeTab === "all") return true;
@@ -399,7 +395,6 @@ export default function MyTasks() {
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
-  // ==================== HELPERS ====================
   const priorityClass = (priority) =>
     ({ High: "priority-high", Medium: "priority-medium", Low: "priority-low" }[priority] || "");
 
@@ -424,7 +419,6 @@ export default function MyTasks() {
 
   return (
     <div className={styles["mytasks-container"]}>
-      {/* Background */}
       <div className={styles["mytasks-bg"]}>
         <div className={styles["mytasks-bg-orb"]} />
         <div className={styles["mytasks-bg-orb"]} />
@@ -434,7 +428,6 @@ export default function MyTasks() {
       </div>
 
       <div className={styles["mytasks-content-wrapper"]}>
-        {/* Header */}
         <div className={styles["mytasks-header-section"]}>
           <div className={styles["mytasks-header"]}>
             <div>
@@ -446,13 +439,13 @@ export default function MyTasks() {
             <button 
               className={styles["mytasks-new-task-btn"]}
               onClick={handleOpenModal}
+              disabled={isLoading}
             >
               <Icon name="plus" className={styles["mytasks-new-task-icon"]} />
               New Task
             </button>
           </div>
 
-          {/* Stats Row */}
           <div className={styles["mytasks-stats-row"]}>
             <div className={styles["mytasks-stat-box"]}>
               <div className={styles["mytasks-stat-top"]}>
@@ -500,7 +493,6 @@ export default function MyTasks() {
           </div>
         </div>
 
-        {/* Filters */}
         <div className={styles["mytasks-filters"]}>
           <div className={styles["mytasks-search"]}>
             <Icon name="search" className={styles["mytasks-search-icon"]} />
@@ -539,7 +531,6 @@ export default function MyTasks() {
           </div>
         </div>
 
-        {/* Tabs & View */}
         <div className={styles["mytasks-tabs-section"]}>
           <div className={styles["mytasks-tabs"]}>
             {["all", "todo", "done"].map((tab) => (
@@ -586,7 +577,6 @@ export default function MyTasks() {
           </div>
         </div>
 
-        {/* Task List/Grid */}
         <div className={styles["mytasks-task-list"]}>
           {filteredTasks.length === 0 ? (
             <div className={styles["mytasks-empty"]}>
@@ -611,6 +601,7 @@ export default function MyTasks() {
                     checked={task.completed}
                     onChange={() => toggleTaskComplete(task.id)}
                     className={styles["mytasks-task-checkbox"]}
+                    disabled={isLoading}
                   />
                 </div>
 
@@ -654,6 +645,7 @@ export default function MyTasks() {
                           className={styles["mytasks-edit-btn"]}
                           onClick={() => handleEditClick(task)}
                           aria-label="Edit task"
+                          disabled={isLoading}
                         >
                           <Icon name="edit" className={styles["mytasks-action-icon"]} />
                         </button>
@@ -661,6 +653,7 @@ export default function MyTasks() {
                           className={styles["mytasks-delete-btn"]}
                           onClick={() => handleDeleteClick(task)}
                           aria-label="Delete task"
+                          disabled={isLoading}
                         >
                           <Icon name="trash" className={styles["mytasks-action-icon"]} />
                         </button>
@@ -694,6 +687,7 @@ export default function MyTasks() {
                         checked={task.completed}
                         onChange={() => toggleTaskComplete(task.id)}
                         className={styles["mytasks-grid-checkbox"]}
+                        disabled={isLoading}
                       />
                     </div>
                     <div className={styles["mytasks-grid-badges"]}>
@@ -723,6 +717,7 @@ export default function MyTasks() {
                         className={styles["mytasks-edit-btn"]}
                         onClick={() => handleEditClick(task)}
                         aria-label="Edit task"
+                        disabled={isLoading}
                       >
                         <Icon name="edit" className={styles["mytasks-action-icon"]} />
                       </button>
@@ -730,6 +725,7 @@ export default function MyTasks() {
                         className={styles["mytasks-delete-btn"]}
                         onClick={() => handleDeleteClick(task)}
                         aria-label="Delete task"
+                        disabled={isLoading}
                       >
                         <Icon name="trash" className={styles["mytasks-action-icon"]} />
                       </button>
@@ -749,7 +745,6 @@ export default function MyTasks() {
         </div>
       </div>
 
-      {/* ==================== EDIT MODAL ==================== */}
       {showEditModal && editingTask && (
         <div className={styles["mytasks-modal-overlay"]} onClick={() => {
           setShowEditModal(false);
@@ -868,15 +863,15 @@ export default function MyTasks() {
               <button 
                 className={styles["mytasks-modal-save"]}
                 onClick={handleEditSubmit}
+                disabled={isLoading}
               >
-                Save Changes
+                {isLoading ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ==================== DELETE MODAL ==================== */}
       {showDeleteModal && taskToDelete && (
         <div className={styles["mytasks-modal-overlay"]} onClick={handleDeleteCancel}>
           <div className={styles["mytasks-delete-modal"]} onClick={(e) => e.stopPropagation()}>
@@ -897,15 +892,15 @@ export default function MyTasks() {
               <button 
                 className={styles["mytasks-delete-confirm"]}
                 onClick={handleDeleteConfirm}
+                disabled={isLoading}
               >
-                Yes, Delete
+                {isLoading ? 'Deleting...' : 'Yes, Delete'}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Create Task Modal */}
       <CreateTaskModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
@@ -913,7 +908,6 @@ export default function MyTasks() {
         isSubmitting={isSubmitting}
       />
 
-      {/* Toast Notification */}
       {toast && (
         <ToastNotification
           type={toast.type}
