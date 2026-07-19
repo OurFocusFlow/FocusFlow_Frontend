@@ -63,7 +63,7 @@ function Icon({ name, className }) {
 const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
-  const { tasks, updateTask, deleteTask, toggleTaskComplete } = useTasks();
+  const { tasks, updateTask, deleteTask, toggleTaskComplete, isLoading } = useTasks();
   
   const [filterPriority, setFilterPriority] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -72,20 +72,14 @@ export default function Dashboard() {
   const [editingTask, setEditingTask] = useState(null);
   const [editForm, setEditForm] = useState({ title: '', description: '', dueDate: '', priority: 'Medium', category: 'Design' });
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
-  
-  // Toast state
   const [toast, setToast] = useState(null);
 
   const filterRef = useRef(null);
   const sortRef = useRef(null);
 
-  // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
-
-  // Category options
   const categoryOptions = ["Design", "Marketing", "Content", "Development", "Research", "Documentation"];
 
-  // Helper function to format date from "Oct 24, 2024" to "2024-10-24"
   const formatDateToInput = (dateString) => {
     if (!dateString) return '';
     try {
@@ -97,11 +91,9 @@ export default function Dashboard() {
     }
   };
 
-  // Helper function to format date for display
   const formatDateForDisplay = (dateString) => {
     if (!dateString) return 'No date';
     try {
-      // If it's already in a readable format, return as is
       if (dateString.includes(' ')) return dateString;
       const date = new Date(dateString + 'T00:00:00');
       if (isNaN(date.getTime())) return 'Invalid date';
@@ -111,7 +103,6 @@ export default function Dashboard() {
     }
   };
 
-  // Toast helper
   const showToast = (type, message, title) => {
     setToast({ type, message, title });
     setTimeout(() => {
@@ -130,12 +121,16 @@ export default function Dashboard() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const toggleTaskCompleteHandler = (id) => {
+  const toggleTaskCompleteHandler = async (id) => {
     const task = tasks.find(t => t.id === id);
     if (task) {
-      toggleTaskComplete(id);
-      const status = !task.completed ? 'completed' : 'uncompleted';
-      showToast('success', `Task "${task.title}" marked as ${status}`, 'Task Updated');
+      const result = await toggleTaskComplete(id);
+      if (result.success) {
+        const status = !task.completed ? 'completed' : 'uncompleted';
+        showToast('success', `Task "${task.title}" marked as ${status}`, 'Task Updated');
+      } else {
+        showToast('error', 'Failed to update task status', 'Error');
+      }
     }
   };
 
@@ -143,12 +138,14 @@ export default function Dashboard() {
     setShowDeleteConfirm(id);
   };
 
-  const confirmDelete = (id) => {
+  const confirmDelete = async (id) => {
     const task = tasks.find(t => t.id === id);
-    deleteTask(id);
+    const result = await deleteTask(id);
     setShowDeleteConfirm(null);
-    if (task) {
+    if (result.success && task) {
       showToast('success', `Task "${task.title}" has been deleted.`, 'Task Deleted');
+    } else if (!result.success) {
+      showToast('error', 'Failed to delete task', 'Error');
     }
   };
 
@@ -171,20 +168,17 @@ export default function Dashboard() {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
-  const saveEdit = (id) => {
-    // Validate Title
+  const saveEdit = async (id) => {
     if (!editForm.title.trim()) {
       showToast('error', 'Please enter a task title.', 'Missing Title');
       return;
     }
 
-    // Validate Description
     if (!editForm.description.trim()) {
       showToast('error', 'Please enter a task description.', 'Missing Description');
       return;
     }
 
-    // Validate Due Date
     if (!editForm.dueDate) {
       showToast('error', 'Please select a due date.', 'Missing Due Date');
       return;
@@ -195,7 +189,6 @@ export default function Dashboard() {
       return;
     }
 
-    // Format date for display
     const dateObj = new Date(editForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -208,9 +201,13 @@ export default function Dashboard() {
       category: editForm.category,
     };
 
-    updateTask(id, updatedTask);
+    const result = await updateTask(id, updatedTask);
     setEditingTask(null);
-    showToast('success', `Task "${updatedTask.title}" has been updated.`, 'Task Updated');
+    if (result.success) {
+      showToast('success', `Task "${updatedTask.title}" has been updated.`, 'Task Updated');
+    } else {
+      showToast('error', 'Failed to update task', 'Error');
+    }
   };
 
   const cancelEdit = () => {
@@ -250,7 +247,6 @@ export default function Dashboard() {
 
   return (
     <div className={styles["home-container"]}>
-      {/* Background Decorations */}
       <div className={styles["home-bg"]}>
         <div className={styles["home-bg-orb"]} />
         <div className={styles["home-bg-orb"]} />
@@ -260,7 +256,6 @@ export default function Dashboard() {
       </div>
 
       <div className={styles["home-content-wrapper"]}>
-        {/* Stat cards */}
         <div className={styles["home-stats-row"]}>
           <div className={styles["home-stat-box"]}>
             <div className={styles["home-stat-top"]}>
@@ -307,7 +302,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Section header */}
         <div className={styles["home-rituals-header"]}>
           <div>
             <div className={styles["home-rituals-title-row"]}>
@@ -399,7 +393,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Task list */}
         {visibleTasks.length === 0 ? (
           <div className={styles["home-empty-state"]}>
             <p>No tasks match these filters.</p>
@@ -413,14 +406,17 @@ export default function Dashboard() {
                 className={`${styles["home-ritual-item"]} ${task.completed ? styles["home-ritual-completed"] : ""}`}
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
-                {/* Delete Confirmation Overlay */}
                 {showDeleteConfirm === task.id && (
                   <div className={styles["home-delete-overlay"]}>
                     <div className={styles["home-delete-modal"]}>
                       <p>Are you sure you want to delete this task?</p>
                       <div className={styles["home-delete-actions"]}>
-                        <button className={styles["home-delete-confirm"]} onClick={() => confirmDelete(task.id)}>
-                          Yes, Delete
+                        <button 
+                          className={styles["home-delete-confirm"]} 
+                          onClick={() => confirmDelete(task.id)}
+                          disabled={isLoading}
+                        >
+                          {isLoading ? 'Deleting...' : 'Yes, Delete'}
                         </button>
                         <button className={styles["home-delete-cancel"]} onClick={cancelDelete}>
                           Cancel
@@ -435,10 +431,10 @@ export default function Dashboard() {
                   checked={task.completed}
                   onChange={() => toggleTaskCompleteHandler(task.id)}
                   className={styles["home-ritual-checkbox"]}
+                  disabled={isLoading}
                 />
 
                 {editingTask === task.id ? (
-                  // Edit Mode
                   <div className={styles["home-edit-form"]}>
                     <div className={styles["home-edit-row"]}>
                       <input
@@ -487,8 +483,12 @@ export default function Dashboard() {
                       </select>
                     </div>
                     <div className={styles["home-edit-actions"]}>
-                      <button className={styles["home-edit-save"]} onClick={() => saveEdit(task.id)}>
-                        Save
+                      <button 
+                        className={styles["home-edit-save"]} 
+                        onClick={() => saveEdit(task.id)}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? 'Saving...' : 'Save'}
                       </button>
                       <button className={styles["home-edit-cancel"]} onClick={cancelEdit}>
                         Cancel
@@ -496,7 +496,6 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ) : (
-                  // Display Mode
                   <>
                     <div className={styles["home-ritual-content"]}>
                       <h3 className={styles["home-ritual-title"]}>{task.title}</h3>
@@ -514,10 +513,20 @@ export default function Dashboard() {
                     </div>
 
                     <div className={styles["home-ritual-actions"]}>
-                      <button className={styles["home-icon-btn"]} onClick={() => handleEdit(task)} aria-label="Edit task">
+                      <button 
+                        className={styles["home-icon-btn"]} 
+                        onClick={() => handleEdit(task)} 
+                        aria-label="Edit task"
+                        disabled={isLoading}
+                      >
                         <Icon name="edit" className={styles["home-action-icon"]} />
                       </button>
-                      <button className={styles["home-icon-btn"]} onClick={() => handleDelete(task.id)} aria-label="Delete task">
+                      <button 
+                        className={styles["home-icon-btn"]} 
+                        onClick={() => handleDelete(task.id)} 
+                        aria-label="Delete task"
+                        disabled={isLoading}
+                      >
                         <Icon name="trash" className={styles["home-action-icon"]} />
                       </button>
                     </div>
@@ -528,7 +537,6 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Banner */}
         <div className={styles["home-banner"]}>
           <div className={styles["home-banner-overlay"]} />
           <img 
@@ -546,7 +554,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Toast Notification */}
       {toast && (
         <ToastNotification
           type={toast.type}
