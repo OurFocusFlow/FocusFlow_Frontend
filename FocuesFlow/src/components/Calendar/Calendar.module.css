@@ -2075,3 +2075,120 @@
   background: rgba(136, 82, 16, 0.2);
   border-radius: 4px;
 }
+
+/* ==================== FORM GROUPS ==================== */
+.cal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.cal-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7E7471;
+  letter-spacing: 0.04em;
+}
+
+.cal-required-star {
+  color: #D6493A;
+  margin-left: 2px;
+}
+
+/* Update existing form row for better spacing */
+.cal-form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cal-form-row .cal-form-group {
+  flex: 1;
+  min-width: 80px;
+}
+
+/* Update input styles */
+.cal-input {
+  width: 100%;
+  border: 1px solid #E6E2DF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13.5px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.cal-input:focus {
+  outline: none;
+  border-color: #885210;
+  box-shadow: 0 0 0 3px rgba(136, 82, 16, 0.08);
+}
+
+.cal-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cal-input::placeholder {
+  color: #B8AFA1;
+}
+
+/* Update textarea styles */
+.cal-textarea {
+  width: 100%;
+  border: 1px solid #E6E2DF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+  resize: vertical;
+  min-height: 40px;
+}
+
+.cal-textarea:focus {
+  outline: none;
+  border-color: #885210;
+  box-shadow: 0 0 0 3px rgba(136, 82, 16, 0.08);
+}
+
+.cal-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cal-textarea::placeholder {
+  color: #B8AFA1;
+}
+
+/* Update select styles */
+.cal-select {
+  width: 100%;
+  border: 1px solid #E6E2DF;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FFFFFF;
+  transition: border-color 0.15s ease;
+  cursor: pointer;
+}
+
+.cal-select:focus {
+  outline: none;
+  border-color: #885210;
+  box-shadow: 0 0 0 3px rgba(136, 82, 16, 0.08);
+}
+
+.cal-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
