@@ -15,6 +15,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ForgotPassword from './components/ForgetPassword/ForgetPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import Verification from './components/VerificationComponent/VerificationComponent';
+import Calendar from './components/Calendar/Calendar';
 
 import './App.css';  
 
@@ -268,6 +269,14 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Profile />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/calendar" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Calendar />
                 </Layout>
               </ProtectedRoute>
             } />
