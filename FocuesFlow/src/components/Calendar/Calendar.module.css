@@ -2011,3 +2011,11 @@
   background: transparent;
   cursor: not-allowed;
 }
+
+/* ==================== CATEGORY BADGES ==================== */
+.category-design { background: #FBEAD9; color: #885210; }
+.category-marketing { background: #FCE3E0; color: #D6493A; }
+.category-content { background: #D1FAE5; color: #059669; }
+.category-development { background: #DBEAFE; color: #1D4ED8; }
+.category-research { background: #F3E8FF; color: #7C3AED; }
+.category-documentation { background: #FEF3C7; color: #D97706; }

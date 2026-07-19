@@ -38,7 +38,7 @@ const MONTH_NAMES = [
   "July", "August", "September", "October", "November", "December",
 ];
 const PRIORITIES = ["High", "Medium", "Low"];
-const STATUSES = ["Pending", "In Progress", "Completed"];
+const CATEGORIES = ["Design", "Marketing", "Content", "Development", "Research", "Documentation"];
 
 function toDateKey(y, m, d) {
   return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
@@ -64,9 +64,9 @@ export default function Calendar() {
   const [anchorDate, setAnchorDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const [editDraft, setEditDraft] = useState({ title: "", priority: "Medium", status: "Pending" });
+  const [editDraft, setEditDraft] = useState({ title: "", priority: "Medium", category: "Design" });
   const [showAddForm, setShowAddForm] = useState(false);
-  const [addDraft, setAddDraft] = useState({ title: "", priority: "Medium", status: "Pending" });
+  const [addDraft, setAddDraft] = useState({ title: "", priority: "Medium", category: "Design" });
   const [dragTaskId, setDragTaskId] = useState(null);
   const [dragOverKey, setDragOverKey] = useState(null);
   const [isActionInProgress, setIsActionInProgress] = useState(false);
@@ -264,7 +264,14 @@ export default function Calendar() {
 
   const priorityDotClass = (p) => ({ High: styles["dot-high"], Medium: styles["dot-medium"], Low: styles["dot-low"] }[p] || "");
   const priorityBadgeClass = (p) => ({ High: styles["badge-high"], Medium: styles["badge-medium"], Low: styles["badge-low"] }[p] || "");
-  const statusBadgeClass = (s) => ({ "In Progress": styles["status-progress"], Pending: styles["status-pending"], Completed: styles["status-completed"] }[s] || "");
+  const categoryBadgeClass = (c) => ({ 
+    Design: styles["category-design"], 
+    Marketing: styles["category-marketing"], 
+    Content: styles["category-content"], 
+    Development: styles["category-development"], 
+    Research: styles["category-research"], 
+    Documentation: styles["category-documentation"] 
+  }[c] || "");
 
   const openDay = (y, m, d) => {
     const key = toDateKey(y, m, d);
@@ -296,12 +303,20 @@ export default function Calendar() {
 
   const startEdit = (task) => {
     setEditingId(task.id);
-    setEditDraft({ title: task.title, priority: task.priority, status: task.status || 'Pending' });
+    setEditDraft({ 
+      title: task.title, 
+      priority: task.priority, 
+      category: task.category || 'Design' 
+    });
   };
 
   const saveEdit = async (id) => {
     setIsActionInProgress(true);
-    const result = await updateTask(id, editDraft);
+    const result = await updateTask(id, { 
+      title: editDraft.title, 
+      priority: editDraft.priority,
+      category: editDraft.category
+    });
     setEditingId(null);
     setIsActionInProgress(false);
     if (result.success) {
@@ -357,12 +372,12 @@ export default function Calendar() {
       title: taskTitle,
       date: selectedDate.key,
       priority: addDraft.priority,
-      status: addDraft.status,
+      category: addDraft.category,
+      status: 'Pending',
       description: '',
       dueDate: selectedDate.label,
       dueSort: new Date(selectedDate.key + 'T00:00:00').getTime(),
       completed: false,
-      category: 'General',
       assignees: ['You'],
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       attachments: 0,
@@ -377,7 +392,7 @@ export default function Calendar() {
       showToast('error', 'Failed to create task', 'Error');
     }
     
-    setAddDraft({ title: "", priority: "Medium", status: "Pending" });
+    setAddDraft({ title: "", priority: "Medium", category: "Design" });
     setShowAddForm(false);
     setIsActionInProgress(false);
   };
@@ -492,11 +507,11 @@ export default function Calendar() {
                     </select>
                     <select 
                       className={styles["cal-select"]} 
-                      value={editDraft.status} 
-                      onChange={(e) => setEditDraft((d) => ({ ...d, status: e.target.value }))}
+                      value={editDraft.category} 
+                      onChange={(e) => setEditDraft((d) => ({ ...d, category: e.target.value }))}
                       disabled={isActionInProgress || isLoading}
                     >
-                      {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      {CATEGORIES.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
                   </div>
                   <div className={styles["cal-form-actions"]}>
@@ -541,7 +556,7 @@ export default function Calendar() {
                   </div>
                   <div className={styles["cal-modal-item-badges"]}>
                     <span className={`${styles["cal-badge"]} ${priorityBadgeClass(t.priority)}`}>{t.priority}</span>
-                    <span className={`${styles["cal-badge"]} ${statusBadgeClass(t.status || 'Pending')}`}>{t.status || 'Pending'}</span>
+                    <span className={`${styles["cal-badge"]} ${categoryBadgeClass(t.category || 'Design')}`}>{t.category || 'Design'}</span>
                   </div>
                 </div>
               );
@@ -581,11 +596,11 @@ export default function Calendar() {
                 </select>
                 <select 
                   className={styles["cal-select"]} 
-                  value={addDraft.status} 
-                  onChange={(e) => setAddDraft((d) => ({ ...d, status: e.target.value }))}
+                  value={addDraft.category} 
+                  onChange={(e) => setAddDraft((d) => ({ ...d, category: e.target.value }))}
                   disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
                 >
-                  {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div className={styles["cal-form-actions"]}>
@@ -606,7 +621,7 @@ export default function Calendar() {
               </div>
             </div>
           )
-          ) : (
+        ) : (
             <button 
               className={`${styles["cal-add-trigger"]} ${selectedDate && selectedDate.isPast ? styles["cal-add-trigger-disabled"] : ""}`} 
               onClick={() => {
