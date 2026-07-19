@@ -770,10 +770,22 @@ export default function Calendar() {
                         <Icon name="plus" className={styles["cal-cell-add-icon"]} />
                       </button>
                     </div>
-
+                                  
                     <div className={styles["cal-cell-tasks"]}>
-                      {visible.map(renderChip)}
-                      {overflow > 0 && <span className={styles["cal-chip-more"]}>+{overflow} more</span>}
+                      {dayTasks.slice(0, 2).map((t) => (
+                        <span
+                          key={t.id}
+                          className={`${styles["cal-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""}`}
+                          draggable
+                          onDragStart={(e) => { e.stopPropagation(); setDragTaskId(t.id); }}
+                          onDragEnd={() => setDragTaskId(null)}
+                          title={t.title}
+                        >
+                          <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(t.priority)}`} />
+                          <span className={styles["cal-chip-text"]}>{t.title}</span>
+                        </span>
+                      ))}
+                      {dayTasks.length > 2 && <span className={styles["cal-chip-more"]}>+{dayTasks.length - 2} more</span>}
                     </div>
                   </div>
                 );
@@ -825,6 +837,7 @@ export default function Calendar() {
                           onDragStart={() => setDragTaskId(t.id)}
                           onDragEnd={() => setDragTaskId(null)}
                           onClick={() => openDay(cell.y, cell.m, cell.day)}
+                          title={t.title}
                         >
                           <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(t.priority)}`} />
                           <span className={styles["cal-week-chip-text"]}>{t.title}</span>
