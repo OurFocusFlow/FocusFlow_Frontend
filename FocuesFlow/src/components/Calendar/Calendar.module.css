@@ -2192,3 +2192,16 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ==================== PAST DATE DROP DISABLED ==================== */
+.cal-cell-past-dragover {
+  border-color: #FECACA;
+  background: #FEF2F2;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cal-cell-past-dragover:hover {
+  transform: none;
+  box-shadow: none;
+}

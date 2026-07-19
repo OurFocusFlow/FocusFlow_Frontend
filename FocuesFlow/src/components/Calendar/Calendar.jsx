@@ -426,6 +426,18 @@ export default function Calendar() {
   const handleDrop = async (y, m, d) => {
     const key = toDateKey(y, m, d);
     if (dragTaskId != null) {
+      // Check if the target date is in the past
+      const todayObj = new Date();
+      todayObj.setHours(0, 0, 0, 0);
+      const targetDate = new Date(y, m, d);
+      
+      if (targetDate < todayObj) {
+        showToast('error', 'Cannot move tasks to past dates.', 'Invalid Date');
+        setDragTaskId(null);
+        setDragOverKey(null);
+        return;
+      }
+      
       const task = tasks.find(t => t.id === dragTaskId);
       const dateObj = new Date(y, m, d);
       const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -895,7 +907,16 @@ export default function Calendar() {
                     key={i}
                     className={`${styles["cal-cell"]} ${!cell.inMonth ? styles["cal-cell-muted"] : ""} ${todayFlag ? styles["cal-cell-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""}`}
                     onClick={() => openDay(cell.y, cell.m, cell.day)}
-                    onDragOver={(e) => { e.preventDefault(); setDragOverKey(key); }}
+                    onDragOver={(e) => { 
+                      e.preventDefault(); 
+                      // Check if the target date is in the past
+                      const todayObj = new Date();
+                      todayObj.setHours(0, 0, 0, 0);
+                      const targetDate = new Date(cell.y, cell.m, cell.day);
+                      if (targetDate >= todayObj) {
+                        setDragOverKey(key);
+                      }
+                    }}
                     onDragLeave={() => setDragOverKey((k) => (k === key ? null : k))}
                     onDrop={(e) => { e.preventDefault(); handleDrop(cell.y, cell.m, cell.day); }}
                   >
@@ -961,7 +982,16 @@ export default function Calendar() {
                   <div
                     key={key}
                     className={`${styles["cal-week-col"]} ${todayFlag ? styles["cal-week-col-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""}`}
-                    onDragOver={(e) => { e.preventDefault(); setDragOverKey(key); }}
+                    onDragOver={(e) => { 
+                      e.preventDefault(); 
+                      // Check if the target date is in the past
+                      const todayObj = new Date();
+                      todayObj.setHours(0, 0, 0, 0);
+                      const targetDate = new Date(cell.y, cell.m, cell.day);
+                      if (targetDate >= todayObj) {
+                        setDragOverKey(key);
+                      }
+                    }}
                     onDragLeave={() => setDragOverKey((k) => (k === key ? null : k))}
                     onDrop={(e) => { e.preventDefault(); handleDrop(cell.y, cell.m, cell.day); }}
                   >
