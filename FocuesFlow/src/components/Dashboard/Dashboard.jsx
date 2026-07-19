@@ -83,9 +83,21 @@ export default function Dashboard() {
   const formatDateToInput = (dateString) => {
     if (!dateString) return '';
     try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return '';
-      return date.toISOString().split('T')[0];
+      // If it's already in "Oct 24, 2024" format
+      if (dateString.includes(' ')) {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return '';
+        // Get local date parts to avoid timezone shift
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+      // If it's already in YYYY-MM-DD format
+      if (dateString.includes('-')) {
+        return dateString;
+      }
+      return '';
     } catch {
       return '';
     }
