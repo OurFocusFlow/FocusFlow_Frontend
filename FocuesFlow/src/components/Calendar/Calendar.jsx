@@ -64,9 +64,9 @@ export default function Calendar() {
   const [anchorDate, setAnchorDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState(null);
   const [editingId, setEditingId] = useState(null);
-  const [editDraft, setEditDraft] = useState({ title: "", priority: "Medium", category: "Design" });
+  const [editDraft, setEditDraft] = useState({ title: "", description: "",priority: "Medium", category: "Design" });
   const [showAddForm, setShowAddForm] = useState(false);
-  const [addDraft, setAddDraft] = useState({ title: "", priority: "Medium", category: "Design" });
+  const [addDraft, setAddDraft] = useState({ title: "", description: "",priority: "Medium", category: "Design" });
   const [dragTaskId, setDragTaskId] = useState(null);
   const [dragOverKey, setDragOverKey] = useState(null);
   const [isActionInProgress, setIsActionInProgress] = useState(false);
@@ -305,6 +305,7 @@ export default function Calendar() {
     setEditingId(task.id);
     setEditDraft({ 
       title: task.title, 
+      description: task.description || '',
       priority: task.priority, 
       category: task.category || 'Design' 
     });
@@ -314,6 +315,7 @@ export default function Calendar() {
     setIsActionInProgress(true);
     const result = await updateTask(id, { 
       title: editDraft.title, 
+      description: editDraft.description || '',
       priority: editDraft.priority,
       category: editDraft.category
     });
@@ -370,11 +372,11 @@ export default function Calendar() {
     const newTask = {
       id: Date.now(),
       title: taskTitle,
+      description: addDraft.description || '',
       date: selectedDate.key,
       priority: addDraft.priority,
       category: addDraft.category,
       status: 'Pending',
-      description: '',
       dueDate: selectedDate.label,
       dueSort: new Date(selectedDate.key + 'T00:00:00').getTime(),
       completed: false,
@@ -392,7 +394,7 @@ export default function Calendar() {
       showToast('error', 'Failed to create task', 'Error');
     }
     
-    setAddDraft({ title: "", priority: "Medium", category: "Design" });
+    setAddDraft({ title: "", description: "", priority: "Medium", category: "Design" });
     setShowAddForm(false);
     setIsActionInProgress(false);
   };
@@ -493,7 +495,16 @@ export default function Calendar() {
                     className={styles["cal-input"]}
                     value={editDraft.title}
                     onChange={(e) => setEditDraft((d) => ({ ...d, title: e.target.value }))}
+                    placeholder="Task title"
                     autoFocus
+                    disabled={isActionInProgress || isLoading}
+                  />
+                  <textarea
+                    className={styles["cal-textarea"]}
+                    value={editDraft.description}
+                    onChange={(e) => setEditDraft((d) => ({ ...d, description: e.target.value }))}
+                    placeholder="Task description"
+                    rows="2"
                     disabled={isActionInProgress || isLoading}
                   />
                   <div className={styles["cal-form-row"]}>
@@ -511,7 +522,7 @@ export default function Calendar() {
                       onChange={(e) => setEditDraft((d) => ({ ...d, category: e.target.value }))}
                       disabled={isActionInProgress || isLoading}
                     >
-                      {CATEGORIES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div className={styles["cal-form-actions"]}>
@@ -554,6 +565,9 @@ export default function Calendar() {
                       </button>
                     </div>
                   </div>
+                  {t.description && (
+                    <p className={styles["cal-modal-item-description"]}>{t.description}</p>
+                  )}
                   <div className={styles["cal-modal-item-badges"]}>
                     <span className={`${styles["cal-badge"]} ${priorityBadgeClass(t.priority)}`}>{t.priority}</span>
                     <span className={`${styles["cal-badge"]} ${categoryBadgeClass(t.category || 'Design')}`}>{t.category || 'Design'}</span>
@@ -575,53 +589,61 @@ export default function Calendar() {
                   Close
                 </button>
               </div>
+            ) : (
+              <div className={styles["cal-modal-item"]}>
+                <input
+                  className={styles["cal-input"]}
+                  placeholder="Task title"
+                  value={addDraft.title}
+                  onChange={(e) => setAddDraft((d) => ({ ...d, title: e.target.value }))}
+                  autoFocus
+                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
+                />
+                <textarea
+                  className={styles["cal-textarea"]}
+                  placeholder="Task description"
+                  value={addDraft.description}
+                  onChange={(e) => setAddDraft((d) => ({ ...d, description: e.target.value }))}
+                  rows="2"
+                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
+                />
+                <div className={styles["cal-form-row"]}>
+                  <select 
+                    className={styles["cal-select"]} 
+                    value={addDraft.priority} 
+                    onChange={(e) => setAddDraft((d) => ({ ...d, priority: e.target.value }))}
+                    disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
+                  >
+                    {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                  <select 
+                    className={styles["cal-select"]} 
+                    value={addDraft.category} 
+                    onChange={(e) => setAddDraft((d) => ({ ...d, category: e.target.value }))}
+                    disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
+                  >
+                    {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div className={styles["cal-form-actions"]}>
+                  <button 
+                    className={styles["cal-btn-primary"]} 
+                    onClick={submitAdd}
+                    disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
+                  >
+                    {isActionInProgress || isLoading ? 'Adding...' : 'Add task'}
+                  </button>
+                  <button 
+                    className={styles["cal-btn-ghost"]} 
+                    onClick={() => setShowAddForm(false)}
+                    disabled={isActionInProgress || isLoading}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )
           ) : (
-            <div className={styles["cal-modal-item"]}>
-              <input
-                className={styles["cal-input"]}
-                placeholder="Task title"
-                value={addDraft.title}
-                onChange={(e) => setAddDraft((d) => ({ ...d, title: e.target.value }))}
-                autoFocus
-                disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
-              />
-              <div className={styles["cal-form-row"]}>
-                <select 
-                  className={styles["cal-select"]} 
-                  value={addDraft.priority} 
-                  onChange={(e) => setAddDraft((d) => ({ ...d, priority: e.target.value }))}
-                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
-                >
-                  {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
-                </select>
-                <select 
-                  className={styles["cal-select"]} 
-                  value={addDraft.category} 
-                  onChange={(e) => setAddDraft((d) => ({ ...d, category: e.target.value }))}
-                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
-                >
-                  {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <div className={styles["cal-form-actions"]}>
-                <button 
-                  className={styles["cal-btn-primary"]} 
-                  onClick={submitAdd}
-                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
-                >
-                  {isActionInProgress || isLoading ? 'Adding...' : 'Add task'}
-                </button>
-                <button 
-                  className={styles["cal-btn-ghost"]} 
-                  onClick={() => setShowAddForm(false)}
-                  disabled={isActionInProgress || isLoading}
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )
-        ) : (
             <button 
               className={`${styles["cal-add-trigger"]} ${selectedDate && selectedDate.isPast ? styles["cal-add-trigger-disabled"] : ""}`} 
               onClick={() => {

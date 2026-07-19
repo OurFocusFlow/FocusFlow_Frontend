@@ -2019,3 +2019,59 @@
 .category-development { background: #DBEAFE; color: #1D4ED8; }
 .category-research { background: #F3E8FF; color: #7C3AED; }
 .category-documentation { background: #FEF3C7; color: #D97706; }
+
+/* ==================== TEXTAREA ==================== */
+.cal-textarea {
+  width: 100%;
+  border: 1px solid #E6E2DF;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FFFFFF;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+  resize: vertical;
+  min-height: 40px;
+}
+
+.cal-textarea:focus {
+  outline: none;
+  border-color: #885210;
+  box-shadow: 0 0 0 3px rgba(136, 82, 16, 0.08);
+}
+
+.cal-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cal-textarea::placeholder {
+  color: #B8AFA1;
+}
+
+/* ==================== TASK DESCRIPTION IN MODAL ==================== */
+.cal-modal-item-description {
+  font-size: 13px;
+  color: #7E7471;
+  margin: 0 0 4px 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+.cal-modal-item-description::-webkit-scrollbar {
+  width: 3px;
+}
+
+.cal-modal-item-description::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cal-modal-item-description::-webkit-scrollbar-thumb {
+  background: rgba(136, 82, 16, 0.2);
+  border-radius: 4px;
+}
