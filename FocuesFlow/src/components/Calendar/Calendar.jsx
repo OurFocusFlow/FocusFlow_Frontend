@@ -412,15 +412,18 @@ export default function Calendar() {
     
     const result = await addTask(newTask);
     
+    // Close the modal and reset form
+    setSelectedDate(null);          // Close the modal
+    setShowAddForm(false);          // Hide the add form
+    setIsActionInProgress(false);   // Reset loading state
+    setAddDraft({ title: "", description: "", priority: "Medium", category: "Design" }); // Reset form
+    
+    // Show appropriate toast message
     if (result.success) {
       showToast('success', `Task "${taskTitle}" has been created.`, 'Task Created');
     } else {
       showToast('error', 'Failed to create task', 'Error');
     }
-    
-    setAddDraft({ title: "", description: "", priority: "Medium", category: "Design" });
-    setShowAddForm(false);
-    setIsActionInProgress(false);
   };
 
   const handleDrop = async (y, m, d) => {
