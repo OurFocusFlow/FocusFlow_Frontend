@@ -87,6 +87,10 @@ export default function Calendar() {
   const year = anchorDate.getFullYear();
   const month = anchorDate.getMonth();
 
+  // Get today's date for validation
+  const todayDate = new Date();
+  const todayKey = toDateKey(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
+
   // Close pickers when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -264,7 +268,18 @@ export default function Calendar() {
 
   const openDay = (y, m, d) => {
     const key = toDateKey(y, m, d);
-    setSelectedDate({ key, label: `${MONTH_NAMES[m]} ${d}, ${y}` });
+    const dateObj = new Date(y, m, d);
+    const todayObj = new Date();
+    todayObj.setHours(0, 0, 0, 0);
+    
+    // Check if the date is in the past
+    const isPastDate = dateObj < todayObj;
+    
+    setSelectedDate({ 
+      key, 
+      label: `${MONTH_NAMES[m]} ${d}, ${y}`,
+      isPast: isPastDate 
+    });
     setEditingId(null);
     setShowAddForm(false);
     setDeleteConfirmId(null);
@@ -320,6 +335,19 @@ export default function Calendar() {
 
   const submitAdd = async () => {
     if (!addDraft.title.trim() || !selectedDate) return;
+    
+    // Check if the selected date is in the past
+    const selectedKey = selectedDate.key;
+    const todayObj = new Date();
+    todayObj.setHours(0, 0, 0, 0);
+    const selectedDateObj = new Date(selectedKey + 'T00:00:00');
+    
+    if (selectedDateObj < todayObj) {
+      showToast('error', 'Cannot add tasks to past dates. Please select a future date.', 'Invalid Date');
+      setShowAddForm(false);
+      return;
+    }
+    
     setIsActionInProgress(true);
     
     const taskTitle = addDraft.title.trim();
@@ -521,6 +549,18 @@ export default function Calendar() {
           </div>
 
           {showAddForm ? (
+            selectedDate && selectedDate.isPast ? (
+              <div className={styles["cal-past-date-message"]}>
+                <span className={styles["cal-past-date-icon"]}>⛔</span>
+                <p>Cannot add tasks to past dates.</p>
+                <button 
+                  className={styles["cal-btn-ghost"]} 
+                  onClick={() => setShowAddForm(false)}
+                >
+                  Close
+                </button>
+              </div>
+          ) : (
             <div className={styles["cal-modal-item"]}>
               <input
                 className={styles["cal-input"]}
@@ -528,14 +568,14 @@ export default function Calendar() {
                 value={addDraft.title}
                 onChange={(e) => setAddDraft((d) => ({ ...d, title: e.target.value }))}
                 autoFocus
-                disabled={isActionInProgress || isLoading}
+                disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
               />
               <div className={styles["cal-form-row"]}>
                 <select 
                   className={styles["cal-select"]} 
                   value={addDraft.priority} 
                   onChange={(e) => setAddDraft((d) => ({ ...d, priority: e.target.value }))}
-                  disabled={isActionInProgress || isLoading}
+                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
                 >
                   {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
                 </select>
@@ -543,7 +583,7 @@ export default function Calendar() {
                   className={styles["cal-select"]} 
                   value={addDraft.status} 
                   onChange={(e) => setAddDraft((d) => ({ ...d, status: e.target.value }))}
-                  disabled={isActionInProgress || isLoading}
+                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
                 >
                   {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -552,7 +592,7 @@ export default function Calendar() {
                 <button 
                   className={styles["cal-btn-primary"]} 
                   onClick={submitAdd}
-                  disabled={isActionInProgress || isLoading}
+                  disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
                 >
                   {isActionInProgress || isLoading ? 'Adding...' : 'Add task'}
                 </button>
@@ -565,13 +605,21 @@ export default function Calendar() {
                 </button>
               </div>
             </div>
+          )
           ) : (
             <button 
-              className={styles["cal-add-trigger"]} 
-              onClick={() => setShowAddForm(true)}
-              disabled={isActionInProgress || isLoading}
+              className={`${styles["cal-add-trigger"]} ${selectedDate && selectedDate.isPast ? styles["cal-add-trigger-disabled"] : ""}`} 
+              onClick={() => {
+                if (selectedDate && !selectedDate.isPast) {
+                  setShowAddForm(true);
+                } else {
+                  showToast('error', 'Cannot add tasks to past dates.', 'Invalid Date');
+                }
+              }}
+              disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
             >
-              <Icon name="plus" className={styles["cal-cell-add-icon"]} /> Add a task for this day
+              <Icon name="plus" className={styles["cal-cell-add-icon"]} /> 
+              {selectedDate && selectedDate.isPast ? 'Past date - cannot add tasks' : 'Add a task for this day'}
             </button>
           )}
         </div>
