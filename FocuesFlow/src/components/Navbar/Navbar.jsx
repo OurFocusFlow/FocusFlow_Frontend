@@ -1,3 +1,4 @@
+// Navbar.jsx - Updated with proper navigation
 import React, { useState } from 'react';
 import {
   Box,
@@ -87,7 +88,6 @@ const Navbar = ({
       onLogout();
     } else {
       console.log('Logging out...');
-      // Navigate to login on logout
       navigate('/login');
     }
     handleProfileMenuClose();
@@ -115,19 +115,12 @@ const Navbar = ({
     navigate('/settings');
   };
 
-  const handleHelpNavigation = () => {
+  const handleSupportNavigation = () => {
     handleProfileMenuClose();
-    navigate('/help');
+    navigate('/support');
   };
 
-  // Sample notification data - can be passed as prop
-  const notificationData = notifications || [
-    { id: 1, text: 'New task assigned to you', time: '2 min ago', read: false },
-    { id: 2, text: 'Project deadline approaching', time: '1 hour ago', read: false },
-    { id: 3, text: 'Team member completed a task', time: '3 hours ago', read: true },
-    { id: 4, text: 'You have a new message', time: '5 hours ago', read: true },
-  ];
-
+  // Menu items with proper navigation
   const menuItems = [
     { 
       icon: <PersonIcon />, 
@@ -141,8 +134,8 @@ const Navbar = ({
     },
     { 
       icon: <HelpIcon />, 
-      text: 'Help', 
-      action: handleHelpNavigation 
+      text: 'Support', 
+      action: handleSupportNavigation 
     },
   ];
 
@@ -152,6 +145,13 @@ const Navbar = ({
     avatar: 'AR',
     accountType: 'PRO ACCOUNT',
   };
+
+  const notificationData = notifications || [
+    { id: 1, text: 'New task assigned to you', time: '2 min ago', read: false },
+    { id: 2, text: 'Project deadline approaching', time: '1 hour ago', read: false },
+    { id: 3, text: 'Team member completed a task', time: '3 hours ago', read: true },
+    { id: 4, text: 'You have a new message', time: '5 hours ago', read: true },
+  ];
 
   const unreadCount = notificationData.filter(n => !n.read).length;
 
