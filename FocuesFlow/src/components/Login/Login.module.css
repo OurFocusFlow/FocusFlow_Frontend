@@ -404,3 +404,60 @@
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+/* Floating Back Button */
+.floatButton {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border: 1.5px solid #e0d6cc;
+  border-radius: 12px;
+  color: #2e2018;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.floatButton:hover {
+  background: #f8f5f1;
+  border-color: #c17a3f;
+  box-shadow: 0 6px 24px rgba(193, 122, 63, 0.15);
+  transform: translateY(-2px);
+}
+
+.floatButton svg {
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .floatButton {
+    top: 16px;
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .floatButton span {
+    display: none; /* Hide text on very small screens, show only icon */
+  }
+
+  .floatButton {
+    padding: 10px 12px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+}
