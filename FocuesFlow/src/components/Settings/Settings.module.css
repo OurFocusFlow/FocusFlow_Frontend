@@ -1,0 +1,822 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800;900&display=swap');
+
+/* ==================== PAGE ==================== */
+.page {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 25px 60px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #33231D;
+  background: #FAF5F2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scroll bar but keep scrolling */
+.page::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+.page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ==================== BACKGROUND ==================== */
+.settings-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background: #FAF5F2;
+}
+
+.settings-bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  animation: floatOrb 20s ease-in-out infinite alternate;
+}
+
+.settings-bg-orb:nth-child(1) {
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  right: -100px;
+  background: rgba(136, 82, 16, 0.15);
+  animation-delay: 0s;
+}
+
+.settings-bg-orb:nth-child(2) {
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  background: rgba(75, 56, 50, 0.08);
+  animation-delay: -6s;
+}
+
+.settings-bg-orb:nth-child(3) {
+  width: 350px;
+  height: 350px;
+  top: 40%;
+  left: 60%;
+  background: rgba(253, 181, 108, 0.08);
+  animation-delay: -12s;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-40px, 40px) scale(1.1); }
+}
+
+.settings-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(136, 82, 16, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(136, 82, 16, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+.settings-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(136, 82, 16, 0.04) 0%, transparent 70%);
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+/* ==================== PAGE INNER ==================== */
+.pageInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1530px;
+  margin: 0 auto;
+}
+
+/* ==================== PAGE HEADER ==================== */
+.pageHeader {
+  margin-bottom: 36px;
+}
+
+.pageTitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 46px;
+  font-weight: 900;
+  color: #33231D;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.pageSubtitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #7E7471;
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* ==================== SECTION ==================== */
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.sectionIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FBEAD9;
+  color: #885210;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sectionIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sectionTitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #33231D;
+  letter-spacing: -0.01em;
+}
+
+.sectionCard {
+  background: #FFFFFF;
+  border-radius: 18px;
+  border: 1px solid #E6E2DF;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(31,17,10,0.04);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.sectionCard:hover {
+  box-shadow: 0 8px 32px rgba(31,17,10,0.08);
+}
+
+/* ==================== ROW ==================== */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 28px;
+  gap: 20px;
+  transition: background 0.2s ease;
+}
+
+.row:hover {
+  background: #FAF8F5;
+}
+
+.rowDivider {
+  border-bottom: 1px solid #F0EBE4;
+}
+
+.rowLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rowIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #FAF5F2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7E7471;
+  flex-shrink: 0;
+}
+
+.rowIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.rowLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #33231D;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.rowDescription {
+  font-size: 14px;
+  font-weight: 400;
+  color: #7E7471;
+  margin-top: 2px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.rowControl {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+/* ==================== THEME TOGGLE ==================== */
+.themeToggle {
+  display: flex;
+  background: #FAF5F2;
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.themeOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7E7471;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+.themeOption svg {
+  width: 18px;
+  height: 18px;
+}
+
+.themeOption:hover {
+  color: #33231D;
+  background: rgba(51, 35, 29, 0.04);
+}
+
+.themeOptionActive {
+  background: #FFFFFF;
+  color: #33231D;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.themeOptionActive:hover {
+  color: #33231D;
+  background: #FFFFFF;
+}
+
+/* ==================== SWATCH ROW ==================== */
+.swatchRow {
+  display: flex;
+  gap: 12px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+}
+
+.swatchActive {
+  border-color: #33231D;
+  outline: 3px solid #FBEAD9;
+  outline-offset: 3px;
+}
+
+/* ==================== FONT SIZE CONTROL ==================== */
+.fontSizeControl {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 180px;
+}
+
+.fontSizeLabel {
+  font-size: 16px;
+  font-weight: 700;
+  color: #33231D;
+  min-width: 44px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fontSizeSlider {
+  width: 120px;
+}
+
+/* ==================== SELECT ==================== */
+.select {
+  min-width: 180px;
+  background: #FAF5F2;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.select :global(.MuiOutlinedInput-root) {
+  border-radius: 10px;
+  font-family: inherit;
+}
+
+.select :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border-color: #E6E2DF;
+}
+
+.select :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+}
+
+.select :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+  border-width: 2px;
+}
+
+.select :global(.MuiSelect-select) {
+  font-weight: 500;
+  color: #33231D;
+  font-family: inherit;
+}
+
+/* ==================== SWITCH ==================== */
+.switch :global(.MuiSwitch-thumb) {
+  background-color: #fff;
+}
+
+.switch :global(.MuiSwitch-track) {
+  background-color: #D8CABB;
+}
+
+.switch :global(.Mui-checked) + :global(.MuiSwitch-track) {
+  background-color: #885210 !important;
+  opacity: 1 !important;
+}
+
+.switch :global(.Mui-checked .MuiSwitch-thumb) {
+  background-color: #fff;
+}
+
+/* ==================== BUTTONS ==================== */
+.primaryButton {
+  background: #885210 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  border-radius: 10px !important;
+  padding: 10px 24px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  transition: all 0.25s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-family: inherit !important;
+  letter-spacing: -0.01em !important;
+}
+
+.primaryButton:hover {
+  background: #6B3F0C !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(136, 82, 16, 0.3) !important;
+}
+
+.primaryButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+.darkButton {
+  background: #33231D !important;
+  color: #fff !important;
+  text-transform: none !important;
+  border-radius: 10px !important;
+  padding: 10px 24px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: all 0.25s ease !important;
+  font-family: inherit !important;
+  letter-spacing: -0.01em !important;
+}
+
+.darkButton:hover {
+  background: #4A382E !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(51, 35, 29, 0.3) !important;
+}
+
+.darkButton svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ==================== DANGER ZONE ==================== */
+.dangerSection {
+  margin-top: 12px;
+}
+
+.dangerIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #FDE8E8;
+  color: #D6493A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dangerIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dangerTitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #D6493A;
+  letter-spacing: -0.01em;
+}
+
+.dangerCard {
+  background: #FDF5F5;
+  border: 1px solid #FAD5D5;
+  border-radius: 18px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.dangerCard:hover {
+  border-color: #F5B5B5;
+  box-shadow: 0 4px 20px rgba(214, 73, 58, 0.08);
+}
+
+.dangerContent {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.dangerIconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FDE8E8;
+  color: #D6493A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dangerIconWrapper svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dangerLabel {
+  font-size: 16px;
+  font-weight: 700;
+  color: #D6493A;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+.dangerDescription {
+  font-size: 14px;
+  font-weight: 400;
+  color: #B88A8A;
+  margin-top: 2px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.deleteButton {
+  background: #D6493A !important;
+  color: #fff !important;
+  text-transform: none !important;
+  border-radius: 10px !important;
+  padding: 12px 28px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  flex-shrink: 0;
+  transition: all 0.25s ease !important;
+  font-family: inherit !important;
+  letter-spacing: -0.01em !important;
+}
+
+.deleteButton:hover {
+  background: #B83A2E !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(214, 73, 58, 0.35) !important;
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ==================== SAVE SECTION ==================== */
+.saveSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid #E6E2DF;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.saveButton {
+  background: #885210 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  border-radius: 12px !important;
+  padding: 14px 32px !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  transition: all 0.25s ease !important;
+  font-family: inherit !important;
+  letter-spacing: -0.01em !important;
+}
+
+.saveButton:hover {
+  background: #6B3F0C !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(136, 82, 16, 0.35) !important;
+}
+
+.saveButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.saveText {
+  font-size: 15px;
+  font-weight: 400;
+  color: #7E7471;
+  letter-spacing: 0.01em;
+  font-family: inherit;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+  .pageInner {
+    max-width: 720px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 24px 20px 40px;
+  }
+
+  .pageTitle {
+    font-size: 34px;
+  }
+
+  .pageSubtitle {
+    font-size: 18px;
+  }
+
+  .pageInner {
+    max-width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 18px 20px;
+    gap: 12px;
+  }
+
+  .rowControl {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+
+  .rowLeft {
+    width: 100%;
+  }
+
+  .themeToggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .themeOption {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .swatchRow {
+    justify-content: center;
+  }
+
+  .fontSizeControl {
+    width: 100%;
+  }
+
+  .fontSizeSlider {
+    flex: 1;
+  }
+
+  .select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .dangerCard {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .dangerContent {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .deleteButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .saveSection {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .saveButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .sectionCard {
+    border-radius: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px 14px 32px;
+  }
+
+  .pageTitle {
+    font-size: 28px;
+  }
+
+  .pageSubtitle {
+    font-size: 16px;
+  }
+
+  .row {
+    padding: 14px 16px;
+  }
+
+  .rowLabel {
+    font-size: 15px;
+  }
+
+  .rowDescription {
+    font-size: 13px;
+  }
+
+  .rowIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .sectionTitle {
+    font-size: 18px;
+  }
+
+  .sectionIcon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .themeOption {
+    font-size: 11px;
+    padding: 6px 10px;
+    gap: 4px;
+  }
+
+  .themeOption svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .swatch {
+    width: 22px;
+    height: 22px;
+  }
+
+  .dangerCard {
+    padding: 16px 18px;
+  }
+
+  .dangerIconWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dangerLabel {
+    font-size: 15px;
+  }
+
+  .dangerDescription {
+    font-size: 13px;
+  }
+
+  .deleteButton {
+    padding: 10px 20px !important;
+    font-size: 13px !important;
+  }
+
+  .saveButton {
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+  }
+
+  .saveText {
+    font-size: 13px;
+  }
+}
+
+/* ==================== ACCESSIBILITY ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .settings-bg-orb,
+  .settings-bg-glow {
+    animation: none;
+    transition: none;
+  }
+
+  .swatch:hover,
+  .themeOption:hover,
+  .primaryButton:hover,
+  .darkButton:hover,
+  .deleteButton:hover,
+  .saveButton:hover {
+    transform: none;
+  }
+
+  .sectionCard:hover {
+    transform: none;
+  }
+}
