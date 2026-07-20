@@ -1,3 +1,4 @@
+// Layout.jsx - Updated with Support navigation and navbar hiding
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTasks } from '../Context/TaskContext';
@@ -74,10 +75,11 @@ const Layout = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Check if current page is Profile or Settings (hide navbar on these pages)
+  // Check if current page is Profile, Settings, or Support (hide navbar on these pages)
   const isProfilePage = location.pathname === '/profile';
   const isSettingsPage = location.pathname === '/settings';
-  const hideNavbar = isProfilePage || isSettingsPage;
+  const isSupportPage = location.pathname === '/support';
+  const hideNavbar = isProfilePage || isSettingsPage || isSupportPage;
 
   // Get active item based on current path
   const getActiveItem = () => {
@@ -89,6 +91,7 @@ const Layout = ({ children }) => {
     if (path === '/projects') return 'Projects';
     if (path === '/calendar') return 'Calendar';
     if (path === '/team') return 'Team';
+    if (path === '/support') return 'Support';
     if (path === '/profile') return 'Profile';
     if (path === '/settings') return 'Settings';
     return 'Dashboard';
@@ -286,7 +289,7 @@ const Layout = ({ children }) => {
         { text: 'Danger Zone', section: 'danger' },
       ]
     },
-    { text: 'Support', icon: <SupportIcon /> },
+    { text: 'Support', icon: <SupportIcon /> }, // This is now handled in navigationItems above
   ];
 
   const userData = {
@@ -396,6 +399,8 @@ const Layout = ({ children }) => {
               onClick={() => {
                 if (item.text === 'Settings') {
                   handleSettingsToggle();
+                } else if (item.text === 'Support') {
+                  handleNavItemClick('Support', '/support');
                 } else {
                   handleNavItemClick(item.text);
                 }
@@ -486,7 +491,7 @@ const Layout = ({ children }) => {
         )}
 
         <Box className={styles.contentArea}>
-          {/* Navbar - Hide on Profile and Settings Pages */}
+          {/* Navbar - Hide on Profile, Settings, and Support Pages */}
           {!hideNavbar && (
             <Box className={styles.navbarWrapper}>
               <Box className={styles.navbarContainer}>
@@ -521,7 +526,7 @@ const Layout = ({ children }) => {
             </Box>
           )}
 
-          {/* Show only menu icon on Profile/Settings page for mobile/tablet */}
+          {/* Show only menu icon on Profile/Settings/Support page for mobile/tablet */}
           {hideNavbar && (isMobile || isTablet) && (
             <Box className={styles.profileNavbarWrapper}>
               <Box className={styles.profileNavbarContainer}>
