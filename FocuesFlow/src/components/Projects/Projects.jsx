@@ -464,6 +464,13 @@ const Projects = () => {
     navigate(`/project/${id}`);
   };
 
+  const handleDeleteClick = () => {
+    // Close the menu first
+    handleMenuClose();
+    // Then open the delete modal
+    setShowDeleteModal(true);
+  };
+
   return (
     <Box className={styles.page}>
       {/* Background Decorations */}
@@ -726,7 +733,7 @@ const Projects = () => {
           <Icon name="edit" className={styles.menuIcon} />
           Edit Project
         </MenuItem>
-        <MenuItem onClick={() => setShowDeleteModal(true)} className={styles.menuItemDanger}>
+        <MenuItem onClick={handleDeleteClick} className={styles.menuItemDanger}>
           <Icon name="trash" className={styles.menuIcon} />
           Delete Project
         </MenuItem>
