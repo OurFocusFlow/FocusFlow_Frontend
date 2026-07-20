@@ -1,5 +1,4 @@
-// Navbar.jsx - Updated with proper navigation
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box,
   Typography,
@@ -33,17 +32,18 @@ import {
   Star as StarIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Navbar.module.css';
 
-const Navbar = ({ 
-  onSearch, 
-  user, 
+const Navbar = ({
+  onSearch,
+  user,
   notifications,
   onNotificationClick,
   onProfileClick,
   onLogout,
   onThemeToggle,
-  isDarkMode = false,
+  isDarkMode: propIsDarkMode,
   showThemeToggle = true,
   showNotifications = true,
   showProfile = true,
@@ -51,13 +51,23 @@ const Navbar = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+
+  // Use dark mode context - this is the key part
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+
+  // Debug logs to verify context is working
+  console.log('🔍 Navbar rendering with isDarkMode:', isDarkMode);
+  console.log('🔍 toggleDarkMode function available:', typeof toggleDarkMode === 'function');
+
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  
+
   const [searchValue, setSearchValue] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
-  const [darkMode, setDarkMode] = useState(isDarkMode);
+
+  // Guard against the handler firing more than once per user click
+  const themeToggleLockRef = useRef(false);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -93,15 +103,38 @@ const Navbar = ({
     handleProfileMenuClose();
   };
 
-  const handleThemeToggle = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (onThemeToggle) {
-      onThemeToggle(newMode);
+  // Theme toggle handler - switches theme when clicked
+  const handleThemeToggle = (event) => {
+    // Stop this click from bubbling up
+    if (event) {
+      event.stopPropagation();
     }
+
+    // Prevent duplicate calls
+    if (themeToggleLockRef.current) {
+      console.warn('⚠️ handleThemeToggle called again before the previous call finished — ignoring duplicate.');
+      return;
+    }
+    themeToggleLockRef.current = true;
+
+    console.log('🌓 Theme button clicked! Current isDarkMode:', isDarkMode);
+    console.log('🔘 Calling toggleDarkMode()...');
+    
+    // Call the toggle function from context
+    toggleDarkMode();
+
+    // Notify parent if needed
+    if (onThemeToggle) {
+      console.log('📤 Notifying parent about theme change to:', !isDarkMode);
+      onThemeToggle(!isDarkMode);
+    }
+
+    // Release the lock on the next tick
+    setTimeout(() => {
+      themeToggleLockRef.current = false;
+    }, 0);
   };
 
-  // Navigation handlers for menu items
   const handleProfileNavigation = () => {
     handleProfileMenuClose();
     navigate('/profile');
@@ -120,22 +153,21 @@ const Navbar = ({
     navigate('/support');
   };
 
-  // Menu items with proper navigation
   const menuItems = [
-    { 
-      icon: <PersonIcon />, 
-      text: 'Profile', 
-      action: handleProfileNavigation 
+    {
+      icon: <PersonIcon />,
+      text: 'Profile',
+      action: handleProfileNavigation
     },
-    { 
-      icon: <SettingsIcon />, 
-      text: 'Settings', 
-      action: handleSettingsNavigation 
+    {
+      icon: <SettingsIcon />,
+      text: 'Settings',
+      action: handleSettingsNavigation
     },
-    { 
-      icon: <HelpIcon />, 
-      text: 'Support', 
-      action: handleSupportNavigation 
+    {
+      icon: <HelpIcon />,
+      text: 'Support',
+      action: handleSupportNavigation
     },
   ];
 
@@ -184,8 +216,8 @@ const Navbar = ({
           {/* Notifications */}
           {showNotifications && (
             <Tooltip title="Notifications" arrow>
-              <IconButton 
-                className={styles.iconButton} 
+              <IconButton
+                className={styles.iconButton}
                 onClick={handleNotificationOpen}
                 size={isMobile ? "small" : "medium"}
               >
@@ -196,18 +228,27 @@ const Navbar = ({
             </Tooltip>
           )}
 
-          {/* Theme Toggle */}
+          {/* Theme Toggle - Switches theme when clicked */}
           {showThemeToggle && (
-            <Tooltip title={darkMode ? "Light Mode" : "Dark Mode"} arrow>
-              <IconButton 
-                className={styles.iconButton} 
+            <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"} arrow>
+              <IconButton
+                className={styles.iconButton}
                 onClick={handleThemeToggle}
                 size={isMobile ? "small" : "medium"}
+                aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+                sx={{
+                  backgroundColor: isDarkMode ? 'rgba(251, 188, 0, 0.15)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: isDarkMode ? 'rgba(251, 188, 0, 0.25)' : 'rgba(136, 82, 16, 0.08)',
+                  },
+                  color: isDarkMode ? '#FBBC00' : '#6A6255',
+                }}
               >
-                {darkMode ? 
-                  <LightModeIcon className={styles.icon} /> : 
+                {isDarkMode ? (
+                  <LightModeIcon className={styles.icon} />
+                ) : (
                   <DarkModeIcon className={styles.icon} />
-                }
+                )}
               </IconButton>
             </Tooltip>
           )}
@@ -225,7 +266,7 @@ const Navbar = ({
                   </Box>
                 )}
               </Box>
-              
+
               {!isMobile && (
                 <Box className={styles.userInfo}>
                   <Box className={styles.userNameWrapper}>
@@ -233,9 +274,9 @@ const Navbar = ({
                       {userData.name}
                     </Typography>
                     {userData.accountType === 'PRO ACCOUNT' && (
-                      <Chip 
-                        label="PRO" 
-                        size="small" 
+                      <Chip
+                        label="PRO"
+                        size="small"
                         className={styles.proChip}
                         icon={<StarIcon className={styles.chipStarIcon} />}
                       />
@@ -248,7 +289,7 @@ const Navbar = ({
                   )}
                 </Box>
               )}
-              
+
               {!isMobile && (
                 <KeyboardArrowDownIcon className={styles.dropdownIcon} />
               )}
@@ -279,21 +320,21 @@ const Navbar = ({
                   {userData.email}
                 </Typography>
                 {userData.accountType === 'PRO ACCOUNT' && (
-                  <Chip 
-                    label="PRO ACCOUNT" 
-                    size="small" 
+                  <Chip
+                    label="PRO ACCOUNT"
+                    size="small"
                     className={styles.menuProChip}
                     icon={<CheckCircleIcon className={styles.menuProIcon} />}
                   />
                 )}
               </Box>
             </Box>
-            
+
             <Divider className={styles.menuDivider} />
-            
+
             {menuItems.map((item, index) => (
-              <MenuItem 
-                key={index} 
+              <MenuItem
+                key={index}
                 onClick={item.action}
                 className={styles.menuItem}
               >
@@ -303,9 +344,9 @@ const Navbar = ({
                 <ListItemText primary={item.text} className={styles.menuItemText} />
               </MenuItem>
             ))}
-            
+
             <Divider className={styles.menuDivider} />
-            
+
             <MenuItem onClick={handleLogout} className={`${styles.menuItem} ${styles.logoutMenuItem}`}>
               <ListItemIcon className={styles.menuItemIcon}>
                 <LogoutIcon />
@@ -330,8 +371,8 @@ const Navbar = ({
               <Typography variant="h6" className={styles.notificationTitle}>
                 Notifications
               </Typography>
-              <Button 
-                size="small" 
+              <Button
+                size="small"
                 className={styles.markAllRead}
                 onClick={() => {
                   console.log('Mark all as read');
@@ -343,12 +384,12 @@ const Navbar = ({
                 Mark all as read
               </Button>
             </Box>
-            
+
             <Divider className={styles.notificationDivider} />
-            
+
             {notificationData.map((notification) => (
-              <MenuItem 
-                key={notification.id} 
+              <MenuItem
+                key={notification.id}
                 className={`${styles.notificationItem} ${!notification.read ? styles.unreadNotification : ''}`}
                 onClick={() => {
                   console.log('Notification clicked:', notification.id);
@@ -371,12 +412,12 @@ const Navbar = ({
                 )}
               </MenuItem>
             ))}
-            
+
             <Divider className={styles.notificationDivider} />
-            
+
             <Box className={styles.notificationFooter}>
-              <Button 
-                fullWidth 
+              <Button
+                fullWidth
                 className={styles.viewAllButton}
                 onClick={() => {
                   console.log('View all notifications');

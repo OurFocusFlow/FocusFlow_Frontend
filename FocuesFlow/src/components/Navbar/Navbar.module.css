@@ -643,3 +643,171 @@
 .notificationMenuPaper::-webkit-scrollbar-thumb:hover {
   background: var(--color-text-muted);
 }
+
+/* ==================== DARK MODE SUPPORT ==================== */
+[data-theme="dark"] .navbar {
+  background: rgba(0, 0, 0, 0.85) !important;
+  border-bottom: 1px solid rgba(56, 59, 64, 0.3) !important;
+}
+
+[data-theme="dark"] .searchField {
+  background: #1A1A1A;
+}
+
+[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root) {
+  border-color: #383B40;
+}
+
+[data-theme="dark"] .searchField :global(.MuiInputBase-input) {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .searchField :global(.MuiInputBase-input::placeholder) {
+  color: #857B6B;
+}
+
+[data-theme="dark"] .profileSection:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .avatar {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .userName {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .userEmail {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .dropdownIcon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .iconButton {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .iconButton:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+[data-theme="dark"] .proChip {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .chipStarIcon {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileMenuPaper {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid #383B40 !important;
+}
+
+[data-theme="dark"] .menuUserName {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .menuUserEmail {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .menuItem {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .menuItem:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .menuItemIcon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .logoutMenuItem {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .logoutMenuItem .menuItemIcon {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .notificationMenuPaper {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid #383B40 !important;
+}
+
+[data-theme="dark"] .notificationTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .notificationText {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .notificationTime {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .unreadNotification {
+  background: rgba(251, 188, 0, 0.06) !important;
+}
+
+[data-theme="dark"] .unreadNotification::before {
+  background: #FBBC00 !important;
+}
+
+[data-theme="dark"] .markAllRead {
+  color: #FBBC00 !important;
+}
+
+[data-theme="dark"] .markAllRead:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .viewAllButton {
+  color: #FBBC00 !important;
+}
+
+[data-theme="dark"] .viewAllButton:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .leftSection {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .rightSection {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .searchIcon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .searchField :global(.Mui-focused) .searchIcon {
+  color: #FBBC00 !important;
+}
+
+[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: #FBBC00 !important;
+  background: #1A1A1A !important;
+}
+
+[data-theme="dark"] .proBadge {
+  background: #FBBC00 !important;
+}
+
+[data-theme="dark"] .proStarIcon {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .notificationBadge :global(.MuiBadge-badge) {
+  background: #ef4444 !important;
+}
