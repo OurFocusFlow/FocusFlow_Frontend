@@ -488,6 +488,7 @@
 
 .primaryButton:hover {
   background: #6B3F0C;
+  color: #FFFFFF;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(136, 82, 16, 0.3);
 }
@@ -520,6 +521,7 @@
 
 .darkButton:hover {
   background: #4A382E;
+  color: #FFFFFF;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(51, 35, 29, 0.3);
 }
