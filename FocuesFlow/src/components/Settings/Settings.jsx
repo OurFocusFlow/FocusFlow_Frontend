@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography, Switch, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
 import {
   Palette as PaletteIcon,
   Language as LanguageIcon,
@@ -20,6 +20,35 @@ import {
 import styles from './Settings.module.css';
 
 const ACCENT_COLORS = ['#885210', '#4B3832', '#C17A3F', '#6B3F0C', '#A66D2A', '#2E6FE8'];
+
+// ==================== CUSTOM SWITCH COMPONENT ====================
+const CustomSwitch = ({ 
+  checked, 
+  onChange, 
+  size = 'medium',
+  disabled = false,
+  id,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
+}) => {
+  const switchSize = size === 'small' ? 'switchSmall' : size === 'large' ? 'switchLarge' : '';
+  const switchId = id || `switch-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <label className={`${styles.switch} ${switchSize}`}>
+      <input
+        type="checkbox"
+        id={switchId}
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        disabled={disabled}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+      />
+      <span className={styles.switchSlider}></span>
+    </label>
+  );
+};
 
 const SettingsSection = ({ id, icon, title, children }) => (
   <Box id={id} className={styles.section}>
@@ -322,10 +351,9 @@ const Settings = () => {
               label="Desktop Alerts"
               description="Show browser notifications for task reminders"
               control={
-                <Switch
+                <CustomSwitch
                   checked={desktopAlerts}
-                  onChange={(e) => setDesktopAlerts(e.target.checked)}
-                  className={styles.switch}
+                  onChange={setDesktopAlerts}
                 />
               }
             />
@@ -333,10 +361,9 @@ const Settings = () => {
               label="Email Notifications"
               description="Receive email updates about your tasks"
               control={
-                <Switch
+                <CustomSwitch
                   checked={emailNotifications}
-                  onChange={(e) => setEmailNotifications(e.target.checked)}
-                  className={styles.switch}
+                  onChange={setEmailNotifications}
                 />
               }
             />
@@ -344,10 +371,9 @@ const Settings = () => {
               label="Sound Effects"
               description="Play sounds for task completions and reminders"
               control={
-                <Switch
+                <CustomSwitch
                   checked={soundEffects}
-                  onChange={(e) => setSoundEffects(e.target.checked)}
-                  className={styles.switch}
+                  onChange={setSoundEffects}
                 />
               }
             />
@@ -356,10 +382,9 @@ const Settings = () => {
               label="Daily Summary"
               description="Receive a morning digest of your upcoming tasks"
               control={
-                <Switch
+                <CustomSwitch
                   checked={dailySummary}
-                  onChange={(e) => setDailySummary(e.target.checked)}
-                  className={styles.switch}
+                  onChange={setDailySummary}
                 />
               }
             />
@@ -416,10 +441,9 @@ const Settings = () => {
               label="Activity Status"
               description="Show when you're active to team members"
               control={
-                <Switch
+                <CustomSwitch
                   checked={activityStatus}
-                  onChange={(e) => setActivityStatus(e.target.checked)}
-                  className={styles.switch}
+                  onChange={setActivityStatus}
                 />
               }
             />

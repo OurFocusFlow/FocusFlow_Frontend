@@ -376,24 +376,6 @@
   font-family: inherit;
 }
 
-/* ==================== SWITCH ==================== */
-.switch :global(.MuiSwitch-thumb) {
-  background-color: #fff;
-}
-
-.switch :global(.MuiSwitch-track) {
-  background-color: #D8CABB;
-}
-
-.switch :global(.Mui-checked) + :global(.MuiSwitch-track) {
-  background-color: #885210 !important;
-  opacity: 1 !important;
-}
-
-.switch :global(.Mui-checked .MuiSwitch-thumb) {
-  background-color: #fff;
-}
-
 /* ==================== BUTTONS ==================== */
 .primaryButton {
   background: #885210 !important;
@@ -1268,5 +1250,154 @@
     width: 100%;
     justify-content: center;
     text-align: center;
+  }
+}
+
+/* ==================== CUSTOM SWITCH ==================== */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switchSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #D8CABB;
+  border-radius: 34px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.switchSlider::before {
+  content: '';
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover state */
+.switch:hover .switchSlider {
+  border-color: #C5B5A8;
+}
+
+.switch input:checked + .switchSlider {
+  background: #885210;
+  border-color: #885210;
+}
+
+.switch input:checked + .switchSlider::before {
+  transform: translateX(24px);
+  background: #FFFFFF;
+}
+
+/* Focus state */
+.switch input:focus + .switchSlider {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.15);
+}
+
+/* Active state */
+.switch input:active + .switchSlider::before {
+  transform: scale(0.9);
+}
+
+.switch input:checked:active + .switchSlider::before {
+  transform: translateX(24px) scale(0.9);
+}
+
+/* Disabled state */
+.switch input:disabled + .switchSlider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch input:disabled + .switchSlider::before {
+  opacity: 0.5;
+}
+
+/* Small variant */
+.switchSmall {
+  width: 40px;
+  height: 22px;
+}
+
+.switchSmall .switchSlider::before {
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+}
+
+.switchSmall input:checked + .switchSlider::before {
+  transform: translateX(18px);
+}
+
+.switchSmall input:checked:active + .switchSlider::before {
+  transform: translateX(18px) scale(0.9);
+}
+
+/* Large variant */
+.switchLarge {
+  width: 64px;
+  height: 34px;
+}
+
+.switchLarge .switchSlider::before {
+  height: 26px;
+  width: 26px;
+  left: 3px;
+  bottom: 3px;
+}
+
+.switchLarge input:checked + .switchSlider::before {
+  transform: translateX(30px);
+}
+
+.switchLarge input:checked:active + .switchSlider::before {
+  transform: translateX(30px) scale(0.9);
+}
+
+/* ==================== SWITCH WITH LABEL ==================== */
+.switchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.switchWrapper .switchLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #33231D;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+}
+
+/* ==================== ACCESSIBILITY - REDUCED MOTION ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .switchSlider,
+  .switchSlider::before {
+    transition: none !important;
   }
 }
