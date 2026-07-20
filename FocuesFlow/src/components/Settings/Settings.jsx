@@ -512,7 +512,7 @@ const Settings = () => {
         </Box>
       </Modal>
 
-      {/* Password Change Modal */}
+      {/* Password Change Modal with Eye Buttons */}
       <Modal
         open={passwordModalOpen}
         onClose={handleClosePasswordModal}
@@ -538,80 +538,95 @@ const Settings = () => {
           </Box>
 
           <Box className={styles.passwordModalBody}>
-            <TextField
-              fullWidth
-              label="Current Password"
-              name="currentPassword"
-              type={showCurrentPassword ? 'text' : 'password'}
-              value={passwordData.currentPassword}
-              onChange={handlePasswordChange}
-              error={!!passwordErrors.currentPassword}
-              helperText={passwordErrors.currentPassword}
-              className={styles.passwordTextField}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                      edge="end"
-                      size="small"
-                    >
-                      {showCurrentPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+            {/* Current Password */}
+            <div className={styles.passwordField}>
+              <label className={styles.passwordLabel}>Current Password</label>
+              <div className={styles.passwordInputWrap}>
+                <input
+                  type={showCurrentPassword ? 'text' : 'password'}
+                  name="currentPassword"
+                  placeholder="Enter current password"
+                  value={passwordData.currentPassword}
+                  onChange={handlePasswordChange}
+                  className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''}`}
+                />
+                <button
+                  type="button"
+                  className={styles.passwordEyeBtn}
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showCurrentPassword ? (
+                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                  ) : (
+                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                  )}
+                </button>
+              </div>
+              {passwordErrors.currentPassword && (
+                <span className={styles.passwordError}>{passwordErrors.currentPassword}</span>
+              )}
+            </div>
 
-            <TextField
-              fullWidth
-              label="New Password"
-              name="newPassword"
-              type={showNewPassword ? 'text' : 'password'}
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-              error={!!passwordErrors.newPassword}
-              helperText={passwordErrors.newPassword}
-              className={styles.passwordTextField}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowNewPassword(!showNewPassword)}
-                      edge="end"
-                      size="small"
-                    >
-                      {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+            {/* New Password */}
+            <div className={styles.passwordField}>
+              <label className={styles.passwordLabel}>New Password</label>
+              <div className={styles.passwordInputWrap}>
+                <input
+                  type={showNewPassword ? 'text' : 'password'}
+                  name="newPassword"
+                  placeholder="Enter new password"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''}`}
+                />
+                <button
+                  type="button"
+                  className={styles.passwordEyeBtn}
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showNewPassword ? (
+                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                  ) : (
+                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                  )}
+                </button>
+              </div>
+              {passwordErrors.newPassword && (
+                <span className={styles.passwordError}>{passwordErrors.newPassword}</span>
+              )}
+            </div>
 
-            <TextField
-              fullWidth
-              label="Confirm New Password"
-              name="confirmPassword"
-              type={showConfirmPassword ? 'text' : 'password'}
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-              error={!!passwordErrors.confirmPassword}
-              helperText={passwordErrors.confirmPassword}
-              className={styles.passwordTextField}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      edge="end"
-                      size="small"
-                    >
-                      {showConfirmPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+            {/* Confirm New Password */}
+            <div className={styles.passwordField}>
+              <label className={styles.passwordLabel}>Confirm New Password</label>
+              <div className={styles.passwordInputWrap}>
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  placeholder="Confirm new password"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''}`}
+                />
+                <button
+                  type="button"
+                  className={styles.passwordEyeBtn}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? (
+                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                  ) : (
+                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                  )}
+                </button>
+              </div>
+              {passwordErrors.confirmPassword && (
+                <span className={styles.passwordError}>{passwordErrors.confirmPassword}</span>
+              )}
+            </div>
           </Box>
 
           <Box className={styles.passwordModalActions}>
