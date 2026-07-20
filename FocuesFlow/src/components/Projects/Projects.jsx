@@ -98,7 +98,7 @@ function Icon({ name, className }) {
 const Projects = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [filterPriority, setFilterPriority] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('recent');
   const [anchorEl, setAnchorEl] = useState(null);
@@ -113,7 +113,7 @@ const Projects = () => {
       id: 1,
       name: 'Q4 Marketing Strategy',
       description: 'Comprehensive marketing plan for Q4 2024 including digital campaigns, content strategy, and budget allocation.',
-      status: 'Active',
+      priority: 'High',
       progress: 75,
       category: 'Marketing',
       team: ['AR', 'JD', 'SM'],
@@ -128,7 +128,7 @@ const Projects = () => {
       id: 2,
       name: 'Product Redesign',
       description: 'Complete UI/UX redesign of the BrewTask platform focusing on user experience and visual aesthetics.',
-      status: 'Active',
+      priority: 'Medium',
       progress: 45,
       category: 'Design',
       team: ['JD', 'AR'],
@@ -143,7 +143,7 @@ const Projects = () => {
       id: 3,
       name: 'API Integration',
       description: 'Integrate third-party APIs and build robust middleware for seamless data flow between services.',
-      status: 'Planning',
+      priority: 'Medium',
       progress: 10,
       category: 'Development',
       team: ['SM', 'AR'],
@@ -158,7 +158,7 @@ const Projects = () => {
       id: 4,
       name: 'Content Calendar',
       description: 'Plan and schedule all content for blog, social media, and email newsletters for the next quarter.',
-      status: 'Completed',
+      priority: 'Low',
       progress: 100,
       category: 'Content',
       team: ['JD'],
@@ -173,7 +173,7 @@ const Projects = () => {
       id: 5,
       name: 'User Research',
       description: 'Conduct user interviews and surveys to gather insights for feature development and product improvements.',
-      status: 'Active',
+      priority: 'High',
       progress: 60,
       category: 'Research',
       team: ['AR', 'SM'],
@@ -188,7 +188,7 @@ const Projects = () => {
       id: 6,
       name: 'Documentation Overhaul',
       description: 'Rewrite and organize all technical documentation with better examples and clearer structure.',
-      status: 'Active',
+      priority: 'Low',
       progress: 30,
       category: 'Documentation',
       team: ['SM', 'JD'],
@@ -205,7 +205,7 @@ const Projects = () => {
     name: '',
     description: '',
     category: 'Design',
-    status: 'Planning',
+    priority: 'Medium',
     dueDate: '',
   });
 
@@ -214,7 +214,7 @@ const Projects = () => {
     description: '',
     category: '',
     dueDate: '',
-    status: '',
+    priority: '',
   });
 
   const [createErrors, setCreateErrors] = useState({
@@ -228,30 +228,30 @@ const Projects = () => {
     }, 5000);
   };
 
-  const statusOptions = ['All', 'Active', 'Planning', 'Completed'];
+  const priorityOptions = ['All', 'High', 'Medium', 'Low'];
   const categoryOptions = ['All', 'Marketing', 'Design', 'Development', 'Content', 'Research', 'Documentation'];
 
-  const getStatusColor = (status) => {
+  const getPriorityColor = (priority) => {
     const map = {
-      Active: styles.statusActive,
-      Planning: styles.statusPlanning,
-      Completed: styles.statusCompleted,
+      High: styles.priorityHigh,
+      Medium: styles.priorityMedium,
+      Low: styles.priorityLow,
     };
-    return map[status] || '';
+    return map[priority] || '';
   };
 
-  const getStatusDotColor = (status) => {
+  const getPriorityDotColor = (priority) => {
     const map = {
-      Active: '#059669',
-      Planning: '#d97706',
-      Completed: '#059669',
+      High: '#dc2626',
+      Medium: '#d97706',
+      Low: '#059669',
     };
-    return map[status] || '#7E7471';
+    return map[priority] || '#7E7471';
   };
 
   const filteredProjects = projects
     .filter((p) => {
-      if (filterStatus !== 'all' && p.status !== filterStatus) return false;
+      if (filterPriority !== 'all' && p.priority !== filterPriority) return false;
       if (filterCategory !== 'all' && p.category !== filterCategory) return false;
       if (searchTerm) {
         const search = searchTerm.toLowerCase();
@@ -270,9 +270,9 @@ const Projects = () => {
 
   const stats = {
     total: projects.length,
-    active: projects.filter(p => p.status === 'Active').length,
-    planning: projects.filter(p => p.status === 'Planning').length,
-    completed: projects.filter(p => p.status === 'Completed').length,
+    high: projects.filter(p => p.priority === 'High').length,
+    medium: projects.filter(p => p.priority === 'Medium').length,
+    low: projects.filter(p => p.priority === 'Low').length,
   };
 
   const handleMenuOpen = (event, project) => {
@@ -305,7 +305,7 @@ const Projects = () => {
       description: selectedProject.description,
       category: selectedProject.category,
       dueDate: selectedProject.dueDate,
-      status: selectedProject.status,
+      priority: selectedProject.priority,
     });
     setShowEditModal(true);
     handleMenuClose();
@@ -320,7 +320,7 @@ const Projects = () => {
             description: editForm.description,
             category: editForm.category,
             dueDate: editForm.dueDate,
-            status: editForm.status,
+            priority: editForm.priority,
           }
         : p
     ));
@@ -350,7 +350,7 @@ const Projects = () => {
       id: Date.now(),
       name: createForm.name,
       description: createForm.description || 'No description provided.',
-      status: createForm.status,
+      priority: createForm.priority,
       progress: 0,
       category: createForm.category,
       team: ['You'],
@@ -368,7 +368,7 @@ const Projects = () => {
       name: '',
       description: '',
       category: 'Design',
-      status: 'Planning',
+      priority: 'Medium',
       dueDate: '',
     });
     setCreateErrors({ name: '' });
@@ -422,35 +422,35 @@ const Projects = () => {
 
           <Box className={styles.statBox}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconActive}`}>
-                <Icon name="check" className={styles.statIcon} />
+              <Box className={`${styles.statIconWrap} ${styles.iconHigh}`}>
+                <Icon name="alertCircle" className={styles.statIcon} />
               </Box>
-              <span className={styles.statTrend}>Active</span>
+              <span className={styles.statTrend}>High</span>
             </Box>
-            <span className={styles.statLabel}>In Progress</span>
-            <span className={styles.statValue}>{stats.active}</span>
+            <span className={styles.statLabel}>High Priority</span>
+            <span className={styles.statValue}>{stats.high}</span>
           </Box>
 
           <Box className={styles.statBox}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconPlanning}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconMedium}`}>
                 <Icon name="clock" className={styles.statIcon} />
               </Box>
-              <span className={styles.statTrend}>Planning</span>
+              <span className={styles.statTrend}>Medium</span>
             </Box>
-            <span className={styles.statLabel}>Upcoming</span>
-            <span className={styles.statValue}>{stats.planning}</span>
+            <span className={styles.statLabel}>Medium Priority</span>
+            <span className={styles.statValue}>{stats.medium}</span>
           </Box>
 
           <Box className={styles.statBox}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconCompleted}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconLow}`}>
                 <Icon name="check" className={styles.statIcon} />
               </Box>
-              <span className={`${styles.statTrend} ${styles.trendPositive}`}>Done</span>
+              <span className={`${styles.statTrend} ${styles.trendPositive}`}>Low</span>
             </Box>
-            <span className={styles.statLabel}>Completed</span>
-            <span className={styles.statValue}>{stats.completed}</span>
+            <span className={styles.statLabel}>Low Priority</span>
+            <span className={styles.statValue}>{stats.low}</span>
           </Box>
         </Box>
 
@@ -469,11 +469,11 @@ const Projects = () => {
 
           <Box className={styles.filterGroup}>
             <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
+              value={filterPriority}
+              onChange={(e) => setFilterPriority(e.target.value)}
               className={styles.filterSelect}
             >
-              {statusOptions.map((option) => (
+              {priorityOptions.map((option) => (
                 <option key={option} value={option === 'All' ? 'all' : option}>
                   {option}
                 </option>
@@ -510,7 +510,7 @@ const Projects = () => {
             <span className={styles.emptyIcon}>📂</span>
             <h3 className={styles.emptyTitle}>No projects found</h3>
             <p className={styles.emptyText}>
-              {searchTerm || filterStatus !== 'all' || filterCategory !== 'all'
+              {searchTerm || filterPriority !== 'all' || filterCategory !== 'all'
                 ? 'Try adjusting your filters or search terms'
                 : 'Create your first project to get started'}
             </p>
@@ -529,12 +529,12 @@ const Projects = () => {
                     <Box>
                       <h3 className={styles.projectName}>{project.name}</h3>
                       <Box className={styles.projectBadges}>
-                        <span className={`${styles.statusBadge} ${getStatusColor(project.status)}`}>
+                        <span className={`${styles.priorityBadge} ${getPriorityColor(project.priority)}`}>
                           <span 
-                            className={styles.statusDot} 
-                            style={{ backgroundColor: getStatusDotColor(project.status) }}
+                            className={styles.priorityDot} 
+                            style={{ backgroundColor: getPriorityDotColor(project.priority) }}
                           />
-                          {project.status}
+                          {project.priority}
                         </span>
                         <span className={styles.categoryBadge}>
                           {project.category}
@@ -636,7 +636,7 @@ const Projects = () => {
         </MenuItem>
       </Menu>
 
-      {/* Create Project Modal - Like CreateTaskModal */}
+      {/* Create Project Modal */}
       <Dialog
         open={showCreateModal}
         onClose={() => setShowCreateModal(false)}
@@ -716,16 +716,16 @@ const Projects = () => {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Status</label>
+                <label className={styles.formLabel}>Priority</label>
                 <select
-                  name="status"
-                  value={createForm.status}
+                  name="priority"
+                  value={createForm.priority}
                   onChange={handleCreateInputChange}
                   className={styles.formSelect}
                   disabled={isSubmitting}
                 >
-                  {statusOptions.filter(s => s !== 'All').map((status) => (
-                    <option key={status} value={status}>{status}</option>
+                  {priorityOptions.filter(p => p !== 'All').map((priority) => (
+                    <option key={priority} value={priority}>{priority}</option>
                   ))}
                 </select>
               </div>
@@ -845,14 +845,14 @@ const Projects = () => {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Status</label>
+                <label className={styles.formLabel}>Priority</label>
                 <select
-                  value={editForm.status}
-                  onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                  value={editForm.priority}
+                  onChange={(e) => setEditForm({ ...editForm, priority: e.target.value })}
                   className={styles.formSelect}
                 >
-                  {statusOptions.filter(s => s !== 'All').map((status) => (
-                    <option key={status} value={status}>{status}</option>
+                  {priorityOptions.filter(p => p !== 'All').map((priority) => (
+                    <option key={priority} value={priority}>{priority}</option>
                   ))}
                 </select>
               </div>

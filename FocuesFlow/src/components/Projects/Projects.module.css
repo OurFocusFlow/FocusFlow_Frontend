@@ -392,28 +392,6 @@
   flex-wrap: wrap;
 }
 
-.statusBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
-
-.statusActive { background: #ECFDF5; color: #059669; }
-.statusPlanning { background: #FEF3C7; color: #d97706; }
-.statusCompleted { background: #D1FAE5; color: #059669; }
-
-.statusDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-}
-
 .categoryBadge {
   font-size: 10px;
   font-weight: 500;
@@ -1305,3 +1283,31 @@
     animation: none;
   }
 }
+
+/* ==================== PRIORITY BADGES ==================== */
+.priorityBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.priorityHigh { background: #FCE3E0; color: #D6493A; }
+.priorityMedium { background: #FEF3C7; color: #d97706; }
+.priorityLow { background: #ECFDF5; color: #059669; }
+
+.priorityDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* ==================== STATS ICON UPDATES ==================== */
+.iconHigh { background: #FCE3E0; color: #D6493A; }
+.iconMedium { background: #FEF3C7; color: #d97706; }
+.iconLow { background: #ECFDF5; color: #059669; }
