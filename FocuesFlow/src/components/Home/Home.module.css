@@ -467,25 +467,25 @@
 }
 .bentoCardGray:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(51,35,29,0.08); }
 
-.bentoIcon { font-size: 18px; margin-bottom: 12px; }
+.bentoIcon { font-size: 30px; margin-bottom: 12px; }
 @media (min-width: 769px) {
-  .bentoIcon { font-size: 20px; margin-bottom: 14px; }
+  .bentoIcon { font-size: 30px; margin-bottom: 14px; }
 }
-.bentoTitle { font-size: 17px; font-weight: 700; margin: 0 0 6px; }
+.bentoTitle { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
 @media (min-width: 769px) {
-  .bentoTitle { font-size: 19px; margin: 0 0 8px; }
+  .bentoTitle { font-size: 22px; margin: 0 0 8px; }
 }
-.bentoTitleLight { font-size: 16px; font-weight: 700; margin: 0 0 6px; color: #fff; }
+.bentoTitleLight { font-size: 22px; font-weight: 700; margin: 0 0 6px; color: #fff; }
 @media (min-width: 769px) {
-  .bentoTitleLight { font-size: 17px; margin: 0 0 8px; }
+  .bentoTitleLight { font-size: 22px; margin: 0 0 8px; }
 }
-.bentoText { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+.bentoText { color: var(--text-muted); font-size: 16px; line-height: 1.5; }
 @media (min-width: 769px) {
-  .bentoText { font-size: 14px; }
+  .bentoText { font-size: 16px; }
 }
-.bentoTextLight { color: #D8CABB; font-size: 12px; line-height: 1.5; }
+.bentoTextLight { color: #D8CABB; font-size: 16px; line-height: 1.5; }
 @media (min-width: 769px) {
-  .bentoTextLight { font-size: 13px; }
+  .bentoTextLight { font-size: 16px; }
 }
 
 .bentoImage {
@@ -513,7 +513,12 @@
   transform: scale(1.03);
 }
 
-.avatarStack { display: flex; margin-top: 12px; }
+.avatarStack { 
+  display: flex; 
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 12px; 
+}
 @media (min-width: 769px) {
   .avatarStack { margin-top: 16px; }
 }
@@ -571,25 +576,65 @@
   object-fit: cover;
 }
 
-.eyebrow { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-@media (min-width: 769px) {
-  .eyebrow { font-size: 12px; }
+.eyebrow { 
+  color: var(--accent); 
+  font-size: 16px; 
+  font-weight: 700; 
+  letter-spacing: 0.5px; 
 }
-.splitTitle { font-size: 24px; font-weight: 800; margin: 8px 0 12px; }
 @media (min-width: 769px) {
-  .splitTitle { font-size: 30px; margin: 12px 0 16px; }
+  .eyebrow { 
+    font-size: 16px; 
+  }
 }
-.splitText { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+.splitTitle { 
+  font-size: 24px; 
+  font-weight: 800; 
+  margin: 8px 0 12px; 
+}
 @media (min-width: 769px) {
-  .splitText { font-size: 15px; margin-bottom: 20px; }
+  .splitTitle { 
+    font-size: 30px; 
+    margin: 12px 0 16px; 
+  }
+}
+.splitText { 
+  color: var(--text-muted); 
+  font-size: 16px; 
+  line-height: 1.6; 
+  margin-bottom: 16px; 
+}
+@media (min-width: 769px) {
+  .splitText { 
+    font-size: 16px; 
+    margin-bottom: 20px; 
+  }
 }
 
-.checklist { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-@media (min-width: 769px) {
-  .checklist { gap: 12px; font-size: 14px; }
+.checklist { 
+  list-style: none; 
+  padding: 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+  font-size: 16px; 
 }
-.checklist li { display: flex; align-items: center; gap: 10px; color: var(--dark); }
-.checklist li svg { color: var(--accent); flex-shrink: 0; }
+@media (min-width: 769px) {
+  .checklist { 
+    gap: 12px; 
+    font-size: 16px; 
+  }
+}
+.checklist li { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  color: var(--dark); 
+}
+.checklist li svg { 
+  color: var(--accent); 
+  flex-shrink: 0; 
+}
 
 /* CTA */
 .ctaSection { background: var(--brown); color: #fff; text-align: center; padding: 40px 20px; position: relative; z-index: 1; overflow: hidden; }
@@ -610,12 +655,18 @@
   .ctaForm { flex-direction: row; }
 }
 .ctaInput {
-  padding: 14px 18px; border-radius: 8px; border: 1px solid transparent; 
-  background: #62514A; color: #fff; transition: border-color 0.2s ease;
+  padding: 14px 18px; 
+  border-radius: 8px; 
+  border: 1px solid transparent; 
+  background: #62514A; 
+  color: #fff; transition: 
+  border-color 0.2s ease;
   width: 100%;
 }
 @media (min-width: 560px) {
-  .ctaInput { width: 280px; }
+  .ctaInput { 
+    width: 360px; 
+  }
 }
 .ctaInput::placeholder { color: #B3A293; }
 .ctaInput:focus { outline: none; border-color: var(--avatar-orange); }
