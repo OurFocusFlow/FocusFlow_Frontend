@@ -18,6 +18,7 @@ import Verification from './components/VerificationComponent/VerificationCompone
 import Calendar from './components/Calendar/Calendar';
 import Settings from './components/Settings/Settings';
 import Support from './components/Support/Support';
+import Projects from './components/Projects/Projects';
 
 import './App.css';  
 
@@ -295,6 +296,14 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Calendar />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/projects" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Projects />
                 </Layout>
               </ProtectedRoute>
             } />
