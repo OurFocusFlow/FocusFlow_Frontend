@@ -17,6 +17,7 @@ import ResetPassword from './components/ResetPassword/ResetPassword';
 import Verification from './components/VerificationComponent/VerificationComponent';
 import Calendar from './components/Calendar/Calendar';
 import Settings from './components/Settings/Settings';
+import Support from './components/Support/Support';
 
 import './App.css';  
 
@@ -262,6 +263,14 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Settings />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/support" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Support />
                 </Layout>
               </ProtectedRoute>
             } />
