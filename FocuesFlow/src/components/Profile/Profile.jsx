@@ -8,7 +8,6 @@ import {
   TextField,
   Button,
   Divider,
-  Switch,
   FormControlLabel,
   Grid,
   Chip,
@@ -49,6 +48,62 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import styles from './Profile.module.css';
+
+// ==================== CUSTOM SWITCH COMPONENT ====================
+const CustomSwitch = ({ 
+  checked, 
+  onChange, 
+  size = 'medium',
+  disabled = false,
+  id,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
+}) => {
+  const switchSize = size === 'small' ? 'switchSmall' : size === 'large' ? 'switchLarge' : '';
+  const switchId = id || `switch-${Math.random().toString(36).substr(2, 9)}`;
+
+  return (
+    <label className={`${styles.switch} ${switchSize}`}>
+      <input
+        type="checkbox"
+        id={switchId}
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        disabled={disabled}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+      />
+      <span className={styles.switchSlider}></span>
+    </label>
+  );
+};
+
+// ==================== SWITCH WITH LABEL COMPONENT ====================
+const SwitchWithLabel = ({ 
+  checked, 
+  onChange, 
+  label,
+  size = 'medium',
+  disabled = false,
+}) => {
+  const switchId = `switch-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
+  return (
+    <div className={styles.switchWrapper}>
+      <CustomSwitch
+        id={switchId}
+        checked={checked}
+        onChange={onChange}
+        size={size}
+        disabled={disabled}
+        aria-labelledby={`${switchId}-label`}
+      />
+      <span id={`${switchId}-label`} className={styles.switchLabel}>
+        {label}
+      </span>
+    </div>
+  );
+};
 
 const Profile = () => {
   const theme = useTheme();
@@ -109,9 +164,8 @@ const Profile = () => {
     setUserData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handlePreferenceChange = (e) => {
-    const { name, checked } = e.target;
-    setPreferences(prev => ({ ...prev, [name]: checked }));
+  const handlePreferenceChange = (name, value) => {
+    setPreferences(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSaveProfile = () => {
@@ -595,65 +649,23 @@ const Profile = () => {
                     Notifications
                   </Typography>
                   <Box className={styles.preferenceItem}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={preferences.emailNotifications}
-                          onChange={handlePreferenceChange}
-                          name="emailNotifications"
-                          className={styles.preferenceSwitch}
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#885210',
-                            },
-                            '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#885210',
-                            },
-                          }}
-                        />
-                      }
+                    <SwitchWithLabel
+                      checked={preferences.emailNotifications}
+                      onChange={(checked) => handlePreferenceChange('emailNotifications', checked)}
                       label="Email Notifications"
                     />
                   </Box>
                   <Box className={styles.preferenceItem}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={preferences.pushNotifications}
-                          onChange={handlePreferenceChange}
-                          name="pushNotifications"
-                          className={styles.preferenceSwitch}
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#885210',
-                            },
-                            '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#885210',
-                            },
-                          }}
-                        />
-                      }
+                    <SwitchWithLabel
+                      checked={preferences.pushNotifications}
+                      onChange={(checked) => handlePreferenceChange('pushNotifications', checked)}
                       label="Push Notifications"
                     />
                   </Box>
                   <Box className={styles.preferenceItem}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={preferences.weeklyDigest}
-                          onChange={handlePreferenceChange}
-                          name="weeklyDigest"
-                          className={styles.preferenceSwitch}
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#885210',
-                            },
-                            '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#885210',
-                            },
-                          }}
-                        />
-                      }
+                    <SwitchWithLabel
+                      checked={preferences.weeklyDigest}
+                      onChange={(checked) => handlePreferenceChange('weeklyDigest', checked)}
                       label="Weekly Digest"
                     />
                   </Box>
@@ -665,30 +677,18 @@ const Profile = () => {
                     Appearance
                   </Typography>
                   <Box className={styles.preferenceItem}>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={preferences.darkMode}
-                          onChange={handlePreferenceChange}
-                          name="darkMode"
-                          className={styles.preferenceSwitch}
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#885210',
-                            },
-                            '&.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#885210',
-                            },
-                          }}
-                        />
-                      }
-                      label={
-                        <Box className={styles.preferenceLabel}>
-                          {preferences.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
-                          <span>{preferences.darkMode ? 'Dark Mode' : 'Light Mode'}</span>
-                        </Box>
-                      }
-                    />
+                    <div className={styles.switchWrapper}>
+                      <CustomSwitch
+                        checked={preferences.darkMode}
+                        onChange={(checked) => handlePreferenceChange('darkMode', checked)}
+                      />
+                      <span className={styles.switchLabel}>
+                        {preferences.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
+                        <span style={{ marginLeft: '8px' }}>
+                          {preferences.darkMode ? 'Dark Mode' : 'Light Mode'}
+                        </span>
+                      </span>
+                    </div>
                   </Box>
                 </Box>
                 <Divider className={styles.preferenceDivider} />
@@ -761,25 +761,9 @@ const Profile = () => {
                       </Typography>
                     </Box>
                   </Box>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={security.twoFactorAuth}
-                        onChange={() => setSecurity(prev => ({ 
-                          ...prev, 
-                          twoFactorAuth: !prev.twoFactorAuth 
-                        }))}
-                        className={styles.securitySwitch}
-                        sx={{
-                          '&.Mui-checked': {
-                            color: '#885210',
-                          },
-                          '&.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#885210',
-                          },
-                        }}
-                      />
-                    }
+                  <SwitchWithLabel
+                    checked={security.twoFactorAuth}
+                    onChange={(checked) => setSecurity(prev => ({ ...prev, twoFactorAuth: checked }))}
                     label="Enable 2FA"
                   />
                 </Box>
