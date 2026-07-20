@@ -1,33 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
   Button,
   Menu,
   MenuItem,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Avatar,
   AvatarGroup,
+  Dialog,
 } from '@mui/material';
 import {
-  Search as SearchIcon,
-  Add as AddIcon,
   MoreVert as MoreVertIcon,
-  Folder as FolderIcon,
-  CheckCircle as CheckCircleIcon,
-  Schedule as ScheduleIcon,
   Close as CloseIcon,
-  Edit as EditIcon,
   Delete as DeleteIcon,
-  ArrowForward as ArrowForwardIcon,
-  Star as StarIcon,
-  StarBorder as StarBorderIcon,
 } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useProjects } from '../Context/ProjectContext';
 import styles from './Projects.module.css';
 import ToastNotification from '../ToastNotification/ToastNotification';
 
@@ -97,6 +85,15 @@ function Icon({ name, className }) {
 
 const Projects = () => {
   const navigate = useNavigate();
+  const { 
+    projects, 
+    addProject, 
+    updateProject, 
+    deleteProject, 
+    toggleProjectStar,
+    isLoading 
+  } = useProjects();
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPriority, setFilterPriority] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -108,99 +105,7 @@ const Projects = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [toast, setToast] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      name: 'Q4 Marketing Strategy',
-      description: 'Comprehensive marketing plan for Q4 2024 including digital campaigns, content strategy, and budget allocation.',
-      priority: 'High',
-      progress: 75,
-      category: 'Marketing',
-      team: ['AR', 'JD', 'SM'],
-      tasks: 24,
-      completed: 18,
-      dueDate: 'Dec 15, 2024',
-      created: 'Oct 1, 2024',
-      starred: true,
-      color: '#FBEAD9',
-    },
-    {
-      id: 2,
-      name: 'Product Redesign',
-      description: 'Complete UI/UX redesign of the BrewTask platform focusing on user experience and visual aesthetics.',
-      priority: 'Medium',
-      progress: 45,
-      category: 'Design',
-      team: ['JD', 'AR'],
-      tasks: 32,
-      completed: 14,
-      dueDate: 'Jan 20, 2025',
-      created: 'Oct 15, 2024',
-      starred: false,
-      color: '#ECFDF5',
-    },
-    {
-      id: 3,
-      name: 'API Integration',
-      description: 'Integrate third-party APIs and build robust middleware for seamless data flow between services.',
-      priority: 'Medium',
-      progress: 10,
-      category: 'Development',
-      team: ['SM', 'AR'],
-      tasks: 18,
-      completed: 2,
-      dueDate: 'Feb 10, 2025',
-      created: 'Nov 1, 2024',
-      starred: false,
-      color: '#DBEAFE',
-    },
-    {
-      id: 4,
-      name: 'Content Calendar',
-      description: 'Plan and schedule all content for blog, social media, and email newsletters for the next quarter.',
-      priority: 'Low',
-      progress: 100,
-      category: 'Content',
-      team: ['JD'],
-      tasks: 15,
-      completed: 15,
-      dueDate: 'Nov 30, 2024',
-      created: 'Sep 1, 2024',
-      starred: true,
-      color: '#FCE3E0',
-    },
-    {
-      id: 5,
-      name: 'User Research',
-      description: 'Conduct user interviews and surveys to gather insights for feature development and product improvements.',
-      priority: 'High',
-      progress: 60,
-      category: 'Research',
-      team: ['AR', 'SM'],
-      tasks: 12,
-      completed: 7,
-      dueDate: 'Dec 5, 2024',
-      created: 'Oct 20, 2024',
-      starred: false,
-      color: '#F3E8FF',
-    },
-    {
-      id: 6,
-      name: 'Documentation Overhaul',
-      description: 'Rewrite and organize all technical documentation with better examples and clearer structure.',
-      priority: 'Low',
-      progress: 30,
-      category: 'Documentation',
-      team: ['SM', 'JD'],
-      tasks: 20,
-      completed: 6,
-      dueDate: 'Jan 5, 2025',
-      created: 'Nov 10, 2024',
-      starred: false,
-      color: '#FEF3C7',
-    },
-  ]);
-
+  
   const [createForm, setCreateForm] = useState({
     name: '',
     description: '',
@@ -254,18 +159,6 @@ const Projects = () => {
     return map[priority] || '#7E7471';
   };
 
-  // Helper function to format date for display
-  const formatDateForDisplay = (dateString) => {
-    if (!dateString) return 'No date';
-    try {
-      const date = new Date(dateString + 'T00:00:00');
-      if (isNaN(date.getTime())) return 'Invalid date';
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    } catch {
-      return 'Invalid date';
-    }
-  };
-
   const filteredProjects = projects
     .filter((p) => {
       if (filterPriority !== 'all' && p.priority !== filterPriority) return false;
@@ -301,19 +194,23 @@ const Projects = () => {
     setAnchorEl(null);
   };
 
-  const handleStarToggle = (id) => {
-    setProjects(prev => prev.map(p => 
-      p.id === id ? { ...p, starred: !p.starred } : p
-    ));
-    const project = projects.find(p => p.id === id);
-    showToast('success', `Project ${project?.starred ? 'unstarred' : 'starred'}`, 'Project Updated');
+  const handleStarToggle = async (id) => {
+    const result = await toggleProjectStar(id);
+    if (result.success) {
+      const project = projects.find(p => p.id === id);
+      showToast('success', `Project ${project?.starred ? 'unstarred' : 'starred'}`, 'Project Updated');
+    }
   };
 
-  const handleDeleteProject = () => {
-    setProjects(prev => prev.filter(p => p.id !== selectedProject.id));
+  const handleDeleteProject = async () => {
+    const result = await deleteProject(selectedProject.id);
     setShowDeleteModal(false);
     setSelectedProject(null);
-    showToast('success', `Project "${selectedProject?.name}" has been deleted.`, 'Project Deleted');
+    if (result.success) {
+      showToast('success', `Project "${selectedProject?.name}" has been deleted.`, 'Project Deleted');
+    } else {
+      showToast('error', 'Failed to delete project', 'Error');
+    }
   };
 
   const handleEditProject = () => {
@@ -341,7 +238,7 @@ const Projects = () => {
     handleMenuClose();
   };
 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     // Validate Name
     if (!editForm.name.trim()) {
       showToast('error', 'Please enter a project name.', 'Missing Name');
@@ -370,21 +267,22 @@ const Projects = () => {
     const dateObj = new Date(editForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-    setProjects(prev => prev.map(p =>
-      p.id === selectedProject.id
-        ? {
-            ...p,
-            name: editForm.name,
-            description: editForm.description,
-            category: editForm.category,
-            dueDate: formattedDate,
-            priority: editForm.priority,
-          }
-        : p
-    ));
+    const updatedData = {
+      name: editForm.name,
+      description: editForm.description,
+      category: editForm.category,
+      dueDate: formattedDate,
+      priority: editForm.priority,
+    };
+
+    const result = await updateProject(selectedProject.id, updatedData);
     setShowEditModal(false);
     setSelectedProject(null);
-    showToast('success', `Project "${editForm.name}" has been updated.`, 'Project Updated');
+    if (result.success) {
+      showToast('success', `Project "${editForm.name}" has been updated.`, 'Project Updated');
+    } else {
+      showToast('error', 'Failed to update project', 'Error');
+    }
   };
 
   const handleCreateInputChange = (e) => {
@@ -395,7 +293,7 @@ const Projects = () => {
     }
   };
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
     // Validate Name
     if (!createForm.name.trim()) {
       setCreateErrors(prev => ({ ...prev, name: 'Project name is required' }));
@@ -430,23 +328,15 @@ const Projects = () => {
     const dateObj = new Date(createForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-    const newProject = {
-      id: Date.now(),
+    const projectData = {
       name: createForm.name,
       description: createForm.description,
       priority: createForm.priority,
-      progress: 0,
       category: createForm.category,
-      team: ['You'],
-      tasks: 0,
-      completed: 0,
       dueDate: formattedDate,
-      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      starred: false,
-      color: '#FBEAD9',
     };
-    
-    setProjects(prev => [newProject, ...prev]);
+
+    const result = await addProject(projectData);
     setShowCreateModal(false);
     setCreateForm({
       name: '',
@@ -457,7 +347,12 @@ const Projects = () => {
     });
     setCreateErrors({ name: '', description: '', dueDate: '' });
     setIsSubmitting(false);
-    showToast('success', `Project "${newProject.name}" has been created.`, 'Project Created');
+    
+    if (result.success) {
+      showToast('success', `Project "${result.project.name}" has been created.`, 'Project Created');
+    } else {
+      showToast('error', 'Failed to create project', 'Error');
+    }
   };
 
   const handleViewProject = (id) => {
@@ -465,9 +360,7 @@ const Projects = () => {
   };
 
   const handleDeleteClick = () => {
-    // Close the menu first
     handleMenuClose();
-    // Then open the delete modal
     setShowDeleteModal(true);
   };
 
