@@ -16,6 +16,7 @@ import ForgotPassword from './components/ForgetPassword/ForgetPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import Verification from './components/VerificationComponent/VerificationComponent';
 import Calendar from './components/Calendar/Calendar';
+import Settings from './components/Settings/Settings';
 
 import './App.css';  
 
@@ -253,6 +254,14 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            } />
+
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Layout>
+                  <Settings />
                 </Layout>
               </ProtectedRoute>
             } />
