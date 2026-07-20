@@ -820,3 +820,201 @@
     transform: none;
   }
 }
+
+/* ==================== DELETE BUTTON - RED ==================== */
+.deleteButtonRed {
+  background: #D6493A !important;
+  color: #fff !important;
+}
+
+.deleteButtonRed:hover {
+  background: #B83A2E !important;
+  box-shadow: 0 6px 24px rgba(214, 73, 58, 0.35) !important;
+}
+
+/* ==================== DELETE MODAL ==================== */
+.deleteModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.deleteModalBackdrop {
+  background: rgba(31, 17, 10, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.deleteModalContent {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(31, 17, 10, 0.25);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.deleteModalHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.deleteModalIconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FDE8E8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.deleteModalIcon {
+  font-size: 28px;
+  color: #D6493A;
+}
+
+.deleteModalTitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #33231D;
+  flex: 1;
+}
+
+.deleteModalClose {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #F5F0EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #7E7471;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.deleteModalClose:hover {
+  background: #EBE3DB;
+  color: #33231D;
+}
+
+.deleteModalText {
+  font-size: 15px;
+  color: #7E7471;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.deleteModalText strong {
+  color: #D6493A;
+}
+
+.deleteModalActions {
+  display: flex;
+  gap: 12px;
+}
+
+.deleteModalCancel {
+  flex: 1;
+  padding: 12px 24px;
+  border: 1px solid #E6E2DF;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7E7471;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.deleteModalCancel:hover {
+  background: #F5F0EB;
+  color: #33231D;
+}
+
+.deleteModalConfirm {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.deleteModalConfirmRed {
+  background: #D6493A;
+  color: #D6493A !important;
+}
+
+.deleteModalConfirmRed:hover {
+  background: #B83A2E;
+  color: #fff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(214, 73, 58, 0.35);
+}
+
+.deleteModalConfirmRed:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Responsive Delete Modal */
+@media (max-width: 480px) {
+  .deleteModalContent {
+    padding: 24px 20px;
+    margin: 16px;
+    border-radius: 16px;
+  }
+
+  .deleteModalTitle {
+    font-size: 20px;
+  }
+
+  .deleteModalIconWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .deleteModalIcon {
+    font-size: 22px;
+  }
+
+  .deleteModalActions {
+    flex-direction: column;
+  }
+
+  .deleteModalCancel,
+  .deleteModalConfirm {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}

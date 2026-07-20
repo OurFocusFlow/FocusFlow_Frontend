@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography, Switch, Select, MenuItem, Button, Slider } from '@mui/material';
+import { Box, Typography, Switch, Select, MenuItem, Button, Slider, Modal } from '@mui/material';
 import {
   Palette as PaletteIcon,
   Language as LanguageIcon,
@@ -14,6 +14,7 @@ import {
   DeleteForever as DeleteForeverIcon,
   CheckCircle as CheckCircleIcon,
   Security as SecurityIcon,
+  Close as CloseIcon,
 } from '@mui/icons-material';
 import styles from './Settings.module.css';
 
@@ -53,6 +54,7 @@ const Settings = () => {
   const [fontSize, setFontSize] = useState(16);
   const [soundEffects, setSoundEffects] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -68,13 +70,20 @@ const Settings = () => {
   }, [location]);
 
   const handleDeleteAccount = () => {
-    if (window.confirm('⚠️ Are you sure you want to delete your account?\n\nThis action will permanently erase all your data, tasks, and history. This cannot be undone.')) {
-      setIsDeleting(true);
-      setTimeout(() => {
-        setIsDeleting(false);
-        console.log('Account deleted');
-      }, 2000);
-    }
+    setIsDeleting(true);
+    setTimeout(() => {
+      setIsDeleting(false);
+      setDeleteModalOpen(false);
+      console.log('Account deleted');
+    }, 2000);
+  };
+
+  const handleOpenDeleteModal = () => {
+    setDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalOpen(false);
   };
 
   const handleFontSizeChange = (event, newValue) => {
@@ -335,8 +344,8 @@ const Settings = () => {
                 </Box>
               </Box>
               <Button 
-                className={styles.deleteButton} 
-                onClick={handleDeleteAccount}
+                className={`${styles.deleteButton} ${styles.deleteButtonRed}`}
+                onClick={handleOpenDeleteModal}
                 disabled={isDeleting}
               >
                 {isDeleting ? 'Deleting...' : 'Delete Account'}
@@ -353,6 +362,53 @@ const Settings = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Delete Account Modal */}
+      <Modal
+        open={deleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        className={styles.deleteModal}
+        closeAfterTransition
+        BackdropProps={{
+          className: styles.deleteModalBackdrop,
+        }}
+      >
+        <Box className={styles.deleteModalContent}>
+          <Box className={styles.deleteModalHeader}>
+            <Box className={styles.deleteModalIconWrapper}>
+              <WarningIcon className={styles.deleteModalIcon} />
+            </Box>
+            <Typography className={styles.deleteModalTitle}>Delete Account?</Typography>
+            <button 
+              className={styles.deleteModalClose} 
+              onClick={handleCloseDeleteModal}
+              aria-label="Close modal"
+            >
+              <CloseIcon />
+            </button>
+          </Box>
+
+          <Typography className={styles.deleteModalText}>
+            This action <strong>cannot be undone</strong>. All your data, tasks, projects, and history will be permanently erased.
+          </Typography>
+
+          <Box className={styles.deleteModalActions}>
+            <Button 
+              className={styles.deleteModalCancel} 
+              onClick={handleCloseDeleteModal}
+            >
+              Cancel
+            </Button>
+            <Button 
+              className={`${styles.deleteModalConfirm} ${styles.deleteModalConfirmRed}`}
+              onClick={handleDeleteAccount}
+              disabled={isDeleting}
+            >
+              {isDeleting ? 'Deleting...' : 'Delete Account'}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 };
