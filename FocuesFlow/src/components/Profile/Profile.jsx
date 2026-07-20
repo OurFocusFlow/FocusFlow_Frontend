@@ -44,6 +44,8 @@ import {
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
   Delete as DeleteIcon,
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import styles from './Profile.module.css';
@@ -59,6 +61,11 @@ const Profile = () => {
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  
+  // Password visibility states
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const [userData, setUserData] = useState({
     fullName: 'Alex Rivera',
@@ -237,7 +244,6 @@ const Profile = () => {
         <div className={styles.profileBgGlow} />
       </div>
 
-      {/* Changed maxWidth from "lg" to "xl" to allow wider layout */}
       <Container maxWidth="xl" className={styles.profileContent}>
         {/* Profile Header */}
         <Box className={styles.profileHeader}>
@@ -826,7 +832,7 @@ const Profile = () => {
           )}
         </Paper>
 
-        {/* Change Password Dialog */}
+        {/* Change Password Dialog with Eye Buttons */}
         <Dialog 
           open={showPasswordDialog} 
           onClose={() => setShowPasswordDialog(false)}
@@ -843,39 +849,95 @@ const Profile = () => {
           </DialogTitle>
           <DialogContent>
             <Box className={styles.dialogContent}>
-              <TextField
-                fullWidth
-                label="Current Password"
-                name="currentPassword"
-                type="password"
-                value={passwordData.currentPassword}
-                onChange={handlePasswordChange}
-                error={!!passwordErrors.currentPassword}
-                helperText={passwordErrors.currentPassword}
-                className={styles.dialogTextField}
-              />
-              <TextField
-                fullWidth
-                label="New Password"
-                name="newPassword"
-                type="password"
-                value={passwordData.newPassword}
-                onChange={handlePasswordChange}
-                error={!!passwordErrors.newPassword}
-                helperText={passwordErrors.newPassword}
-                className={styles.dialogTextField}
-              />
-              <TextField
-                fullWidth
-                label="Confirm New Password"
-                name="confirmPassword"
-                type="password"
-                value={passwordData.confirmPassword}
-                onChange={handlePasswordChange}
-                error={!!passwordErrors.confirmPassword}
-                helperText={passwordErrors.confirmPassword}
-                className={styles.dialogTextField}
-              />
+              {/* Current Password */}
+              <div className={styles.passwordField}>
+                <label className={styles.passwordLabel}>Current Password</label>
+                <div className={styles.passwordInputWrap}>
+                  <input
+                    type={showCurrentPassword ? 'text' : 'password'}
+                    name="currentPassword"
+                    placeholder="Enter current password"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''}`}
+                  />
+                  <button
+                    type="button"
+                    className={styles.passwordEyeBtn}
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showCurrentPassword ? (
+                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    ) : (
+                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                    )}
+                  </button>
+                </div>
+                {passwordErrors.currentPassword && (
+                  <span className={styles.passwordError}>{passwordErrors.currentPassword}</span>
+                )}
+              </div>
+
+              {/* New Password */}
+              <div className={styles.passwordField}>
+                <label className={styles.passwordLabel}>New Password</label>
+                <div className={styles.passwordInputWrap}>
+                  <input
+                    type={showNewPassword ? 'text' : 'password'}
+                    name="newPassword"
+                    placeholder="Enter new password"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''}`}
+                  />
+                  <button
+                    type="button"
+                    className={styles.passwordEyeBtn}
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showNewPassword ? (
+                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    ) : (
+                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                    )}
+                  </button>
+                </div>
+                {passwordErrors.newPassword && (
+                  <span className={styles.passwordError}>{passwordErrors.newPassword}</span>
+                )}
+              </div>
+
+              {/* Confirm New Password */}
+              <div className={styles.passwordField}>
+                <label className={styles.passwordLabel}>Confirm New Password</label>
+                <div className={styles.passwordInputWrap}>
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    name="confirmPassword"
+                    placeholder="Confirm new password"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''}`}
+                  />
+                  <button
+                    type="button"
+                    className={styles.passwordEyeBtn}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    ) : (
+                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                    )}
+                  </button>
+                </div>
+                {passwordErrors.confirmPassword && (
+                  <span className={styles.passwordError}>{passwordErrors.confirmPassword}</span>
+                )}
+              </div>
             </Box>
           </DialogContent>
           <DialogActions className={styles.dialogActions}>

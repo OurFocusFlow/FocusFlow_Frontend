@@ -1339,3 +1339,88 @@
     background: rgba(255, 255, 255, 0.5);
   }
 }
+
+/* ==================== PASSWORD FIELD WITH EYE ==================== */
+.passwordField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.passwordLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: #33231D;
+}
+
+.passwordInputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 12px 44px 12px 14px;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #33231D;
+  background: #FAF5F2;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.passwordInput:focus {
+  border-color: #885210;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+.passwordInput::placeholder {
+  color: #B8AFA1;
+}
+
+.passwordInputError {
+  border-color: #D6493A !important;
+  background: #FDF5F5 !important;
+}
+
+.passwordInputError:focus {
+  border-color: #D6493A !important;
+  box-shadow: 0 0 0 4px rgba(214, 73, 58, 0.08) !important;
+}
+
+.passwordEyeBtn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #7E7471;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.passwordEyeBtn:hover {
+  color: #33231D;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.passwordEyeIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.passwordError {
+  color: #D6493A;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 2px;
+}
