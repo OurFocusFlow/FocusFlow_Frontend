@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography, Switch, Select, MenuItem, Button, Slider, Modal } from '@mui/material';
+import { Box, Typography, Switch, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
 import {
   Palette as PaletteIcon,
   Language as LanguageIcon,
@@ -15,6 +15,7 @@ import {
   CheckCircle as CheckCircleIcon,
   Security as SecurityIcon,
   Close as CloseIcon,
+  VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import styles from './Settings.module.css';
 
@@ -57,6 +58,21 @@ const Settings = () => {
   const [activityStatus, setActivityStatus] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [passwordErrors, setPasswordErrors] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const sectionRefs = useRef({});
 
   useEffect(() => {
@@ -86,6 +102,88 @@ const Settings = () => {
 
   const handleCloseDeleteModal = () => {
     setDeleteModalOpen(false);
+  };
+
+  const handleOpenPasswordModal = () => {
+    setPasswordModalOpen(true);
+    setPasswordData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+    setPasswordErrors({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+  };
+
+  const handleClosePasswordModal = () => {
+    setPasswordModalOpen(false);
+    setPasswordData({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+    setPasswordErrors({
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
+  };
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user types
+    if (passwordErrors[name]) {
+      setPasswordErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const validatePassword = () => {
+    const errors = { currentPassword: '', newPassword: '', confirmPassword: '' };
+    let isValid = true;
+
+    if (!passwordData.currentPassword) {
+      errors.currentPassword = 'Current password is required';
+      isValid = false;
+    }
+
+    if (!passwordData.newPassword) {
+      errors.newPassword = 'New password is required';
+      isValid = false;
+    } else if (passwordData.newPassword.length < 8) {
+      errors.newPassword = 'Password must be at least 8 characters';
+      isValid = false;
+    }
+
+    if (!passwordData.confirmPassword) {
+      errors.confirmPassword = 'Please confirm your new password';
+      isValid = false;
+    } else if (passwordData.confirmPassword !== passwordData.newPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+      isValid = false;
+    }
+
+    setPasswordErrors(errors);
+    return isValid;
+  };
+
+  const handleUpdatePassword = () => {
+    if (validatePassword()) {
+      setIsUpdatingPassword(true);
+      setTimeout(() => {
+        setIsUpdatingPassword(false);
+        setPasswordModalOpen(false);
+        setPasswordData({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: '',
+        });
+        console.log('Password updated successfully');
+      }, 2000);
+    }
   };
 
   const handleFontSizeChange = (event, newValue) => {
@@ -275,7 +373,7 @@ const Settings = () => {
               label="Change Password"
               description="Update your account password for better security"
               control={
-                <Button className={styles.darkButton}>
+                <Button className={styles.darkButton} onClick={handleOpenPasswordModal}>
                   <SecurityIcon />
                   Update Password
                 </Button>
@@ -409,6 +507,126 @@ const Settings = () => {
               disabled={isDeleting}
             >
               {isDeleting ? 'Deleting...' : 'Delete Account'}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Password Change Modal */}
+      <Modal
+        open={passwordModalOpen}
+        onClose={handleClosePasswordModal}
+        className={styles.passwordModal}
+        closeAfterTransition
+        BackdropProps={{
+          className: styles.passwordModalBackdrop,
+        }}
+      >
+        <Box className={styles.passwordModalContent}>
+          <Box className={styles.passwordModalHeader}>
+            <Box className={styles.passwordModalIconWrapper}>
+              <SecurityIcon className={styles.passwordModalIcon} />
+            </Box>
+            <Typography className={styles.passwordModalTitle}>Change Password</Typography>
+            <button 
+              className={styles.passwordModalClose} 
+              onClick={handleClosePasswordModal}
+              aria-label="Close modal"
+            >
+              <CloseIcon />
+            </button>
+          </Box>
+
+          <Box className={styles.passwordModalBody}>
+            <TextField
+              fullWidth
+              label="Current Password"
+              name="currentPassword"
+              type={showCurrentPassword ? 'text' : 'password'}
+              value={passwordData.currentPassword}
+              onChange={handlePasswordChange}
+              error={!!passwordErrors.currentPassword}
+              helperText={passwordErrors.currentPassword}
+              className={styles.passwordTextField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showCurrentPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <TextField
+              fullWidth
+              label="New Password"
+              name="newPassword"
+              type={showNewPassword ? 'text' : 'password'}
+              value={passwordData.newPassword}
+              onChange={handlePasswordChange}
+              error={!!passwordErrors.newPassword}
+              helperText={passwordErrors.newPassword}
+              className={styles.passwordTextField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showNewPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <TextField
+              fullWidth
+              label="Confirm New Password"
+              name="confirmPassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={passwordData.confirmPassword}
+              onChange={handlePasswordChange}
+              error={!!passwordErrors.confirmPassword}
+              helperText={passwordErrors.confirmPassword}
+              className={styles.passwordTextField}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showConfirmPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+
+          <Box className={styles.passwordModalActions}>
+            <Button 
+              className={styles.passwordModalCancel} 
+              onClick={handleClosePasswordModal}
+            >
+              Cancel
+            </Button>
+            <Button 
+              className={styles.passwordModalConfirm}
+              onClick={handleUpdatePassword}
+              disabled={isUpdatingPassword}
+            >
+              {isUpdatingPassword ? 'Updating...' : 'Update Password'}
             </Button>
           </Box>
         </Box>

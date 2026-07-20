@@ -1018,3 +1018,197 @@
     text-align: center;
   }
 }
+
+/* ==================== PASSWORD MODAL ==================== */
+.passwordModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.passwordModalBackdrop {
+  background: rgba(31, 17, 10, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.passwordModalContent {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 460px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(31, 17, 10, 0.25);
+  animation: modalSlideIn 0.3s ease;
+}
+
+.passwordModalHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.passwordModalIconWrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FBEAD9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.passwordModalIcon {
+  font-size: 28px;
+  color: #885210;
+}
+
+.passwordModalTitle {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #33231D;
+  flex: 1;
+}
+
+.passwordModalClose {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #F5F0EB;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #7E7471;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.passwordModalClose:hover {
+  background: #EBE3DB;
+  color: #33231D;
+}
+
+.passwordModalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.passwordTextField {
+  width: 100%;
+}
+
+.passwordTextField :global(.MuiOutlinedInput-root) {
+  border-radius: 10px;
+  background: #FAF5F2;
+}
+
+.passwordTextField :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+}
+
+.passwordTextField :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+  border-width: 2px;
+}
+
+.passwordTextField :global(.MuiInputLabel-root) {
+  color: #7E7471;
+  font-weight: 500;
+}
+
+.passwordTextField :global(.MuiInputLabel-root.Mui-focused) {
+  color: #885210;
+}
+
+.passwordModalActions {
+  display: flex;
+  gap: 12px;
+}
+
+.passwordModalCancel {
+  flex: 1;
+  padding: 12px 24px;
+  border: 1px solid #E6E2DF;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7E7471;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.passwordModalCancel:hover {
+  background: #F5F0EB;
+  color: #33231D;
+}
+
+.passwordModalConfirm {
+  flex: 1;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: #885210;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.passwordModalConfirm:hover {
+  background: #6B3F0C;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(136, 82, 16, 0.35);
+}
+
+.passwordModalConfirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Responsive Password Modal */
+@media (max-width: 480px) {
+  .passwordModalContent {
+    padding: 24px 20px;
+    margin: 16px;
+    border-radius: 16px;
+  }
+
+  .passwordModalTitle {
+    font-size: 20px;
+  }
+
+  .passwordModalIconWrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .passwordModalIcon {
+    font-size: 22px;
+  }
+
+  .passwordModalActions {
+    flex-direction: column;
+  }
+
+  .passwordModalCancel,
+  .passwordModalConfirm {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
