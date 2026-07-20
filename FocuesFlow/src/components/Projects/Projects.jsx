@@ -220,7 +220,11 @@ const Projects = () => {
   const [createErrors, setCreateErrors] = useState({
     name: '',
     description: '',
+    dueDate: '',
   });
+
+  // Get today's date for validation
+  const today = new Date().toISOString().split('T')[0];
 
   const showToast = (type, message, title) => {
     setToast({ type, message, title });
@@ -248,6 +252,18 @@ const Projects = () => {
       Low: '#059669',
     };
     return map[priority] || '#7E7471';
+  };
+
+  // Helper function to format date for display
+  const formatDateForDisplay = (dateString) => {
+    if (!dateString) return 'No date';
+    try {
+      const date = new Date(dateString + 'T00:00:00');
+      if (isNaN(date.getTime())) return 'Invalid date';
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch {
+      return 'Invalid date';
+    }
   };
 
   const filteredProjects = projects
@@ -301,11 +317,24 @@ const Projects = () => {
   };
 
   const handleEditProject = () => {
+    // Convert dueDate from display format to input format if needed
+    let dueDateValue = '';
+    if (selectedProject.dueDate) {
+      const dateParts = selectedProject.dueDate.split(' ');
+      const months = { Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', 
+                      Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' };
+      if (dateParts.length === 3) {
+        const month = months[dateParts[0]];
+        const day = dateParts[1].replace(',', '').padStart(2, '0');
+        const year = dateParts[2];
+        dueDateValue = `${year}-${month}-${day}`;
+      }
+    }
     setEditForm({
       name: selectedProject.name,
       description: selectedProject.description,
       category: selectedProject.category,
-      dueDate: selectedProject.dueDate,
+      dueDate: dueDateValue,
       priority: selectedProject.priority,
     });
     setShowEditModal(true);
@@ -313,11 +342,33 @@ const Projects = () => {
   };
 
   const handleSaveEdit = () => {
+    // Validate Name
+    if (!editForm.name.trim()) {
+      showToast('error', 'Please enter a project name.', 'Missing Name');
+      return;
+    }
+
     // Validate Description
     if (!editForm.description.trim()) {
       showToast('error', 'Please enter a project description.', 'Missing Description');
       return;
     }
+
+    // Validate Due Date
+    if (!editForm.dueDate) {
+      showToast('error', 'Please select a due date.', 'Missing Due Date');
+      return;
+    }
+
+    // Validate Due Date is not in the past
+    if (editForm.dueDate < today) {
+      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
+      return;
+    }
+
+    // Format date for display
+    const dateObj = new Date(editForm.dueDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
     setProjects(prev => prev.map(p =>
       p.id === selectedProject.id
@@ -326,7 +377,7 @@ const Projects = () => {
             name: editForm.name,
             description: editForm.description,
             category: editForm.category,
-            dueDate: editForm.dueDate,
+            dueDate: formattedDate,
             priority: editForm.priority,
           }
         : p
@@ -359,8 +410,26 @@ const Projects = () => {
       return;
     }
 
+    // Validate Due Date
+    if (!createForm.dueDate) {
+      setCreateErrors(prev => ({ ...prev, dueDate: 'Due date is required' }));
+      showToast('error', 'Please select a due date.', 'Missing Due Date');
+      return;
+    }
+
+    // Validate Due Date is not in the past
+    if (createForm.dueDate < today) {
+      setCreateErrors(prev => ({ ...prev, dueDate: 'Due date cannot be in the past' }));
+      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
+      return;
+    }
+
     setIsSubmitting(true);
     
+    // Format date for display
+    const dateObj = new Date(createForm.dueDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
     const newProject = {
       id: Date.now(),
       name: createForm.name,
@@ -371,7 +440,7 @@ const Projects = () => {
       team: ['You'],
       tasks: 0,
       completed: 0,
-      dueDate: createForm.dueDate || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      dueDate: formattedDate,
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       starred: false,
       color: '#FBEAD9',
@@ -386,7 +455,7 @@ const Projects = () => {
       priority: 'Medium',
       dueDate: '',
     });
-    setCreateErrors({ name: '', description: '' });
+    setCreateErrors({ name: '', description: '', dueDate: '' });
     setIsSubmitting(false);
     showToast('success', `Project "${newProject.name}" has been created.`, 'Project Created');
   };
@@ -753,15 +822,22 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Due Date</label>
+              <label className={styles.formLabel}>
+                Due Date
+                <span className={styles.requiredStar}>*</span>
+              </label>
               <input
                 type="date"
                 name="dueDate"
                 value={createForm.dueDate}
                 onChange={handleCreateInputChange}
-                className={styles.formInput}
+                className={`${styles.formInput} ${createErrors.dueDate ? styles.formInputError : ''}`}
+                min={today}
                 disabled={isSubmitting}
               />
+              {createErrors.dueDate && (
+                <span className={styles.formError}>{createErrors.dueDate}</span>
+              )}
             </div>
           </Box>
 
@@ -883,12 +959,16 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Due Date</label>
+              <label className={styles.formLabel}>
+                Due Date
+                <span className={styles.requiredStar}>*</span>
+              </label>
               <input
                 type="date"
                 value={editForm.dueDate}
                 onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
                 className={styles.formInput}
+                min={today}
               />
             </div>
           </Box>
