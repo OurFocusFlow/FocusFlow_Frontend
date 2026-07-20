@@ -74,8 +74,10 @@ const Layout = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Check if current page is Profile
+  // Check if current page is Profile or Settings (hide navbar on these pages)
   const isProfilePage = location.pathname === '/profile';
+  const isSettingsPage = location.pathname === '/settings';
+  const hideNavbar = isProfilePage || isSettingsPage;
 
   // Get active item based on current path
   const getActiveItem = () => {
@@ -88,6 +90,7 @@ const Layout = ({ children }) => {
     if (path === '/calendar') return 'Calendar';
     if (path === '/team') return 'Team';
     if (path === '/profile') return 'Profile';
+    if (path === '/settings') return 'Settings';
     return 'Dashboard';
   };
 
@@ -139,7 +142,6 @@ const Layout = ({ children }) => {
     let errorMessage = '';
     let errorTitle = '';
 
-    // Handle both old format (categories array) and new format (category string)
     const categories = taskData.categories || [taskData.category || 'General'];
     const category = categories[0] || 'General';
 
@@ -168,16 +170,15 @@ const Layout = ({ children }) => {
 
     setIsSubmitting(true);
     
-    // Create new task
     const newTask = {
       id: Date.now(),
       title: taskData.title,
       description: taskData.description,
       dueDate: taskData.dueDate,
       dueSort: new Date(taskData.dueDate + 'T00:00:00').getTime(),
-      priority: taskData.priority || 'Medium',  // Use the priority from form
+      priority: taskData.priority || 'Medium',
       status: 'Pending',
-      category: category,  // Use the category from form
+      category: category,
       completed: false,
       assignees: ['You'],
       created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
@@ -211,6 +212,20 @@ const Layout = ({ children }) => {
       }, 300);
     }
     
+    if (isMobile || isTablet) {
+      setMobileOpen(false);
+    }
+  };
+
+  // ==================== SETTINGS HANDLER ====================
+  const handleSettingsClick = (section) => {
+    setActiveItem('Settings');
+    setOpenSettings(false);
+    if (section) {
+      navigate(`/settings#${section}`);
+    } else {
+      navigate('/settings');
+    }
     if (isMobile || isTablet) {
       setMobileOpen(false);
     }
@@ -260,7 +275,17 @@ const Layout = ({ children }) => {
   ];
 
   const bottomItems = [
-    { text: 'Settings', icon: <SettingsIcon />, subItems: ['Profile', 'Preferences', 'Notifications'] },
+    { 
+      text: 'Settings', 
+      icon: <SettingsIcon />, 
+      subItems: [
+        { text: 'Appearance', section: 'appearance' },
+        { text: 'Language', section: 'language' },
+        { text: 'Notifications', section: 'notifications' },
+        { text: 'Security', section: 'security' },
+        { text: 'Danger Zone', section: 'danger' },
+      ]
+    },
     { text: 'Support', icon: <SupportIcon /> },
   ];
 
@@ -369,7 +394,7 @@ const Layout = ({ children }) => {
             <ListItem
               className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
               onClick={() => {
-                if (item.subItems) {
+                if (item.text === 'Settings') {
                   handleSettingsToggle();
                 } else {
                   handleNavItemClick(item.text);
@@ -397,18 +422,14 @@ const Layout = ({ children }) => {
                 <List component="div" disablePadding>
                   {item.subItems.map((subItem) => (
                     <ListItem
-                      key={subItem}
+                      key={subItem.text}
                       className={styles.subNavItem}
                       onClick={() => {
-                        if (subItem === 'Profile') {
-                          handleNavItemClick(subItem, '/profile');
-                        } else {
-                          handleNavItemClick(subItem);
-                        }
+                        handleSettingsClick(subItem.section);
                       }}
                     >
                       <ListItemText 
-                        primary={subItem}
+                        primary={subItem.text}
                         className={styles.subNavText}
                         primaryTypographyProps={{
                           className: styles.subNavTextPrimary,
@@ -465,8 +486,8 @@ const Layout = ({ children }) => {
         )}
 
         <Box className={styles.contentArea}>
-          {/* Navbar - Hide on Profile Page */}
-          {!isProfilePage && (
+          {/* Navbar - Hide on Profile and Settings Pages */}
+          {!hideNavbar && (
             <Box className={styles.navbarWrapper}>
               <Box className={styles.navbarContainer}>
                 {(isMobile || isTablet) && (
@@ -500,8 +521,8 @@ const Layout = ({ children }) => {
             </Box>
           )}
 
-          {/* Show only menu icon on Profile page for mobile/tablet */}
-          {isProfilePage && (isMobile || isTablet) && (
+          {/* Show only menu icon on Profile/Settings page for mobile/tablet */}
+          {hideNavbar && (isMobile || isTablet) && (
             <Box className={styles.profileNavbarWrapper}>
               <Box className={styles.profileNavbarContainer}>
                 <Tooltip title="Open menu" arrow>
@@ -536,7 +557,7 @@ const Layout = ({ children }) => {
           {/* Main Content */}
           <Box
             component="main"
-            className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''} ${isProfilePage ? styles.mainContentNoNavbar : ''}`}
+            className={`${styles.mainContent} ${isMobile ? styles.mainContentMobile : ''} ${isTablet ? styles.mainContentTablet : ''} ${hideNavbar ? styles.mainContentFullWidth : ''}`}
           >
             {(isMobile || isTablet) && (
               <SwipeableDrawer
@@ -559,7 +580,7 @@ const Layout = ({ children }) => {
             )}
             
             {/* Page Content Container */}
-            <Box className={styles.contentContainer}>
+            <Box className={`${styles.contentContainer} ${hideNavbar ? styles.contentContainerFullWidth : ''}`}>
               {children}
             </Box>
           </Box>
