@@ -856,3 +856,107 @@
     transform: none !important;
   }
 }
+
+/* ==================== TOPIC CHIP ACTIVE ==================== */
+.topicChipActive {
+  background: #885210;
+  color: #FFFFFF;
+  border-color: #885210;
+}
+
+.topicChipActive:hover {
+  background: #6B3F0C;
+  color: #FFFFFF;
+  border-color: #6B3F0C;
+}
+
+/* ==================== CLEAR SEARCH BUTTON ==================== */
+.clearSearchBtn {
+  background: none;
+  border: none;
+  color: #7E7471;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.clearSearchBtn:hover {
+  color: #33231D;
+}
+
+/* ==================== FAQ HEADER WITH TOPIC ==================== */
+.faqHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.faqTopic {
+  font-size: 10px;
+  font-weight: 600;
+  color: #885210;
+  background: #FBEAD9;
+  padding: 2px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ==================== FILTER LABELS ==================== */
+
+.resultCount {
+  font-size: 13px;
+  font-weight: 500;
+  color: #7E7471;
+  margin-left: auto;
+  background: #FAF5F2;
+  padding: 2px 12px;
+  border-radius: 12px;
+}
+
+/* ==================== CLEAR TOPIC BUTTON ==================== */
+.clearTopicBtn {
+  background: #885210;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.2s ease;
+}
+
+.clearTopicBtn:hover {
+  background: #6B3F0C;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(136, 82, 16, 0.25);
+}
+
+/* ==================== RESPONSIVE UPDATES ==================== */
+@media (max-width: 768px) {
+  .faqHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .resultCount {
+    font-size: 11px;
+    padding: 2px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  
+  .faqTopic {
+    font-size: 9px;
+    padding: 2px 8px;
+  }
+}

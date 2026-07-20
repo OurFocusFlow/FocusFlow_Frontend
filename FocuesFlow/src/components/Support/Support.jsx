@@ -17,16 +17,23 @@ import {
 } from '@mui/icons-material';
 import styles from './Support.module.css';
 
+// FAQ data with topics
 const FAQS = [
-  { q: 'How do I create a new task?', a: 'Click "New Task" in the sidebar, or press N anywhere in the app. Fill in the title, description, due date, and priority, then save.' },
-  { q: 'Can I share a project with my team?', a: 'Open any project, click "Share" in the top right, and invite teammates by email. You can set their role to Viewer, Editor, or Admin.' },
-  { q: 'How do I reset my password?', a: 'Go to Settings → Security → Change Password. You\'ll get a confirmation email once it\'s updated.' },
-  { q: 'Is there a mobile app?', a: 'BrewTask is fully responsive in the browser. A dedicated iOS and Android app is on our roadmap.' },
-  { q: 'What happens to my data if I delete my account?', a: 'All tasks, projects, and history are permanently erased within 30 days and cannot be recovered after that window.' },
-  { q: 'How do I turn off notifications?', a: 'Go to Settings → Notifications and toggle off Desktop Alerts, Email Notifications, or Daily Summary individually.' },
+  { q: 'How do I create a new task?', a: 'Click "New Task" in the sidebar, or press N anywhere in the app. Fill in the title, description, due date, and priority, then save.', topic: 'Getting Started' },
+  { q: 'Can I share a project with my team?', a: 'Open any project, click "Share" in the top right, and invite teammates by email. You can set their role to Viewer, Editor, or Admin.', topic: 'Team Collaboration' },
+  { q: 'How do I reset my password?', a: 'Go to Settings → Security → Change Password. You\'ll get a confirmation email once it\'s updated.', topic: 'Account & Billing' },
+  { q: 'Is there a mobile app?', a: 'BrewTask is fully responsive in the browser. A dedicated iOS and Android app is on our roadmap.', topic: 'Getting Started' },
+  { q: 'What happens to my data if I delete my account?', a: 'All tasks, projects, and history are permanently erased within 30 days and cannot be recovered after that window.', topic: 'Account & Billing' },
+  { q: 'How do I turn off notifications?', a: 'Go to Settings → Notifications and toggle off Desktop Alerts, Email Notifications, or Daily Summary individually.', topic: 'Notifications' },
+  { q: 'Can I integrate BrewTask with other tools?', a: 'Yes! BrewTask supports integrations with Slack, Google Calendar, Trello, and more. Check the Integrations section in Settings.', topic: 'Integrations' },
+  { q: 'What should I do if I encounter a bug?', a: 'Please submit a ticket through our Support page with steps to reproduce the issue. Our team will review it within 24 hours.', topic: 'Troubleshooting' },
+  { q: 'How do I invite team members?', a: 'Go to Team → Invite Members. Enter their email addresses and select their role. They\'ll receive an invitation email.', topic: 'Team Collaboration' },
+  { q: 'Is there a free trial?', a: 'Yes! BrewTask offers a 14-day free trial with full access to all features. No credit card required.', topic: 'Account & Billing' },
+  { q: 'How do I manage notifications for my team?', a: 'Admins can configure team notification settings in Settings → Notifications. You can set default preferences for all members.', topic: 'Notifications' },
+  { q: 'Can I export my data?', a: 'Yes, you can export your tasks, projects, and team data in CSV or JSON format from Settings → Data Export.', topic: 'Integrations' },
 ];
 
-const TOPICS = ['Getting Started', 'Account & Billing', 'Team Collaboration', 'Notifications', 'Integrations', 'Troubleshooting'];
+const TOPICS = ['All', 'Getting Started', 'Account & Billing', 'Team Collaboration', 'Notifications', 'Integrations', 'Troubleshooting'];
 
 const CHANNELS = [
   { icon: <EmailIcon />, label: 'Email Support', detail: 'support@brewtask.com', action: 'Send email', href: 'mailto:support@brewtask.com' },
@@ -37,6 +44,7 @@ const CHANNELS = [
 
 const Support = () => {
   const [search, setSearch] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('All');
   const [expanded, setExpanded] = useState(false);
   const [category, setCategory] = useState('technical');
   const [subject, setSubject] = useState('');
@@ -64,11 +72,23 @@ const Support = () => {
     setCategory('technical');
   };
 
-  const filteredFaqs = FAQS.filter(
-    (item) =>
+  const handleTopicClick = (topic) => {
+    setSelectedTopic(topic);
+    setSearch('');
+  };
+
+  // Filter FAQs based on search and selected topic
+  const filteredFaqs = FAQS.filter((item) => {
+    // Search filter
+    const matchesSearch = search === '' || 
       item.q.toLowerCase().includes(search.toLowerCase()) ||
-      item.a.toLowerCase().includes(search.toLowerCase())
-  );
+      item.a.toLowerCase().includes(search.toLowerCase());
+    
+    // Topic filter
+    const matchesTopic = selectedTopic === 'All' || item.topic === selectedTopic;
+    
+    return matchesSearch && matchesTopic;
+  });
 
   return (
     <Box className={styles.page}>
@@ -146,10 +166,23 @@ const Support = () => {
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
             />
+            {search && (
+              <button 
+                className={styles.clearSearchBtn}
+                onClick={() => setSearch('')}
+                aria-label="Clear search"
+              >
+                ✕
+              </button>
+            )}
           </Box>
           <Box className={styles.topicRow}>
             {TOPICS.map((topic) => (
-              <Box key={topic} className={styles.topicChip} onClick={() => setSearch(topic)}>
+              <Box 
+                key={topic} 
+                className={`${styles.topicChip} ${selectedTopic === topic ? styles.topicChipActive : ''}`}
+                onClick={() => handleTopicClick(topic)}
+              >
                 {topic}
               </Box>
             ))}
@@ -160,14 +193,29 @@ const Support = () => {
         <Box className={styles.section}>
           <Box className={styles.sectionHeader}>
             <Box className={styles.sectionIcon}><HelpIcon /></Box>
-            <Typography className={styles.sectionTitle}>Frequently Asked Questions</Typography>
+            <Typography className={styles.sectionTitle}>
+              Frequently Asked Questions
+            </Typography>
+            <span className={styles.resultCount}>{filteredFaqs.length} results</span>
           </Box>
           <Box className={styles.sectionCard}>
             {filteredFaqs.length === 0 ? (
               <Box className={styles.emptyState}>
                 <span className={styles.emptyIcon}>🔍</span>
                 <Typography className={styles.emptyTitle}>No results found</Typography>
-                <Typography className={styles.emptyText}>Try a different search term or submit a ticket below.</Typography>
+                <Typography className={styles.emptyText}>
+                  {selectedTopic !== 'All' 
+                    ? `No articles found for "${selectedTopic}". Try selecting a different topic.`
+                    : 'Try a different search term or submit a ticket below.'}
+                </Typography>
+                {selectedTopic !== 'All' && (
+                  <button 
+                    className={styles.clearTopicBtn}
+                    onClick={() => setSelectedTopic('All')}
+                  >
+                    View all topics
+                  </button>
+                )}
               </Box>
             ) : (
               filteredFaqs.map((item) => (
@@ -180,7 +228,10 @@ const Support = () => {
                   elevation={0}
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon className={styles.expandIcon} />}>
-                    <Typography className={styles.faqQuestion}>{item.q}</Typography>
+                    <Box className={styles.faqHeader}>
+                      <Typography className={styles.faqQuestion}>{item.q}</Typography>
+                      <span className={styles.faqTopic}>{item.topic}</span>
+                    </Box>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography className={styles.faqAnswer}>{item.a}</Typography>
