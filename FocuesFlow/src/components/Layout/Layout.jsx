@@ -1,7 +1,8 @@
-// Layout.jsx - Updated with Support navigation and navbar hiding
+// Layout.jsx - Updated with dark mode support
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTasks } from '../Context/TaskContext';
+import { useDarkMode } from '../Context/DarkModeContext';
 import {
   Box,
   Typography,
@@ -36,6 +37,8 @@ import {
   Close as CloseIcon,
   Menu as MenuIcon,
   Home as HomeIcon,
+  DarkMode as DarkModeIcon,
+  LightMode as LightModeIcon,
 } from '@mui/icons-material';
 import Navbar from '../Navbar/Navbar';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
@@ -46,6 +49,7 @@ const Layout = ({ children }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -72,7 +76,6 @@ const Layout = ({ children }) => {
   
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openSettings, setOpenSettings] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   // Check if current page is Profile, Settings, or Support (hide navbar on these pages)
@@ -258,8 +261,7 @@ const Layout = ({ children }) => {
   };
 
   const handleThemeToggle = (mode) => {
-    setIsDarkMode(mode);
-    console.log('Theme toggled:', mode);
+    toggleDarkMode();
   };
 
   const navigationItems = [
@@ -289,7 +291,7 @@ const Layout = ({ children }) => {
         { text: 'Danger Zone', section: 'danger' },
       ]
     },
-    { text: 'Support', icon: <SupportIcon /> }, // This is now handled in navigationItems above
+    { text: 'Support', icon: <SupportIcon /> },
   ];
 
   const userData = {
@@ -313,14 +315,16 @@ const Layout = ({ children }) => {
         <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <rect width="36" height="36" rx="10" fill="url(#gradient)" />
-              <path d="M11 18L16 23L25 13" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-              <defs>
-                <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
-                  <stop offset="0%" stopColor="#885210" />
-                  <stop offset="100%" stopColor="#4B3832" />
-                </linearGradient>
-              </defs>
+              <rect width="36" height="36" rx="10" fill={isDarkMode ? "#FBBC00" : "url(#gradient)"} />
+              <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              {!isDarkMode && (
+                <defs>
+                  <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
+                    <stop offset="0%" stopColor="#885210" />
+                    <stop offset="100%" stopColor="#4B3832" />
+                  </linearGradient>
+                </defs>
+              )}
             </svg>
           </Box>
           <Box>
@@ -542,14 +546,16 @@ const Layout = ({ children }) => {
                 </Tooltip>
                 <Box className={styles.profileLogo}>
                   <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-                    <rect width="36" height="36" rx="10" fill="url(#gradient)" />
-                    <path d="M11 18L16 23L25 13" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs>
-                      <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
-                        <stop offset="0%" stopColor="#885210" />
-                        <stop offset="100%" stopColor="#4B3832" />
-                      </linearGradient>
-                    </defs>
+                    <rect width="36" height="36" rx="10" fill={isDarkMode ? "#FBBC00" : "url(#gradient)"} />
+                    <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                    {!isDarkMode && (
+                      <defs>
+                        <linearGradient id="gradient" x1="0" y1="0" x2="36" y2="36">
+                          <stop offset="0%" stopColor="#885210" />
+                          <stop offset="100%" stopColor="#4B3832" />
+                        </linearGradient>
+                      </defs>
+                    )}
                   </svg>
                   <Typography variant="h6" className={styles.profileLogoText}>
                     BrewTask
