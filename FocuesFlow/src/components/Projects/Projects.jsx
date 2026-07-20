@@ -538,7 +538,7 @@ const Projects = () => {
           </Box>
         </Box>
 
-        {/* Filters */}
+        {/* Filters with Labels */}
         <Box className={styles.filtersSection}>
           <Box className={styles.searchWrapper}>
             <Icon name="search" className={styles.searchIcon} />
@@ -552,39 +552,51 @@ const Projects = () => {
           </Box>
 
           <Box className={styles.filterGroup}>
-            <select
-              value={filterPriority}
-              onChange={(e) => setFilterPriority(e.target.value)}
-              className={styles.filterSelect}
-            >
-              {priorityOptions.map((option) => (
-                <option key={option} value={option === 'All' ? 'all' : option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            {/* Priority Filter */}
+            <Box className={styles.filterWrapper}>
+              <label className={styles.filterLabel}>Priority</label>
+              <select
+                value={filterPriority}
+                onChange={(e) => setFilterPriority(e.target.value)}
+                className={styles.filterSelect}
+              >
+                {priorityOptions.map((option) => (
+                  <option key={option} value={option === 'All' ? 'all' : option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </Box>
 
-            <select
-              value={filterCategory}
-              onChange={(e) => setFilterCategory(e.target.value)}
-              className={styles.filterSelect}
-            >
-              {categoryOptions.map((option) => (
-                <option key={option} value={option === 'All' ? 'all' : option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            {/* Category Filter */}
+            <Box className={styles.filterWrapper}>
+              <label className={styles.filterLabel}>Category</label>
+              <select
+                value={filterCategory}
+                onChange={(e) => setFilterCategory(e.target.value)}
+                className={styles.filterSelect}
+              >
+                {categoryOptions.map((option) => (
+                  <option key={option} value={option === 'All' ? 'all' : option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </Box>
 
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className={styles.filterSelect}
-            >
-              <option value="recent">Most Recent</option>
-              <option value="progress">Progress</option>
-              <option value="name">Name</option>
-            </select>
+            {/* Sort By */}
+            <Box className={styles.filterWrapper}>
+              <label className={styles.filterLabel}>Sort By</label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className={styles.filterSelect}
+              >
+                <option value="recent">Most Recent</option>
+                <option value="progress">Progress</option>
+                <option value="name">Name</option>
+              </select>
+            </Box>
           </Box>
         </Box>
 

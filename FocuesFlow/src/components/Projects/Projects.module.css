@@ -1317,3 +1317,74 @@ textarea.formInputError {
 .iconHigh { background: #FCE3E0; color: #D6493A; }
 .iconMedium { background: #FEF3C7; color: #d97706; }
 .iconLow { background: #ECFDF5; color: #059669; }
+
+/* ==================== FILTER WRAPPER WITH LABELS ==================== */
+.filterWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 130px;
+}
+
+.filterLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: #7E7471;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Update existing filterSelect to work with wrapper */
+.filterSelect {
+  padding: 10px 16px;
+  background: #FFFFFF;
+  border: 1px solid #E6E2DF;
+  border-radius: 12px;
+  font-size: 13px;
+  color: #33231D;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237E7471' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  width: 100%;
+  min-width: 130px;
+}
+
+.filterSelect:focus {
+  border-color: #885210;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filterWrapper {
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  .filterLabel {
+    font-size: 10px;
+  }
+  
+  .filterSelect {
+    font-size: 12px;
+    padding: 8px 12px;
+    padding-right: 28px;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .filterWrapper {
+    min-width: 80px;
+  }
+  
+  .filterLabel {
+    font-size: 9px;
+  }
+}
