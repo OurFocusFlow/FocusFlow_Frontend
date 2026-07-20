@@ -53,6 +53,8 @@ const Settings = () => {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [fontSize, setFontSize] = useState(16);
   const [soundEffects, setSoundEffects] = useState(true);
+  const [profileVisibility, setProfileVisibility] = useState('public');
+  const [activityStatus, setActivityStatus] = useState(true);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const sectionRefs = useRef({});
@@ -300,7 +302,8 @@ const Settings = () => {
               description="Control who can see your profile information"
               control={
                 <Select
-                  value="public"
+                  value={profileVisibility}
+                  onChange={(e) => setProfileVisibility(e.target.value)}
                   size="small"
                   className={styles.select}
                 >
@@ -316,7 +319,8 @@ const Settings = () => {
               description="Show when you're active to team members"
               control={
                 <Switch
-                  checked={true}
+                  checked={activityStatus}
+                  onChange={(e) => setActivityStatus(e.target.checked)}
                   className={styles.switch}
                 />
               }
