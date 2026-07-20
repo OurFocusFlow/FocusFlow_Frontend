@@ -219,6 +219,7 @@ const Projects = () => {
 
   const [createErrors, setCreateErrors] = useState({
     name: '',
+    description: '',
   });
 
   const showToast = (type, message, title) => {
@@ -312,6 +313,12 @@ const Projects = () => {
   };
 
   const handleSaveEdit = () => {
+    // Validate Description
+    if (!editForm.description.trim()) {
+      showToast('error', 'Please enter a project description.', 'Missing Description');
+      return;
+    }
+
     setProjects(prev => prev.map(p =>
       p.id === selectedProject.id
         ? {
@@ -338,9 +345,17 @@ const Projects = () => {
   };
 
   const handleCreateProject = () => {
+    // Validate Name
     if (!createForm.name.trim()) {
-      setCreateErrors({ name: 'Project name is required' });
+      setCreateErrors(prev => ({ ...prev, name: 'Project name is required' }));
       showToast('error', 'Please enter a project name.', 'Missing Name');
+      return;
+    }
+
+    // Validate Description
+    if (!createForm.description.trim()) {
+      setCreateErrors(prev => ({ ...prev, description: 'Description is required' }));
+      showToast('error', 'Please enter a project description.', 'Missing Description');
       return;
     }
 
@@ -349,7 +364,7 @@ const Projects = () => {
     const newProject = {
       id: Date.now(),
       name: createForm.name,
-      description: createForm.description || 'No description provided.',
+      description: createForm.description,
       priority: createForm.priority,
       progress: 0,
       category: createForm.category,
@@ -371,7 +386,7 @@ const Projects = () => {
       priority: 'Medium',
       dueDate: '',
     });
-    setCreateErrors({ name: '' });
+    setCreateErrors({ name: '', description: '' });
     setIsSubmitting(false);
     showToast('success', `Project "${newProject.name}" has been created.`, 'Project Created');
   };
@@ -688,16 +703,22 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Description</label>
+              <label className={styles.formLabel}>
+                Description
+                <span className={styles.requiredStar}>*</span>
+              </label>
               <textarea
                 name="description"
                 placeholder="Briefly describe the project goals and deliverables..."
                 value={createForm.description}
                 onChange={handleCreateInputChange}
-                className={styles.formTextarea}
+                className={`${styles.formTextarea} ${createErrors.description ? styles.formInputError : ''}`}
                 rows="3"
                 disabled={isSubmitting}
               />
+              {createErrors.description && (
+                <span className={styles.formError}>{createErrors.description}</span>
+              )}
             </div>
 
             <div className={styles.formRow}>
@@ -821,7 +842,10 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Description</label>
+              <label className={styles.formLabel}>
+                Description
+                <span className={styles.requiredStar}>*</span>
+              </label>
               <textarea
                 placeholder="Briefly describe the project goals and deliverables..."
                 value={editForm.description}

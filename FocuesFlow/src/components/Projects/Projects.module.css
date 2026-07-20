@@ -808,6 +808,7 @@
 
 .formInputError {
   border-color: #dc2626 !important;
+  background: #fef2f2 !important;
 }
 
 .formInputError:focus {
@@ -820,6 +821,11 @@
   font-size: 0.75rem;
   margin-top: 4px;
   display: block;
+}
+
+textarea.formInputError {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
 }
 
 .formTextarea {
