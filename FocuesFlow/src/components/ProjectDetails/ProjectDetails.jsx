@@ -238,29 +238,61 @@ const ProjectDetails = () => {
     }
   };
 
-  const handleCreateTask = async (taskData) => {
-    const newTask = {
-      ...taskData,
-      projectId: project.id,
-      projectName: project.name,
-      date: taskData.dueDate,
-      dueDate: taskData.dueDate,
-      status: 'Pending',
-      completed: false,
-      assignees: ['You'],
-      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      attachments: 0,
-      comments: 0,
-    };
-    
-    const result = await addTask(newTask);
-    setIsCreateTaskModalOpen(false);
-    if (result.success) {
-      showToast('success', 'Task added to project successfully!', 'Task Created');
-    } else {
-      showToast('error', 'Failed to create task', 'Error');
-    }
+  const handleCreateTask = async (taskData, error) => {
+  // If there's an error from the modal validation
+  if (error) {
+    showToast('error', error, 'Validation Error');
+    return;
+  }
+
+  // Validate again in parent (extra safety)
+  if (!taskData.title.trim()) {
+    showToast('error', 'Please enter a task title.', 'Missing Title');
+    return;
+  }
+
+  if (!taskData.description.trim()) {
+    showToast('error', 'Please enter a task description.', 'Missing Description');
+    return;
+  }
+
+  if (!taskData.dueDate) {
+    showToast('error', 'Please select a due date.', 'Missing Due Date');
+    return;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  if (taskData.dueDate < today) {
+    showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
+    return;
+  }
+
+  // Create task with project association
+  const newTask = {
+    ...taskData,
+    projectId: project.id,
+    projectName: project.name,
+    date: taskData.dueDate,
+    dueDate: taskData.dueDate,
+    status: 'Pending',
+    completed: false,
+    assignees: ['You'],
+    created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    attachments: 0,
+    comments: 0,
   };
+  
+  setIsSubmitting(true);
+  const result = await addTask(newTask);
+  setIsSubmitting(false);
+  setIsCreateTaskModalOpen(false);
+  
+  if (result.success) {
+    showToast('success', 'Task added to project successfully!', 'Task Created');
+  } else {
+    showToast('error', 'Failed to create task', 'Error');
+  }
+};
 
   const handleToggleTaskComplete = async (taskId) => {
     const task = projectTasks.find(t => t.id === taskId);
