@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { TaskProvider } from './components/Context/TaskContext';
+import { ProjectProvider } from './components/Context/ProjectContext';
 import Home from '../src/components/Home/Home'; 
 import Login from '../src/components/Login/Login';
 import Signup from '../src/components/Signup/Signup';  
@@ -16,10 +17,10 @@ import ForgotPassword from './components/ForgetPassword/ForgetPassword';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import Verification from './components/VerificationComponent/VerificationComponent';
 import Calendar from './components/Calendar/Calendar';
+import Projects from './components/Projects/Projects';
+import ProjectDetails from './components/ProjectDetails/ProjectDetails';
 import Settings from './components/Settings/Settings';
 import Support from './components/Support/Support';
-import Projects from './components/Projects/Projects';
-
 import './App.css';  
 
 const theme = createTheme({
@@ -236,82 +237,92 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <TaskProvider>
-        <Router>
-          <Routes>
-            {/* Public Routes - No Layout */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            
-            {/* Forgot Password & Reset Password Routes */}
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/verify" element={<Verification />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+        <ProjectProvider>
+          <Router>
+            <Routes>
+              {/* Public Routes - No Layout */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              
+              {/* Forgot Password & Reset Password Routes */}
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify" element={<Verification />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Landing Page */}
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            
-            {/* Protected Routes with Layout */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Dashboard />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              {/* Landing Page */}
+              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              
+              {/* Protected Routes with Layout */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Dashboard />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Settings />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              <Route path="/my-tasks" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <MyTasks />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/support" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Support />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Profile />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/my-tasks" element={
-              <ProtectedRoute>
-                <Layout>
-                  <MyTasks />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              <Route path="/calendar" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Calendar />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Profile />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              <Route path="/projects" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Projects />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/calendar" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Calendar />
-                </Layout>
-              </ProtectedRoute>
-            } />
+              <Route path="/project/:id" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <ProjectDetails />
+                  </Layout>
+                </ProtectedRoute>
+              } />
 
-            <Route path="/projects" element={
-              <ProtectedRoute>
-                <Layout>
-                  <Projects />
-                </Layout>
-              </ProtectedRoute>
-            } />
-            
-            {/* 404 Not Found - No Layout */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Settings />
+                  </Layout>
+                </ProtectedRoute>
+              } />
+
+              <Route path="/support" element={
+                <ProtectedRoute>
+                  <Layout>
+                    <Support />
+                  </Layout>
+                </ProtectedRoute>
+              } />
+              
+              {/* 404 Not Found - No Layout */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </ProjectProvider>
       </TaskProvider>
     </ThemeProvider>
   );
