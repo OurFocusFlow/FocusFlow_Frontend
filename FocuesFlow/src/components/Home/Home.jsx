@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Home.module.css';
 // Import images
 import snoozeImage from '../../assets/Images/The-Snooze-Button-Testt-Spotting-the-Decisions-You-Keep-Deferring.jpg';
@@ -36,6 +37,7 @@ function CheckIcon() {
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const r1 = useReveal();
   const r2 = useReveal();
   const r3 = useReveal();
@@ -106,6 +108,11 @@ export default function HomePage() {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Theme toggle handler
+  const handleThemeToggle = () => {
+    toggleDarkMode();
+  };
+
   // Get initials for avatar
   const getInitials = (name) => {
     if (!name) return 'JD';
@@ -117,9 +124,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
       {/* Navbar */}
-      <nav className={styles.navbar}>
+      <nav className={`${styles.navbar} ${isDarkMode ? styles.darkNavbar : ''}`}>
         <div className={styles.logo} onClick={() => handleNavigate('/')} style={{ cursor: 'pointer' }}>
           BrewTask
         </div>
@@ -163,14 +170,24 @@ export default function HomePage() {
         <div className={styles.navRight}>
           {/* Search - only show if authenticated */}
           {isAuthenticated && (
-            <div className={styles.searchBox}>
+            <div className={`${styles.searchBox} ${isDarkMode ? styles.darkSearchBox : ''}`}>
               <span className={styles.searchIcon}>🔍</span>
-              <input type="text" placeholder="Search tasks..." className={styles.searchInput} />
+              <input 
+                type="text" 
+                placeholder="Search tasks..." 
+                className={`${styles.searchInput} ${isDarkMode ? styles.darkSearchInput : ''}`} 
+              />
             </div>
           )}
 
           {/* Theme toggle - always visible */}
-          <button className={styles.iconBtn} aria-label="Toggle theme">🌙</button>
+          <button 
+            className={styles.iconBtn} 
+            aria-label="Toggle theme"
+            onClick={handleThemeToggle}
+          >
+            {isDarkMode ? '☀️' : '🌙'}
+          </button>
 
           {/* Notifications - only show if authenticated */}
           {isAuthenticated && (
@@ -181,50 +198,50 @@ export default function HomePage() {
           {isAuthenticated ? (
             <div className={styles.avatarWrapper} ref={dropdownRef}>
               <div 
-                className={styles.avatar} 
+                className={`${styles.avatar} ${isDarkMode ? styles.darkAvatar : ''}`}
                 onClick={handleAvatarClick}
                 style={{ cursor: 'pointer' }}
               >
                 {getInitials(userName)}
               </div>
               {showDropdown && (
-                <div className={styles.dropdownMenu}>
+                <div className={`${styles.dropdownMenu} ${isDarkMode ? styles.darkDropdownMenu : ''}`}>
                   <div className={styles.dropdownHeader}>
-                    <div className={styles.dropdownAvatar}>{getInitials(userName)}</div>
+                    <div className={`${styles.dropdownAvatar} ${isDarkMode ? styles.darkDropdownAvatar : ''}`}>{getInitials(userName)}</div>
                     <div className={styles.dropdownUserInfo}>
-                      <span className={styles.dropdownUserName}>{userName}</span>
-                      <span className={styles.dropdownUserEmail}>{userEmail}</span>
+                      <span className={`${styles.dropdownUserName} ${isDarkMode ? styles.darkDropdownUserName : ''}`}>{userName}</span>
+                      <span className={`${styles.dropdownUserEmail} ${isDarkMode ? styles.darkDropdownUserEmail : ''}`}>{userEmail}</span>
                     </div>
                   </div>
                   <div className={styles.dropdownDivider} />
                   
                   {/* All Navigation Links in Dropdown */}
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/dashboard')}
                   >
                     <span>📊</span> Dashboard
                   </button>
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/my-tasks')}
                   >
                     <span>✅</span> My Tasks
                   </button>
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/projects')}
                   >
                     <span>📁</span> Projects
                   </button>
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/calendar')}
                   >
                     <span>📅</span> Calendar
                   </button>
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/team')}
                   >
                     <span>👥</span> Team
@@ -233,13 +250,13 @@ export default function HomePage() {
                   <div className={styles.dropdownDivider} />
                   
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/profile')}
                   >
                     <span>👤</span> Profile
                   </button>
                   <button 
-                    className={styles.dropdownItem}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''}`}
                     onClick={() => handleNavigate('/settings')}
                   >
                     <span>⚙️</span> Settings
@@ -248,7 +265,7 @@ export default function HomePage() {
                   <div className={styles.dropdownDivider} />
                   
                   <button 
-                    className={`${styles.dropdownItem} ${styles.dropdownItemLogout}`}
+                    className={`${styles.dropdownItem} ${isDarkMode ? styles.darkDropdownItem : ''} ${styles.dropdownItemLogout}`}
                     onClick={handleLogout}
                   >
                     <span>🚪</span> Logout
@@ -259,13 +276,13 @@ export default function HomePage() {
           ) : (
             <div className={styles.authButtons}>
               <button 
-                className={styles.loginBtn}
+                className={`${styles.loginBtn} ${isDarkMode ? styles.darkLoginBtn : ''}`}
                 onClick={() => handleNavigate('/login')}
               >
                 Log In
               </button>
               <button 
-                className={styles.signupBtn}
+                className={`${styles.signupBtn} ${isDarkMode ? styles.darkSignupBtn : ''}`}
                 onClick={() => handleNavigate('/signup')}
               >
                 Sign Up
@@ -276,16 +293,16 @@ export default function HomePage() {
       </nav>
 
       {/* Mobile Menu - All Links Included */}
-      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''}`} ref={mobileMenuRef}>
+      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ''} ${isDarkMode ? styles.darkMobileMenu : ''}`} ref={mobileMenuRef}>
         <div className={styles.mobileMenuHeader}>
-          <span className={styles.mobileMenuLogo}>BrewTask</span>
+          <span className={`${styles.mobileMenuLogo} ${isDarkMode ? styles.darkMobileMenuLogo : ''}`}>BrewTask</span>
           <button className={styles.mobileMenuClose} onClick={toggleMobileMenu}>✕</button>
         </div>
         <div className={styles.mobileMenuLinks}>
           {/* Always show Home link */}
           <a 
             href="#"
-            className={styles.mobileNavLink}
+            className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
             onClick={(e) => {
               e.preventDefault();
               handleNavigate('/');
@@ -298,7 +315,7 @@ export default function HomePage() {
             <>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/dashboard');
@@ -308,7 +325,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/my-tasks');
@@ -318,7 +335,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/projects');
@@ -328,7 +345,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/calendar');
@@ -338,7 +355,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/team');
@@ -348,7 +365,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/profile');
@@ -358,7 +375,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/settings');
@@ -366,10 +383,10 @@ export default function HomePage() {
               >
                 ⚙️ Settings
               </a>
-              <div className={styles.mobileDivider} />
+              <div className={`${styles.mobileDivider} ${isDarkMode ? styles.darkMobileDivider : ''}`} />
               <a 
                 href="#"
-                className={`${styles.mobileNavLink} ${styles.mobileNavLinkLogout}`}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''} ${styles.mobileNavLinkLogout}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleLogout();
@@ -382,7 +399,7 @@ export default function HomePage() {
             <>
               <a 
                 href="#"
-                className={styles.mobileNavLink}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/login');
@@ -392,7 +409,7 @@ export default function HomePage() {
               </a>
               <a 
                 href="#"
-                className={`${styles.mobileNavLink} ${styles.mobileNavLinkSignup}`}
+                className={`${styles.mobileNavLink} ${isDarkMode ? styles.darkMobileNavLink : ''} ${styles.mobileNavLinkSignup}`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/signup');
@@ -406,32 +423,32 @@ export default function HomePage() {
       </div>
 
       {/* Hero */}
-      <section className={styles.hero}>
+      <section className={`${styles.hero} ${isDarkMode ? styles.darkHero : ''}`}>
         <div className={styles.badgeWrap}>
-          <span className={styles.ritualRing} aria-hidden="true" />
-          <span className={styles.badge}>
+          <span className={`${styles.ritualRing} ${isDarkMode ? styles.darkRitualRing : ''}`} aria-hidden="true" />
+          <span className={`${styles.badge} ${isDarkMode ? styles.darkBadge : ''}`}>
             <span className={styles.badgeDot} />
             NOW BREWING V2.0
           </span>
         </div>
-        <h1 className={styles.heroTitle}>
+        <h1 className={`${styles.heroTitle} ${isDarkMode ? styles.darkHeroTitle : ''}`}>
           Brew Your <span className={styles.heroAccent}>Best Work</span>
         </h1>
-        <p className={styles.heroSubtitle}>
+        <p className={`${styles.heroSubtitle} ${isDarkMode ? styles.darkHeroSubtitle : ''}`}>
           The premium task management ritual for professionals who value
           focus over noise. Transform your to-do list into a curated experience
           of intentional productivity.
         </p>
         <div className={styles.heroActions}>
           <button 
-            className={styles.primaryBtn} 
+            className={`${styles.primaryBtn} ${isDarkMode ? styles.darkPrimaryBtn : ''}`}
             onClick={handleStartBrewing}
           >
             {isAuthenticated ? 'Go to Dashboard' : 'Start Brewing Free'}
           </button>
         </div>
 
-        <div className={styles.logoStrip}>
+        <div className={`${styles.logoStrip} ${isDarkMode ? styles.darkLogoStrip : ''}`}>
           <span>Forbes</span>
           <span>The Verge</span>
           <span>Wired</span>
@@ -440,20 +457,20 @@ export default function HomePage() {
       </section>
 
       {/* Features intro */}
-      <section className={styles.features}>
+      <section className={`${styles.features} ${isDarkMode ? styles.darkFeatures : ''}`}>
         <div ref={r1} className={styles.reveal}>
-          <h2 className={styles.featuresTitle}>Crafted for Clarity</h2>
-          <p className={styles.featuresSubtitle}>
+          <h2 className={`${styles.featuresTitle} ${isDarkMode ? styles.darkFeaturesTitle : ''}`}>Crafted for Clarity</h2>
+          <p className={`${styles.featuresSubtitle} ${isDarkMode ? styles.darkFeaturesSubtitle : ''}`}>
             Every feature is designed to reduce cognitive load and help you enter a
             state of flow.
           </p>
         </div>
 
         <div ref={r2} className={`${styles.bentoGrid} ${styles.reveal}`}>
-          <div className={styles.bentoCardLight}>
+          <div className={`${styles.bentoCardLight} ${isDarkMode ? styles.darkBentoCardLight : ''}`}>
             <div className={styles.bentoIcon}>☕</div>
-            <h3 className={styles.bentoTitle}>Coffee-Powered Focus</h3>
-            <p className={styles.bentoText}>
+            <h3 className={`${styles.bentoTitle} ${isDarkMode ? styles.darkBentoTitle : ''}`}>Coffee-Powered Focus</h3>
+            <p className={`${styles.bentoText} ${isDarkMode ? styles.darkBentoText : ''}`}>
               Integrate your deep work sessions with Pomodoro-style
               timers tuned to the perfect brew cycle. Sync your
               productivity with your physical rituals.
@@ -468,10 +485,10 @@ export default function HomePage() {
           </div>
 
           <div className={styles.bentoRight}>
-            <div className={styles.bentoCardDark}>
+            <div className={`${styles.bentoCardDark} ${isDarkMode ? styles.darkBentoCardDark : ''}`}>
               <div className={styles.bentoIcon}>📑</div>
-              <h3 className={styles.bentoTitleLight}>Ritual Tracking</h3>
-              <p className={styles.bentoTextLight}>
+              <h3 className={`${styles.bentoTitleLight} ${isDarkMode ? styles.darkBentoTitleLight : ''}`}>Ritual Tracking</h3>
+              <p className={`${styles.bentoTextLight} ${isDarkMode ? styles.darkBentoTextLight : ''}`}>
                 Build lasting habits with recurring task
                 templates designed for creative workflows.
               </p>
@@ -480,10 +497,10 @@ export default function HomePage() {
               </svg>
             </div>
 
-            <div className={styles.bentoCardGray}>
+            <div className={`${styles.bentoCardGray} ${isDarkMode ? styles.darkBentoCardGray : ''}`}>
               <div className={styles.bentoIcon}>🎨</div>
-              <h3 className={styles.bentoTitle}>Seamless Collaboration</h3>
-              <p className={styles.bentoText}>
+              <h3 className={`${styles.bentoTitle} ${isDarkMode ? styles.darkBentoTitle : ''}`}>Seamless Collaboration</h3>
+              <p className={`${styles.bentoText} ${isDarkMode ? styles.darkBentoText : ''}`}>
                 Shared workspaces that feel like a quiet
                 library, not a noisy chat room.
               </p>
@@ -491,7 +508,7 @@ export default function HomePage() {
                 <div className={styles.stackAvatar} style={{ background: '#FDB56C' }} />
                 <div className={styles.stackAvatar} style={{ background: '#4B3832' }} />
                 <div className={styles.stackAvatar} style={{ background: '#7E7471' }} />
-                <div className={styles.stackAvatarMore}>+4</div>
+                <div className={`${styles.stackAvatarMore} ${isDarkMode ? styles.darkStackAvatarMore : ''}`}>+4</div>
               </div>
             </div>
           </div>
@@ -499,7 +516,7 @@ export default function HomePage() {
       </section>
 
       {/* Split section */}
-      <section ref={r3} className={`${styles.splitSection} ${styles.reveal}`}>
+      <section ref={r3} className={`${styles.splitSection} ${styles.reveal} ${isDarkMode ? styles.darkSplitSection : ''}`}>
         <div className={styles.splitImage}>
           <img 
             src={splitImage} 
@@ -508,15 +525,15 @@ export default function HomePage() {
           />
         </div>
         <div className={styles.splitContent}>
-          <span className={styles.eyebrow}>THE AESTHETIC OF WORK</span>
-          <h2 className={styles.splitTitle}>A Workspace That Respects Your Mind</h2>
-          <p className={styles.splitText}>
+          <span className={`${styles.eyebrow} ${isDarkMode ? styles.darkEyebrow : ''}`}>THE AESTHETIC OF WORK</span>
+          <h2 className={`${styles.splitTitle} ${isDarkMode ? styles.darkSplitTitle : ''}`}>A Workspace That Respects Your Mind</h2>
+          <p className={`${styles.splitText} ${isDarkMode ? styles.darkSplitText : ''}`}>
             We believe your tools should be as refined as your ambitions. BrewTask
             removes the jarring alerts and cluttered interfaces of the past, replacing
             them with a warm, tactile environment that promotes deep focus and
             intentionality.
           </p>
-          <ul className={styles.checklist}>
+          <ul className={`${styles.checklist} ${isDarkMode ? styles.darkChecklist : ''}`}>
             <li><CheckIcon /> Custom circular checkmarks for satisfying task completion</li>
             <li><CheckIcon /> Glassmorphism overlays for deep architectural hierarchy</li>
             <li><CheckIcon /> Ambient dark mode for midnight oil sessions</li>
@@ -525,22 +542,26 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section ref={r4} className={`${styles.ctaSection} ${styles.reveal}`}>
-        <h2 className={styles.ctaTitle}>Ready to start your ritual?</h2>
-        <p className={styles.ctaSubtitle}>
+      <section ref={r4} className={`${styles.ctaSection} ${styles.reveal} ${isDarkMode ? styles.darkCtaSection : ''}`}>
+        <h2 className={`${styles.ctaTitle} ${isDarkMode ? styles.darkCtaTitle : ''}`}>Ready to start your ritual?</h2>
+        <p className={`${styles.ctaSubtitle} ${isDarkMode ? styles.darkCtaSubtitle : ''}`}>
           Join 50,000+ professionals who have traded chaos for the calm of
           BrewTask.
         </p>
         <div className={styles.ctaForm}>
-          <input type="email" placeholder="Enter your email" className={styles.ctaInput} />
+          <input 
+            type="email" 
+            placeholder="Enter your email" 
+            className={`${styles.ctaInput} ${isDarkMode ? styles.darkCtaInput : ''}`} 
+          />
           <button 
-            className={styles.ctaButton}
+            className={`${styles.ctaButton} ${isDarkMode ? styles.darkCtaButton : ''}`}
             onClick={handleStartBrewing}
           >
             {isAuthenticated ? 'Go to Dashboard' : 'Get Started'}
           </button>
         </div>
-        <p className={styles.ctaNote}>No credit card required. Free 14-day trial.</p>
+        <p className={`${styles.ctaNote} ${isDarkMode ? styles.darkCtaNote : ''}`}>No credit card required. Free 14-day trial.</p>
       </section>
     </div>
   );

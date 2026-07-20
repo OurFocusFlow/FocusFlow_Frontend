@@ -674,3 +674,446 @@
 .dropdownItemLogout:hover {
   background: #fef2f2;
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Background */
+.darkPage {
+  background: #000000;
+}
+
+/* Navbar */
+.darkNavbar {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border-bottom: 1px solid rgba(56, 59, 64, 0.3) !important;
+}
+
+/* Logo */
+.darkNavbar .logo {
+  color: #FFFFFF;
+}
+
+/* Nav Links */
+.darkNavbar .navLink {
+  color: #6A6255;
+}
+
+.darkNavbar .navLink:hover {
+  color: #FFFFFF;
+}
+
+/* Search Box */
+.darkSearchBox {
+  background: #1A1A1A !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkSearchInput {
+  color: #FFFFFF !important;
+}
+
+.darkSearchInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Theme Button */
+.darkNavbar .iconBtn {
+  color: #6A6255;
+}
+
+.darkNavbar .iconBtn:hover {
+  background: rgba(251, 188, 0, 0.08);
+  color: #FBBC00;
+}
+
+/* Avatar */
+.darkAvatar {
+  background: linear-gradient(135deg, #FBBC00, #E2A900) !important;
+  color: #000000 !important;
+}
+
+/* Login Button */
+.darkLoginBtn {
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkLoginBtn:hover {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Signup Button */
+.darkSignupBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSignupBtn:hover {
+  background: #E2A900 !important;
+}
+
+/* Dropdown Menu */
+.darkDropdownMenu {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDropdownUserName {
+  color: #FFFFFF !important;
+}
+
+.darkDropdownUserEmail {
+  color: #6A6255 !important;
+}
+
+.darkDropdownItem {
+  color: #FFFFFF !important;
+}
+
+.darkDropdownItem:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkDropdownAvatar {
+  background: linear-gradient(135deg, #FBBC00, #E2A900) !important;
+  color: #000000 !important;
+}
+
+/* Mobile Menu */
+.darkMobileMenu {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border-left: 1px solid #383B40 !important;
+}
+
+.darkMobileMenuLogo {
+  color: #FFFFFF !important;
+}
+
+.darkMobileNavLink {
+  color: #FFFFFF !important;
+}
+
+.darkMobileNavLink:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkMobileDivider {
+  background: #383B40 !important;
+}
+
+/* Hero Section */
+.darkHero {
+  color: #FFFFFF;
+}
+
+.darkHeroTitle {
+  color: #FFFFFF !important;
+}
+
+.darkHeroSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkRitualRing {
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkPrimaryBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkPrimaryBtn:hover {
+  background: #E2A900 !important;
+}
+
+.darkLogoStrip {
+  border-top-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkLogoStrip span:hover {
+  color: #FFFFFF !important;
+}
+
+/* Features Section */
+.darkFeatures {
+  background: transparent;
+}
+
+.darkFeaturesTitle {
+  color: #FFFFFF !important;
+}
+
+.darkFeaturesSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkBentoCardLight {
+  background: #101010 !important;
+  border-color: #383B40 !important;
+}
+
+.darkBentoCardLight:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkBentoTitle {
+  color: #FFFFFF !important;
+}
+
+.darkBentoText {
+  color: #6A6255 !important;
+}
+
+.darkBentoCardDark {
+  background: #171511 !important;
+}
+
+.darkBentoTitleLight {
+  color: #FFFFFF !important;
+}
+
+.darkBentoTextLight {
+  color: #857B6B !important;
+}
+
+.darkBentoCardGray {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+}
+
+.darkStackAvatarMore {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+/* Split Section */
+.darkSplitSection {
+  background: transparent;
+}
+
+.darkEyebrow {
+  color: #FBBC00 !important;
+}
+
+.darkSplitTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSplitText {
+  color: #6A6255 !important;
+}
+
+.darkChecklist li {
+  color: #FFFFFF !important;
+}
+
+.darkChecklist li svg {
+  color: #FBBC00 !important;
+}
+
+/* CTA Section */
+.darkCtaSection {
+  background: #171511 !important;
+}
+
+.darkCtaTitle {
+  color: #FFFFFF !important;
+}
+
+.darkCtaSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkCtaInput {
+  background: #0F0D08 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkCtaInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkCtaInput:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkCtaButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkCtaButton:hover {
+  background: #E2A900 !important;
+}
+
+.darkCtaNote {
+  color: #857B6B !important;
+}
+
+/* Logo Strip in Dark Mode - override hover */
+.darkLogoStrip span {
+  color: #6A6255;
+}
+
+.darkLogoStrip span:hover {
+  color: #FFFFFF;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkMobileMenu {
+    background: rgba(0, 0, 0, 0.98) !important;
+  }
+}
+/* ==================== BACKGROUND EFFECTS FOR DARK MODE ==================== */
+
+/* Dark page background with subtle gradient */
+[data-theme="dark"] .page {
+  background: #000000;
+  position: relative;
+}
+
+/* Ambient glow effect - like in the image */
+[data-theme="dark"] .page::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(251, 188, 0, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(251, 188, 0, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(251, 188, 0, 0.03) 0%, transparent 30%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Dark mode hero glow effect */
+[data-theme="dark"] .hero::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 60%;
+  background: radial-gradient(ellipse, rgba(251, 188, 0, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Dark mode card glow on hover */
+[data-theme="dark"] .bentoCardLight:hover {
+  box-shadow: 0 16px 40px rgba(251, 188, 0, 0.05), 0 0 60px rgba(251, 188, 0, 0.02) !important;
+}
+
+/* Dark mode CTA section subtle glow */
+[data-theme="dark"] .ctaSection {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .ctaSection::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(251, 188, 0, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Dark mode badge glow */
+[data-theme="dark"] .badge {
+  background: rgba(251, 188, 0, 0.1) !important;
+  border-color: rgba(251, 188, 0, 0.15) !important;
+  box-shadow: 0 0 30px rgba(251, 188, 0, 0.03);
+}
+
+/* Dark mode primary button glow */
+[data-theme="dark"] .primaryBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(251, 188, 0, 0.15) !important;
+}
+
+[data-theme="dark"] .primaryBtn:hover {
+  box-shadow: 0 8px 30px rgba(251, 188, 0, 0.25) !important;
+}
+
+/* Dark mode ambient orb effects */
+[data-theme="dark"] .home-bg-orb:nth-child(1) {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.08) 0%, transparent 70%);
+  width: 500px;
+  height: 500px;
+  top: -200px;
+  right: -100px;
+  filter: blur(100px);
+}
+
+[data-theme="dark"] .home-bg-orb:nth-child(2) {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.05) 0%, transparent 70%);
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  filter: blur(100px);
+}
+
+[data-theme="dark"] .home-bg-orb:nth-child(3) {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.04) 0%, transparent 70%);
+  width: 300px;
+  height: 300px;
+  top: 40%;
+  left: 60%;
+  filter: blur(100px);
+}
+
+/* Dark mode grid overlay - subtle */
+[data-theme="dark"] .home-bg-grid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+/* Dark mode split section divider glow */
+[data-theme="dark"] .splitSection {
+  position: relative;
+}
+
+[data-theme="dark"] .splitSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(251, 188, 0, 0.05), transparent);
+}
