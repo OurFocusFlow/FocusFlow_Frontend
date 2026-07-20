@@ -1,12 +1,13 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { TaskProvider } from './components/Context/TaskContext';
 import { ProjectProvider } from './components/Context/ProjectContext';
-import Home from '../src/components/Home/Home'; 
+import { DarkModeProvider, useDarkMode } from './components/Context/DarkModeContext';
+import Home from '../src/components/Home/Home';
 import Login from '../src/components/Login/Login';
-import Signup from '../src/components/Signup/Signup';  
+import Signup from '../src/components/Signup/Signup';
 import NotFound from '../src/components/NotFound/NotFound';
 import Layout from '../src/components/Layout/Layout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
@@ -21,40 +22,37 @@ import Projects from './components/Projects/Projects';
 import ProjectDetails from './components/ProjectDetails/ProjectDetails';
 import Settings from './components/Settings/Settings';
 import Support from './components/Support/Support';
-import './App.css';  
+import './App.css';
+import './darkMode.css';
 
-const theme = createTheme({
+// Create theme based on dark mode
+const createAppTheme = (isDarkMode) => createTheme({
   palette: {
+    mode: isDarkMode ? 'dark' : 'light',
     primary: {
-      main: '#4B3832',
-      light: '#4A382E',
-      dark: '#33231D',
-      contrastText: '#FFFFFF',
+      main: isDarkMode ? '#FBBC00' : '#4B3832',
+      light: isDarkMode ? '#E2A900' : '#4A382E',
+      dark: isDarkMode ? '#E2A900' : '#33231D',
+      contrastText: isDarkMode ? '#000000' : '#FFFFFF',
     },
     secondary: {
-      main: '#885210',
-      light: '#A66D2A',
-      dark: '#6B3F0C',
-      contrastText: '#FFFFFF',
+      main: isDarkMode ? '#FBBC00' : '#885210',
+      light: isDarkMode ? '#E2A900' : '#A66D2A',
+      dark: isDarkMode ? '#E2A900' : '#6B3F0C',
+      contrastText: isDarkMode ? '#000000' : '#FFFFFF',
     },
     background: {
-      default: '#FAF5F2',
-      paper: '#FDF8F5',
+      default: isDarkMode ? '#000000' : '#FAF5F2',
+      paper: isDarkMode ? '#111111' : '#FDF8F5',
     },
     text: {
-      primary: '#33231D',
-      secondary: '#7E7471',
+      primary: isDarkMode ? '#FFFFFF' : '#33231D',
+      secondary: isDarkMode ? '#6A6255' : '#7E7471',
     },
-    divider: '#E6E2DF',
-    error: {
-      main: '#dc2626',
-    },
-    success: {
-      main: '#059669',
-    },
-    warning: {
-      main: '#d97706',
-    },
+    divider: isDarkMode ? '#383B40' : '#E6E2DF',
+    error: { main: '#dc2626' },
+    success: { main: '#059669' },
+    warning: { main: '#d97706' },
   },
   typography: {
     fontFamily: [
@@ -67,34 +65,34 @@ const theme = createTheme({
       'sans-serif',
     ].join(','),
     h1: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 800,
     },
     h2: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 700,
     },
     h3: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 600,
     },
     h4: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 600,
     },
     h5: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 500,
     },
     h6: {
-      color: '#33231D',
+      color: isDarkMode ? '#FFFFFF' : '#33231D',
       fontWeight: 500,
     },
     body1: {
-      color: '#7E7471',
+      color: isDarkMode ? '#6A6255' : '#7E7471',
     },
     body2: {
-      color: '#7E7471',
+      color: isDarkMode ? '#6A6255' : '#7E7471',
     },
     button: {
       fontWeight: 600,
@@ -111,29 +109,37 @@ const theme = createTheme({
           fontWeight: 600,
         },
         contained: {
-          boxShadow: '0 4px 24px rgba(75, 56, 50, 0.25)',
+          boxShadow: isDarkMode 
+            ? '0 4px 24px rgba(251, 188, 0, 0.15)' 
+            : '0 4px 24px rgba(75, 56, 50, 0.25)',
           '&:hover': {
-            boxShadow: '0 8px 28px rgba(75, 56, 50, 0.35)',
+            boxShadow: isDarkMode 
+              ? '0 8px 28px rgba(251, 188, 0, 0.25)' 
+              : '0 8px 28px rgba(75, 56, 50, 0.35)',
           },
         },
         containedPrimary: {
-          backgroundColor: '#4B3832',
+          backgroundColor: isDarkMode ? '#FBBC00' : '#4B3832',
+          color: isDarkMode ? '#000000' : '#FFFFFF',
           '&:hover': {
-            backgroundColor: '#4A382E',
+            backgroundColor: isDarkMode ? '#E2A900' : '#4A382E',
           },
         },
         containedSecondary: {
-          backgroundColor: '#885210',
+          backgroundColor: isDarkMode ? '#FBBC00' : '#885210',
+          color: isDarkMode ? '#000000' : '#FFFFFF',
           '&:hover': {
-            backgroundColor: '#A66D2A',
+            backgroundColor: isDarkMode ? '#E2A900' : '#A66D2A',
           },
         },
         outlined: {
-          borderColor: '#E6E2DF',
-          color: '#33231D',
+          borderColor: isDarkMode ? '#383B40' : '#E6E2DF',
+          color: isDarkMode ? '#FFFFFF' : '#33231D',
           '&:hover': {
-            borderColor: '#885210',
-            backgroundColor: 'rgba(136, 82, 16, 0.04)',
+            borderColor: isDarkMode ? '#FBBC00' : '#885210',
+            backgroundColor: isDarkMode 
+              ? 'rgba(251, 188, 0, 0.08)' 
+              : 'rgba(136, 82, 16, 0.04)',
           },
         },
       },
@@ -141,30 +147,46 @@ const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(253, 248, 245, 0.85)',
+          backgroundColor: isDarkMode 
+            ? 'rgba(0, 0, 0, 0.85)' 
+            : 'rgba(253, 248, 245, 0.85)',
           backdropFilter: 'blur(20px)',
-          boxShadow: '0 4px 24px rgba(51, 35, 29, 0.06)',
-          borderBottom: '1px solid rgba(230, 226, 223, 0.3)',
+          boxShadow: isDarkMode 
+            ? '0 4px 24px rgba(0, 0, 0, 0.5)' 
+            : '0 4px 24px rgba(51, 35, 29, 0.06)',
+          borderBottom: isDarkMode 
+            ? '1px solid rgba(56, 59, 64, 0.3)' 
+            : '1px solid rgba(230, 226, 223, 0.3)',
         },
       },
     },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: 'rgba(253, 248, 245, 0.92)',
+          backgroundColor: isDarkMode 
+            ? 'rgba(0, 0, 0, 0.92)' 
+            : 'rgba(253, 248, 245, 0.92)',
           backdropFilter: 'blur(20px)',
-          borderRight: '1px solid rgba(230, 226, 223, 0.3)',
+          borderRight: isDarkMode 
+            ? '1px solid rgba(56, 59, 64, 0.3)' 
+            : '1px solid rgba(230, 226, 223, 0.3)',
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: isDarkMode 
+            ? 'rgba(17, 17, 17, 0.9)' 
+            : 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(230, 226, 223, 0.3)',
+          border: isDarkMode 
+            ? '1px solid rgba(56, 59, 64, 0.3)' 
+            : '1px solid rgba(230, 226, 223, 0.3)',
           borderRadius: 16,
-          boxShadow: '0 4px 24px rgba(51, 35, 29, 0.06)',
+          boxShadow: isDarkMode 
+            ? '0 4px 24px rgba(0, 0, 0, 0.5)' 
+            : '0 4px 24px rgba(51, 35, 29, 0.06)',
           transition: 'all 0.5s ease',
         },
       },
@@ -173,24 +195,27 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            backgroundColor: '#FAF5F2',
+            backgroundColor: isDarkMode ? '#1A1A1A' : '#FAF5F2',
             borderRadius: 12,
             '& fieldset': {
-              borderColor: '#E6E2DF',
+              borderColor: isDarkMode ? '#383B40' : '#E6E2DF',
             },
             '&:hover fieldset': {
-              borderColor: '#E6E2DF',
+              borderColor: isDarkMode ? '#383B40' : '#E6E2DF',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#885210',
+              borderColor: '#FBBC00',
               borderWidth: 2,
             },
           },
           '& .MuiInputLabel-root': {
-            color: '#7E7471',
+            color: isDarkMode ? '#6A6255' : '#7E7471',
             '&.Mui-focused': {
-              color: '#885210',
+              color: '#FBBC00',
             },
+          },
+          '& .MuiInputBase-input': {
+            color: isDarkMode ? '#FFFFFF' : '#33231D',
           },
         },
       },
@@ -202,129 +227,131 @@ const theme = createTheme({
           fontWeight: 600,
         },
         colorPrimary: {
-          backgroundColor: '#885210',
-          color: '#FFFFFF',
+          backgroundColor: '#FBBC00',
+          color: '#000000',
         },
         colorSecondary: {
-          backgroundColor: '#4B3832',
-          color: '#FFFFFF',
+          backgroundColor: isDarkMode ? '#1A1A1A' : '#4B3832',
+          color: isDarkMode ? '#FFFFFF' : '#FFFFFF',
         },
       },
     },
     MuiAvatar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#885210',
-          color: '#FFFFFF',
+          backgroundColor: '#FBBC00',
+          color: '#000000',
         },
       },
     },
     MuiDivider: {
       styleOverrides: {
         root: {
-          borderColor: '#E6E2DF',
+          borderColor: isDarkMode ? '#383B40' : '#E6E2DF',
         },
       },
     },
   },
 });
 
-function App() {
-  // Check if user is authenticated
-  const isAuthenticated = localStorage.getItem('authToken') !== null;
+// AppContent component to use dark mode context
+const AppContent = () => {
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  
+  // Memoize the theme to prevent unnecessary re-renders
+  const theme = React.useMemo(() => createAppTheme(isDarkMode), [isDarkMode]);
+
+  console.log('🔄 AppContent rendering with dark mode:', isDarkMode);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <TaskProvider>
-        <ProjectProvider>
-          <Router>
-            <Routes>
-              {/* Public Routes - No Layout */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              
-              {/* Forgot Password & Reset Password Routes */}
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/verify" element={<Verification />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-
-              {/* Landing Page */}
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              
-              {/* Protected Routes with Layout */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Dashboard />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/my-tasks" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <MyTasks />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Profile />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/calendar" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Calendar />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/projects" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Projects />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/project/:id" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <ProjectDetails />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Settings />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-
-              <Route path="/support" element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Support />
-                  </Layout>
-                </ProtectedRoute>
-              } />
-              
-              {/* 404 Not Found - No Layout */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Router>
-        </ProjectProvider>
-      </TaskProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes - No Layout */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify" element={<Verification />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          
+          {/* Protected Routes with Layout */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Layout>
+                <Dashboard />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/my-tasks" element={
+            <ProtectedRoute>
+              <Layout>
+                <MyTasks />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/calendar" element={
+            <ProtectedRoute>
+              <Layout>
+                <Calendar />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/projects" element={
+            <ProtectedRoute>
+              <Layout>
+                <Projects />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/project/:id" element={
+            <ProtectedRoute>
+              <Layout>
+                <ProjectDetails />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Layout>
+                <Settings />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          <Route path="/support" element={
+            <ProtectedRoute>
+              <Layout>
+                <Support />
+              </Layout>
+            </ProtectedRoute>
+          } />
+          
+          {/* 404 Not Found */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
+  );
+};
+
+function App() {
+  return (
+    <TaskProvider>
+      <ProjectProvider>
+        <DarkModeProvider>
+          <AppContent />
+        </DarkModeProvider>
+      </ProjectProvider>
+    </TaskProvider>
   );
 }
 
