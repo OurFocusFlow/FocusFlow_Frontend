@@ -1,3 +1,4 @@
+// Settings.jsx - Updated with dark mode support
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -17,9 +18,10 @@ import {
   Close as CloseIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Settings.module.css';
 
-const ACCENT_COLORS = ['#885210', '#4B3832', '#C17A3F', '#6B3F0C', '#A66D2A', '#2E6FE8'];
+const ACCENT_COLORS = ['#FBBC00', '#E2A900', '#885210', '#4B3832', '#C17A3F', '#2E6FE8'];
 
 // ==================== CUSTOM SWITCH COMPONENT ====================
 const CustomSwitch = ({ 
@@ -75,7 +77,8 @@ const SettingsRow = ({ label, description, control, isLast, icon: rowIcon }) => 
 
 const Settings = () => {
   const location = useLocation();
-  const [themeMode, setThemeMode] = useState('light');
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [themeMode, setThemeMode] = useState(isDarkMode ? 'dark' : 'light');
   const [accentColor, setAccentColor] = useState(ACCENT_COLORS[0]);
   const [language, setLanguage] = useState('en-US');
   const [desktopAlerts, setDesktopAlerts] = useState(true);
@@ -115,6 +118,18 @@ const Settings = () => {
       }, 300);
     }
   }, [location]);
+
+  // Update themeMode when isDarkMode changes
+  useEffect(() => {
+    setThemeMode(isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
+
+  const handleThemeChange = (mode) => {
+    setThemeMode(mode);
+    if ((mode === 'dark' && !isDarkMode) || (mode === 'light' && isDarkMode)) {
+      toggleDarkMode();
+    }
+  };
 
   const handleDeleteAccount = () => {
     setIsDeleting(true);
@@ -164,7 +179,6 @@ const Settings = () => {
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user types
     if (passwordErrors[name]) {
       setPasswordErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -233,8 +247,8 @@ const Settings = () => {
       <Box className={styles.pageInner}>
         {/* Page Header */}
         <Box className={styles.pageHeader}>
-          <Typography className={styles.pageTitle} style={{ fontSize: "50px" , fontWeight: "bold" , color: "#33231D" }}>Settings</Typography>
-          <Typography className={styles.pageSubtitle} style={{ fontSize: "20px" , color: "#6B4C42" }}>Customize your BrewTask experience</Typography>
+          <Typography className={styles.pageTitle}>Settings</Typography>
+          <Typography className={styles.pageSubtitle}>Customize your BrewTask experience</Typography>
         </Box>
 
         {/* Appearance */}
@@ -247,21 +261,21 @@ const Settings = () => {
                 <Box className={styles.themeToggle}>
                   <Box
                     className={`${styles.themeOption} ${themeMode === 'light' ? styles.themeOptionActive : ''}`}
-                    onClick={() => setThemeMode('light')}
+                    onClick={() => handleThemeChange('light')}
                   >
                     <LightModeIcon />
                     Light
                   </Box>
                   <Box
                     className={`${styles.themeOption} ${themeMode === 'dark' ? styles.themeOptionActive : ''}`}
-                    onClick={() => setThemeMode('dark')}
+                    onClick={() => handleThemeChange('dark')}
                   >
                     <DarkModeIcon />
                     Dark
                   </Box>
                   <Box
                     className={`${styles.themeOption} ${themeMode === 'system' ? styles.themeOptionActive : ''}`}
-                    onClick={() => setThemeMode('system')}
+                    onClick={() => handleThemeChange('system')}
                   >
                     <SettingsBrightnessIcon />
                     System
@@ -300,15 +314,15 @@ const Settings = () => {
                     step={1}
                     className={styles.fontSizeSlider}
                     sx={{
-                      color: '#885210',
+                      color: isDarkMode ? '#FBBC00' : '#885210',
                       '& .MuiSlider-thumb': {
-                        backgroundColor: '#885210',
+                        backgroundColor: isDarkMode ? '#FBBC00' : '#885210',
                       },
                       '& .MuiSlider-track': {
-                        backgroundColor: '#885210',
+                        backgroundColor: isDarkMode ? '#FBBC00' : '#885210',
                       },
                       '& .MuiSlider-rail': {
-                        backgroundColor: '#E6E2DF',
+                        backgroundColor: isDarkMode ? '#383B40' : '#E6E2DF',
                       },
                     }}
                   />
@@ -398,7 +412,10 @@ const Settings = () => {
               label="Change Password"
               description="Update your account password for better security"
               control={
-                <Button className={styles.darkButton} onClick={handleOpenPasswordModal}>
+                <Button 
+                  className={isDarkMode ? styles.darkButton : styles.primaryButton} 
+                  onClick={handleOpenPasswordModal}
+                >
                   <SecurityIcon />
                   Update Password
                 </Button>
@@ -409,7 +426,7 @@ const Settings = () => {
               label="Two-Factor Authentication"
               description="Add an extra layer of protection to your account"
               control={
-                <Button className={styles.primaryButton}>
+                <Button className={isDarkMode ? styles.darkButton : styles.primaryButton}>
                   Enable 2FA
                 </Button>
               }
@@ -470,7 +487,7 @@ const Settings = () => {
                 </Box>
               </Box>
               <Button 
-                className={`${styles.deleteButton} ${styles.deleteButtonRed}`}
+                className={styles.deleteButton}
                 onClick={handleOpenDeleteModal}
                 disabled={isDeleting}
               >
@@ -482,7 +499,7 @@ const Settings = () => {
 
         {/* Save Button */}
         <Box className={styles.saveSection}>
-          <Button className={styles.saveButton}>
+          <Button className={isDarkMode ? styles.darkButton : styles.saveButton}>
             <CheckCircleIcon />
             Save Changes
           </Button>
@@ -526,7 +543,7 @@ const Settings = () => {
               Cancel
             </Button>
             <Button 
-              className={`${styles.deleteModalConfirm} ${styles.deleteModalConfirmRed}`}
+              className={styles.deleteModalConfirm}
               onClick={handleDeleteAccount}
               disabled={isDeleting}
             >
