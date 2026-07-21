@@ -2248,3 +2248,168 @@
     transition: none !important;
   }
 }
+
+/* ==================== DARK MODE DATE INPUT ==================== */
+
+/* Dark Mode Date Input - matches CreateTaskModal */
+.darkDateInput {
+  color-scheme: dark !important;
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkDateInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkDateInput::-webkit-calendar-picker-indicator {
+  filter: invert(1) !important;
+  cursor: pointer !important;
+}
+
+.darkDateInput::-webkit-datetime-edit {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput::-webkit-datetime-edit-fields-wrapper {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput::-webkit-datetime-edit-text {
+  color: #6A6255 !important;
+}
+
+.darkDateInput::-webkit-datetime-edit-month-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput::-webkit-datetime-edit-day-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput::-webkit-datetime-edit-year-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput::-webkit-inner-spin-button {
+  display: none !important;
+}
+
+.darkDateInput::-webkit-clear-button {
+  display: none !important;
+}
+
+/* Dark Mode Date Input - Error State */
+.darkDateInput.mytasks-modal-input-error {
+  border-color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+}
+
+.darkDateInput.mytasks-modal-input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1) !important;
+}
+
+/* Dark Mode Select - Ensure consistent with date picker */
+.darkModalSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236A6255' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  padding-right: 32px !important;
+}
+
+.darkModalSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkModalSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalSelect option:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Dark Modal Input - General (already exists, but ensure consistency) */
+.darkModalInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkModalInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Dark Modal Label - Ensure consistency */
+.darkModalLabel {
+  color: #6A6255 !important;
+}
+
+/* Dark Modal - General container */
+.darkModal {
+  background: #1A1A1A !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkModalClose {
+  color: #6A6255 !important;
+}
+
+.darkModalClose:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+/* Dark Modal Cancel Button */
+.darkModalCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkModalCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+/* Dark Modal Save Button */
+.darkModalSave {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkModalSave:hover {
+  background: #E2A900 !important;
+}
+
+/* Dark Modal Input Error */
+.darkModalInput.mytasks-modal-input-error {
+  border-color: #dc2626 !important;
+  background: rgba(220, 38, 38, 0.08) !important;
+}
+
+.darkModalInput.mytasks-modal-input-error:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1) !important;
+}

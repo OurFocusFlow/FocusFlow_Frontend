@@ -818,7 +818,7 @@ export default function MyTasks() {
                     value={editForm.dueDate}
                     onChange={handleEditChange}
                     min={today}
-                    className={`${editErrors.dueDate ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
+                    className={`${editErrors.dueDate ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""} ${isDarkMode ? styles["darkDateInput"] : ""}`}
                   />
                   {editErrors.dueDate && (
                     <span className={styles["mytasks-modal-error"]}>{editErrors.dueDate}</span>
@@ -831,7 +831,7 @@ export default function MyTasks() {
                     name="priority"
                     value={editForm.priority}
                     onChange={handleEditChange}
-                    className={isDarkMode ? styles["darkModalSelect"] : ""}
+                    className={`${isDarkMode ? styles["darkModalSelect"] : ""}`}
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -847,7 +847,7 @@ export default function MyTasks() {
                     name="category"
                     value={editForm.category}
                     onChange={handleEditChange}
-                    className={isDarkMode ? styles["darkModalSelect"] : ""}
+                    className={`${isDarkMode ? styles["darkModalSelect"] : ""}`}
                   >
                     {categories.filter(c => c !== "All").map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -862,7 +862,7 @@ export default function MyTasks() {
                     value={editForm.assignees}
                     onChange={handleEditChange}
                     placeholder="JD, AR"
-                    className={isDarkMode ? styles["darkModalInput"] : ""}
+                    className={`${isDarkMode ? styles["darkModalInput"] : ""}`}
                   />
                 </div>
               </div>
