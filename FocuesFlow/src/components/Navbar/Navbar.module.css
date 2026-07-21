@@ -16,8 +16,10 @@
   --radius-lg: 16px;
   --radius-full: 9999px;
   --transition-default: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Navbar height matches drawer header */
   --navbar-height: 78px;
+  /* Dynamic accent color variables (set by JS) */
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
 }
 
 .navbar {
@@ -828,4 +830,181 @@
 
 [data-theme="dark"] .notificationBadge :global(.MuiBadge-badge) {
   background: #ef4444 !important;
+}
+
+/* Search field focus - use accent color */
+.searchField :global(.MuiOutlinedInput-root.Mui-focused) {
+  background: var(--color-white);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.08);
+}
+
+.searchField :global(.Mui-focused) .searchIcon {
+  color: var(--accent-color);
+}
+
+/* Icon button hover - use accent color */
+.iconButton:hover {
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent-color);
+}
+
+/* Profile section hover - use accent color */
+.profileSection:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+  border-color: rgba(var(--accent-rgb), 0.1);
+}
+
+.profileSection:hover .dropdownIcon {
+  color: var(--accent-color);
+}
+
+/* Menu item hover - use accent color */
+.menuItem:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+.menuItem:hover .menuItemIcon {
+  color: var(--accent-color);
+}
+
+/* Notification unread dot and border - use accent color */
+.unreadNotification::before {
+  background: var(--accent-color);
+}
+
+.unreadDot {
+  background: var(--accent-color);
+}
+
+/* Mark all read and view all buttons - use accent color */
+.markAllRead {
+  color: var(--accent-color);
+}
+
+.markAllRead:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+.viewAllButton {
+  color: var(--accent-color);
+}
+
+.viewAllButton:hover {
+  background: rgba(var(--accent-rgb), 0.06);
+}
+
+/* Notification unread background - use accent color with opacity */
+.unreadNotification {
+  background: rgba(var(--accent-rgb), 0.04);
+}
+
+/* Theme toggle button - use accent color (already handled by inline styles) */
+.themeToggleBtn {
+  /* inline styles handle this */
+}
+
+/* ==================== DARK MODE SUPPORT ==================== */
+
+[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: var(--accent-color) !important;
+  background: #1A1A1A !important;
+}
+
+[data-theme="dark"] .searchField :global(.Mui-focused) .searchIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .iconButton {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .iconButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileSection:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .dropdownIcon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileSection:hover .dropdownIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .menuItem:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .menuItem:hover .menuItemIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .unreadNotification {
+  background: rgba(var(--accent-rgb), 0.06) !important;
+}
+
+[data-theme="dark"] .unreadNotification::before {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .markAllRead {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .markAllRead:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .viewAllButton {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .viewAllButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root:hover) {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .searchField:hover .searchIcon {
+  color: var(--accent-color) !important;
+}
+
+/* Dark mode profile chip */
+[data-theme="dark"] .proChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .menuProChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .proBadge {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .proStarIcon {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .chipStarIcon {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .avatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .menuAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
 }

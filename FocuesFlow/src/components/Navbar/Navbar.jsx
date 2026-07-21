@@ -33,7 +33,20 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Navbar.module.css';
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
 
 const Navbar = ({
   onSearch,
@@ -52,12 +65,10 @@ const Navbar = ({
   const theme = useTheme();
   const navigate = useNavigate();
 
-  // Use dark mode context - this is the key part
+  // Use dark mode context
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-
-  // Debug logs to verify context is working
-  console.log('🔍 Navbar rendering with isDarkMode:', isDarkMode);
-  console.log('🔍 toggleDarkMode function available:', typeof toggleDarkMode === 'function');
+  // Use accent color context
+  const { accentColor } = useAccentColor();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
@@ -105,31 +116,21 @@ const Navbar = ({
 
   // Theme toggle handler - switches theme when clicked
   const handleThemeToggle = (event) => {
-    // Stop this click from bubbling up
     if (event) {
       event.stopPropagation();
     }
 
-    // Prevent duplicate calls
     if (themeToggleLockRef.current) {
-      console.warn('⚠️ handleThemeToggle called again before the previous call finished — ignoring duplicate.');
       return;
     }
     themeToggleLockRef.current = true;
 
-    console.log('🌓 Theme button clicked! Current isDarkMode:', isDarkMode);
-    console.log('🔘 Calling toggleDarkMode()...');
-    
-    // Call the toggle function from context
     toggleDarkMode();
 
-    // Notify parent if needed
     if (onThemeToggle) {
-      console.log('📤 Notifying parent about theme change to:', !isDarkMode);
       onThemeToggle(!isDarkMode);
     }
 
-    // Release the lock on the next tick
     setTimeout(() => {
       themeToggleLockRef.current = false;
     }, 0);
@@ -187,8 +188,17 @@ const Navbar = ({
 
   const unreadCount = notificationData.filter(n => !n.read).length;
 
+  // Convert accent color to RGB for CSS variables
+  const accentRgb = hexToRgb(accentColor);
+
   return (
-    <Box className={`${styles.navbar} ${className}`}>
+    <Box 
+      className={`${styles.navbar} ${className}`}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       <Box className={styles.navbarContent}>
         {/* Left Section - Search */}
         <Box className={styles.leftSection}>
@@ -232,16 +242,16 @@ const Navbar = ({
           {showThemeToggle && (
             <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"} arrow>
               <IconButton
-                className={styles.iconButton}
+                className={`${styles.iconButton} ${styles.themeToggleBtn}`}
                 onClick={handleThemeToggle}
                 size={isMobile ? "small" : "medium"}
                 aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
                 sx={{
-                  backgroundColor: isDarkMode ? 'rgba(251, 188, 0, 0.15)' : 'transparent',
+                  backgroundColor: isDarkMode ? 'rgba(var(--accent-rgb), 0.15)' : 'transparent',
                   '&:hover': {
-                    backgroundColor: isDarkMode ? 'rgba(251, 188, 0, 0.25)' : 'rgba(136, 82, 16, 0.08)',
+                    backgroundColor: isDarkMode ? 'rgba(var(--accent-rgb), 0.25)' : 'rgba(var(--accent-rgb), 0.08)',
                   },
-                  color: isDarkMode ? '#FBBC00' : '#6A6255',
+                  color: isDarkMode ? 'var(--accent-color)' : '#6A6255',
                 }}
               >
                 {isDarkMode ? (
@@ -257,11 +267,17 @@ const Navbar = ({
           {showProfile && (
             <Box className={`${styles.profileSection} ${isMobile ? styles.profileSectionMobile : ''}`} onClick={handleProfileMenuOpen}>
               <Box className={styles.avatarWrapper}>
-                <Avatar className={styles.avatar}>
+                <Avatar 
+                  className={styles.avatar}
+                  style={{
+                    background: accentColor,
+                    color: isDarkMode ? '#000000' : '#FFFFFF',
+                  }}
+                >
                   {userData.avatar}
                 </Avatar>
                 {userData.accountType === 'PRO ACCOUNT' && (
-                  <Box className={styles.proBadge}>
+                  <Box className={styles.proBadge} style={{ background: accentColor }}>
                     <StarIcon className={styles.proStarIcon} />
                   </Box>
                 )}
@@ -279,6 +295,7 @@ const Navbar = ({
                         size="small"
                         className={styles.proChip}
                         icon={<StarIcon className={styles.chipStarIcon} />}
+                        style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
                       />
                     )}
                   </Box>
@@ -309,7 +326,10 @@ const Navbar = ({
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <Box className={styles.menuHeader}>
-              <Avatar className={styles.menuAvatar}>
+              <Avatar 
+                className={styles.menuAvatar}
+                style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
+              >
                 {userData.avatar}
               </Avatar>
               <Box>
@@ -325,6 +345,7 @@ const Navbar = ({
                     size="small"
                     className={styles.menuProChip}
                     icon={<CheckCircleIcon className={styles.menuProIcon} />}
+                    style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
                   />
                 )}
               </Box>
