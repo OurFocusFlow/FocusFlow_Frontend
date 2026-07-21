@@ -70,6 +70,7 @@ const ProjectDetails = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [isEditTaskModalOpen, setIsEditTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,6 +87,20 @@ const ProjectDetails = () => {
     description: '',
     category: '',
     priority: '',
+    dueDate: '',
+  });
+
+  // Edit task form
+  const [editTaskForm, setEditTaskForm] = useState({
+    title: '',
+    description: '',
+    dueDate: '',
+    priority: 'Medium',
+    category: 'Design',
+  });
+  const [editTaskErrors, setEditTaskErrors] = useState({
+    title: '',
+    description: '',
     dueDate: '',
   });
 
@@ -304,6 +319,125 @@ const ProjectDetails = () => {
       } else {
         showToast('error', 'Failed to update task status', 'Error');
       }
+    }
+  };
+
+  // Open edit task modal
+  const handleEditTaskClick = (task) => {
+    setSelectedTask(task);
+    
+    // Parse due date for input - FIXED
+    let dueDateValue = '';
+    if (task.dueDate) {
+      // Try to parse the date string
+      const dateStr = task.dueDate;
+      
+      // Check if it's already in YYYY-MM-DD format
+      if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        dueDateValue = dateStr;
+      } else {
+        // Try to parse from format like "Dec 25, 2024" or "Dec 25 2024"
+        const dateParts = dateStr.split(/[,\s]+/).filter(part => part.length > 0);
+        const months = { 
+          Jan: '01', Feb: '02', Mar: '03', Apr: '04', May: '05', Jun: '06', 
+          Jul: '07', Aug: '08', Sep: '09', Oct: '10', Nov: '11', Dec: '12' 
+        };
+        
+        if (dateParts.length >= 3) {
+          const month = months[dateParts[0]];
+          const day = dateParts[1].replace(/,/g, '').padStart(2, '0');
+          const year = dateParts[2];
+          if (month && day && year) {
+            dueDateValue = `${year}-${month}-${day}`;
+          }
+        } else {
+          // Fallback: try creating a date object
+          const dateObj = new Date(dateStr);
+          if (!isNaN(dateObj.getTime())) {
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            dueDateValue = `${year}-${month}-${day}`;
+          }
+        }
+      }
+    }
+    
+    setEditTaskForm({
+      title: task.title,
+      description: task.description || '',
+      dueDate: dueDateValue,
+      priority: task.priority || 'Medium',
+      category: task.category || 'Design',
+    });
+    setEditTaskErrors({ title: '', description: '', dueDate: '' });
+    setIsEditTaskModalOpen(true);
+  };
+
+  // Handle edit task form changes
+  const handleEditTaskChange = (e) => {
+    const { name, value } = e.target;
+    setEditTaskForm(prev => ({ ...prev, [name]: value }));
+    if (editTaskErrors[name]) {
+      setEditTaskErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  // Save edited task
+  const handleSaveEditTask = async () => {
+    setEditTaskErrors({ title: '', description: '', dueDate: '' });
+    let hasError = false;
+    const errors = { title: '', description: '', dueDate: '' };
+
+    if (!editTaskForm.title.trim()) {
+      errors.title = 'Task title is required';
+      hasError = true;
+    }
+
+    if (!editTaskForm.description.trim()) {
+      errors.description = 'Description is required';
+      hasError = true;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    if (!editTaskForm.dueDate) {
+      errors.dueDate = 'Due date is required';
+      hasError = true;
+    } else if (editTaskForm.dueDate < today) {
+      errors.dueDate = 'Due date cannot be in the past';
+      hasError = true;
+    }
+
+    if (hasError) {
+      setEditTaskErrors(errors);
+      const firstError = errors.title || errors.description || errors.dueDate;
+      showToast('error', firstError, 'Validation Error');
+      return;
+    }
+
+    // Format date for display
+    const dateObj = new Date(editTaskForm.dueDate + 'T00:00:00');
+    const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    const updatedData = {
+      title: editTaskForm.title,
+      description: editTaskForm.description,
+      dueDate: formattedDate,
+      priority: editTaskForm.priority,
+      category: editTaskForm.category,
+    };
+
+    setIsSubmitting(true);
+    const result = await updateTask(selectedTask.id, updatedData);
+    setIsSubmitting(false);
+    setIsEditTaskModalOpen(false);
+    setSelectedTask(null);
+    setEditTaskErrors({ title: '', description: '', dueDate: '' });
+    
+    if (result.success) {
+      showToast('success', `Task "${editTaskForm.title}" has been updated.`, 'Task Updated');
+    } else {
+      showToast('error', 'Failed to update task', 'Error');
     }
   };
 
@@ -606,13 +740,24 @@ const ProjectDetails = () => {
                       )}
                     </Box>
                   </Box>
-                  <button 
-                    className={`${styles.deleteTaskBtn} ${isDarkMode ? styles.darkDeleteTaskBtn : ""}`}
-                    onClick={() => handleDeleteTaskClick(task)}
-                    disabled={isLoading}
-                  >
-                    <DeleteIcon className={styles.btnIconSmall} />
-                  </button>
+                  <Box className={styles.taskActions}>
+                    <button 
+                      className={`${styles.editTaskBtn} ${isDarkMode ? styles.darkEditTaskBtn : ""}`}
+                      onClick={() => handleEditTaskClick(task)}
+                      disabled={isLoading}
+                      aria-label="Edit task"
+                    >
+                      <EditIcon className={styles.btnIconSmall} />
+                    </button>
+                    <button 
+                      className={`${styles.deleteTaskBtn} ${isDarkMode ? styles.darkDeleteTaskBtn : ""}`}
+                      onClick={() => handleDeleteTaskClick(task)}
+                      disabled={isLoading}
+                      aria-label="Delete task"
+                    >
+                      <DeleteIcon className={styles.btnIconSmall} />
+                    </button>
+                  </Box>
                 </Box>
               ))}
             </Box>
@@ -752,6 +897,170 @@ const ProjectDetails = () => {
             <button 
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEdit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <span className={styles.spinner} />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                  Save Changes
+                </>
+              )}
+            </button>
+          </Box>
+        </Box>
+      </Dialog>
+
+      {/* Edit Task Modal */}
+      <Dialog
+        open={isEditTaskModalOpen}
+        onClose={() => {
+          setIsEditTaskModalOpen(false);
+          setSelectedTask(null);
+          setEditTaskErrors({ title: '', description: '', dueDate: '' });
+        }}
+        maxWidth="sm"
+        fullWidth
+        className={styles.editDialog}
+        PaperProps={{
+          className: `${styles.editDialogPaper} ${isDarkMode ? styles.darkEditDialogPaper : ""}`,
+        }}
+      >
+        <Box className={`${styles.editModalContent} ${isDarkMode ? styles.darkEditModalContent : ""}`}>
+          <Box className={`${styles.editModalHeader} ${isDarkMode ? styles.darkEditModalHeader : ""}`}>
+            <Box className={styles.editModalHeaderLeft}>
+              <Box className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}>
+                <EditIcon className={styles.editModalIcon} />
+              </Box>
+              <Box>
+                <h2 className={`${styles.editModalTitle} ${isDarkMode ? styles.darkEditModalTitle : ""}`}>Edit Task</h2>
+                <p className={`${styles.editModalSubtitle} ${isDarkMode ? styles.darkEditModalSubtitle : ""}`}>Update task details.</p>
+              </Box>
+            </Box>
+            <button 
+              className={`${styles.editModalClose} ${isDarkMode ? styles.darkEditModalClose : ""}`} 
+              onClick={() => {
+                setIsEditTaskModalOpen(false);
+                setSelectedTask(null);
+                setEditTaskErrors({ title: '', description: '', dueDate: '' });
+              }}
+              disabled={isSubmitting}
+            >
+              <CloseIcon />
+            </button>
+          </Box>
+
+          <Box className={`${styles.editModalForm} ${isDarkMode ? styles.darkEditModalForm : ""}`}>
+            <div className={styles.formGroup}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
+                Task Title
+                <span className={styles.requiredStar}>*</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                placeholder="Enter task title"
+                value={editTaskForm.title}
+                onChange={handleEditTaskChange}
+                className={`${styles.formInput} ${editTaskErrors.title ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
+                disabled={isSubmitting}
+              />
+              {editTaskErrors.title && (
+                <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editTaskErrors.title}</span>
+              )}
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
+                Description
+                <span className={styles.requiredStar}>*</span>
+              </label>
+              <textarea
+                name="description"
+                placeholder="Enter task description"
+                value={editTaskForm.description}
+                onChange={handleEditTaskChange}
+                className={`${styles.formTextarea} ${editTaskErrors.description ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormTextarea : ""}`}
+                rows="3"
+                disabled={isSubmitting}
+              />
+              {editTaskErrors.description && (
+                <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editTaskErrors.description}</span>
+              )}
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
+                  Due Date
+                  <span className={styles.requiredStar}>*</span>
+                </label>
+                <input
+                  type="date"
+                  name="dueDate"
+                  value={editTaskForm.dueDate}
+                  onChange={handleEditTaskChange}
+                  className={`${styles.formInput} ${editTaskErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""} ${isDarkMode ? styles.darkDateInput : ""}`}
+                  min={new Date().toISOString().split('T')[0]}
+                  disabled={isSubmitting}
+                />
+                {editTaskErrors.dueDate && (
+                  <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editTaskErrors.dueDate}</span>
+                )}
+              </div>
+              <div className={styles.formGroup}>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Priority</label>
+                <select
+                  name="priority"
+                  value={editTaskForm.priority}
+                  onChange={handleEditTaskChange}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
+                  disabled={isSubmitting}
+                >
+                  {['High', 'Medium', 'Low'].map((priority) => (
+                    <option key={priority} value={priority}>{priority}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Category</label>
+              <select
+                name="category"
+                value={editTaskForm.category}
+                onChange={handleEditTaskChange}
+                className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
+                disabled={isSubmitting}
+              >
+                {['Design', 'Marketing', 'Content', 'Development', 'Research', 'Documentation'].map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
+          </Box>
+
+          <Box className={`${styles.editModalFooter} ${isDarkMode ? styles.darkEditModalFooter : ""}`}>
+            <button 
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ""}`} 
+              onClick={() => {
+                setIsEditTaskModalOpen(false);
+                setSelectedTask(null);
+                setEditTaskErrors({ title: '', description: '', dueDate: '' });
+              }}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+            <button 
+              className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
+              onClick={handleSaveEditTask}
               disabled={isSubmitting}
             >
               {isSubmitting ? (

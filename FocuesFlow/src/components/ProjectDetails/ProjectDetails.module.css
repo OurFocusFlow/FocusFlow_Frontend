@@ -2094,3 +2094,70 @@
 .darkFormError {
   color: #ef4444 !important;
 }
+
+/* ==================== TASK ACTIONS ==================== */
+.taskActions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.editTaskBtn {
+  background: none;
+  border: none;
+  color: #B8AFA1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editTaskBtn:hover {
+  color: #885210;
+  background: rgba(136, 82, 16, 0.08);
+}
+
+.darkEditTaskBtn {
+  color: #6A6255 !important;
+}
+
+.darkEditTaskBtn:hover {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Update existing delete task button to work with actions container */
+.deleteTaskBtn {
+  background: none;
+  border: none;
+  color: #B8AFA1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteTaskBtn:hover {
+  color: #D6493A;
+  background: #FDE8E8;
+}
+
+.darkDeleteTaskBtn {
+  color: #6A6255 !important;
+}
+
+.darkDeleteTaskBtn:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.btnIconSmall {
+  font-size: 16px;
+}
