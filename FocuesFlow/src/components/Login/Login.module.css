@@ -2,14 +2,14 @@
 .page {
   position: relative;
   min-height: 100vh;
-  background: #fdf5ef; /* Changed from #f8f5f1 to match Signup */
+  background: #fdf5ef;
   overflow: hidden;
   padding: 64px 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif; /* Added to match Signup */
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -86,12 +86,12 @@
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 28px;
-  color: #2e2018; /* Updated to match Signup */
+  color: #2e2018;
 }
 
 .tagline {
   font-size: 15px;
-  color: #8a7566; /* Updated to match Signup */
+  color: #8a7566;
 }
 
 /* Card */
@@ -99,21 +99,21 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 420px; /* Increased to match Signup */
+  max-width: 420px;
   background: #ffffff;
   border-radius: 20px;
-  padding: 40px 36px 36px; /* Updated to match Signup */
-  box-shadow: 0 30px 60px -25px rgba(74, 52, 39, 0.22); /* Updated to match Signup */
+  padding: 40px 36px 36px;
+  box-shadow: 0 30px 60px -25px rgba(74, 52, 39, 0.22);
   display: flex;
   flex-direction: column;
-  gap: 22px; /* Updated to match Signup */
+  gap: 22px;
 }
 
 /* Fields */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* Updated to match Signup */
+  gap: 6px;
 }
 
 .label {
@@ -144,7 +144,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: #f3e9df; /* Updated to match Signup */
+  background: #f3e9df;
   border-radius: 10px;
   padding: 0 12px;
   border: 1px solid transparent;
@@ -197,7 +197,7 @@
   align-items: center;
   gap: 10px;
   font-size: 13px;
-  color: #5c4433; /* Updated to match Signup */
+  color: #5c4433;
   cursor: pointer;
   user-select: none;
 }
@@ -221,10 +221,19 @@
   font-weight: 700;
   font-size: 15px;
   transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.submitButton:hover {
+.submitButton:hover:not(:disabled) {
   background: #3a281d;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* Divider - Updated to match Signup */
@@ -253,7 +262,7 @@
 .oauthRow {
   display: flex;
   justify-content: center;
-  gap: 48px; /* Updated to match Signup */
+  gap: 48px;
 }
 
 .oauthButton {
@@ -284,7 +293,7 @@
 
 .signupPrompt {
   font-size: 13px;
-  color: #5c4433; /* Updated to match Signup */
+  color: #5c4433;
   margin-bottom: 20px;
 }
 
@@ -300,31 +309,6 @@
 .copyright {
   font-size: 12px;
   color: #b5a598;
-}
-
-/* Responsive */
-@media (max-width: 480px) {
-  .oauthRow {
-    gap: 24px;
-  }
-}
-
-/* Success Message */
-.successMessage {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  border-radius: 10px;
-  color: #065f46;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.successMessage svg {
-  flex-shrink: 0;
 }
 
 /* Success Message */
@@ -379,33 +363,9 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Update submit button to handle disabled state */
-.submitButton {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: #4a3427;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 15px;
-  transition: background 0.15s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
+/* ==================== FLOATING BACK BUTTON ==================== */
 
-.submitButton:hover:not(:disabled) {
-  background: #3a281d;
-}
-
-.submitButton:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-/* Floating Back Button */
+/* Floating Button - Desktop */
 .floatButton {
   position: fixed;
   top: 24px;
@@ -438,26 +398,410 @@
   flex-shrink: 0;
 }
 
-/* Responsive */
+/* Floating Button - Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .floatButton {
+    top: 20px;
+    right: 24px;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+  
+  .floatButton svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Floating Button - Mobile */
 @media (max-width: 768px) {
   .floatButton {
     top: 16px;
     right: 16px;
     padding: 8px 14px;
     font-size: 13px;
+    border-radius: 10px;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  
+  .floatButton svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
+/* Floating Button - Small Mobile */
 @media (max-width: 480px) {
-  .floatButton span {
-    display: none; /* Hide text on very small screens, show only icon */
-  }
-
   .floatButton {
-    padding: 10px 12px;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    top: 12px;
+    right: 12px;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    gap: 4px;
+    min-width: 36px;
+    min-height: 36px;
     justify-content: center;
+  }
+  
+  .floatButton span {
+    display: none;
+  }
+  
+  .floatButton svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .floatButton {
+    border-radius: 40px;
+    width: 125px;
+    height: 40px;
+    padding: 0;
+  }
+}
+
+/* Floating Button - Extra Small Mobile */
+@media (max-width: 380px) {
+  .floatButton {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .floatButton svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
+}
+
+/* Blobs Dark Mode */
+.darkBlobTopLeft {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.08) 0%, rgba(251, 188, 0, 0) 70%) !important;
+  opacity: 0.5 !important;
+}
+
+.darkBlobBottomRight {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, rgba(251, 188, 0, 0) 70%) !important;
+  opacity: 0.5 !important;
+}
+
+/* Header Dark Mode */
+.darkHeader {
+  color: #FFFFFF !important;
+}
+
+.darkBrandName {
+  color: #FFFFFF !important;
+}
+
+.darkTagline {
+  color: #6A6255 !important;
+}
+
+/* Logo Mark Dark Mode */
+.darkLogoMark {
+  background: #FBBC00 !important;
+}
+
+.darkLogoMark svg {
+  stroke: #000000 !important;
+}
+
+/* Card Dark Mode */
+.darkCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Field Dark Mode */
+.darkField {
+  color: #FFFFFF !important;
+}
+
+.darkLabel {
+  color: #6A6255 !important;
+}
+
+.darkInputWrap {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkInputWrap:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkIcon {
+  color: #6A6255 !important;
+}
+
+.darkInput {
+  color: #FFFFFF !important;
+  background: #0D0D0D !important;
+}
+
+.darkInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Forgot Link Dark Mode */
+.darkForgotLink {
+  color: #FBBC00 !important;
+}
+
+.darkForgotLink:hover {
+  text-decoration: underline !important;
+}
+
+/* Eye Button Dark Mode */
+.darkEyeButton {
+  color: #6A6255 !important;
+}
+
+.darkEyeButton:hover {
+  color: #FFFFFF !important;
+}
+
+/* Checkbox Dark Mode */
+.darkCheckboxRow {
+  color: #6A6255 !important;
+}
+
+.darkCheckbox {
+  accent-color: #FBBC00 !important;
+}
+
+/* Submit Button Dark Mode */
+.darkSubmitButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSubmitButton:hover:not(:disabled) {
+  background: #E2A900 !important;
+}
+
+/* Divider Dark Mode */
+.darkDivider span {
+  background: #383B40 !important;
+}
+
+.darkDivider p {
+  color: #6A6255 !important;
+}
+
+/* OAuth Buttons Dark Mode */
+.darkOauthButton {
+  color: #6A6255 !important;
+}
+
+.darkOauthButton:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Footer Dark Mode */
+.darkFooter {
+  color: #FFFFFF !important;
+}
+
+.darkSignupPrompt {
+  color: #6A6255 !important;
+}
+
+.darkSignupLink {
+  color: #FBBC00 !important;
+}
+
+.darkCopyright {
+  color: #474133 !important;
+}
+
+/* Success Message Dark Mode */
+.darkSuccessMessage {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+
+.darkSuccessMessage svg circle {
+  stroke: #34d399 !important;
+}
+
+.darkSuccessMessage svg path {
+  stroke: #34d399 !important;
+}
+
+/* Error Message Dark Mode */
+.darkErrorMessage {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+}
+
+.darkErrorMessage svg circle {
+  stroke: #ef4444 !important;
+}
+
+.darkErrorMessage svg path {
+  stroke: #ef4444 !important;
+}
+
+/* ==================== FLOATING BACK BUTTON - DARK MODE ==================== */
+
+/* Floating Button Dark Mode - Desktop */
+.darkFloatButton {
+  background: rgba(3, 2, 2, 0.9) !important;
+  border: 1.5px solid #383B40 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  padding: 10px 18px !important;
+  gap: 8px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  z-index: 100 !important;
+}
+
+.darkFloatButton:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 24px rgba(251, 188, 0, 0.1) !important;
+}
+
+.darkFloatButton svg {
+  stroke: #6A6255 !important;
+  transition: stroke 0.3s ease !important;
+}
+
+.darkFloatButton:hover svg {
+  stroke: #FBBC00 !important;
+}
+
+/* Floating Button Dark Mode - Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .darkFloatButton {
+    top: 20px !important;
+    right: 24px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Floating Button Dark Mode - Mobile */
+@media (max-width: 768px) {
+  .darkFloatButton {
+    top: 16px !important;
+    right: 16px !important;
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+    background: rgba(3, 2, 2, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Floating Button Dark Mode - Small Mobile */
+@media (max-width: 480px) {
+  .darkFloatButton {
+    top: 12px !important;
+    right: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    justify-content: center !important;
+  }
+  
+  .darkFloatButton span {
+    display: none !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  .darkFloatButton {
+    border-radius: 40px !important;
+    width: 125px !important;
+    height: 40px !important;
+    padding: 0 !important;
+  }
+}
+
+/* Floating Button Dark Mode - Extra Small Mobile */
+@media (max-width: 380px) {
+  .darkFloatButton {
+    top: 10px !important;
+    right: 10px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Spinner Dark Mode */
+.darkSubmitButton .spinner {
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  border-top-color: #000000 !important;
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .floatButton,
+  .darkPage,
+  .darkFloatButton {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .floatButton:hover,
+  .darkFloatButton:hover {
+    transform: none !important;
+  }
+  
+  .spinner {
+    animation: none !important;
   }
 }
