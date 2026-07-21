@@ -528,12 +528,29 @@
 }
 
 .mytasks-task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  accent-color: #885210;
-  cursor: pointer;
+  border: 2px solid #D9CFC1;
   border-radius: 6px;
-  transition: transform 0.2s ease;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.mytasks-task-checkbox:active { transform: scale(0.92); }
+.mytasks-task-checkbox:checked { background: #885210; border-color: #885210; }
+.mytasks-task-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px; top: 2px;
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
 }
 
 .mytasks-task-checkbox:hover {
@@ -723,10 +740,33 @@
 }
 
 .mytasks-grid-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  accent-color: #885210;
+  border: 2px solid #D9CFC1;
+  border-radius: 6px;
+  background: #fff;
   cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.mytasks-grid-checkbox:active { transform: scale(0.92); }
+.mytasks-grid-checkbox:checked { background: #885210; border-color: #885210; }
+.mytasks-grid-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
+}
+
+.mytasks-grid-checkbox:hover {
+  transform: scale(1.1);
 }
 
 .mytasks-grid-badges {
@@ -1643,4 +1683,568 @@
 /* Error state for labels */
 .mytasks-modal-field .mytasks-modal-input-error + .mytasks-modal-error {
   margin-top: 4px;
+}
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Container Dark Mode */
+.darkContainer {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkBg {
+  background: #000000 !important;
+}
+
+.darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Header Dark Mode */
+.darkTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkNewTaskBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkNewTaskBtn:hover {
+  background: #E2A900 !important;
+  box-shadow: 0 8px 30px rgba(251, 188, 0, 0.25) !important;
+}
+
+/* Stats Box Dark Mode */
+.darkStatBox {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+}
+
+.darkStatBox:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkStatValue {
+  color: #FFFFFF !important;
+}
+
+.darkStatLabel {
+  color: #6A6255 !important;
+}
+
+.darkStatTrend {
+  color: #FBBC00 !important;
+}
+
+.darkTrendUrgent {
+  color: #ef4444 !important;
+}
+
+.darkValueUrgent {
+  color: #ef4444 !important;
+}
+
+/* Icon Wrappers Dark Mode */
+.darkIconTotal {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkIconCompleted {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkIconProgress {
+  background: rgba(107, 98, 88, 0.2) !important;
+  color: #6A6255 !important;
+}
+
+.darkIconHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+/* Search Dark Mode */
+.darkSearch {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+}
+
+.darkSearch:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkSearchIcon {
+  color: #6A6255 !important;
+}
+
+.darkSearchInput {
+  color: #FFFFFF !important;
+  background: transparent !important;
+}
+
+.darkSearchInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Filter Select Dark Mode */
+.darkFilterSelect {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFilterSelect:focus {
+  border-color: #FBBC00 !important;
+}
+
+/* Tabs Dark Mode */
+.darkTabs {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+}
+
+.darkTab {
+  color: #6A6255 !important;
+}
+
+.darkTab:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkTab.mytasks-tab-active {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.12) !important;
+}
+
+.darkTabBadge {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #6A6255 !important;
+}
+
+.darkTab.mytasks-tab-active .darkTabBadge {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+/* View Toggle Dark Mode */
+.darkViewToggle {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+}
+
+.darkViewBtn {
+  color: #6A6255 !important;
+}
+
+.darkViewBtn:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkViewBtn.mytasks-view-active {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.12) !important;
+}
+
+/* ==================== DARK MODE CHECKBOX FIX ==================== */
+
+/* Task Checkbox Dark Mode */
+.darkTaskCheckbox {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  border: 2px solid #383B40 !important;
+  border-radius: 6px !important;
+  background: #1A1A1A !important;
+  cursor: pointer !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
+  accent-color: #FBBC00 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.darkTaskCheckbox:hover {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+  transform: scale(1.05) !important;
+}
+
+.darkTaskCheckbox:checked {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkTaskCheckbox:checked::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 6px !important;
+  top: 2px !important;
+  width: 5px !important;
+  height: 10px !important;
+  border: solid #000000 !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(40deg) !important;
+}
+
+.darkTaskCheckbox:checked:hover {
+  background: #E2A900 !important;
+  border-color: #E2A900 !important;
+}
+
+.darkTaskCheckbox:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* Grid Checkbox Dark Mode */
+.darkGridCheckbox {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 18px !important;
+  height: 18px !important;
+  border: 2px solid #383B40 !important;
+  border-radius: 6px !important;
+  background: #1A1A1A !important;
+  cursor: pointer !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
+  transition: all 0.15s ease !important;
+  accent-color: #FBBC00 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.darkGridCheckbox:hover {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+  transform: scale(1.05) !important;
+}
+
+.darkGridCheckbox:checked {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkGridCheckbox:checked::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 5px !important;
+  top: 1px !important;
+  width: 5px !important;
+  height: 10px !important;
+  border: solid #000000 !important;
+  border-width: 0 2px 2px 0 !important;
+  transform: rotate(40deg) !important;
+}
+
+.darkGridCheckbox:checked:hover {
+  background: #E2A900 !important;
+  border-color: #E2A900 !important;
+}
+
+.darkGridCheckbox:disabled {
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* Fix for task item completed state in dark mode */
+.darkTaskItem.mytasks-task-completed {
+  opacity: 0.6;
+}
+
+.darkTaskItem.mytasks-task-completed .darkTaskTitle {
+  text-decoration: line-through;
+  color: #6A6255 !important;
+}
+
+.darkTaskItem.mytasks-task-completed .darkTaskDescription {
+  text-decoration: line-through;
+  color: #474133 !important;
+}
+
+/* Task Item Dark Mode */
+.darkTaskItem {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+}
+
+.darkTaskItem:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkTaskItem.mytasks-task-hovered {
+  border-color: #FBBC00 !important;
+}
+
+.darkTaskItem.mytasks-task-hovered::before {
+  background: #FBBC00 !important;
+}
+
+.darkTaskTitle {
+  color: #FFFFFF !important;
+}
+
+.darkTaskDescription {
+  color: #6A6255 !important;
+}
+
+.darkTaskPriority {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskPriority.priority-high {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkTaskPriority.priority-medium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskPriority.priority-low {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkTaskCategory {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskMetaItem {
+  color: #6A6255 !important;
+}
+
+.darkAvatar {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  border-color: #111111 !important;
+}
+
+.darkEditBtn {
+  color: #6A6255 !important;
+}
+
+.darkEditBtn:hover {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkDeleteBtn {
+  color: #6A6255 !important;
+}
+
+.darkDeleteBtn:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.darkCompletedBadge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+/* Grid Item Dark Mode */
+.darkGridItem {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+}
+
+.darkGridItem:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkGridItem.mytasks-grid-hovered {
+  border-color: #FBBC00 !important;
+}
+
+.darkGridTitle {
+  color: #FFFFFF !important;
+}
+
+.darkGridDescription {
+  color: #6A6255 !important;
+}
+
+.darkGridDue {
+  color: #6A6255 !important;
+}
+
+.darkGridStatusText {
+  color: #6A6255 !important;
+}
+
+.darkGridCompletedBadge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+/* Empty State Dark Mode */
+.darkEmpty {
+  color: #6A6255 !important;
+}
+
+.darkEmpty h3 {
+  color: #FFFFFF !important;
+}
+
+.darkEmpty p {
+  color: #6A6255 !important;
+}
+
+/* Modal Dark Mode */
+.darkModal {
+  background: #1A1A1A !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkModalClose {
+  color: #6A6255 !important;
+}
+
+.darkModalClose:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalLabel {
+  color: #6A6255 !important;
+}
+
+.darkModalInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalInput:focus {
+  border-color: #FBBC00 !important;
+  background: #1A1A1A !important;
+}
+
+.darkModalSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalSelect:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkModalCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkModalCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalSave {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkModalSave:hover {
+  background: #E2A900 !important;
+}
+
+/* Delete Modal Dark Mode */
+.darkDeleteModal {
+  background: #1A1A1A !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkDeleteModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteModalText {
+  color: #6A6255 !important;
+}
+
+.darkDeleteModalText strong {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteConfirm {
+  background: #ef4444 !important;
+}
+
+.darkDeleteConfirm:hover {
+  background: #dc2626 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkTaskItem {
+    border-color: #383B40 !important;
+  }
+  
+  .darkTaskItem.priority-high {
+    border-top-color: #ef4444 !important;
+  }
+  
+  .darkTaskItem.priority-medium {
+    border-top-color: #FBBC00 !important;
+  }
+  
+  .darkTaskItem.priority-low {
+    border-top-color: #34d399 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkTaskItem {
+    border-color: #383B40 !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkContainer,
+  .darkStatBox,
+  .darkTaskItem,
+  .darkGridItem {
+    transition: none !important;
+  }
 }
