@@ -213,3 +213,56 @@ svg {
     background: #FBBC00;
   }
 }
+
+/* Add to darkMode.css */
+
+/* ==================== ACCENT COLOR CSS VARIABLES ==================== */
+:root {
+  --accent-color: #FBBC00;
+  --accent-color-rgb: 251, 188, 0;
+}
+
+/* Apply accent color to various elements using CSS variables */
+[data-theme="dark"] .swatchActive {
+  border-color: var(--accent-color) !important;
+  outline-color: rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+/* For Settings page swatches */
+.darkSwatch.swatchActive {
+  border-color: var(--accent-color) !important;
+  outline: 3px solid rgba(var(--accent-color-rgb), 0.3) !important;
+  outline-offset: 3px !important;
+}
+
+/* For any element using accent color */
+.accent-color {
+  color: var(--accent-color) !important;
+}
+
+.accent-bg {
+  background-color: var(--accent-color) !important;
+}
+
+.accent-border {
+  border-color: var(--accent-color) !important;
+}
+
+.accent-hover:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Dark mode scrollbar with accent color */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+  opacity: 0.8;
+}
