@@ -48,7 +48,25 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Profile.module.css';
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 // ==================== CUSTOM SWITCH COMPONENT ====================
 const CustomSwitch = ({ 
@@ -111,6 +129,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   
   const [activeTab, setActiveTab] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -156,6 +175,12 @@ const Profile = () => {
   });
   
   const [passwordErrors, setPasswordErrors] = useState({});
+
+  // Determine if we should use accent color for elements
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
+  // Get accent color RGB
+  const accentRgb = hexToRgb(accentColor);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -263,6 +288,10 @@ const Profile = () => {
       className={`${styles.deleteDialog} ${isDarkMode ? styles.darkDeleteDialog : ''}`}
       PaperProps={{
         className: `${styles.deleteDialogPaper} ${isDarkMode ? styles.darkDeleteDialogPaper : ''}`,
+        style: shouldUseAccent ? {
+          border: `1px solid rgba(${accentRgb}, 0.1)`,
+          background: '#0D0D0D',
+        } : undefined,
       }}
     >
       <Box className={`${styles.deleteDialogContent} ${isDarkMode ? styles.darkDeleteDialogContent : ''}`}>
@@ -279,6 +308,22 @@ const Profile = () => {
           <Button
             onClick={() => setShowDeleteDialog(false)}
             className={`${styles.deleteDialogCancel} ${isDarkMode ? styles.darkDeleteDialogCancel : ''}`}
+            style={shouldUseAccent ? {
+              borderColor: `rgba(${accentRgb}, 0.15)`,
+              color: '#6A6255',
+            } : undefined}
+            onMouseEnter={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.background = `rgba(${accentRgb}, 0.08)`;
+                e.currentTarget.style.color = '#e9e9e9';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#6A6255';
+              }
+            }}
           >
             Cancel
           </Button>
@@ -295,14 +340,48 @@ const Profile = () => {
   );
 
   return (
-    <Box className={`${styles.profileContainer} ${isDarkMode ? styles.darkProfileContainer : ''}`}>
+    <Box 
+      className={`${styles.profileContainer} ${isDarkMode ? styles.darkProfileContainer : ""}`}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       {/* Background */}
       <div className={`${styles.profileBg} ${isDarkMode ? styles.darkProfileBg : ''}`}>
-        <div className={styles.profileBgOrb} />
-        <div className={styles.profileBgOrb} />
-        <div className={styles.profileBgOrb} />
-        <div className={`${styles.profileBgGrid} ${isDarkMode ? styles.darkProfileBgGrid : ''}`} />
-        <div className={`${styles.profileBgGlow} ${isDarkMode ? styles.darkProfileBgGlow : ''}`} />
+        <div 
+          className={styles.profileBgOrb}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.10) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles.profileBgOrb}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles.profileBgOrb}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.04) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles.profileBgGrid} ${isDarkMode ? styles.darkProfileBgGrid : ''}`}
+          style={{
+            backgroundImage: shouldUseAccent ? 
+              `linear-gradient(rgba(${accentRgb}, 0.02) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(${accentRgb}, 0.02) 1px, transparent 1px)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles.profileBgGlow} ${isDarkMode ? styles.darkProfileBgGlow : ''}`}
+          style={{
+            background: shouldUseAccent ? 
+              `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, transparent 70%)` : undefined,
+          }}
+        />
       </div>
 
       <Container maxWidth="xl" className={styles.profileContent}>
@@ -311,11 +390,23 @@ const Profile = () => {
           <Box className={styles.profileHeaderContent}>
             <Box className={styles.avatarSection}>
               <Box className={styles.avatarWrapper}>
-                <Avatar className={`${styles.profileAvatar} ${isDarkMode ? styles.darkProfileAvatar : ''}`}>
+                <Avatar 
+                  className={`${styles.profileAvatar} ${isDarkMode ? styles.darkProfileAvatar : ''}`}
+                  style={{
+                    background: shouldUseAccent ? accentColor : undefined,
+                    color: shouldUseAccent ? '#000000' : undefined,
+                  }}
+                >
                   {userData.fullName.split(' ').map(n => n[0]).join('')}
                 </Avatar>
                 <Tooltip title="Change Avatar" arrow>
-                  <IconButton className={`${styles.avatarEditBtn} ${isDarkMode ? styles.darkAvatarEditBtn : ''}`} size="small">
+                  <IconButton 
+                    className={`${styles.avatarEditBtn} ${isDarkMode ? styles.darkAvatarEditBtn : ''}`} 
+                    size="small"
+                    style={{
+                      color: shouldUseAccent ? accentColor : undefined,
+                    }}
+                  >
                     <PhotoCameraIcon className={`${styles.avatarEditIcon} ${isDarkMode ? styles.darkAvatarEditIcon : ''}`} />
                   </IconButton>
                 </Tooltip>
@@ -333,6 +424,10 @@ const Profile = () => {
                     size="small" 
                     className={`${styles.proChip} ${isDarkMode ? styles.darkProChip : ''}`}
                     icon={<CheckCircleIcon className={`${styles.chipIcon} ${isDarkMode ? styles.darkChipIcon : ''}`} />}
+                    style={{
+                      background: shouldUseAccent ? accentColor : undefined,
+                      color: shouldUseAccent ? '#000000' : undefined,
+                    }}
                   />
                   <Chip 
                     label="Active" 
@@ -367,22 +462,34 @@ const Profile = () => {
             className={`${styles.profileTabs} ${isDarkMode ? styles.darkProfileTabs : ''}`}
             TabIndicatorProps={{
               className: `${styles.tabIndicator} ${isDarkMode ? styles.darkTabIndicator : ''}`,
+              style: {
+                background: shouldUseAccent ? accentColor : undefined,
+              },
             }}
           >
             <Tab 
               icon={<PersonIcon />} 
               label="Profile" 
               className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
+              style={{
+                color: shouldUseAccent ? accentColor : undefined,
+              }}
             />
             <Tab 
               icon={<NotificationsIcon />} 
               label="Preferences" 
               className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
+              style={{
+                color: shouldUseAccent ? accentColor : undefined,
+              }}
             />
             <Tab 
               icon={<SecurityIcon />} 
               label="Security" 
               className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
+              style={{
+                color: shouldUseAccent ? accentColor : undefined,
+              }}
             />
           </Tabs>
 
@@ -398,6 +505,9 @@ const Profile = () => {
                     startIcon={<EditIcon />}
                     onClick={() => setIsEditing(true)}
                     className={`${styles.editButton} ${isDarkMode ? styles.darkEditButton : ''}`}
+                    style={{
+                      color: shouldUseAccent ? accentColor : undefined,
+                    }}
                   >
                     Edit Profile
                   </Button>
@@ -416,6 +526,10 @@ const Profile = () => {
                       onClick={handleSaveProfile}
                       disabled={isSaving}
                       className={`${styles.saveButton} ${isDarkMode ? styles.darkSaveButton : ''}`}
+                      style={{
+                        background: shouldUseAccent ? accentColor : undefined,
+                        color: shouldUseAccent ? '#000000' : undefined,
+                      }}
                     >
                       {isSaving ? 'Saving...' : 'Save Changes'}
                     </Button>
@@ -429,11 +543,23 @@ const Profile = () => {
                   <Box className={`${styles.avatarCard} ${isDarkMode ? styles.darkAvatarCard : ''}`}>
                     <Box className={styles.avatarCardContent}>
                       <Box className={styles.avatarCardAvatar}>
-                        <Avatar className={`${styles.avatarCardImage} ${isDarkMode ? styles.darkAvatarCardImage : ''}`}>
+                        <Avatar 
+                          className={`${styles.avatarCardImage} ${isDarkMode ? styles.darkAvatarCardImage : ''}`}
+                          style={{
+                            background: shouldUseAccent ? accentColor : undefined,
+                            color: shouldUseAccent ? '#000000' : undefined,
+                          }}
+                        >
                           {userData.fullName.split(' ').map(n => n[0]).join('')}
                         </Avatar>
                         {isEditing && (
-                          <IconButton className={`${styles.avatarCardEdit} ${isDarkMode ? styles.darkAvatarCardEdit : ''}`} size="small">
+                          <IconButton 
+                            className={`${styles.avatarCardEdit} ${isDarkMode ? styles.darkAvatarCardEdit : ''}`} 
+                            size="small"
+                            style={{
+                              color: shouldUseAccent ? accentColor : undefined,
+                            }}
+                          >
                             <PhotoCameraIcon className={`${styles.avatarCardEditIcon} ${isDarkMode ? styles.darkAvatarCardEditIcon : ''}`} />
                           </IconButton>
                         )}
@@ -451,6 +577,10 @@ const Profile = () => {
                             size="small" 
                             className={`${styles.avatarCardProChip} ${isDarkMode ? styles.darkAvatarCardProChip : ''}`}
                             icon={<CheckCircleIcon className={`${styles.avatarCardChipIcon} ${isDarkMode ? styles.darkAvatarCardChipIcon : ''}`} />}
+                            style={{
+                              background: shouldUseAccent ? accentColor : undefined,
+                              color: shouldUseAccent ? '#000000' : undefined,
+                            }}
                           />
                           <Chip 
                             label="Active" 
@@ -751,6 +881,10 @@ const Profile = () => {
                     variant="outlined"
                     onClick={() => setShowPasswordDialog(true)}
                     className={`${styles.changePasswordButton} ${isDarkMode ? styles.darkChangePasswordButton : ''}`}
+                    style={{
+                      borderColor: shouldUseAccent ? accentColor : undefined,
+                      color: shouldUseAccent ? accentColor : undefined,
+                    }}
                   >
                     Change Password
                   </Button>
@@ -829,21 +963,50 @@ const Profile = () => {
           onClose={() => setShowPasswordDialog(false)}
           maxWidth="sm"
           fullWidth
-          className={`${styles.passwordDialog} ${isDarkMode ? styles.darkPasswordDialog : ''}`}
+          className={`${styles.passwordDialog} ${isDarkMode ? styles.darkPasswordDialog : ""}`}
           PaperProps={{
-            className: `${styles.passwordDialogPaper} ${isDarkMode ? styles.darkPasswordDialogPaper : ''}`,
+            className: `${styles.passwordDialogPaper} ${isDarkMode ? styles.darkPasswordDialogPaper : ""}`,
+            style: shouldUseAccent ? {
+              border: `1px solid rgba(${accentRgb}, 0.15)`,
+              background: '#0D0D0D',
+            } : undefined,
           }}
         >
-          <DialogTitle className={`${styles.dialogTitle} ${isDarkMode ? styles.darkDialogTitle : ''}`}>
-            <LockIcon className={`${styles.dialogIcon} ${isDarkMode ? styles.darkDialogIcon : ''}`} />
+          <DialogTitle 
+            className={`${styles.dialogTitle} ${isDarkMode ? styles.darkDialogTitle : ""}`}
+            style={shouldUseAccent ? {
+              color: '#e9e9e9',
+              borderBottom: `1px solid rgba(${accentRgb}, 0.08)`,
+            } : undefined}
+          >
+            <LockIcon 
+              className={`${styles.dialogIcon} ${isDarkMode ? styles.darkDialogIcon : ""}`}
+              style={shouldUseAccent ? {
+                color: accentColor,
+              } : undefined}
+            />
             Change Password
           </DialogTitle>
           <DialogContent>
-            <Box className={`${styles.dialogContent} ${isDarkMode ? styles.darkDialogContent : ''}`}>
+            <Box className={`${styles.dialogContent} ${isDarkMode ? styles.darkDialogContent : ""}`}>
               {/* Current Password */}
-              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
-                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Current Password</label>
-                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ""}`}>
+                <label 
+                  className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ""}`}
+                  style={shouldUseAccent ? {
+                    color: '#e9e9e9',
+                  } : undefined}
+                >
+                  Current Password
+                </label>
+                <div 
+                  className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ""}`}
+                  style={shouldUseAccent ? {
+                    background: '#1A1A1A',
+                    border: `1px solid rgba(${accentRgb}, 0.15)`,
+                    borderRadius: '10px',
+                  } : undefined}
+                >
                   <input
                     type={showCurrentPassword ? 'text' : 'password'}
                     name="currentPassword"
@@ -851,12 +1014,32 @@ const Profile = () => {
                     value={passwordData.currentPassword}
                     onChange={handlePasswordChange}
                     className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
+                    style={shouldUseAccent ? {
+                      color: '#e9e9e9',
+                      background: '#1A1A1A',
+                      border: 'none',
+                    } : undefined}
                   />
                   <button
                     type="button"
                     className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
+                    style={shouldUseAccent ? {
+                      color: '#6A6255',
+                    } : undefined}
+                    onMouseEnter={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#e9e9e9';
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#6A6255';
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
                   >
                     {showCurrentPassword ? (
                       <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
@@ -871,9 +1054,23 @@ const Profile = () => {
               </div>
 
               {/* New Password */}
-              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
-                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>New Password</label>
-                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ""}`}>
+                <label 
+                  className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ""}`}
+                  style={shouldUseAccent ? {
+                    color: '#e9e9e9',
+                  } : undefined}
+                >
+                  New Password
+                </label>
+                <div 
+                  className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ""}`}
+                  style={shouldUseAccent ? {
+                    background: '#1A1A1A',
+                    border: `1px solid rgba(${accentRgb}, 0.15)`,
+                    borderRadius: '10px',
+                  } : undefined}
+                >
                   <input
                     type={showNewPassword ? 'text' : 'password'}
                     name="newPassword"
@@ -881,12 +1078,32 @@ const Profile = () => {
                     value={passwordData.newPassword}
                     onChange={handlePasswordChange}
                     className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
+                    style={shouldUseAccent ? {
+                      color: '#e9e9e9',
+                      background: '#1A1A1A',
+                      border: 'none',
+                    } : undefined}
                   />
                   <button
                     type="button"
                     className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowNewPassword(!showNewPassword)}
                     aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                    style={shouldUseAccent ? {
+                      color: '#6A6255',
+                    } : undefined}
+                    onMouseEnter={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#e9e9e9';
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#6A6255';
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
                   >
                     {showNewPassword ? (
                       <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
@@ -901,9 +1118,23 @@ const Profile = () => {
               </div>
 
               {/* Confirm New Password */}
-              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
-                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Confirm New Password</label>
-                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ""}`}>
+                <label 
+                  className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ""}`}
+                  style={shouldUseAccent ? {
+                    color: '#e9e9e9',
+                  } : undefined}
+                >
+                  Confirm New Password
+                </label>
+                <div 
+                  className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ""}`}
+                  style={shouldUseAccent ? {
+                    background: '#1A1A1A',
+                    border: `1px solid rgba(${accentRgb}, 0.15)`,
+                    borderRadius: '10px',
+                  } : undefined}
+                >
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     name="confirmPassword"
@@ -911,12 +1142,32 @@ const Profile = () => {
                     value={passwordData.confirmPassword}
                     onChange={handlePasswordChange}
                     className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
+                    style={shouldUseAccent ? {
+                      color: '#e9e9e9',
+                      background: '#1A1A1A',
+                      border: 'none',
+                    } : undefined}
                   />
                   <button
                     type="button"
                     className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                    style={shouldUseAccent ? {
+                      color: '#6A6255',
+                    } : undefined}
+                    onMouseEnter={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#e9e9e9';
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (shouldUseAccent) {
+                        e.currentTarget.style.color = '#6A6255';
+                        e.currentTarget.style.background = 'transparent';
+                      }
+                    }}
                   >
                     {showConfirmPassword ? (
                       <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
@@ -931,14 +1182,55 @@ const Profile = () => {
               </div>
             </Box>
           </DialogContent>
-          <DialogActions className={`${styles.dialogActions} ${isDarkMode ? styles.darkDialogActions : ''}`}>
-            <Button onClick={() => setShowPasswordDialog(false)} className={`${styles.dialogCancel} ${isDarkMode ? styles.darkDialogCancel : ''}`}>
+          <DialogActions 
+            className={`${styles.dialogActions} ${isDarkMode ? styles.darkDialogActions : ""}`}
+            style={shouldUseAccent ? {
+              borderTop: `1px solid rgba(${accentRgb}, 0.08)`,
+              padding: '16px 24px',
+            } : undefined}
+          >
+            <Button 
+              onClick={() => setShowPasswordDialog(false)} 
+              className={`${styles.dialogCancel} ${isDarkMode ? styles.darkDialogCancel : ""}`}
+              style={shouldUseAccent ? {
+                color: '#6A6255',
+                border: `1px solid rgba(${accentRgb}, 0.15)`,
+              } : undefined}
+              onMouseEnter={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.background = `rgba(${accentRgb}, 0.08)`;
+                  e.currentTarget.style.color = '#e9e9e9';
+                  e.currentTarget.style.borderColor = accentColor;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#6A6255';
+                  e.currentTarget.style.borderColor = `rgba(${accentRgb}, 0.15)`;
+                }
+              }}
+            >
               Cancel
             </Button>
             <Button 
               onClick={handlePasswordSubmit} 
               variant="contained"
-              className={`${styles.dialogSave} ${isDarkMode ? styles.darkDialogSave : ''}`}
+              className={`${styles.dialogSave} ${isDarkMode ? styles.darkDialogSave : ""}`}
+              style={shouldUseAccent ? {
+                background: accentColor,
+                color: '#000000',
+              } : undefined}
+              onMouseEnter={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.opacity = '0.85';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.opacity = '1';
+                }
+              }}
             >
               Update Password
             </Button>

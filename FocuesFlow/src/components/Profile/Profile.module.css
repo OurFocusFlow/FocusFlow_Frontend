@@ -2259,3 +2259,1075 @@
     transition: none !important;
   }
 }
+
+/* ==================== PROFILE PAGE ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileBgGrid {
+  background-image: 
+    linear-gradient(rgba(var(--accent-rgb), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.02) 1px, transparent 1px) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileBgGlow {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarEditIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkTabIndicator {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTab.Mui-selected {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSaveButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSaveButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardImage {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardEditIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardProChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardIconWrapper {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCardIconWrapper {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCardIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiInputLabel-root.Mui-focused) {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.Mui-focused) .darkFieldIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSectionIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInputWrap:focus-within {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* Dark mode scrollbar for Profile page with accent */
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}
+
+/* ==================== PROFILE PAGE ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .profileContainer {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
+
+/* ==================== SWITCH BUTTON ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:checked + .switchSlider {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:checked + .switchSlider::before {
+  background: #FFFFFF !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:focus + .switchSlider {
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:checked:active + .switchSlider::before {
+  transform: translateX(24px) scale(0.9);
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchSmall input:checked + .switchSlider::before {
+  transform: translateX(18px);
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchSmall input:checked:active + .switchSlider::before {
+  transform: translateX(18px) scale(0.9);
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchLarge input:checked + .switchSlider::before {
+  transform: translateX(30px);
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchLarge input:checked:active + .switchSlider::before {
+  transform: translateX(30px) scale(0.9);
+}
+
+/* Switch hover state with accent */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch:hover .switchSlider {
+  border-color: var(--accent-color) !important;
+}
+
+/* Switch disabled state with accent */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:disabled + .switchSlider {
+  opacity: 0.4 !important;
+  background: #383B40 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:disabled + .switchSlider::before {
+  background: #6A6255 !important;
+}
+
+/* Switch slider background when not checked */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch .switchSlider {
+  background: #383B40 !important;
+  border-color: #383B40 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch .switchSlider::before {
+  background: #6A6255 !important;
+}
+
+/* Switch wrapper label color */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchWrapper .switchLabel {
+  color: #e9e9e9 !important;
+}
+
+/* Switch with label - ensure consistent styling */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchWrapper {
+  color: #e9e9e9 !important;
+}
+
+/* ==================== PROFILE PAGE ACCENT COLOR SUPPORT - COMPLETE ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileBgGrid {
+  background-image: 
+    linear-gradient(rgba(var(--accent-rgb), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.02) 1px, transparent 1px) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileBgGlow {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+/* ==================== AVATAR AND PROFILE HEADER ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarEditIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileHeader {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileHeader:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+}
+
+/* ==================== TABS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkTabIndicator {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTab.Mui-selected {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTabs {
+  border-bottom-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== EDIT BUTTONS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSaveButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSaveButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* ==================== AVATAR CARD ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCard {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCard:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardImage {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardEditIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardProChip {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+/* ==================== STAT CARDS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCard {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCard:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+  background: rgba(var(--accent-rgb), 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardIconWrapper {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardIcon {
+  color: var(--accent-color) !important;
+}
+
+/* ==================== MEMBER CARD ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCard {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCard:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+  background: rgba(var(--accent-rgb), 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCardIconWrapper {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+/* ==================== FORM CARDS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCard {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCard:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+  background: rgba(var(--accent-rgb), 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCardIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCardHeader {
+  border-bottom-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== TEXT FIELDS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiInputLabel-root.Mui-focused) {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiOutlinedInput-root:hover) {
+  border-color: rgba(var(--accent-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.Mui-focused) .darkFieldIcon {
+  color: var(--accent-color) !important;
+}
+
+/* ==================== PREFERENCES ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSectionIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPreferenceItem {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPreferenceItem:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+  background: rgba(var(--accent-rgb), 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPreferenceDivider {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== SECURITY ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityItem {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityItem:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityDivider {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  border-color: var(--accent-color) !important;
+}
+
+/* ==================== SESSIONS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionItem {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionItem:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+}
+
+/* ==================== DIALOGS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordDialogPaper {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInputWrap:focus-within {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogActions {
+  border-top-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== DELETE DIALOG ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogPaper {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogCancel {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogCancel:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+/* ==================== SWITCH BUTTONS ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:checked + .switchSlider {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:checked + .switchSlider::before {
+  background: #FFFFFF !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch input:focus + .switchSlider {
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch:hover .switchSlider {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch .switchSlider {
+  background: #383B40 !important;
+  border-color: #383B40 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switch .switchSlider::before {
+  background: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchWrapper .switchLabel {
+  color: #e9e9e9 !important;
+}
+
+/* ==================== PAPER / MAIN CONTAINER ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfilePaper {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfilePaper:hover {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+}
+
+/* ==================== TAB DIVIDER ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkTabDivider {
+  border-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== SNACKBAR ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSnackbarAlert {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+/* ==================== SCROLLBAR ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .profileContent {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}
+
+/* ==================== ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .profileContainer {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
+
+/* ==================== CHANGE PASSWORD MODAL WITH ACCENT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordDialogPaper {
+  background: #0D0D0D !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.15) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogTitle {
+  color: #e9e9e9 !important;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogContent {
+  background: transparent !important;
+}
+
+/* Password fields inside dialog */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordField {
+  background: transparent !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInputWrap {
+  background: #1A1A1A !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.15) !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInputWrap:focus-within {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput {
+  color: #e9e9e9 !important;
+  background: #1A1A1A !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput:focus {
+  border: none !important;
+  background: #1A1A1A !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput::placeholder {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordEyeBtn {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordEyeBtn:hover {
+  color: #e9e9e9 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordEyeIcon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordError {
+  color: #ef4444 !important;
+}
+
+/* Dialog Actions */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogActions {
+  border-top: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+  padding: 16px 24px !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogCancel {
+  color: #6A6255 !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.15) !important;
+  background: transparent !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogCancel:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: #e9e9e9 !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogSave:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* Password input focus state for accent */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Modal overlay */
+[data-theme="dark"] .profileContainer:not(.default-accent) .passwordDialog .MuiBackdrop-root {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+/* ==================== PROFILE PAGE TEXT AND ICON COLORS WITH ACCENT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileName {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileRole {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkQuickStatNumber {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkQuickStatLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkTabTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardName {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardRole {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardNumber {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCardDate {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCardLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCardTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSectionTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSectionIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPreferenceValue {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPreferenceLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityItemTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityItemSubtitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSecurityIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionName {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionSubtitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSwitchLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordInput::placeholder {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordEyeBtn {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkPasswordEyeIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogCancel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDialogCancel:hover {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogText {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogCancel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkDeleteDialogCancel:hover {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarCardEditIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkAvatarEditIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFormCardIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkMemberCardIconWrapper {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkStatCardIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton {
+  color: #e9e9e9 !important;
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkChangePasswordButton:hover {
+  color: #e9e9e9 !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkEditButton:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkCancelButton {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkCancelButton:hover {
+  color: #e9e9e9 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionLogout {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkSessionLogout:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiInputBase-input) {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiInputLabel-root) {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.MuiInputLabel-root.Mui-focused) {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkFieldIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkProfileTextField :global(.Mui-focused) .darkFieldIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .darkInputLabel {
+  color: #e9e9e9 !important;
+}
+
+/* ==================== SWITCH LABEL ==================== */
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchWrapper .switchLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .switchWrapper .switchLabel svg {
+  color: #e9e9e9 !important;
+}
+
+/* ==================== MUI BUTTON TEXT AND ICON COLORS WITH ACCENT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-root .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-root .MuiButton-startIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-root .MuiButton-endIcon {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-outlined {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-outlined:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  border-color: var(--accent-color) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-outlined .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-outlined:hover .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-contained {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-contained:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-contained .MuiSvgIcon-root {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-contained:hover .MuiSvgIcon-root {
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-text {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-text:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-text .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiButton-text:hover .MuiSvgIcon-root {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiIconButton-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiIconButton-root:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiIconButton-root .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiIconButton-root:hover .MuiSvgIcon-root {
+  color: var(--accent-color) !important;
+}
+
+/* Dialog buttons */
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-root .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-outlined {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-outlined:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  border-color: var(--accent-color) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-contained {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-contained:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiDialogActions-root .MuiButton-contained .MuiSvgIcon-root {
+  color: #000000 !important;
+}
+
+/* Tab buttons */
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root.Mui-selected {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root.Mui-selected .MuiSvgIcon-root {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root:hover {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiTab-root:hover .MuiSvgIcon-root {
+  color: var(--accent-color) !important;
+}
+
+/* Chip buttons */
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiChip-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiChip-root .MuiSvgIcon-root {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .profileContainer:not(.default-accent) .MuiChip-root .MuiChip-label {
+  color: #e9e9e9 !important;
+}
