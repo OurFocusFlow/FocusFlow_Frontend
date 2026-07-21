@@ -3,6 +3,32 @@ import { useDarkMode } from './DarkModeContext';
 
 const AccentColorContext = createContext();
 
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0'; // Default to amber RGB
+};
+
+// Helper function to check if color is light (for determining text color)
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    // Calculate luminance - higher means lighter
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
+
 export const AccentColorProvider = ({ children }) => {
   const { isDarkMode } = useDarkMode();
   
@@ -61,23 +87,26 @@ export const AccentColorProvider = ({ children }) => {
     console.log('🎨 Accent color changed to:', accentColor);
   }, [accentColor]);
 
-  // Helper function to convert hex to rgb
-  const hexToRgb = (hex) => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result) {
-      const r = parseInt(result[1], 16);
-      const g = parseInt(result[2], 16);
-      const b = parseInt(result[3], 16);
-      return `${r}, ${g}, ${b}`;
-    }
-    return '251, 188, 0'; // Default to amber RGB
-  };
-
   // Function to reset to default based on current mode
   const resetToDefault = () => {
     const defaultColor = isDarkMode ? DARK_MODE_DEFAULT : LIGHT_MODE_DEFAULT;
     setAccentColor(defaultColor);
     localStorage.setItem('accentColor', defaultColor);
+  };
+
+  // Function to get button text color based on accent color and mode
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      // In dark mode: if accent color is light (like amber), use black text, else use white
+      return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
+    }
+    // In light mode: if accent color is dark (like brown), use white text, else use dark text
+    return isLightColor(accentColor) ? '#33231D' : '#FFFFFF';
+  };
+
+  // Function to check if accent color is light
+  const isAccentLight = () => {
+    return isLightColor(accentColor);
   };
 
   return (
@@ -86,7 +115,10 @@ export const AccentColorProvider = ({ children }) => {
       setAccentColor,
       resetToDefault,
       LIGHT_MODE_DEFAULT,
-      DARK_MODE_DEFAULT
+      DARK_MODE_DEFAULT,
+      getButtonTextColor,
+      isAccentLight,
+      hexToRgb,
     }}>
       {children}
     </AccentColorContext.Provider>
