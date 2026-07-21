@@ -1703,3 +1703,141 @@
 .darkEditInput::placeholder {
   color: #857B6B !important;
 }
+
+/* ==================== DARK MODE WITH ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .home-container:not(.default-accent) .darkStatTrend {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkRitualsCount {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkFilterBtn:hover,
+[data-theme="dark"] .home-container:not(.default-accent) .darkSortBtn:hover,
+[data-theme="dark"] .home-container:not(.default-accent) .darkClearBtn:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkFilterBadge {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkDropdownItem:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkDropdownCheck {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkRitualItem:hover {
+  border-color: rgba(var(--accent-rgb), 0.2) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkRitualCheckbox:checked {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkIconBtn:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkEditInput:focus {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkEditSelect:focus {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkEditSave {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkEditSave:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkBannerCta {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkBannerCta:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkFilterBtn.btn-active,
+[data-theme="dark"] .home-container:not(.default-accent) .darkSortBtn.btn-active {
+  border-color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+/* Dark mode icon wrappers with accent */
+[data-theme="dark"] .home-container:not(.default-accent) .darkIconTotal {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkIconCompleted {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkIconPending {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkIconOverdue {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+/* Dark mode badges with accent */
+[data-theme="dark"] .home-container:not(.default-accent) .darkBadge.category-design {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkBadge.badge-medium {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+/* Dark mode background grids with accent */
+[data-theme="dark"] .home-container:not(.default-accent) .darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(var(--accent-rgb), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.02) 1px, transparent 1px) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .darkBgGlow {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+/* Dark mode scrollbar for dashboard with accent */
+[data-theme="dark"] .home-container:not(.default-accent) .home-content-wrapper::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .home-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .home-container:not(.default-accent) .home-content-wrapper {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}

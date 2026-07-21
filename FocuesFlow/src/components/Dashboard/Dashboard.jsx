@@ -1,9 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTasks } from "../Context/TaskContext";
 import { useDarkMode } from "../Context/DarkModeContext";
+import { useAccentColor } from "../Context/AccentColorContext";
 import styles from "./Dashboard.module.css";
 import bannerImage from "../../assets/Images/Image4.png";
 import ToastNotification from "../ToastNotification/ToastNotification";
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 function Icon({ name, className }) {
   const paths = {
@@ -67,6 +85,7 @@ const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 export default function Dashboard() {
   const { tasks, updateTask, deleteTask, toggleTaskComplete, isLoading } = useTasks();
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   
   const [filterPriority, setFilterPriority] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -82,6 +101,12 @@ export default function Dashboard() {
 
   const today = new Date().toISOString().split('T')[0];
   const categoryOptions = ["Design", "Marketing", "Content", "Development", "Research", "Documentation"];
+
+  // Determine if we should use accent color for elements
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
+  // Get accent color RGB
+  const accentRgb = hexToRgb(accentColor);
 
   const formatDateToInput = (dateString) => {
     if (!dateString) return '';
@@ -246,31 +271,23 @@ export default function Dashboard() {
 
   // Apply sorting
   if (sortBy === "dueDate") {
-    // Sort by due date: newest first (descending order)
     visibleTasks = [...visibleTasks].sort((a, b) => {
-      // Handle tasks with no due date
       if (!a.dueSort && !b.dueSort) return 0;
       if (!a.dueSort) return 1;
       if (!b.dueSort) return -1;
-      // Newest first (descending)
       return b.dueSort - a.dueSort;
     });
   } else if (sortBy === "priority") {
-    // Sort by priority: High -> Medium -> Low
     visibleTasks = [...visibleTasks].sort((a, b) => {
-      // Tasks without priority go to the bottom
       if (!a.priority && !b.priority) return 0;
       if (!a.priority) return 1;
       if (!b.priority) return -1;
       return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
     });
   } else {
-    // Default sort: incomplete first, then by due date (newest first)
     visibleTasks = [...visibleTasks].sort((a, b) => {
-      // Completed tasks go to the bottom
       if (a.completed && !b.completed) return 1;
       if (!a.completed && b.completed) return -1;
-      // If both completed or both not completed, sort by due date (newest first)
       if (a.dueSort && b.dueSort) {
         return b.dueSort - a.dueSort;
       }
@@ -288,13 +305,47 @@ export default function Dashboard() {
   };
 
   return (
-    <div className={`${styles["home-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
+    <div 
+      className={`${styles["home-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       <div className={`${styles["home-bg"]} ${isDarkMode ? styles["darkBg"] : ""}`}>
-        <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-orb"]} />
-        <div className={`${styles["home-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`} />
-        <div className={`${styles["home-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`} />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.10) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.04) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles["home-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`}
+          style={{
+            backgroundImage: shouldUseAccent ? 
+              `linear-gradient(rgba(${accentRgb}, 0.02) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(${accentRgb}, 0.02) 1px, transparent 1px)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles["home-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`}
+          style={{
+            background: shouldUseAccent ? 
+              `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, transparent 70%)` : undefined,
+          }}
+        />
       </div>
 
       <div className={styles["home-content-wrapper"]}>
@@ -355,7 +406,13 @@ export default function Dashboard() {
 
           <div className={styles["home-rituals-actions"]}>
             {activeFilterCount > 0 && (
-              <button className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} onClick={clearFilters}>
+              <button 
+                className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} 
+                onClick={clearFilters}
+                style={{
+                  color: shouldUseAccent ? accentColor : undefined,
+                }}
+              >
                 <Icon name="x" className={styles["home-btn-icon"]} />
                 Clear
               </button>
@@ -365,10 +422,24 @@ export default function Dashboard() {
               <button
                 className={`${styles["home-filter-btn"]} ${activeFilterCount > 0 ? styles["btn-active"] : ""} ${isDarkMode ? styles["darkFilterBtn"] : ""}`}
                 onClick={() => setOpenMenu(openMenu === "filter" ? null : "filter")}
+                style={{
+                  borderColor: shouldUseAccent && activeFilterCount > 0 ? accentColor : undefined,
+                  color: shouldUseAccent && activeFilterCount > 0 ? accentColor : undefined,
+                }}
               >
                 <Icon name="filter" className={styles["home-btn-icon"]} />
                 Filter
-                {activeFilterCount > 0 && <span className={`${styles["home-filter-badge"]} ${isDarkMode ? styles["darkFilterBadge"] : ""}`}>{activeFilterCount}</span>}
+                {activeFilterCount > 0 && (
+                  <span 
+                    className={`${styles["home-filter-badge"]} ${isDarkMode ? styles["darkFilterBadge"] : ""}`}
+                    style={{
+                      background: shouldUseAccent ? accentColor : undefined,
+                      color: shouldUseAccent ? '#000000' : undefined,
+                    }}
+                  >
+                    {activeFilterCount}
+                  </span>
+                )}
                 <Icon name="chevronDown" className={`${styles["home-chevron"]} ${isDarkMode ? styles["darkChevron"] : ""}`} />
               </button>
 
@@ -380,9 +451,20 @@ export default function Dashboard() {
                       key={p}
                       className={`${styles["home-dropdown-item"]} ${isDarkMode ? styles["darkDropdownItem"] : ""}`}
                       onClick={() => setFilterPriority(p)}
+                      style={{
+                        color: shouldUseAccent && filterPriority === p ? accentColor : undefined,
+                      }}
                     >
                       {p === "all" ? "All priorities" : p}
-                      {filterPriority === p && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
+                      {filterPriority === p && (
+                        <Icon 
+                          name="checkSmall" 
+                          className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`}
+                          style={{
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
+                        />
+                      )}
                     </button>
                   ))}
                   <span className={`${styles["home-dropdown-label"]} ${isDarkMode ? styles["darkDropdownLabel"] : ""}`}>Category</span>
@@ -391,9 +473,20 @@ export default function Dashboard() {
                       key={c}
                       className={`${styles["home-dropdown-item"]} ${isDarkMode ? styles["darkDropdownItem"] : ""}`}
                       onClick={() => setFilterCategory(c)}
+                      style={{
+                        color: shouldUseAccent && filterCategory === c ? accentColor : undefined,
+                      }}
                     >
                       {c === "all" ? "All categories" : c}
-                      {filterCategory === c && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
+                      {filterCategory === c && (
+                        <Icon 
+                          name="checkSmall" 
+                          className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`}
+                          style={{
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -404,6 +497,10 @@ export default function Dashboard() {
               <button
                 className={`${styles["home-sort-btn"]} ${sortBy !== "default" ? styles["btn-active"] : ""} ${isDarkMode ? styles["darkSortBtn"] : ""}`}
                 onClick={() => setOpenMenu(openMenu === "sort" ? null : "sort")}
+                style={{
+                  borderColor: shouldUseAccent && sortBy !== "default" ? accentColor : undefined,
+                  color: shouldUseAccent && sortBy !== "default" ? accentColor : undefined,
+                }}
               >
                 <Icon name="sort" className={styles["home-btn-icon"]} />
                 Sort
@@ -424,9 +521,20 @@ export default function Dashboard() {
                         setSortBy(opt.key);
                         setOpenMenu(null);
                       }}
+                      style={{
+                        color: shouldUseAccent && sortBy === opt.key ? accentColor : undefined,
+                      }}
                     >
                       {opt.label}
-                      {sortBy === opt.key && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
+                      {sortBy === opt.key && (
+                        <Icon 
+                          name="checkSmall" 
+                          className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`}
+                          style={{
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>
@@ -438,7 +546,15 @@ export default function Dashboard() {
         {visibleTasks.length === 0 ? (
           <div className={`${styles["home-empty-state"]} ${isDarkMode ? styles["darkEmptyState"] : ""}`}>
             <p>No tasks match these filters.</p>
-            <button className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} onClick={clearFilters}>Clear filters</button>
+            <button 
+              className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} 
+              onClick={clearFilters}
+              style={{
+                color: shouldUseAccent ? accentColor : undefined,
+              }}
+            >
+              Clear filters
+            </button>
           </div>
         ) : (
           <div className={styles["home-ritual-list"]}>
@@ -446,7 +562,10 @@ export default function Dashboard() {
               <div
                 key={task.id}
                 className={`${styles["home-ritual-item"]} ${task.completed ? styles["home-ritual-completed"] : ""} ${isDarkMode ? styles["darkRitualItem"] : ""}`}
-                style={{ animationDelay: `${i * 0.05}s` }}
+                style={{ 
+                  animationDelay: `${i * 0.05}s`,
+                  borderColor: shouldUseAccent && !task.completed ? `rgba(${accentRgb}, 0.15)` : undefined,
+                }}
               >
                 {showDeleteConfirm === task.id && (
                   <div className={`${styles["home-delete-overlay"]} ${isDarkMode ? styles["darkDeleteOverlay"] : ""}`}>
@@ -460,7 +579,13 @@ export default function Dashboard() {
                         >
                           {isLoading ? 'Deleting...' : 'Yes, Delete'}
                         </button>
-                        <button className={`${styles["home-delete-cancel"]} ${isDarkMode ? styles["darkDeleteCancel"] : ""}`} onClick={cancelDelete}>
+                        <button 
+                          className={`${styles["home-delete-cancel"]} ${isDarkMode ? styles["darkDeleteCancel"] : ""}`} 
+                          onClick={cancelDelete}
+                          style={{
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
+                        >
                           Cancel
                         </button>
                       </div>
@@ -474,6 +599,9 @@ export default function Dashboard() {
                   onChange={() => toggleTaskCompleteHandler(task.id)}
                   className={`${styles["home-ritual-checkbox"]} ${isDarkMode ? styles["darkRitualCheckbox"] : ""}`}
                   disabled={isLoading}
+                  style={{
+                    accentColor: shouldUseAccent ? accentColor : undefined,
+                  }}
                 />
 
                 {editingTask === task.id ? (
@@ -485,6 +613,9 @@ export default function Dashboard() {
                         onChange={handleEditChange}
                         className={`${styles["home-edit-input"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
                         placeholder="Task title"
+                        style={{
+                          borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                        }}
                       />
                       <input
                         name="dueDate"
@@ -493,6 +624,9 @@ export default function Dashboard() {
                         onChange={handleEditChange}
                         className={`${styles["home-edit-input-sm"]} ${isDarkMode ? styles["darkEditInput"] : ""} ${isDarkMode ? styles["darkDateInput"] : ""}`}
                         min={today}
+                        style={{
+                          borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                        }}
                       />
                     </div>
                     <div className={styles["home-edit-row"]}>
@@ -502,12 +636,19 @@ export default function Dashboard() {
                         onChange={handleEditChange}
                         className={`${styles["home-edit-input"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
                         placeholder="Description"
+                        style={{
+                          borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                        }}
                       />
                       <select
                         name="priority"
                         value={editForm.priority}
                         onChange={handleEditChange}
                         className={`${styles["home-edit-select"]} ${isDarkMode ? styles["darkEditSelect"] : ""}`}
+                        style={{
+                          borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
                       >
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
@@ -518,6 +659,10 @@ export default function Dashboard() {
                         value={editForm.category}
                         onChange={handleEditChange}
                         className={`${styles["home-edit-select"]} ${isDarkMode ? styles["darkEditSelect"] : ""}`}
+                        style={{
+                          borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
                       >
                         {categoryOptions.map((cat) => (
                           <option key={cat} value={cat}>{cat}</option>
@@ -529,10 +674,20 @@ export default function Dashboard() {
                         className={`${styles["home-edit-save"]} ${isDarkMode ? styles["darkEditSave"] : ""}`}
                         onClick={() => saveEdit(task.id)}
                         disabled={isLoading}
+                        style={{
+                          background: shouldUseAccent ? accentColor : undefined,
+                          color: shouldUseAccent ? '#000000' : undefined,
+                        }}
                       >
                         {isLoading ? 'Saving...' : 'Save'}
                       </button>
-                      <button className={`${styles["home-edit-cancel"]} ${isDarkMode ? styles["darkEditCancel"] : ""}`} onClick={cancelEdit}>
+                      <button 
+                        className={`${styles["home-edit-cancel"]} ${isDarkMode ? styles["darkEditCancel"] : ""}`} 
+                        onClick={cancelEdit}
+                        style={{
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
+                      >
                         Cancel
                       </button>
                     </div>
@@ -560,6 +715,9 @@ export default function Dashboard() {
                         onClick={() => handleEdit(task)} 
                         aria-label="Edit task"
                         disabled={isLoading}
+                        style={{
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
                       >
                         <Icon name="edit" className={styles["home-action-icon"]} />
                       </button>
@@ -568,6 +726,9 @@ export default function Dashboard() {
                         onClick={() => handleDelete(task.id)} 
                         aria-label="Delete task"
                         disabled={isLoading}
+                        style={{
+                          color: shouldUseAccent ? '#ef4444' : undefined,
+                        }}
                       >
                         <Icon name="trash" className={styles["home-action-icon"]} />
                       </button>
@@ -591,7 +752,15 @@ export default function Dashboard() {
             <p className={`${styles["home-banner-desc"]} ${isDarkMode ? styles["darkBannerDesc"] : ""}`}>
               Productivity isn't just about finishing tasks. It's about finding rhythm in the work you love.
             </p>
-            <button className={`${styles["home-banner-cta"]} ${isDarkMode ? styles["darkBannerCta"] : ""}`}>Explore Insights</button>
+            <button 
+              className={`${styles["home-banner-cta"]} ${isDarkMode ? styles["darkBannerCta"] : ""}`}
+              style={{
+                background: shouldUseAccent ? accentColor : undefined,
+                color: shouldUseAccent ? '#000000' : undefined,
+              }}
+            >
+              Explore Insights
+            </button>
           </div>
         </div>
       </div>
