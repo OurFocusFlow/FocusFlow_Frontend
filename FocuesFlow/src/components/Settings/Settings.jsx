@@ -410,9 +410,26 @@ const Settings = () => {
                   onChange={(e) => setLanguage(e.target.value)}
                   size="small"
                   className={`${styles.select} ${isDarkMode ? styles.darkSelect : ''}`}
+                  MenuProps={{
+                    classes: {
+                      paper: `${styles.menuPaper} ${isDarkMode ? styles.darkMenuPaper : ''}`,
+                    },
+                    anchorOrigin: {
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    },
+                    transformOrigin: {
+                      vertical: 'top',
+                      horizontal: 'left',
+                    },
+                  }}
                 >
-                  <MenuItem value="en-US">🇺🇸 English (US)</MenuItem>
-                  <MenuItem value="ar-EG">🇪🇬 العربية</MenuItem>
+                  <MenuItem value="en-US" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇺🇸 English (US)
+                  </MenuItem>
+                  <MenuItem value="ar-EG" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇪🇬 العربية
+                  </MenuItem>
                 </Select>
               }
             />
@@ -514,10 +531,29 @@ const Settings = () => {
                   onChange={(e) => setProfileVisibility(e.target.value)}
                   size="small"
                   className={`${styles.select} ${isDarkMode ? styles.darkSelect : ''}`}
+                  MenuProps={{
+                    classes: {
+                      paper: `${styles.menuPaper} ${isDarkMode ? styles.darkMenuPaper : ''}`,
+                    },
+                    anchorOrigin: {
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    },
+                    transformOrigin: {
+                      vertical: 'top',
+                      horizontal: 'left',
+                    },
+                  }}
                 >
-                  <MenuItem value="public">🌍 Public</MenuItem>
-                  <MenuItem value="private">🔒 Private</MenuItem>
-                  <MenuItem value="team">👥 Team Only</MenuItem>
+                  <MenuItem value="public" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🌍 Public
+                  </MenuItem>
+                  <MenuItem value="private" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🔒 Private
+                  </MenuItem>
+                  <MenuItem value="team" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    👥 Team Only
+                  </MenuItem>
                 </Select>
               }
             />

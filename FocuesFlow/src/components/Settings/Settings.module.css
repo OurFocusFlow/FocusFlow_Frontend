@@ -1916,3 +1916,192 @@
     transform: none !important;
   }
 }
+
+/* ==================== SELECT MENU ITEMS ==================== */
+
+/* Menu Paper - Light Mode */
+.menuPaper {
+  background: #FFFFFF !important;
+  border: 1px solid #E6E2DF !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(31, 17, 10, 0.12) !important;
+  margin-top: 4px !important;
+  padding: 4px !important;
+  max-height: 250px !important;
+}
+
+/* Menu Item - Light Mode */
+.menuItem {
+  padding: 10px 16px !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #33231D !important;
+  font-family: inherit !important;
+  transition: all 0.15s ease !important;
+  min-height: 40px !important;
+}
+
+.menuItem:hover {
+  background: #FAF5F2 !important;
+  color: #885210 !important;
+}
+
+.menuItem.Mui-selected {
+  background: #FBEAD9 !important;
+  color: #885210 !important;
+}
+
+.menuItem.Mui-selected:hover {
+  background: #FBEAD9 !important;
+}
+
+.menuItem .MuiListItemIcon-root {
+  color: #7E7471 !important;
+}
+
+/* Menu Paper - Dark Mode */
+.darkMenuPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Menu Item - Dark Mode */
+.darkMenuItem {
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+}
+
+.darkMenuItem:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkMenuItem.Mui-selected {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkMenuItem.Mui-selected:hover {
+  background: rgba(251, 188, 0, 0.16) !important;
+  color: #FBBC00 !important;
+}
+
+.darkMenuItem .MuiListItemIcon-root {
+  color: #6A6255 !important;
+}
+
+/* ==================== SELECT - DARK MODE (Update existing) ==================== */
+
+.darkSelect {
+  background: #0D0D0D !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root) {
+  background: #0D0D0D !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border-color: #383B40 !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: #FBBC00 !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #FBBC00 !important;
+  border-width: 2px !important;
+}
+
+.darkSelect :global(.MuiSelect-select) {
+  color: #FFFFFF !important;
+}
+
+.darkSelect :global(.MuiSelect-icon) {
+  color: #6A6255 !important;
+}
+
+.darkSelect :global(.MuiSvgIcon-root) {
+  color: #6A6255 !important;
+}
+
+/* Select - Light Mode (ensure consistency) */
+.select {
+  min-width: 180px;
+  background: #FAF5F2;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.select :global(.MuiOutlinedInput-root) {
+  border-radius: 10px;
+  font-family: inherit;
+}
+
+.select :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border-color: #E6E2DF;
+}
+
+.select :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+}
+
+.select :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #885210;
+  border-width: 2px;
+}
+
+.select :global(.MuiSelect-select) {
+  font-weight: 500;
+  color: #33231D;
+  font-family: inherit;
+}
+
+.select :global(.MuiSelect-icon) {
+  color: #7E7471;
+}
+
+/* Scrollbar for menu */
+.menuPaper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.menuPaper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.menuPaper::-webkit-scrollbar-thumb {
+  background: rgba(136, 82, 16, 0.15);
+  border-radius: 4px;
+}
+
+.menuPaper::-webkit-scrollbar-thumb:hover {
+  background: rgba(136, 82, 16, 0.3);
+}
+
+.darkMenuPaper::-webkit-scrollbar-thumb {
+  background: rgba(251, 188, 0, 0.15);
+}
+
+.darkMenuPaper::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 188, 0, 0.3);
+}
+
+/* ==================== RESPONSIVE SELECT ==================== */
+@media (max-width: 768px) {
+  .select {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .menuPaper {
+    max-width: calc(100% - 32px) !important;
+  }
+  
+  .darkMenuPaper {
+    max-width: calc(100% - 32px) !important;
+  }
+}
