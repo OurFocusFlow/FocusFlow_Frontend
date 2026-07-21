@@ -119,7 +119,7 @@
   padding: 32px 24px 40px;
   animation: fadeIn 0.6s ease;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1450px;
   margin: 0 auto;
 }
 
@@ -141,7 +141,7 @@
   cursor: pointer;
   padding: 8px 0;
   margin-bottom: 20px;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
   font-family: inherit;
 }
 
@@ -868,8 +868,137 @@
   transform: rotate(90deg);
 }
 
+.editModalClose:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .editModalForm {
   padding: 1.5rem 1.75rem 0.9rem;
+}
+
+.formGroup {
+  margin-bottom: 1.25rem;
+}
+
+.formGroup:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #33231D;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+.requiredStar {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #33231D;
+  background: #FAF5F2;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #885210;
+  background: #FDF8F5;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+.formInput::placeholder {
+  color: #7E7471;
+}
+
+.formInputError {
+  border-color: #dc2626 !important;
+  background: #fef2f2 !important;
+}
+
+.formInputError:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08) !important;
+}
+
+.formError {
+  color: #dc2626;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #33231D;
+  background: #FAF5F2;
+  transition: all 0.2s ease;
+  resize: vertical;
+  font-family: inherit;
+  min-height: 80px;
+}
+
+.formTextarea:focus {
+  outline: none;
+  border-color: #885210;
+  background: #FDF8F5;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+.formTextarea::placeholder {
+  color: #7E7471;
+}
+
+.formSelect {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #33231D;
+  background: #FAF5F2;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237E7471' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.formSelect:focus {
+  outline: none;
+  border-color: #885210;
+  background: #FDF8F5;
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+}
+
+.formSelect:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .editModalFooter {
@@ -879,6 +1008,77 @@
   gap: 10px;
   padding: 0.5rem 1.75rem 1.25rem;
   border-top: 1px solid rgba(230, 226, 223, 0.3);
+}
+
+.cancelBtn {
+  padding: 0.5rem 1.25rem;
+  border: 1.5px solid #E6E2DF;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #7E7471;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.cancelBtn:hover {
+  background: #FAF5F2;
+  color: #33231D;
+}
+
+.cancelBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  background: #4B3832;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
+  font-family: inherit;
+}
+
+.saveBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(75, 56, 50, 0.35);
+}
+
+.saveBtn:active {
+  transform: translateY(0);
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.6s linear infinite;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ==================== DELETE MODAL ==================== */
@@ -1169,307 +1369,582 @@
   }
 }
 
-/* ==================== EDIT MODAL - Like CreateTaskModal ==================== */
-.editDialog {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
 }
 
-.editDialogPaper {
+/* Background Dark Mode */
+.darkBg {
+  background: #000000 !important;
+}
+
+.darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* ==================== BACK BUTTON DARK MODE - REDUCED WIDTH ==================== */
+.darkBackBtn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid #383B40 !important;
   border-radius: 20px !important;
-  background: rgba(253, 248, 245, 0.95) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 48px rgba(31,17,10,0.12) !important;
-  max-width: 580px !important;
-  overflow: hidden;
+  color: #6A6255 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-family: inherit !important;
+  text-decoration: none !important;
+  margin-bottom: 20px !important;
+  width: auto !important;
+  min-width: auto !important;
+  max-width: fit-content !important;
+  white-space: nowrap !important;
 }
 
-.editModalContent {
-  padding: 0;
+.darkBackBtn:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+  transform: translateX(-3px) !important;
+  box-shadow: 0 4px 16px rgba(251, 188, 0, 0.05) !important;
 }
 
-.editModalHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid rgba(230, 226, 223, 0.3);
-  position: sticky;
-  top: 0;
-  background: rgba(253, 248, 245, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 1;
+.darkBackBtn .backIcon {
+  font-size: 16px !important;
+  color: #6A6255 !important;
+  transition: color 0.3s ease !important;
 }
 
-.editModalHeaderLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.darkBackBtn:hover .backIcon {
+  color: #FBBC00 !important;
 }
 
-.editModalIconWrapper {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: #4B3832;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
+/* Project Header Dark Mode */
+.darkProjectHeader {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-.editModalIcon {
-  font-size: 22px;
+.darkProjectTitle {
+  color: #FFFFFF !important;
 }
 
-.editModalTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #33231D;
-  margin: 0;
-  line-height: 1.3;
+.darkStarBtn {
+  color: #6A6255 !important;
 }
 
-.editModalSubtitle {
-  font-size: 0.875rem;
-  color: #7E7471;
-  margin: 2px 0 0;
+.darkStarBtn:hover {
+  color: #FBBC00 !important;
 }
 
-.editModalClose {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: rgba(230, 226, 223, 0.3);
-  border-radius: 10px;
-  color: #7E7471;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+.darkStarIcon {
+  color: #6A6255 !important;
 }
 
-.editModalClose:hover {
-  background: rgba(230, 226, 223, 0.5);
-  color: #33231D;
-  transform: rotate(90deg);
+.darkStarIconActive {
+  color: #FBBC00 !important;
 }
 
-.editModalClose:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.darkPriorityBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
 }
 
-.editModalForm {
-  padding: 1.5rem 1.75rem 0.9rem;
+.darkPriorityBadge.priorityHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
 }
 
-.formGroup {
-  margin-bottom: 1.25rem;
+.darkPriorityBadge.priorityMedium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
 }
 
-.formGroup:last-of-type {
-  margin-bottom: 1.5rem;
+.darkPriorityBadge.priorityLow {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
 }
 
-.formRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+.darkCategoryBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
 }
 
-.formLabel {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #33231D;
-  margin-bottom: 0.35rem;
-  letter-spacing: 0.01em;
+.darkEditBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
 }
 
-.requiredStar {
-  color: #dc2626;
-  margin-left: 2px;
+.darkEditBtn:hover {
+  background: #E2A900 !important;
 }
 
-.formInput {
-  width: 100%;
-  padding: 0.6rem 0.85rem;
-  border: 1.5px solid #E6E2DF;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #33231D;
-  background: #FAF5F2;
-  transition: all 0.2s ease;
-  font-family: inherit;
+.darkDeleteBtn {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #ef4444 !important;
 }
 
-.formInput:focus {
-  outline: none;
-  border-color: #885210;
-  background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+.darkDeleteBtn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
 }
 
-.formInput::placeholder {
-  color: #7E7471;
+/* Stats Dark Mode */
+.darkStatCard {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-.formInputError {
-  border-color: #dc2626 !important;
-  background: #fef2f2 !important;
+.darkStatCard:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
-.formInputError:focus {
-  border-color: #dc2626 !important;
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.08) !important;
+.darkStatNumber {
+  color: #FFFFFF !important;
 }
 
-.formError {
-  color: #dc2626;
-  font-size: 0.75rem;
-  margin-top: 4px;
-  display: block;
+.darkStatLabel {
+  color: #6A6255 !important;
 }
 
-.formTextarea {
-  width: 100%;
-  padding: 0.6rem 0.85rem;
-  border: 1.5px solid #E6E2DF;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #33231D;
-  background: #FAF5F2;
-  transition: all 0.2s ease;
-  resize: vertical;
-  font-family: inherit;
-  min-height: 80px;
+/* Progress Dark Mode */
+.darkProgressSection {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-.formTextarea:focus {
-  outline: none;
-  border-color: #885210;
-  background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+.darkProgressLabel {
+  color: #6A6255 !important;
 }
 
-.formTextarea::placeholder {
-  color: #7E7471;
+.darkProgressValue {
+  color: #FFFFFF !important;
 }
 
-.formSelect {
-  width: 100%;
-  padding: 0.6rem 0.85rem;
-  border: 1.5px solid #E6E2DF;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  color: #33231D;
-  background: #FAF5F2;
-  transition: all 0.2s ease;
-  font-family: inherit;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237E7471' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 32px;
-  cursor: pointer;
+.darkProgressBarWrapper {
+  background: #2A2D33 !important;
 }
 
-.formSelect:focus {
-  outline: none;
-  border-color: #885210;
-  background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+.darkProgressBar {
+  background: linear-gradient(90deg, #FBBC00, #E2A900) !important;
 }
 
-.formSelect:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+/* Description Dark Mode */
+.darkDescriptionSection {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-.editModalFooter {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 0.5rem 1.75rem 1.25rem;
-  border-top: 1px solid rgba(230, 226, 223, 0.3);
+.darkSectionTitle {
+  color: #FFFFFF !important;
 }
 
-.cancelBtn {
-  padding: 0.5rem 1.25rem;
-  border: 1.5px solid #E6E2DF;
-  border-radius: 10px;
-  background: transparent;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #7E7471;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
+.darkDescriptionText {
+  color: #6A6255 !important;
 }
 
-.cancelBtn:hover {
-  background: #FAF5F2;
-  color: #33231D;
+/* Meta Dark Mode */
+.darkMetaItem {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-.cancelBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.darkMetaIcon {
+  color: #FBBC00 !important;
 }
 
-.saveBtn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 10px;
-  background: #4B3832;
-  color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
-  font-family: inherit;
+.darkMetaLabel {
+  color: #6A6255 !important;
 }
 
-.saveBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(75, 56, 50, 0.35);
+.darkMetaValue {
+  color: #FFFFFF !important;
 }
 
-.saveBtn:active {
-  transform: translateY(0);
+.darkTeamAvatar {
+  background: #FBBC00 !important;
+  color: #000000 !important;
 }
 
-.saveBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: none !important;
+/* Divider Dark Mode */
+.darkDivider {
+  border-color: #383B40 !important;
 }
 
-.spinner {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 0.6s linear infinite;
-  margin-right: 6px;
+/* Tasks Section Dark Mode */
+.darkTasksSection {
+  background: #030202 !important;
+  border-color: #383B40 !important;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.darkAddTaskBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkAddTaskBtn:hover {
+  background: #E2A900 !important;
+}
+
+/* Search Dark Mode */
+.darkSearchWrapper {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkSearchWrapper:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkSearchIcon {
+  color: #6A6255 !important;
+}
+
+.darkSearchInput {
+  color: #FFFFFF !important;
+}
+
+.darkSearchInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Filter Buttons Dark Mode */
+.darkFilterBtn {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkFilterBtn:hover {
+  background: rgba(251, 188, 0, 0.06) !important;
+  color: #FFFFFF !important;
+}
+
+.darkFilterBtn.filterBtnActive {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkFilterBtn.filterBtnActive:hover {
+  background: #E2A900 !important;
+}
+
+/* Task Item Dark Mode */
+.darkTaskItem {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkTaskItem:hover {
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkTaskCheckbox {
+  border-color: #383B40 !important;
+  background: #1A1A1A !important;
+}
+
+.darkTaskCheckbox:checked {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkTaskCheckbox:checked::after {
+  border-color: #000000 !important;
+}
+
+.darkTaskTitle {
+  color: #FFFFFF !important;
+}
+
+.darkTaskTitle.taskCompleted {
+  color: #6A6255 !important;
+}
+
+.darkTaskPriority {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskPriority.priorityHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkTaskPriority.priorityMedium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskPriority.priorityLow {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkTaskCategory {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkTaskDescription {
+  color: #6A6255 !important;
+}
+
+.darkTaskMetaItem {
+  color: #6A6255 !important;
+}
+
+.darkDeleteTaskBtn {
+  color: #6A6255 !important;
+}
+
+.darkDeleteTaskBtn:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+/* Empty Tasks Dark Mode */
+.darkEmptyTasks {
+  color: #6A6255 !important;
+}
+
+.darkEmptyTitle {
+  color: #FFFFFF !important;
+}
+
+.darkEmptyText {
+  color: #6A6255 !important;
+}
+
+/* Loading Dark Mode */
+.darkLoadingContainer {
+  color: #6A6255 !important;
+}
+
+.darkLoadingText {
+  color: #6A6255 !important;
+}
+
+/* Edit Modal Dark Mode */
+.darkEditDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkEditModalHeader {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom-color: #383B40 !important;
+}
+
+.darkEditModalIconWrapper {
+  background: #FBBC00 !important;
+}
+
+.darkEditModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkEditModalSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkEditModalClose {
+  color: #6A6255 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.darkEditModalClose:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+.darkEditModalForm {
+  background: #030202 !important;
+}
+
+.darkFormLabel {
+  color: #6A6255 !important;
+}
+
+.darkFormInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkFormInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormTextarea {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkFormTextarea::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkFormSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormError {
+  color: #ef4444 !important;
+}
+
+.darkEditModalFooter {
+  border-top-color: #383B40 !important;
+  background: #030202 !important;
+}
+
+.darkCancelBtn {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkCancelBtn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkSaveBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSaveBtn:hover {
+  background: #E2A900 !important;
+}
+
+/* Delete Modal Dark Mode */
+.darkDeleteDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDeleteDialogContent {
+  color: #FFFFFF !important;
+  background: #030202 !important;
+}
+
+.darkDeleteDialogIconWrapper {
+  background: rgba(239, 68, 68, 0.15) !important;
+}
+
+.darkDeleteDialogIcon {
+  color: #ef4444 !important;
+}
+
+.darkDeleteDialogTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogText {
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogText strong {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogConfirm {
+  background: #ef4444 !important;
+}
+
+.darkDeleteDialogConfirm:hover {
+  background: #dc2626 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkProjectHeader {
+    border-color: #383B40 !important;
+  }
+  
+  .darkBackBtn {
+    padding: 5px 12px !important;
+    font-size: 11px !important;
+    gap: 5px !important;
+  }
+  
+  .darkBackBtn .backIcon {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkProjectHeader {
+    border-color: #383B40 !important;
+  }
+  
+  .darkBackBtn {
+    padding: 4px 10px !important;
+    font-size: 10px !important;
+    gap: 4px !important;
+    border-radius: 14px !important;
+  }
+  
+  .darkBackBtn .backIcon {
+    font-size: 12px !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkPage,
+  .darkStatCard,
+  .darkTaskItem,
+  .darkBackBtn {
+    transition: none !important;
+  }
+  
+  .darkBackBtn:hover {
+    transform: none !important;
+  }
 }

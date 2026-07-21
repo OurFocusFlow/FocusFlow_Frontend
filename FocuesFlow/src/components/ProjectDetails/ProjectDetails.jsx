@@ -36,6 +36,7 @@ import {
 } from '@mui/icons-material';
 import { useProjects } from '../Context/ProjectContext';
 import { useTasks } from '../Context/TaskContext';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './ProjectDetails.module.css';
 import ToastNotification from '../ToastNotification/ToastNotification';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
@@ -43,6 +44,7 @@ import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isDarkMode } = useDarkMode();
   const { 
     projects, 
     getProjectById,
@@ -126,7 +128,6 @@ const ProjectDetails = () => {
   };
 
   const handleEditProject = () => {
-    // Convert dueDate from display format to input format if needed
     let dueDateValue = '';
     if (project.dueDate) {
       const dateParts = project.dueDate.split(' ');
@@ -159,24 +160,20 @@ const ProjectDetails = () => {
   };
 
   const handleSaveEdit = async () => {
-    // Reset errors
     setEditErrors({ name: '', description: '', dueDate: '' });
     let hasError = false;
     const errors = { name: '', description: '', dueDate: '' };
 
-    // Validate Name
     if (!editForm.name.trim()) {
       errors.name = 'Project name is required';
       hasError = true;
     }
 
-    // Validate Description
     if (!editForm.description.trim()) {
       errors.description = 'Description is required';
       hasError = true;
     }
 
-    // Validate Due Date
     const today = new Date().toISOString().split('T')[0];
     if (!editForm.dueDate) {
       errors.dueDate = 'Due date is required';
@@ -193,7 +190,6 @@ const ProjectDetails = () => {
       return;
     }
 
-    // Format date for display
     const dateObj = new Date(editForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -239,60 +235,57 @@ const ProjectDetails = () => {
   };
 
   const handleCreateTask = async (taskData, error) => {
-  // If there's an error from the modal validation
-  if (error) {
-    showToast('error', error, 'Validation Error');
-    return;
-  }
+    if (error) {
+      showToast('error', error, 'Validation Error');
+      return;
+    }
 
-  // Validate again in parent (extra safety)
-  if (!taskData.title.trim()) {
-    showToast('error', 'Please enter a task title.', 'Missing Title');
-    return;
-  }
+    if (!taskData.title.trim()) {
+      showToast('error', 'Please enter a task title.', 'Missing Title');
+      return;
+    }
 
-  if (!taskData.description.trim()) {
-    showToast('error', 'Please enter a task description.', 'Missing Description');
-    return;
-  }
+    if (!taskData.description.trim()) {
+      showToast('error', 'Please enter a task description.', 'Missing Description');
+      return;
+    }
 
-  if (!taskData.dueDate) {
-    showToast('error', 'Please select a due date.', 'Missing Due Date');
-    return;
-  }
+    if (!taskData.dueDate) {
+      showToast('error', 'Please select a due date.', 'Missing Due Date');
+      return;
+    }
 
-  const today = new Date().toISOString().split('T')[0];
-  if (taskData.dueDate < today) {
-    showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
-    return;
-  }
+    const today = new Date().toISOString().split('T')[0];
+    if (taskData.dueDate < today) {
+      showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
+      return;
+    }
 
-  // Create task with project association
-  const newTask = {
-    ...taskData,
-    projectId: project.id,
-    projectName: project.name,
-    date: taskData.dueDate,
-    dueDate: taskData.dueDate,
-    status: 'Pending',
-    completed: false,
-    assignees: ['You'],
-    created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    attachments: 0,
-    comments: 0,
+    const newTask = {
+      ...taskData,
+      projectId: project.id,
+      projectName: project.name,
+      date: taskData.dueDate,
+      dueDate: taskData.dueDate,
+      status: 'Pending',
+      completed: false,
+      assignees: ['You'],
+      created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      attachments: 0,
+      comments: 0,
+    };
+    
+    setIsSubmitting(true);
+    const result = await addTask(newTask);
+    setIsSubmitting(false);
+    setIsCreateTaskModalOpen(false);
+    
+    if (result.success) {
+      showToast('success', 'Task added to project successfully!', 'Task Created');
+    } else {
+      showToast('error', 'Failed to create task', 'Error');
+    }
   };
-  
-  setIsSubmitting(true);
-  const result = await addTask(newTask);
-  setIsSubmitting(false);
-  setIsCreateTaskModalOpen(false);
-  
-  if (result.success) {
-    showToast('success', 'Task added to project successfully!', 'Task Created');
-  } else {
-    showToast('error', 'Failed to create task', 'Error');
-  }
-};
 
   const handleToggleTaskComplete = async (taskId) => {
     const task = projectTasks.find(t => t.id === taskId);
@@ -348,9 +341,9 @@ const ProjectDetails = () => {
 
   if (!project) {
     return (
-      <Box className={styles.loadingContainer}>
+      <Box className={`${styles.loadingContainer} ${isDarkMode ? styles.darkLoadingContainer : ""}`}>
         <div className={styles.spinner} />
-        <Typography>Loading project...</Typography>
+        <Typography className={isDarkMode ? styles.darkLoadingText : ""}>Loading project...</Typography>
       </Box>
     );
   }
@@ -358,25 +351,28 @@ const ProjectDetails = () => {
   const isLoading = projectsLoading || tasksLoading;
 
   return (
-    <Box className={styles.page}>
+    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}>
       {/* Background Decorations */}
-      <div className={styles["project-bg"]}>
+      <div className={`${styles["project-bg"]} ${isDarkMode ? styles.darkBg : ""}`}>
         <div className={styles["project-bg-orb"]} />
         <div className={styles["project-bg-orb"]} />
         <div className={styles["project-bg-orb"]} />
-        <div className={styles["project-bg-grid"]} />
-        <div className={styles["project-bg-glow"]} />
+        <div className={`${styles["project-bg-grid"]} ${isDarkMode ? styles.darkBgGrid : ""}`} />
+        <div className={`${styles["project-bg-glow"]} ${isDarkMode ? styles.darkBgGlow : ""}`} />
       </div>
 
       <Box className={styles.pageInner}>
         {/* Back Button */}
-        <button className={styles.backBtn} onClick={handleBack}>
+        <button 
+          className={`${styles.backBtn} ${isDarkMode ? styles.darkBackBtn : ""}`} 
+          onClick={handleBack}
+        >
           <ArrowBackIcon className={styles.backIcon} />
-          Back to Projects
+          <span>Back to Projects</span>
         </button>
 
         {/* Project Header */}
-        <Box className={styles.projectHeader}>
+        <Box className={`${styles.projectHeader} ${isDarkMode ? styles.darkProjectHeader : ""}`}>
           <Box className={styles.projectHeaderLeft}>
             <Box 
               className={styles.projectColorBar}
@@ -384,34 +380,34 @@ const ProjectDetails = () => {
             />
             <Box>
               <Box className={styles.projectTitleRow}>
-                <h1 className={styles.projectTitle}>{project.name}</h1>
+                <h1 className={`${styles.projectTitle} ${isDarkMode ? styles.darkProjectTitle : ""}`}>{project.name}</h1>
                 <button 
-                  className={styles.starBtn}
+                  className={`${styles.starBtn} ${isDarkMode ? styles.darkStarBtn : ""}`}
                   onClick={handleToggleStar}
                   disabled={isLoading}
                 >
                   {project.starred ? (
-                    <StarIcon className={styles.starIconActive} />
+                    <StarIcon className={`${styles.starIconActive} ${isDarkMode ? styles.darkStarIconActive : ""}`} />
                   ) : (
-                    <StarBorderIcon className={styles.starIcon} />
+                    <StarBorderIcon className={`${styles.starIcon} ${isDarkMode ? styles.darkStarIcon : ""}`} />
                   )}
                 </button>
               </Box>
               <Box className={styles.projectBadges}>
-                <span className={`${styles.priorityBadge} ${getPriorityClass(project.priority)}`}>
+                <span className={`${styles.priorityBadge} ${getPriorityClass(project.priority)} ${isDarkMode ? styles.darkPriorityBadge : ""}`}>
                   <span 
                     className={styles.priorityDot}
                     style={{ backgroundColor: priorityColor(project.priority) }}
                   />
                   {project.priority}
                 </span>
-                <span className={styles.categoryBadge}>{project.category}</span>
+                <span className={`${styles.categoryBadge} ${isDarkMode ? styles.darkCategoryBadge : ""}`}>{project.category}</span>
               </Box>
             </Box>
           </Box>
           <Box className={styles.projectHeaderActions}>
             <button 
-              className={styles.editBtn} 
+              className={`${styles.editBtn} ${isDarkMode ? styles.darkEditBtn : ""}`} 
               onClick={handleEditProject}
               disabled={isLoading}
             >
@@ -419,7 +415,7 @@ const ProjectDetails = () => {
               Edit Project
             </button>
             <button 
-              className={styles.deleteBtn} 
+              className={`${styles.deleteBtn} ${isDarkMode ? styles.darkDeleteBtn : ""}`} 
               onClick={() => setIsDeleteModalOpen(true)}
               disabled={isLoading}
             >
@@ -430,80 +426,80 @@ const ProjectDetails = () => {
 
         {/* Project Stats */}
         <Box className={styles.projectStats}>
-          <Box className={styles.statCard}>
-            <span className={styles.statNumber}>{projectTasks.length}</span>
-            <span className={styles.statLabel}>Total Tasks</span>
+          <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ""}`}>
+            <span className={`${styles.statNumber} ${isDarkMode ? styles.darkStatNumber : ""}`}>{projectTasks.length}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Total Tasks</span>
           </Box>
-          <Box className={styles.statCard}>
-            <span className={styles.statNumber}>{projectTasks.filter(t => t.completed).length}</span>
-            <span className={styles.statLabel}>Completed</span>
+          <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ""}`}>
+            <span className={`${styles.statNumber} ${isDarkMode ? styles.darkStatNumber : ""}`}>{projectTasks.filter(t => t.completed).length}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Completed</span>
           </Box>
-          <Box className={styles.statCard}>
-            <span className={styles.statNumber}>{projectTasks.filter(t => !t.completed).length}</span>
-            <span className={styles.statLabel}>Pending</span>
+          <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ""}`}>
+            <span className={`${styles.statNumber} ${isDarkMode ? styles.darkStatNumber : ""}`}>{projectTasks.filter(t => !t.completed).length}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Pending</span>
           </Box>
-          <Box className={styles.statCard}>
-            <span className={styles.statNumber}>{project.progress}%</span>
-            <span className={styles.statLabel}>Progress</span>
+          <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ""}`}>
+            <span className={`${styles.statNumber} ${isDarkMode ? styles.darkStatNumber : ""}`}>{project.progress}%</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Progress</span>
           </Box>
         </Box>
 
         {/* Progress Bar */}
-        <Box className={styles.progressSection}>
+        <Box className={`${styles.progressSection} ${isDarkMode ? styles.darkProgressSection : ""}`}>
           <Box className={styles.progressHeader}>
-            <span className={styles.progressLabel}>Project Progress</span>
-            <span className={styles.progressValue}>{project.progress}%</span>
+            <span className={`${styles.progressLabel} ${isDarkMode ? styles.darkProgressLabel : ""}`}>Project Progress</span>
+            <span className={`${styles.progressValue} ${isDarkMode ? styles.darkProgressValue : ""}`}>{project.progress}%</span>
           </Box>
-          <Box className={styles.progressBarWrapper}>
+          <Box className={`${styles.progressBarWrapper} ${isDarkMode ? styles.darkProgressBarWrapper : ""}`}>
             <Box 
-              className={styles.progressBar}
+              className={`${styles.progressBar} ${isDarkMode ? styles.darkProgressBar : ""}`}
               style={{ width: `${project.progress}%` }}
             />
           </Box>
         </Box>
 
         {/* Project Description */}
-        <Box className={styles.descriptionSection}>
-          <h3 className={styles.sectionTitle}>Description</h3>
-          <p className={styles.descriptionText}>{project.description}</p>
+        <Box className={`${styles.descriptionSection} ${isDarkMode ? styles.darkDescriptionSection : ""}`}>
+          <h3 className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ""}`}>Description</h3>
+          <p className={`${styles.descriptionText} ${isDarkMode ? styles.darkDescriptionText : ""}`}>{project.description}</p>
         </Box>
 
         {/* Project Meta */}
         <Box className={styles.metaSection}>
-          <Box className={styles.metaItem}>
-            <ScheduleIcon className={styles.metaIcon} />
+          <Box className={`${styles.metaItem} ${isDarkMode ? styles.darkMetaItem : ""}`}>
+            <ScheduleIcon className={`${styles.metaIcon} ${isDarkMode ? styles.darkMetaIcon : ""}`} />
             <Box>
-              <span className={styles.metaLabel}>Due Date</span>
-              <span className={styles.metaValue}>{project.dueDate}</span>
+              <span className={`${styles.metaLabel} ${isDarkMode ? styles.darkMetaLabel : ""}`}>Due Date</span>
+              <span className={`${styles.metaValue} ${isDarkMode ? styles.darkMetaValue : ""}`}>{project.dueDate}</span>
             </Box>
           </Box>
-          <Box className={styles.metaItem}>
-            <PeopleIcon className={styles.metaIcon} />
+          <Box className={`${styles.metaItem} ${isDarkMode ? styles.darkMetaItem : ""}`}>
+            <PeopleIcon className={`${styles.metaIcon} ${isDarkMode ? styles.darkMetaIcon : ""}`} />
             <Box>
-              <span className={styles.metaLabel}>Team</span>
+              <span className={`${styles.metaLabel} ${isDarkMode ? styles.darkMetaLabel : ""}`}>Team</span>
               <AvatarGroup max={5} className={styles.teamAvatars}>
                 {project.team && project.team.map((member, index) => (
-                  <Avatar key={index} className={styles.teamAvatar}>
+                  <Avatar key={index} className={`${styles.teamAvatar} ${isDarkMode ? styles.darkTeamAvatar : ""}`}>
                     {member}
                   </Avatar>
                 ))}
               </AvatarGroup>
             </Box>
           </Box>
-          <Box className={styles.metaItem}>
-            <span className={styles.metaLabel}>Created</span>
-            <span className={styles.metaValue}>{project.created}</span>
+          <Box className={`${styles.metaItem} ${isDarkMode ? styles.darkMetaItem : ""}`}>
+            <span className={`${styles.metaLabel} ${isDarkMode ? styles.darkMetaLabel : ""}`}>Created</span>
+            <span className={`${styles.metaValue} ${isDarkMode ? styles.darkMetaValue : ""}`}>{project.created}</span>
           </Box>
         </Box>
 
-        <Divider className={styles.divider} />
+        <Divider className={`${styles.divider} ${isDarkMode ? styles.darkDivider : ""}`} />
 
         {/* Tasks Section */}
-        <Box className={styles.tasksSection}>
+        <Box className={`${styles.tasksSection} ${isDarkMode ? styles.darkTasksSection : ""}`}>
           <Box className={styles.tasksHeader}>
-            <h3 className={styles.sectionTitle}>Project Tasks</h3>
+            <h3 className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ""}`}>Project Tasks</h3>
             <button 
-              className={styles.addTaskBtn}
+              className={`${styles.addTaskBtn} ${isDarkMode ? styles.darkAddTaskBtn : ""}`}
               onClick={() => setIsCreateTaskModalOpen(true)}
               disabled={isLoading}
             >
@@ -514,21 +510,21 @@ const ProjectDetails = () => {
 
           {/* Task Filters */}
           <Box className={styles.taskFilters}>
-            <Box className={styles.searchWrapper}>
-              <SearchIcon className={styles.searchIcon} />
+            <Box className={`${styles.searchWrapper} ${isDarkMode ? styles.darkSearchWrapper : ""}`}>
+              <SearchIcon className={`${styles.searchIcon} ${isDarkMode ? styles.darkSearchIcon : ""}`} />
               <input
                 type="text"
                 placeholder="Search tasks..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.searchInput}
+                className={`${styles.searchInput} ${isDarkMode ? styles.darkSearchInput : ""}`}
               />
             </Box>
             <Box className={styles.filterButtons}>
               {['all', 'pending', 'completed'].map((status) => (
                 <button
                   key={status}
-                  className={`${styles.filterBtn} ${filterStatus === status ? styles.filterBtnActive : ''}`}
+                  className={`${styles.filterBtn} ${filterStatus === status ? styles.filterBtnActive : ''} ${isDarkMode ? styles.darkFilterBtn : ''}`}
                   onClick={() => setFilterStatus(status)}
                 >
                   {status === 'all' ? 'All' : status === 'pending' ? 'Pending' : 'Completed'}
@@ -539,46 +535,46 @@ const ProjectDetails = () => {
 
           {/* Task List */}
           {filteredTasks.length === 0 ? (
-            <Box className={styles.emptyTasks}>
+            <Box className={`${styles.emptyTasks} ${isDarkMode ? styles.darkEmptyTasks : ""}`}>
               <span className={styles.emptyIcon}>📋</span>
-              <h4>No tasks found</h4>
-              <p>Add a task to this project to get started</p>
+              <h4 className={isDarkMode ? styles.darkEmptyTitle : ""}>No tasks found</h4>
+              <p className={isDarkMode ? styles.darkEmptyText : ""}>Add a task to this project to get started</p>
             </Box>
           ) : (
             <Box className={styles.taskList}>
               {filteredTasks.map((task) => (
-                <Box key={task.id} className={styles.taskItem}>
+                <Box key={task.id} className={`${styles.taskItem} ${isDarkMode ? styles.darkTaskItem : ""}`}>
                   <input
                     type="checkbox"
                     checked={task.completed}
                     onChange={() => handleToggleTaskComplete(task.id)}
-                    className={styles.taskCheckbox}
+                    className={`${styles.taskCheckbox} ${isDarkMode ? styles.darkTaskCheckbox : ""}`}
                     disabled={isLoading}
                   />
                   <Box className={styles.taskContent}>
                     <Box className={styles.taskHeader}>
-                      <span className={`${styles.taskTitle} ${task.completed ? styles.taskCompleted : ''}`}>
+                      <span className={`${styles.taskTitle} ${task.completed ? styles.taskCompleted : ''} ${isDarkMode ? styles.darkTaskTitle : ""}`}>
                         {task.title}
                       </span>
                       <Box className={styles.taskBadges}>
-                        <span className={`${styles.taskPriority} ${getPriorityClass(task.priority)}`}>
+                        <span className={`${styles.taskPriority} ${getPriorityClass(task.priority)} ${isDarkMode ? styles.darkTaskPriority : ""}`}>
                           {task.priority}
                         </span>
-                        <span className={styles.taskCategory}>{task.category}</span>
+                        <span className={`${styles.taskCategory} ${isDarkMode ? styles.darkTaskCategory : ""}`}>{task.category}</span>
                       </Box>
                     </Box>
                     {task.description && (
-                      <p className={styles.taskDescription}>{task.description}</p>
+                      <p className={`${styles.taskDescription} ${isDarkMode ? styles.darkTaskDescription : ""}`}>{task.description}</p>
                     )}
                     <Box className={styles.taskMeta}>
                       {task.dueDate && (
-                        <span className={styles.taskMetaItem}>
+                        <span className={`${styles.taskMetaItem} ${isDarkMode ? styles.darkTaskMetaItem : ""}`}>
                           <ScheduleIcon className={styles.metaIconSmall} />
                           {task.dueDate}
                         </span>
                       )}
                       {task.assignees && task.assignees.length > 0 && (
-                        <span className={styles.taskMetaItem}>
+                        <span className={`${styles.taskMetaItem} ${isDarkMode ? styles.darkTaskMetaItem : ""}`}>
                           <PeopleIcon className={styles.metaIconSmall} />
                           {task.assignees.join(', ')}
                         </span>
@@ -586,7 +582,7 @@ const ProjectDetails = () => {
                     </Box>
                   </Box>
                   <button 
-                    className={styles.deleteTaskBtn}
+                    className={`${styles.deleteTaskBtn} ${isDarkMode ? styles.darkDeleteTaskBtn : ""}`}
                     onClick={() => handleDeleteTask(task.id)}
                     disabled={isLoading}
                   >
@@ -599,7 +595,7 @@ const ProjectDetails = () => {
         </Box>
       </Box>
 
-      {/* Edit Project Modal - Like CreateTaskModal */}
+      {/* Edit Project Modal */}
       <Dialog
         open={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
@@ -607,23 +603,22 @@ const ProjectDetails = () => {
         fullWidth
         className={styles.editDialog}
         PaperProps={{
-          className: styles.editDialogPaper,
+          className: `${styles.editDialogPaper} ${isDarkMode ? styles.darkEditDialogPaper : ""}`,
         }}
       >
-        <Box className={styles.editModalContent}>
-          {/* Header */}
-          <Box className={styles.editModalHeader}>
+        <Box className={`${styles.editModalContent} ${isDarkMode ? styles.darkEditModalContent : ""}`}>
+          <Box className={`${styles.editModalHeader} ${isDarkMode ? styles.darkEditModalHeader : ""}`}>
             <Box className={styles.editModalHeaderLeft}>
-              <Box className={styles.editModalIconWrapper}>
+              <Box className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}>
                 <EditIcon className={styles.editModalIcon} />
               </Box>
               <Box>
-                <h2 className={styles.editModalTitle}>Edit Project</h2>
-                <p className={styles.editModalSubtitle}>Update your project details.</p>
+                <h2 className={`${styles.editModalTitle} ${isDarkMode ? styles.darkEditModalTitle : ""}`}>Edit Project</h2>
+                <p className={`${styles.editModalSubtitle} ${isDarkMode ? styles.darkEditModalSubtitle : ""}`}>Update your project details.</p>
               </Box>
             </Box>
             <button 
-              className={styles.editModalClose} 
+              className={`${styles.editModalClose} ${isDarkMode ? styles.darkEditModalClose : ""}`} 
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
             >
@@ -631,10 +626,9 @@ const ProjectDetails = () => {
             </button>
           </Box>
 
-          {/* Form */}
-          <Box className={styles.editModalForm}>
+          <Box className={`${styles.editModalForm} ${isDarkMode ? styles.darkEditModalForm : ""}`}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Project Name
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -644,16 +638,16 @@ const ProjectDetails = () => {
                 placeholder="e.g. Q4 Marketing Strategy"
                 value={editForm.name}
                 onChange={handleEditChange}
-                className={`${styles.formInput} ${editErrors.name ? styles.formInputError : ''}`}
+                className={`${styles.formInput} ${editErrors.name ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
                 disabled={isSubmitting}
               />
               {editErrors.name && (
-                <span className={styles.formError}>{editErrors.name}</span>
+                <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editErrors.name}</span>
               )}
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Description
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -662,23 +656,23 @@ const ProjectDetails = () => {
                 placeholder="Briefly describe the project goals and deliverables..."
                 value={editForm.description}
                 onChange={handleEditChange}
-                className={`${styles.formTextarea} ${editErrors.description ? styles.formInputError : ''}`}
+                className={`${styles.formTextarea} ${editErrors.description ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormTextarea : ""}`}
                 rows="3"
                 disabled={isSubmitting}
               />
               {editErrors.description && (
-                <span className={styles.formError}>{editErrors.description}</span>
+                <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editErrors.description}</span>
               )}
             </div>
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Category</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Category</label>
                 <select
                   name="category"
                   value={editForm.category}
                   onChange={handleEditChange}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                   disabled={isSubmitting}
                 >
                   {['Marketing', 'Design', 'Development', 'Content', 'Research', 'Documentation'].map((cat) => (
@@ -687,12 +681,12 @@ const ProjectDetails = () => {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Priority</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Priority</label>
                 <select
                   name="priority"
                   value={editForm.priority}
                   onChange={handleEditChange}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                   disabled={isSubmitting}
                 >
                   {['High', 'Medium', 'Low'].map((priority) => (
@@ -703,7 +697,7 @@ const ProjectDetails = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Due Date
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -712,27 +706,26 @@ const ProjectDetails = () => {
                 name="dueDate"
                 value={editForm.dueDate}
                 onChange={handleEditChange}
-                className={`${styles.formInput} ${editErrors.dueDate ? styles.formInputError : ''}`}
+                className={`${styles.formInput} ${editErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
                 min={new Date().toISOString().split('T')[0]}
                 disabled={isSubmitting}
               />
               {editErrors.dueDate && (
-                <span className={styles.formError}>{editErrors.dueDate}</span>
+                <span className={`${styles.formError} ${isDarkMode ? styles.darkFormError : ""}`}>{editErrors.dueDate}</span>
               )}
             </div>
           </Box>
 
-          {/* Footer */}
-          <Box className={styles.editModalFooter}>
+          <Box className={`${styles.editModalFooter} ${isDarkMode ? styles.darkEditModalFooter : ""}`}>
             <button 
-              className={styles.cancelBtn} 
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ""}`} 
               onClick={() => setIsEditModalOpen(false)}
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button 
-              className={styles.saveBtn}
+              className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEdit}
               disabled={isSubmitting}
             >
@@ -762,23 +755,23 @@ const ProjectDetails = () => {
         fullWidth
         className={styles.deleteDialog}
         PaperProps={{
-          className: styles.deleteDialogPaper,
+          className: `${styles.deleteDialogPaper} ${isDarkMode ? styles.darkDeleteDialogPaper : ""}`,
         }}
       >
-        <Box className={styles.deleteDialogContent}>
-          <Box className={styles.deleteDialogIconWrapper}>
-            <DeleteIcon className={styles.deleteDialogIcon} />
+        <Box className={`${styles.deleteDialogContent} ${isDarkMode ? styles.darkDeleteDialogContent : ""}`}>
+          <Box className={`${styles.deleteDialogIconWrapper} ${isDarkMode ? styles.darkDeleteDialogIconWrapper : ""}`}>
+            <DeleteIcon className={`${styles.deleteDialogIcon} ${isDarkMode ? styles.darkDeleteDialogIcon : ""}`} />
           </Box>
-          <h3 className={styles.deleteDialogTitle}>Delete Project?</h3>
-          <p className={styles.deleteDialogText}>
+          <h3 className={`${styles.deleteDialogTitle} ${isDarkMode ? styles.darkDeleteDialogTitle : ""}`}>Delete Project?</h3>
+          <p className={`${styles.deleteDialogText} ${isDarkMode ? styles.darkDeleteDialogText : ""}`}>
             Are you sure you want to delete <strong>"{project.name}"</strong>?<br />
             This action cannot be undone and all associated tasks will be removed.
           </p>
           <Box className={styles.deleteDialogActions}>
-            <button onClick={() => setIsDeleteModalOpen(false)} className={styles.deleteDialogCancel}>
+            <button onClick={() => setIsDeleteModalOpen(false)} className={`${styles.deleteDialogCancel} ${isDarkMode ? styles.darkDeleteDialogCancel : ""}`}>
               Cancel
             </button>
-            <button onClick={handleDeleteProject} className={styles.deleteDialogConfirm} disabled={isLoading}>
+            <button onClick={handleDeleteProject} className={`${styles.deleteDialogConfirm} ${isDarkMode ? styles.darkDeleteDialogConfirm : ""}`} disabled={isLoading}>
               {isLoading ? 'Deleting...' : 'Yes, Delete'}
             </button>
           </Box>
