@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from '../VerificationComponent/VerificationComponent.module.css';
 
 export default function Verification() {
+  const { isDarkMode } = useDarkMode();
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -122,11 +124,11 @@ export default function Verification() {
 
   if (isSuccess) {
     return (
-      <div className={styles.page}>
-        <div className={styles.blobTopLeft} />
-        <div className={styles.blobBottomRight} />
+      <div className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
+        <div className={`${styles.blobTopLeft} ${isDarkMode ? styles.darkBlobTopLeft : ''}`} />
+        <div className={`${styles.blobBottomRight} ${isDarkMode ? styles.darkBlobBottomRight : ''}`} />
 
-        <Link to="/login" className={styles.backButton}>
+        <Link to="/login" className={`${styles.backButton} ${isDarkMode ? styles.darkBackButton : ''}`}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -134,35 +136,35 @@ export default function Verification() {
           Back to Login
         </Link>
 
-        <div className={styles.header}>
-          <div className={styles.brand}>
-            <span className={styles.logoMark}>
+        <div className={`${styles.header} ${isDarkMode ? styles.darkHeader : ''}`}>
+          <div className={`${styles.brand} ${isDarkMode ? styles.darkBrand : ''}`}>
+            <span className={`${styles.logoMark} ${isDarkMode ? styles.darkLogoMark : ''}`}>
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 9h13a3 3 0 0 1 0 6h-1" stroke="white" strokeWidth="2" strokeLinecap="round" />
                 <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M7 6c0-1 1-1 1-2M11 6c0-1 1-1 1-2" stroke="white" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </span>
-            <h1 className={styles.brandName}>BrewTask</h1>
+            <h1 className={`${styles.brandName} ${isDarkMode ? styles.darkBrandName : ''}`}>BrewTask</h1>
           </div>
-          <p className={styles.tagline}>Verification successful</p>
+          <p className={`${styles.tagline} ${isDarkMode ? styles.darkTagline : ''}`}>Verification successful</p>
         </div>
 
-        <div className={styles.card}>
-          <div className={styles.successContainer}>
-            <div className={styles.successIcon}>
+        <div className={`${styles.card} ${isDarkMode ? styles.darkCard : ''}`}>
+          <div className={`${styles.successContainer} ${isDarkMode ? styles.darkSuccessContainer : ''}`}>
+            <div className={`${styles.successIcon} ${isDarkMode ? styles.darkSuccessIcon : ''}`}>
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="12" r="10" stroke="#4a3427" strokeWidth="2" />
                 <path d="M8 12l3 3 5-5" stroke="#4a3427" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <h2 className={styles.successTitle}>Verification Successful!</h2>
-            <p className={styles.successText}>
+            <h2 className={`${styles.successTitle} ${isDarkMode ? styles.darkSuccessTitle : ''}`}>Verification Successful!</h2>
+            <p className={`${styles.successText} ${isDarkMode ? styles.darkSuccessText : ''}`}>
               Your code has been verified.
               <br />
               Redirecting you to reset your password...
             </p>
-            <div className={styles.spinner} />
+            <div className={`${styles.spinner} ${isDarkMode ? styles.darkSpinner : ''}`} />
           </div>
         </div>
       </div>
@@ -170,11 +172,11 @@ export default function Verification() {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.blobTopLeft} />
-      <div className={styles.blobBottomRight} />
+    <div className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
+      <div className={`${styles.blobTopLeft} ${isDarkMode ? styles.darkBlobTopLeft : ''}`} />
+      <div className={`${styles.blobBottomRight} ${isDarkMode ? styles.darkBlobBottomRight : ''}`} />
 
-      <Link to="/forgot-password" className={styles.backButton}>
+      <Link to="/forgot-password" className={`${styles.backButton} ${isDarkMode ? styles.darkBackButton : ''}`}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -182,24 +184,24 @@ export default function Verification() {
         Back
       </Link>
 
-      <div className={styles.header}>
-        <div className={styles.brand}>
-          <span className={styles.logoMark}>
+      <div className={`${styles.header} ${isDarkMode ? styles.darkHeader : ''}`}>
+        <div className={`${styles.brand} ${isDarkMode ? styles.darkBrand : ''}`}>
+          <span className={`${styles.logoMark} ${isDarkMode ? styles.darkLogoMark : ''}`}>
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 9h13a3 3 0 0 1 0 6h-1" stroke="white" strokeWidth="2" strokeLinecap="round" />
               <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M7 6c0-1 1-1 1-2M11 6c0-1 1-1 1-2" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </span>
-          <h1 className={styles.brandName}>BrewTask</h1>
+          <h1 className={`${styles.brandName} ${isDarkMode ? styles.darkBrandName : ''}`}>BrewTask</h1>
         </div>
-        <p className={styles.tagline}>Enter verification code</p>
+        <p className={`${styles.tagline} ${isDarkMode ? styles.darkTagline : ''}`}>Enter verification code</p>
       </div>
 
-      <div className={styles.card}>
+      <div className={`${styles.card} ${isDarkMode ? styles.darkCard : ''}`}>
         <div className={styles.cardHeader}>
-          <h2 className={styles.cardTitle}>Verify Your Email</h2>
-          <p className={styles.cardSubtext}>
+          <h2 className={`${styles.cardTitle} ${isDarkMode ? styles.darkCardTitle : ''}`}>Verify Your Email</h2>
+          <p className={`${styles.cardSubtext} ${isDarkMode ? styles.darkCardSubtext : ''}`}>
             We've sent a verification code to <strong>{email}</strong>.
             <br />
             Please enter the 6-digit code below.
@@ -207,7 +209,7 @@ export default function Verification() {
         </div>
 
         {/* 6-digit code inputs */}
-        <div className={styles.codeContainer}>
+        <div className={`${styles.codeContainer} ${isDarkMode ? styles.darkCodeContainer : ''}`}>
           {code.map((digit, index) => (
             <input
               key={index}
@@ -221,21 +223,21 @@ export default function Verification() {
               onPaste={handlePaste}
               autoFocus={index === 0}
               disabled={isLoading}
-              className={styles.codeInput}
+              className={`${styles.codeInput} ${isDarkMode ? styles.darkCodeInput : ''}`}
             />
           ))}
         </div>
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+        {error && <div className={`${styles.errorMessage} ${isDarkMode ? styles.darkErrorMessage : ''}`}>{error}</div>}
 
         <button
-          className={styles.submitButton}
+          className={`${styles.submitButton} ${isDarkMode ? styles.darkSubmitButton : ''}`}
           onClick={handleSubmit}
           disabled={isLoading || code.some(digit => digit === '')}
         >
           {isLoading ? (
             <>
-              <span className={styles.spinner} />
+              <span className={`${styles.spinner} ${isDarkMode ? styles.darkSpinner : ''}`} />
               Verifying...
             </>
           ) : (
@@ -243,11 +245,11 @@ export default function Verification() {
           )}
         </button>
 
-        <div className={styles.footer}>
-          <p className={styles.loginPrompt}>
+        <div className={`${styles.footer} ${isDarkMode ? styles.darkFooter : ''}`}>
+          <p className={`${styles.loginPrompt} ${isDarkMode ? styles.darkLoginPrompt : ''}`}>
             Didn't receive the code?{' '}
             <button
-              className={styles.resendButton}
+              className={`${styles.resendButton} ${isDarkMode ? styles.darkResendButton : ''}`}
               onClick={handleResendCode}
               disabled={resendCooldown > 0}
             >
@@ -256,9 +258,9 @@ export default function Verification() {
           </p>
         </div>
 
-        <div className={styles.footer}>
-          <p className={styles.loginPrompt}>
-            Remember your password? <Link to="/login" className={styles.loginLink}>Log in here</Link>
+        <div className={`${styles.footer} ${isDarkMode ? styles.darkFooter : ''}`}>
+          <p className={`${styles.loginPrompt} ${isDarkMode ? styles.darkLoginPrompt : ''}`}>
+            Remember your password? <Link to="/login" className={`${styles.loginLink} ${isDarkMode ? styles.darkLoginLink : ''}`}>Log in here</Link>
           </p>
         </div>
       </div>
