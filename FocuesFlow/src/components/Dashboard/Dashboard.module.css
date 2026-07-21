@@ -507,7 +507,7 @@
 .home-delete-modal p {
   font-size: 15px;
   font-weight: 500;
-  color: #33231D;
+  color: #d0cbc5;
   margin: 0 0 14px;
 }
 
@@ -1183,3 +1183,392 @@
 .category-development { background: #DBEAFE; color: #1D4ED8; }
 .category-research { background: #F3E8FF; color: #7C3AED; }
 .category-documentation { background: #FEF3C7; color: #D97706; }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Container Dark Mode */
+.darkContainer {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkBg {
+  background: #000000 !important;
+}
+
+.darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Stats Box Dark Mode */
+.darkStatBox {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+}
+
+.darkStatBox:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkStatValue {
+  color: #FFFFFF !important;
+}
+
+.darkStatLabel {
+  color: #6A6255 !important;
+}
+
+.darkStatTrend {
+  color: #FBBC00 !important;
+}
+
+.darkTrendUrgent {
+  color: #ef4444 !important;
+}
+
+.darkValueUrgent {
+  color: #ef4444 !important;
+}
+
+/* Icon Wrappers Dark Mode */
+.darkIconTotal {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkIconCompleted {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkIconPending {
+  background: rgba(107, 98, 88, 0.2) !important;
+  color: #6A6255 !important;
+}
+
+.darkIconOverdue {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+/* Rituals Header Dark Mode */
+.darkRitualsHeader {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkRitualsTitle {
+  color: #FFFFFF !important;
+}
+
+.darkRitualsCount {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkRitualsSub {
+  color: #6A6255 !important;
+}
+
+/* Buttons Dark Mode */
+.darkFilterBtn,
+.darkSortBtn,
+.darkClearBtn {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkFilterBtn:hover,
+.darkSortBtn:hover,
+.darkClearBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkFilterBadge {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkChevron {
+  opacity: 0.6 !important;
+}
+
+/* Dropdown Dark Mode */
+.darkDropdown {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkDropdownLabel {
+  color: #6A6255 !important;
+}
+
+.darkDropdownItem {
+  color: #FFFFFF !important;
+}
+
+.darkDropdownItem:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkDropdownCheck {
+  color: #FBBC00 !important;
+}
+
+/* Task Item Dark Mode */
+.darkRitualItem {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+}
+
+.darkRitualItem:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkRitualTitle {
+  color: #FFFFFF !important;
+}
+
+.darkRitualDesc {
+  color: #6A6255 !important;
+}
+
+.darkRitualCheckbox {
+  border-color: #383B40 !important;
+  background: #1A1A1A !important;
+}
+
+.darkRitualCheckbox:checked {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkRitualCheckbox:checked::after {
+  border-color: #000000 !important;
+}
+
+.darkDueLabel {
+  color: #6A6255 !important;
+}
+
+.darkDueValue {
+  color: #FFFFFF !important;
+}
+
+.darkBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+/* Completed Task Dark Mode */
+.darkRitualItem.darkRitualItem .home-ritual-completed .darkRitualTitle,
+.darkRitualItem.darkRitualItem .home-ritual-completed .darkRitualDesc {
+  color: #474133 !important;
+}
+
+/* Icon Buttons Dark Mode */
+.darkIconBtn {
+  color: #6A6255 !important;
+}
+
+.darkIconBtn:hover {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Edit Form Dark Mode */
+.darkEditInput {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkEditInput:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkEditSelect {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkEditSelect:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkEditSave {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkEditSave:hover {
+  background: #E2A900 !important;
+}
+
+.darkEditCancel {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #6A6255 !important;
+}
+
+.darkEditCancel:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+/* Delete Overlay Dark Mode */
+.darkDeleteOverlay {
+  background: rgba(0, 0, 0, 0.95) !important;
+}
+
+.darkDeleteConfirm {
+  background: #ef4444 !important;
+}
+
+.darkDeleteConfirm:hover {
+  background: #dc2626 !important;
+}
+
+.darkDeleteCancel {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteCancel:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Empty State Dark Mode */
+.darkEmptyState {
+  background: #111111 !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+/* Banner Dark Mode */
+.darkBanner {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkBannerOverlay {
+  background: linear-gradient(100deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 45%, rgba(0, 0, 0, 0.3) 80%, rgba(0, 0, 0, 0.1) 100%) !important;
+}
+
+.darkBannerTitle {
+  color: #FFFFFF !important;
+}
+
+.darkBannerDesc {
+  color: #6A6255 !important;
+}
+
+.darkBannerCta {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkBannerCta:hover {
+  background: #E2A900 !important;
+}
+
+/* Active button state dark mode */
+.darkFilterBtn.btn-active,
+.darkSortBtn.btn-active {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+/* Category badges dark mode */
+.darkBadge.category-design {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkBadge.category-marketing {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkBadge.category-content {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkBadge.category-development {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+}
+
+.darkBadge.category-research {
+  background: rgba(139, 92, 246, 0.15) !important;
+  color: #a78bfa !important;
+}
+
+.darkBadge.category-documentation {
+  background: rgba(251, 191, 36, 0.15) !important;
+  color: #fbbf24 !important;
+}
+
+/* Priority badges dark mode */
+.darkBadge.badge-high {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkBadge.badge-medium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkBadge.badge-low {
+  background: rgba(107, 98, 88, 0.2) !important;
+  color: #6A6255 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkRitualItem {
+    border-color: #383B40 !important;
+  }
+  
+  .darkRitualItem.priority-high {
+    border-top-color: #ef4444 !important;
+  }
+  
+  .darkRitualItem.priority-medium {
+    border-top-color: #FBBC00 !important;
+  }
+  
+  .darkRitualItem.priority-low {
+    border-top-color: #6A6255 !important;
+  }
+  
+  .darkRitual-actions {
+    border-top-color: #383B40 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkRitualItem {
+    border-color: #383B40 !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkContainer,
+  .darkStatBox,
+  .darkRitualItem {
+    transition: none !important;
+  }
+}

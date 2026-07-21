@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTasks } from "../Context/TaskContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 import styles from "./Dashboard.module.css";
 import bannerImage from "../../assets/Images/Image4.png";
 import ToastNotification from "../ToastNotification/ToastNotification";
@@ -64,6 +65,7 @@ const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
   const { tasks, updateTask, deleteTask, toggleTaskComplete, isLoading } = useTasks();
+  const { isDarkMode } = useDarkMode();
   
   const [filterPriority, setFilterPriority] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
@@ -83,17 +85,14 @@ export default function Dashboard() {
   const formatDateToInput = (dateString) => {
     if (!dateString) return '';
     try {
-      // If it's already in "Oct 24, 2024" format
       if (dateString.includes(' ')) {
         const date = new Date(dateString);
         if (isNaN(date.getTime())) return '';
-        // Get local date parts to avoid timezone shift
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
       }
-      // If it's already in YYYY-MM-DD format
       if (dateString.includes('-')) {
         return dateString;
       }
@@ -258,74 +257,74 @@ export default function Dashboard() {
   };
 
   return (
-    <div className={styles["home-container"]}>
-      <div className={styles["home-bg"]}>
+    <div className={`${styles["home-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
+      <div className={`${styles["home-bg"]} ${isDarkMode ? styles["darkBg"] : ""}`}>
         <div className={styles["home-bg-orb"]} />
         <div className={styles["home-bg-orb"]} />
         <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-grid"]} />
-        <div className={styles["home-bg-glow"]} />
+        <div className={`${styles["home-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`} />
+        <div className={`${styles["home-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`} />
       </div>
 
       <div className={styles["home-content-wrapper"]}>
         <div className={styles["home-stats-row"]}>
-          <div className={styles["home-stat-box"]}>
+          <div className={`${styles["home-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
             <div className={styles["home-stat-top"]}>
-              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-total"]}`}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-total"]} ${isDarkMode ? styles["darkIconTotal"] : ""}`}>
                 <Icon name="clipboard" className={styles["home-stat-icon"]} />
               </div>
-              <span className={styles["home-stat-trend"]}>{stats.totalTrend}</span>
+              <span className={`${styles["home-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>{stats.totalTrend}</span>
             </div>
-            <span className={styles["home-stat-label"]}>Total Tasks</span>
-            <span className={styles["home-stat-value"]}>{stats.total}</span>
+            <span className={`${styles["home-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>Total Tasks</span>
+            <span className={`${styles["home-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.total}</span>
           </div>
 
-          <div className={styles["home-stat-box"]}>
+          <div className={`${styles["home-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
             <div className={styles["home-stat-top"]}>
-              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-completed"]}`}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-completed"]} ${isDarkMode ? styles["darkIconCompleted"] : ""}`}>
                 <Icon name="check" className={styles["home-stat-icon"]} />
               </div>
-              <span className={styles["home-stat-trend"]}>{stats.completedPct}</span>
+              <span className={`${styles["home-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>{stats.completedPct}</span>
             </div>
-            <span className={styles["home-stat-label"]}>Completed</span>
-            <span className={styles["home-stat-value"]}>{stats.completed}</span>
+            <span className={`${styles["home-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>Completed</span>
+            <span className={`${styles["home-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.completed}</span>
           </div>
 
-          <div className={styles["home-stat-box"]}>
+          <div className={`${styles["home-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
             <div className={styles["home-stat-top"]}>
-              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-pending"]}`}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-pending"]} ${isDarkMode ? styles["darkIconPending"] : ""}`}>
                 <Icon name="hourglass" className={styles["home-stat-icon"]} />
               </div>
-              <span className={styles["home-stat-trend"]}>Active</span>
+              <span className={`${styles["home-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>Active</span>
             </div>
-            <span className={styles["home-stat-label"]}>Pending</span>
-            <span className={styles["home-stat-value"]}>{stats.pending}</span>
+            <span className={`${styles["home-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>Pending</span>
+            <span className={`${styles["home-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.pending}</span>
           </div>
 
-          <div className={styles["home-stat-box"]}>
+          <div className={`${styles["home-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
             <div className={styles["home-stat-top"]}>
-              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-overdue"]}`}>
+              <div className={`${styles["home-stat-icon-wrap"]} ${styles["icon-overdue"]} ${isDarkMode ? styles["darkIconOverdue"] : ""}`}>
                 <Icon name="alertCircle" className={styles["home-stat-icon"]} />
               </div>
-              <span className={`${styles["home-stat-trend"]} ${styles["trend-urgent"]}`}>Urgent</span>
+              <span className={`${styles["home-stat-trend"]} ${styles["trend-urgent"]} ${isDarkMode ? styles["darkTrendUrgent"] : ""}`}>Urgent</span>
             </div>
-            <span className={styles["home-stat-label"]}>Overdue</span>
-            <span className={`${styles["home-stat-value"]} ${styles["value-urgent"]}`}>{stats.overdue}</span>
+            <span className={`${styles["home-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>Overdue</span>
+            <span className={`${styles["home-stat-value"]} ${styles["value-urgent"]} ${isDarkMode ? styles["darkValueUrgent"] : ""}`}>{stats.overdue}</span>
           </div>
         </div>
 
-        <div className={styles["home-rituals-header"]}>
+        <div className={`${styles["home-rituals-header"]} ${isDarkMode ? styles["darkRitualsHeader"] : ""}`}>
           <div>
             <div className={styles["home-rituals-title-row"]}>
-              <h2 className={styles["home-rituals-title"]}>Daily Rituals</h2>
-              <span className={styles["home-rituals-count"]}>{visibleTasks.length}</span>
+              <h2 className={`${styles["home-rituals-title"]} ${isDarkMode ? styles["darkRitualsTitle"] : ""}`}>Daily Rituals</h2>
+              <span className={`${styles["home-rituals-count"]} ${isDarkMode ? styles["darkRitualsCount"] : ""}`}>{visibleTasks.length}</span>
             </div>
-            <p className={styles["home-rituals-sub"]}>Focus on what matters most today.</p>
+            <p className={`${styles["home-rituals-sub"]} ${isDarkMode ? styles["darkRitualsSub"] : ""}`}>Focus on what matters most today.</p>
           </div>
 
           <div className={styles["home-rituals-actions"]}>
             {activeFilterCount > 0 && (
-              <button className={styles["home-clear-btn"]} onClick={clearFilters}>
+              <button className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} onClick={clearFilters}>
                 <Icon name="x" className={styles["home-btn-icon"]} />
                 Clear
               </button>
@@ -333,37 +332,37 @@ export default function Dashboard() {
 
             <div className={styles["home-menu-wrap"]} ref={filterRef}>
               <button
-                className={`${styles["home-filter-btn"]} ${activeFilterCount > 0 ? styles["btn-active"] : ""}`}
+                className={`${styles["home-filter-btn"]} ${activeFilterCount > 0 ? styles["btn-active"] : ""} ${isDarkMode ? styles["darkFilterBtn"] : ""}`}
                 onClick={() => setOpenMenu(openMenu === "filter" ? null : "filter")}
               >
                 <Icon name="filter" className={styles["home-btn-icon"]} />
                 Filter
-                {activeFilterCount > 0 && <span className={styles["home-filter-badge"]}>{activeFilterCount}</span>}
-                <Icon name="chevronDown" className={styles["home-chevron"]} />
+                {activeFilterCount > 0 && <span className={`${styles["home-filter-badge"]} ${isDarkMode ? styles["darkFilterBadge"] : ""}`}>{activeFilterCount}</span>}
+                <Icon name="chevronDown" className={`${styles["home-chevron"]} ${isDarkMode ? styles["darkChevron"] : ""}`} />
               </button>
 
               {openMenu === "filter" && (
-                <div className={styles["home-dropdown"]}>
-                  <span className={styles["home-dropdown-label"]}>Priority</span>
+                <div className={`${styles["home-dropdown"]} ${isDarkMode ? styles["darkDropdown"] : ""}`}>
+                  <span className={`${styles["home-dropdown-label"]} ${isDarkMode ? styles["darkDropdownLabel"] : ""}`}>Priority</span>
                   {["all", "High", "Medium", "Low"].map((p) => (
                     <button
                       key={p}
-                      className={styles["home-dropdown-item"]}
+                      className={`${styles["home-dropdown-item"]} ${isDarkMode ? styles["darkDropdownItem"] : ""}`}
                       onClick={() => setFilterPriority(p)}
                     >
                       {p === "all" ? "All priorities" : p}
-                      {filterPriority === p && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                      {filterPriority === p && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
                     </button>
                   ))}
-                  <span className={styles["home-dropdown-label"]}>Category</span>
+                  <span className={`${styles["home-dropdown-label"]} ${isDarkMode ? styles["darkDropdownLabel"] : ""}`}>Category</span>
                   {["all", ...categoryOptions].map((c) => (
                     <button
                       key={c}
-                      className={styles["home-dropdown-item"]}
+                      className={`${styles["home-dropdown-item"]} ${isDarkMode ? styles["darkDropdownItem"] : ""}`}
                       onClick={() => setFilterCategory(c)}
                     >
                       {c === "all" ? "All categories" : c}
-                      {filterCategory === c && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                      {filterCategory === c && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
                     </button>
                   ))}
                 </div>
@@ -372,16 +371,16 @@ export default function Dashboard() {
 
             <div className={styles["home-menu-wrap"]} ref={sortRef}>
               <button
-                className={`${styles["home-sort-btn"]} ${sortBy !== "default" ? styles["btn-active"] : ""}`}
+                className={`${styles["home-sort-btn"]} ${sortBy !== "default" ? styles["btn-active"] : ""} ${isDarkMode ? styles["darkSortBtn"] : ""}`}
                 onClick={() => setOpenMenu(openMenu === "sort" ? null : "sort")}
               >
                 <Icon name="sort" className={styles["home-btn-icon"]} />
                 Sort
-                <Icon name="chevronDown" className={styles["home-chevron"]} />
+                <Icon name="chevronDown" className={`${styles["home-chevron"]} ${isDarkMode ? styles["darkChevron"] : ""}`} />
               </button>
 
               {openMenu === "sort" && (
-                <div className={styles["home-dropdown"]}>
+                <div className={`${styles["home-dropdown"]} ${isDarkMode ? styles["darkDropdown"] : ""}`}>
                   {[
                     { key: "default", label: "Default" },
                     { key: "dueDate", label: "Due date" },
@@ -389,14 +388,14 @@ export default function Dashboard() {
                   ].map((opt) => (
                     <button
                       key={opt.key}
-                      className={styles["home-dropdown-item"]}
+                      className={`${styles["home-dropdown-item"]} ${isDarkMode ? styles["darkDropdownItem"] : ""}`}
                       onClick={() => {
                         setSortBy(opt.key);
                         setOpenMenu(null);
                       }}
                     >
                       {opt.label}
-                      {sortBy === opt.key && <Icon name="checkSmall" className={styles["home-dropdown-check"]} />}
+                      {sortBy === opt.key && <Icon name="checkSmall" className={`${styles["home-dropdown-check"]} ${isDarkMode ? styles["darkDropdownCheck"] : ""}`} />}
                     </button>
                   ))}
                 </div>
@@ -406,31 +405,31 @@ export default function Dashboard() {
         </div>
 
         {visibleTasks.length === 0 ? (
-          <div className={styles["home-empty-state"]}>
+          <div className={`${styles["home-empty-state"]} ${isDarkMode ? styles["darkEmptyState"] : ""}`}>
             <p>No tasks match these filters.</p>
-            <button className={styles["home-clear-btn"]} onClick={clearFilters}>Clear filters</button>
+            <button className={`${styles["home-clear-btn"]} ${isDarkMode ? styles["darkClearBtn"] : ""}`} onClick={clearFilters}>Clear filters</button>
           </div>
         ) : (
           <div className={styles["home-ritual-list"]}>
             {visibleTasks.map((task, i) => (
               <div
                 key={task.id}
-                className={`${styles["home-ritual-item"]} ${task.completed ? styles["home-ritual-completed"] : ""}`}
+                className={`${styles["home-ritual-item"]} ${task.completed ? styles["home-ritual-completed"] : ""} ${isDarkMode ? styles["darkRitualItem"] : ""}`}
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
                 {showDeleteConfirm === task.id && (
-                  <div className={styles["home-delete-overlay"]}>
+                  <div className={`${styles["home-delete-overlay"]} ${isDarkMode ? styles["darkDeleteOverlay"] : ""}`}>
                     <div className={styles["home-delete-modal"]}>
                       <p>Are you sure you want to delete this task?</p>
                       <div className={styles["home-delete-actions"]}>
                         <button 
-                          className={styles["home-delete-confirm"]} 
+                          className={`${styles["home-delete-confirm"]} ${isDarkMode ? styles["darkDeleteConfirm"] : ""}`}
                           onClick={() => confirmDelete(task.id)}
                           disabled={isLoading}
                         >
                           {isLoading ? 'Deleting...' : 'Yes, Delete'}
                         </button>
-                        <button className={styles["home-delete-cancel"]} onClick={cancelDelete}>
+                        <button className={`${styles["home-delete-cancel"]} ${isDarkMode ? styles["darkDeleteCancel"] : ""}`} onClick={cancelDelete}>
                           Cancel
                         </button>
                       </div>
@@ -442,7 +441,7 @@ export default function Dashboard() {
                   type="checkbox"
                   checked={task.completed}
                   onChange={() => toggleTaskCompleteHandler(task.id)}
-                  className={styles["home-ritual-checkbox"]}
+                  className={`${styles["home-ritual-checkbox"]} ${isDarkMode ? styles["darkRitualCheckbox"] : ""}`}
                   disabled={isLoading}
                 />
 
@@ -453,7 +452,7 @@ export default function Dashboard() {
                         name="title"
                         value={editForm.title}
                         onChange={handleEditChange}
-                        className={styles["home-edit-input"]}
+                        className={`${styles["home-edit-input"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
                         placeholder="Task title"
                       />
                       <input
@@ -461,7 +460,7 @@ export default function Dashboard() {
                         type="date"
                         value={editForm.dueDate}
                         onChange={handleEditChange}
-                        className={styles["home-edit-input-sm"]}
+                        className={`${styles["home-edit-input-sm"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
                         min={today}
                       />
                     </div>
@@ -470,14 +469,14 @@ export default function Dashboard() {
                         name="description"
                         value={editForm.description}
                         onChange={handleEditChange}
-                        className={styles["home-edit-input"]}
+                        className={`${styles["home-edit-input"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
                         placeholder="Description"
                       />
                       <select
                         name="priority"
                         value={editForm.priority}
                         onChange={handleEditChange}
-                        className={styles["home-edit-select"]}
+                        className={`${styles["home-edit-select"]} ${isDarkMode ? styles["darkEditSelect"] : ""}`}
                       >
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
@@ -487,7 +486,7 @@ export default function Dashboard() {
                         name="category"
                         value={editForm.category}
                         onChange={handleEditChange}
-                        className={styles["home-edit-select"]}
+                        className={`${styles["home-edit-select"]} ${isDarkMode ? styles["darkEditSelect"] : ""}`}
                       >
                         {categoryOptions.map((cat) => (
                           <option key={cat} value={cat}>{cat}</option>
@@ -496,13 +495,13 @@ export default function Dashboard() {
                     </div>
                     <div className={styles["home-edit-actions"]}>
                       <button 
-                        className={styles["home-edit-save"]} 
+                        className={`${styles["home-edit-save"]} ${isDarkMode ? styles["darkEditSave"] : ""}`}
                         onClick={() => saveEdit(task.id)}
                         disabled={isLoading}
                       >
                         {isLoading ? 'Saving...' : 'Save'}
                       </button>
-                      <button className={styles["home-edit-cancel"]} onClick={cancelEdit}>
+                      <button className={`${styles["home-edit-cancel"]} ${isDarkMode ? styles["darkEditCancel"] : ""}`} onClick={cancelEdit}>
                         Cancel
                       </button>
                     </div>
@@ -510,23 +509,23 @@ export default function Dashboard() {
                 ) : (
                   <>
                     <div className={styles["home-ritual-content"]}>
-                      <h3 className={styles["home-ritual-title"]}>{task.title}</h3>
-                      <p className={styles["home-ritual-desc"]}>{task.description}</p>
+                      <h3 className={`${styles["home-ritual-title"]} ${isDarkMode ? styles["darkRitualTitle"] : ""}`}>{task.title}</h3>
+                      <p className={`${styles["home-ritual-desc"]} ${isDarkMode ? styles["darkRitualDesc"] : ""}`}>{task.description}</p>
                     </div>
 
                     <div className={styles["home-ritual-due"]}>
-                      <span className={styles["home-due-label"]}>DUE DATE</span>
-                      <span className={styles["home-due-value"]}>{formatDateForDisplay(task.dueDate)}</span>
+                      <span className={`${styles["home-due-label"]} ${isDarkMode ? styles["darkDueLabel"] : ""}`}>DUE DATE</span>
+                      <span className={`${styles["home-due-value"]} ${isDarkMode ? styles["darkDueValue"] : ""}`}>{formatDateForDisplay(task.dueDate)}</span>
                     </div>
 
                     <div className={styles["home-ritual-badges"]}>
-                      <span className={`${styles["home-badge"]} ${priorityClass(task.priority)}`}>{task.priority}</span>
-                      <span className={`${styles["home-badge"]} ${categoryClass(task.category)}`}>{task.category}</span>
+                      <span className={`${styles["home-badge"]} ${priorityClass(task.priority)} ${isDarkMode ? styles["darkBadge"] : ""}`}>{task.priority}</span>
+                      <span className={`${styles["home-badge"]} ${categoryClass(task.category)} ${isDarkMode ? styles["darkBadge"] : ""}`}>{task.category}</span>
                     </div>
 
                     <div className={styles["home-ritual-actions"]}>
                       <button 
-                        className={styles["home-icon-btn"]} 
+                        className={`${styles["home-icon-btn"]} ${isDarkMode ? styles["darkIconBtn"] : ""}`}
                         onClick={() => handleEdit(task)} 
                         aria-label="Edit task"
                         disabled={isLoading}
@@ -534,7 +533,7 @@ export default function Dashboard() {
                         <Icon name="edit" className={styles["home-action-icon"]} />
                       </button>
                       <button 
-                        className={styles["home-icon-btn"]} 
+                        className={`${styles["home-icon-btn"]} ${isDarkMode ? styles["darkIconBtn"] : ""}`}
                         onClick={() => handleDelete(task.id)} 
                         aria-label="Delete task"
                         disabled={isLoading}
@@ -549,19 +548,19 @@ export default function Dashboard() {
           </div>
         )}
 
-        <div className={styles["home-banner"]}>
-          <div className={styles["home-banner-overlay"]} />
+        <div className={`${styles["home-banner"]} ${isDarkMode ? styles["darkBanner"] : ""}`}>
+          <div className={`${styles["home-banner-overlay"]} ${isDarkMode ? styles["darkBannerOverlay"] : ""}`} />
           <img 
             src={bannerImage} 
             alt="Master your ritual" 
             className={styles["home-banner-image"]} 
           />
           <div className={styles["home-banner-content"]}>
-            <h2 className={styles["home-banner-title"]}>Master your ritual.</h2>
-            <p className={styles["home-banner-desc"]}>
+            <h2 className={`${styles["home-banner-title"]} ${isDarkMode ? styles["darkBannerTitle"] : ""}`}>Master your ritual.</h2>
+            <p className={`${styles["home-banner-desc"]} ${isDarkMode ? styles["darkBannerDesc"] : ""}`}>
               Productivity isn't just about finishing tasks. It's about finding rhythm in the work you love.
             </p>
-            <button className={styles["home-banner-cta"]}>Explore Insights</button>
+            <button className={`${styles["home-banner-cta"]} ${isDarkMode ? styles["darkBannerCta"] : ""}`}>Explore Insights</button>
           </div>
         </div>
       </div>
