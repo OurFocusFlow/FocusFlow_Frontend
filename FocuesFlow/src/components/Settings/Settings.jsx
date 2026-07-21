@@ -246,8 +246,8 @@ const Settings = () => {
       <Box className={`${styles.pageInner} ${isDarkMode ? styles.darkPageInner : ''}`}>
         {/* Page Header */}
         <Box className={`${styles.pageHeader} ${isDarkMode ? styles.darkPageHeader : ''}`}>
-          <Typography className={`${styles.pageTitle} ${isDarkMode ? styles.darkPageTitle : ''}`}>Settings</Typography>
-          <Typography className={`${styles.pageSubtitle} ${isDarkMode ? styles.darkPageSubtitle : ''}`}>Customize your BrewTask experience</Typography>
+          <Typography className={`${styles.pageTitle} ${isDarkMode ? styles.darkPageTitle : ''}`} style={{fontSize:"45px",fontWeight:"700"}}>Settings</Typography>
+          <Typography className={`${styles.pageSubtitle} ${isDarkMode ? styles.darkPageSubtitle : ''}`} style={{fontSize:"20px",fontWeight:"200"}}>Customize your BrewTask experience</Typography>
         </Box>
 
         {/* Appearance */}
