@@ -2425,3 +2425,521 @@
   padding: 2px !important;
   opacity: 1 !important;
 }
+
+/* ==================== DARK MODE WITH ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkStatTrend {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkNewTaskBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkNewTaskBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.25) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkSearch:focus-within {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkFilterSelect:focus {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTab.mytasks-tab-active {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTab.mytasks-tab-active .darkTabBadge {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkViewBtn.mytasks-view-active {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskCheckbox:checked {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridCheckbox:checked {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskItem.mytasks-task-hovered {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskItem.mytasks-task-hovered::before {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkEditBtn:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalSave {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalSave:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalInput:focus {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalSelect:focus {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridItem.mytasks-grid-hovered {
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkIconTotal {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkIconCompleted {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkIconProgress {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkIconHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskPriority.priority-medium {
+  background: rgba(var(--accent-rgb), 0.15) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskCategory {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(var(--accent-rgb), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.02) 1px, transparent 1px) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkBgGlow {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+/* Dark mode scrollbar for MyTasks with accent */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-content-wrapper::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-content-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-content-wrapper {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}
+
+/* ==================== DARK MODE TEXT COLOR WITH ACCENT ==================== */
+
+/* When accent color is NOT default amber in dark mode - change text to #e9e9e9 */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkSubtitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkStatValue {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkStatLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskDescription {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskMetaItem {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridDescription {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridDue {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkGridStatusText {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalLabel {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalInput {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkModalSelect {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkDeleteModalTitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkDeleteModalText {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkDeleteModalText strong {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTab {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTab:hover {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTab.mytasks-tab-active {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkViewBtn {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkViewBtn.mytasks-view-active {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkSearchInput {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkSearchInput::placeholder {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkFilterSelect {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkFilterSelect option {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkEmpty h3 {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkEmpty p {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskItem.mytasks-task-completed .darkTaskTitle {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .darkTaskItem.mytasks-task-completed .darkTaskDescription {
+  color: #6A6255 !important;
+}
+
+/* ==================== DARK MODE TEXT COLOR WITH ACCENT - OVERRIDES ==================== */
+
+/* Ensure default text color stays #e9e9e9 when accent is applied */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-title {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-subtitle {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-stat-value {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-stat-label {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-search input {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-search input::placeholder {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-task-title-row h3 {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-task-description {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-task-meta-item {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-grid-title {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-grid-description {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-grid-due {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-grid-status-text {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal h2 {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal label {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal input {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal textarea {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal select {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal h3 {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal p {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal p strong {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-tab {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-tab:hover {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-tab-active {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-view-btn {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-view-active {
+  color: var(--accent-color) !important;
+}
+
+/* ==================== MODAL BACKGROUND WITH ACCENT ==================== */
+
+/* Edit Modal Background - Dark Mode with Accent */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal {
+  background: #0D0D0D !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-header {
+  border-bottom-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-footer {
+  border-top-color: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field input,
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field textarea,
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field select {
+  background: #1A1A1A !important;
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field input:focus,
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field textarea:focus,
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field select:focus {
+  border-color: var(--accent-color) !important;
+  background: #0D0D0D !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-field label {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-close {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-close:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-cancel {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-cancel:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-save {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-save:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* Delete Modal Background - Dark Mode with Accent */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal {
+  background: #0D0D0D !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal h3 {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal p {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-modal p strong {
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-cancel {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-cancel:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: #e9e9e9 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-confirm {
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-delete-confirm:hover {
+  background: #dc2626 !important;
+}
+
+/* Modal Overlay - Dark Mode with Accent */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-overlay {
+  background: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Modal Error States - Dark Mode with Accent */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-input-error {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-input-error:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-error {
+  color: #ef4444 !important;
+}
+
+/* Modal Required Star */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-required-star {
+  color: #ef4444 !important;
+}
+
+/* Modal Close Icon */
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-close-icon {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .mytasks-container:not(.default-accent) .mytasks-modal-close:hover .mytasks-modal-close-icon {
+  color: #e9e9e9 !important;
+}

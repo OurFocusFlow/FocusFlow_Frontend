@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import { useTasks } from "../Context/TaskContext";
 import { useDarkMode } from "../Context/DarkModeContext";
+import { useAccentColor } from "../Context/AccentColorContext";
 import styles from "./MyTasks.module.css";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
 import ToastNotification from "../ToastNotification/ToastNotification";
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 function Icon({ name, className }) {
   const paths = {
@@ -113,6 +131,7 @@ export default function MyTasks() {
     isLoading 
   } = useTasks();
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   
   const [activeTab, setActiveTab] = useState("all");
   const [viewMode, setViewMode] = useState("list");
@@ -142,6 +161,12 @@ export default function MyTasks() {
   
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // Determine if we should use accent color for elements
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
+  // Get accent color RGB
+  const accentRgb = hexToRgb(accentColor);
 
   const categories = ["All", "Design", "Marketing", "Content", "Development", "Research", "Documentation"];
   const priorities = ["All", "High", "Medium", "Low"];
@@ -432,13 +457,47 @@ export default function MyTasks() {
   };
 
   return (
-    <div className={`${styles["mytasks-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
+    <div 
+      className={`${styles["mytasks-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       <div className={`${styles["mytasks-bg"]} ${isDarkMode ? styles["darkBg"] : ""}`}>
-        <div className={styles["mytasks-bg-orb"]} />
-        <div className={styles["mytasks-bg-orb"]} />
-        <div className={styles["mytasks-bg-orb"]} />
-        <div className={`${styles["mytasks-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`} />
-        <div className={`${styles["mytasks-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`} />
+        <div 
+          className={styles["mytasks-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.10) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["mytasks-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["mytasks-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.04) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles["mytasks-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`}
+          style={{
+            backgroundImage: shouldUseAccent ? 
+              `linear-gradient(rgba(${accentRgb}, 0.02) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(${accentRgb}, 0.02) 1px, transparent 1px)` : undefined,
+          }}
+        />
+        <div 
+          className={`${styles["mytasks-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`}
+          style={{
+            background: shouldUseAccent ? 
+              `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, transparent 70%)` : undefined,
+          }}
+        />
       </div>
 
       <div className={styles["mytasks-content-wrapper"]}>
@@ -454,6 +513,21 @@ export default function MyTasks() {
               className={`${styles["mytasks-new-task-btn"]} ${isDarkMode ? styles["darkNewTaskBtn"] : ""}`}
               onClick={handleOpenModal}
               disabled={isLoading}
+              style={{
+                background: shouldUseAccent ? accentColor : undefined,
+                color: shouldUseAccent ? '#000000' : undefined,
+                boxShadow: shouldUseAccent ? `0 4px 20px rgba(${accentRgb}, 0.15)` : undefined,
+              }}
+              onMouseEnter={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.boxShadow = `0 8px 30px rgba(${accentRgb}, 0.25)`;
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (shouldUseAccent) {
+                  e.currentTarget.style.boxShadow = `0 4px 20px rgba(${accentRgb}, 0.15)`;
+                }
+              }}
             >
               <Icon name="plus" className={styles["mytasks-new-task-icon"]} />
               New Task
@@ -524,6 +598,9 @@ export default function MyTasks() {
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
               className={`${styles["mytasks-filter-select"]} ${isDarkMode ? styles["darkFilterSelect"] : ""}`}
+              style={{
+                borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+              }}
             >
               {categories.map(cat => (
                 <option key={cat} value={cat === "All" ? "all" : cat}>
@@ -536,6 +613,9 @@ export default function MyTasks() {
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
               className={`${styles["mytasks-filter-select"]} ${isDarkMode ? styles["darkFilterSelect"] : ""}`}
+              style={{
+                borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+              }}
             >
               {priorities.map(pri => (
                 <option key={pri} value={pri === "All" ? "all" : pri}>
@@ -555,11 +635,20 @@ export default function MyTasks() {
                   activeTab === tab ? styles["mytasks-tab-active"] : ""
                 } ${isDarkMode ? styles["darkTab"] : ""}`}
                 onClick={() => setActiveTab(tab)}
+                style={{
+                  color: shouldUseAccent && activeTab === tab ? accentColor : undefined,
+                }}
               >
                 <span className={styles["mytasks-tab-text"]}>
                   {tab === "all" ? "All Tasks" : tab === "todo" ? "To Do" : "Completed"}
                 </span>
-                <span className={`${styles["mytasks-tab-badge"]} ${isDarkMode ? styles["darkTabBadge"] : ""}`}>
+                <span 
+                  className={`${styles["mytasks-tab-badge"]} ${isDarkMode ? styles["darkTabBadge"] : ""}`}
+                  style={{
+                    background: shouldUseAccent && activeTab === tab ? accentColor : undefined,
+                    color: shouldUseAccent && activeTab === tab ? '#000000' : undefined,
+                  }}
+                >
                   {tab === "all"
                     ? tasks.length
                     : tab === "todo"
@@ -577,6 +666,9 @@ export default function MyTasks() {
               } ${isDarkMode ? styles["darkViewBtn"] : ""}`}
               onClick={() => setViewMode("list")}
               title="List View"
+              style={{
+                color: shouldUseAccent && viewMode === "list" ? accentColor : undefined,
+              }}
             >
               <Icon name="list" className={styles["mytasks-view-icon"]} />
             </button>
@@ -586,6 +678,9 @@ export default function MyTasks() {
               } ${isDarkMode ? styles["darkViewBtn"] : ""}`}
               onClick={() => setViewMode("grid")}
               title="Grid View"
+              style={{
+                color: shouldUseAccent && viewMode === "grid" ? accentColor : undefined,
+              }}
             >
               <Icon name="grid" className={styles["mytasks-view-icon"]} />
             </button>
@@ -608,7 +703,10 @@ export default function MyTasks() {
                 } ${hoveredTask === task.id ? styles["mytasks-task-hovered"] : ""} ${isDarkMode ? styles["darkTaskItem"] : ""}`}
                 onMouseEnter={() => setHoveredTask(task.id)}
                 onMouseLeave={() => setHoveredTask(null)}
-                style={{ animationDelay: `${index * 0.08}s` }}
+                style={{ 
+                  animationDelay: `${index * 0.08}s`,
+                  borderColor: shouldUseAccent && !task.completed ? `rgba(${accentRgb}, 0.15)` : undefined,
+                }}
               >
                 <div className={styles["mytasks-task-status"]}>
                   <input
@@ -617,6 +715,9 @@ export default function MyTasks() {
                     onChange={() => toggleTaskComplete(task.id)}
                     className={`${styles["mytasks-task-checkbox"]} ${isDarkMode ? styles["darkTaskCheckbox"] : ""}`}
                     disabled={isLoading}
+                    style={{
+                      accentColor: shouldUseAccent ? accentColor : undefined,
+                    }}
                   />
                 </div>
 
@@ -624,10 +725,22 @@ export default function MyTasks() {
                   <div className={styles["mytasks-task-title-row"]}>
                     <h3 className={isDarkMode ? styles["darkTaskTitle"] : ""}>{task.title}</h3>
                     <div className={styles["mytasks-task-tags"]}>
-                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}>
+                      <span 
+                        className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}
+                        style={{
+                          background: shouldUseAccent && task.priority === "Medium" ? `rgba(${accentRgb}, 0.15)` : undefined,
+                          color: shouldUseAccent && task.priority === "Medium" ? accentColor : undefined,
+                        }}
+                      >
                         {task.priority}
                       </span>
-                      <span className={`${styles["mytasks-task-category"]} ${isDarkMode ? styles["darkTaskCategory"] : ""}`}>
+                      <span 
+                        className={`${styles["mytasks-task-category"]} ${isDarkMode ? styles["darkTaskCategory"] : ""}`}
+                        style={{
+                          background: shouldUseAccent ? `rgba(${accentRgb}, 0.12)` : undefined,
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
+                      >
                         {getCategoryIcon(task.category)} {task.category}
                       </span>
                     </div>
@@ -650,7 +763,15 @@ export default function MyTasks() {
                     <div className={styles["mytasks-task-meta-right"]}>
                       <div className={styles["mytasks-task-avatars"]}>
                         {task.assignees && task.assignees.map((initials, i) => (
-                          <span key={i} className={`${styles["mytasks-avatar"]} ${isDarkMode ? styles["darkAvatar"] : ""}`} style={{ zIndex: task.assignees.length - i }}>
+                          <span 
+                            key={i} 
+                            className={`${styles["mytasks-avatar"]} ${isDarkMode ? styles["darkAvatar"] : ""}`} 
+                            style={{ 
+                              zIndex: task.assignees.length - i,
+                              background: shouldUseAccent ? accentColor : undefined,
+                              color: shouldUseAccent ? '#000000' : undefined,
+                            }}
+                          >
                             {initials}
                           </span>
                         ))}
@@ -661,6 +782,9 @@ export default function MyTasks() {
                           onClick={() => handleEditClick(task)}
                           aria-label="Edit task"
                           disabled={isLoading}
+                          style={{
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
                         >
                           <Icon name="edit" className={styles["mytasks-action-icon"]} />
                         </button>
@@ -674,7 +798,13 @@ export default function MyTasks() {
                         </button>
                       </div>
                       {task.completed && (
-                        <span className={`${styles["mytasks-task-completed-badge"]} ${isDarkMode ? styles["darkCompletedBadge"] : ""}`}>
+                        <span 
+                          className={`${styles["mytasks-task-completed-badge"]} ${isDarkMode ? styles["darkCompletedBadge"] : ""}`}
+                          style={{
+                            background: shouldUseAccent ? `rgba(${accentRgb}, 0.12)` : undefined,
+                            color: shouldUseAccent ? accentColor : undefined,
+                          }}
+                        >
                           <Icon name="check" className={styles["mytasks-badge-icon"]} />
                           Done
                         </span>
@@ -694,6 +824,9 @@ export default function MyTasks() {
                   } ${hoveredTask === task.id ? styles["mytasks-grid-hovered"] : ""} ${isDarkMode ? styles["darkGridItem"] : ""}`}
                   onMouseEnter={() => setHoveredTask(task.id)}
                   onMouseLeave={() => setHoveredTask(null)}
+                  style={{
+                    borderColor: shouldUseAccent && !task.completed ? `rgba(${accentRgb}, 0.15)` : undefined,
+                  }}
                 >
                   <div className={styles["mytasks-grid-header"]}>
                     <div className={styles["mytasks-grid-status"]}>
@@ -703,10 +836,19 @@ export default function MyTasks() {
                         onChange={() => toggleTaskComplete(task.id)}
                         className={`${styles["mytasks-grid-checkbox"]} ${isDarkMode ? styles["darkGridCheckbox"] : ""}`}
                         disabled={isLoading}
+                        style={{
+                          accentColor: shouldUseAccent ? accentColor : undefined,
+                        }}
                       />
                     </div>
                     <div className={styles["mytasks-grid-badges"]}>
-                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}>
+                      <span 
+                        className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}
+                        style={{
+                          background: shouldUseAccent && task.priority === "Medium" ? `rgba(${accentRgb}, 0.15)` : undefined,
+                          color: shouldUseAccent && task.priority === "Medium" ? accentColor : undefined,
+                        }}
+                      >
                         {task.priority}
                       </span>
                     </div>
@@ -733,6 +875,9 @@ export default function MyTasks() {
                         onClick={() => handleEditClick(task)}
                         aria-label="Edit task"
                         disabled={isLoading}
+                        style={{
+                          color: shouldUseAccent ? accentColor : undefined,
+                        }}
                       >
                         <Icon name="edit" className={styles["mytasks-action-icon"]} />
                       </button>
@@ -748,7 +893,13 @@ export default function MyTasks() {
                   </div>
 
                   {task.completed && (
-                    <div className={`${styles["mytasks-grid-completed-badge"]} ${isDarkMode ? styles["darkGridCompletedBadge"] : ""}`}>
+                    <div 
+                      className={`${styles["mytasks-grid-completed-badge"]} ${isDarkMode ? styles["darkGridCompletedBadge"] : ""}`}
+                      style={{
+                        background: shouldUseAccent ? `rgba(${accentRgb}, 0.12)` : undefined,
+                        color: shouldUseAccent ? accentColor : undefined,
+                      }}
+                    >
                       <Icon name="check" className={styles["mytasks-grid-badge-icon"]} />
                       Completed
                     </div>
@@ -788,6 +939,9 @@ export default function MyTasks() {
                   onChange={handleEditChange}
                   placeholder="Enter task title"
                   className={`${editErrors.title ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
+                  style={{
+                    borderColor: shouldUseAccent && !editErrors.title ? `rgba(${accentRgb}, 0.3)` : undefined,
+                  }}
                 />
                 {editErrors.title && (
                   <span className={styles["mytasks-modal-error"]}>{editErrors.title}</span>
@@ -803,6 +957,9 @@ export default function MyTasks() {
                   placeholder="Enter task description"
                   rows="3"
                   className={`${editErrors.description ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
+                  style={{
+                    borderColor: shouldUseAccent && !editErrors.description ? `rgba(${accentRgb}, 0.3)` : undefined,
+                  }}
                 />
                 {editErrors.description && (
                   <span className={styles["mytasks-modal-error"]}>{editErrors.description}</span>
@@ -819,6 +976,9 @@ export default function MyTasks() {
                     onChange={handleEditChange}
                     min={today}
                     className={`${editErrors.dueDate ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""} ${isDarkMode ? styles["darkDateInput"] : ""}`}
+                    style={{
+                      borderColor: shouldUseAccent && !editErrors.dueDate ? `rgba(${accentRgb}, 0.3)` : undefined,
+                    }}
                   />
                   {editErrors.dueDate && (
                     <span className={styles["mytasks-modal-error"]}>{editErrors.dueDate}</span>
@@ -832,6 +992,10 @@ export default function MyTasks() {
                     value={editForm.priority}
                     onChange={handleEditChange}
                     className={`${isDarkMode ? styles["darkModalSelect"] : ""}`}
+                    style={{
+                      borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                      color: shouldUseAccent ? accentColor : undefined,
+                    }}
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -848,6 +1012,10 @@ export default function MyTasks() {
                     value={editForm.category}
                     onChange={handleEditChange}
                     className={`${isDarkMode ? styles["darkModalSelect"] : ""}`}
+                    style={{
+                      borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                      color: shouldUseAccent ? accentColor : undefined,
+                    }}
                   >
                     {categories.filter(c => c !== "All").map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -863,6 +1031,9 @@ export default function MyTasks() {
                     onChange={handleEditChange}
                     placeholder="JD, AR"
                     className={`${isDarkMode ? styles["darkModalInput"] : ""}`}
+                    style={{
+                      borderColor: shouldUseAccent ? `rgba(${accentRgb}, 0.3)` : undefined,
+                    }}
                   />
                 </div>
               </div>
@@ -882,6 +1053,10 @@ export default function MyTasks() {
                 className={`${styles["mytasks-modal-save"]} ${isDarkMode ? styles["darkModalSave"] : ""}`}
                 onClick={handleEditSubmit}
                 disabled={isLoading}
+                style={{
+                  background: shouldUseAccent ? accentColor : undefined,
+                  color: shouldUseAccent ? '#000000' : undefined,
+                }}
               >
                 {isLoading ? 'Saving...' : 'Save Changes'}
               </button>
