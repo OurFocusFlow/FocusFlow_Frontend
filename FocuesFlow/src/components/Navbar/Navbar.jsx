@@ -48,6 +48,11 @@ const hexToRgb = (hex) => {
   return '251, 188, 0';
 };
 
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
+
 const Navbar = ({
   onSearch,
   user,
@@ -79,6 +84,55 @@ const Navbar = ({
 
   // Guard against the handler firing more than once per user click
   const themeToggleLockRef = useRef(false);
+
+  // Determine if accent should be used (only in dark mode AND when not default amber)
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+
+  // Convert accent color to RGB for CSS variables
+  const accentRgb = hexToRgb(accentColor);
+
+  // Get colors based on mode
+  const getAvatarBackground = () => {
+    if (shouldUseAccent) {
+      return accentColor;
+    }
+    if (isDarkMode) {
+      return '#FBBC00'; // Default amber in dark mode
+    }
+    return '#4B3832'; // Default brown in light mode
+  };
+
+  const getAvatarTextColor = () => {
+    if (isDarkMode) {
+      return '#000000';
+    }
+    return '#FFFFFF';
+  };
+
+  const getThemeToggleColor = () => {
+    if (isDarkMode) {
+      return shouldUseAccent ? accentColor : '#FBBC00';
+    }
+    return '#6A6255';
+  };
+
+  const getThemeToggleBg = () => {
+    if (isDarkMode) {
+      return shouldUseAccent 
+        ? `rgba(${accentRgb}, 0.15)` 
+        : 'rgba(251, 188, 0, 0.15)';
+    }
+    return 'transparent';
+  };
+
+  const getThemeToggleHoverBg = () => {
+    if (isDarkMode) {
+      return shouldUseAccent 
+        ? `rgba(${accentRgb}, 0.25)` 
+        : 'rgba(251, 188, 0, 0.25)';
+    }
+    return `rgba(${accentRgb}, 0.08)`;
+  };
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -188,15 +242,12 @@ const Navbar = ({
 
   const unreadCount = notificationData.filter(n => !n.read).length;
 
-  // Convert accent color to RGB for CSS variables
-  const accentRgb = hexToRgb(accentColor);
-
   return (
     <Box 
       className={`${styles.navbar} ${className}`}
       style={{
-        '--accent-color': accentColor,
-        '--accent-rgb': accentRgb,
+        '--accent-color': shouldUseAccent ? accentColor : (isDarkMode ? '#FBBC00' : '#885210'),
+        '--accent-rgb': shouldUseAccent ? accentRgb : (isDarkMode ? '251, 188, 0' : '136, 82, 16'),
       }}
     >
       <Box className={styles.navbarContent}>
@@ -247,11 +298,11 @@ const Navbar = ({
                 size={isMobile ? "small" : "medium"}
                 aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
                 sx={{
-                  backgroundColor: isDarkMode ? 'rgba(var(--accent-rgb), 0.15)' : 'transparent',
+                  backgroundColor: getThemeToggleBg(),
                   '&:hover': {
-                    backgroundColor: isDarkMode ? 'rgba(var(--accent-rgb), 0.25)' : 'rgba(var(--accent-rgb), 0.08)',
+                    backgroundColor: getThemeToggleHoverBg(),
                   },
-                  color: isDarkMode ? 'var(--accent-color)' : '#6A6255',
+                  color: getThemeToggleColor(),
                 }}
               >
                 {isDarkMode ? (
@@ -270,14 +321,14 @@ const Navbar = ({
                 <Avatar 
                   className={styles.avatar}
                   style={{
-                    background: accentColor,
-                    color: isDarkMode ? '#000000' : '#FFFFFF',
+                    background: getAvatarBackground(),
+                    color: getAvatarTextColor(),
                   }}
                 >
                   {userData.avatar}
                 </Avatar>
                 {userData.accountType === 'PRO ACCOUNT' && (
-                  <Box className={styles.proBadge} style={{ background: accentColor }}>
+                  <Box className={styles.proBadge} style={{ background: getAvatarBackground() }}>
                     <StarIcon className={styles.proStarIcon} />
                   </Box>
                 )}
@@ -295,7 +346,10 @@ const Navbar = ({
                         size="small"
                         className={styles.proChip}
                         icon={<StarIcon className={styles.chipStarIcon} />}
-                        style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
+                        style={{ 
+                          background: getAvatarBackground(), 
+                          color: getAvatarTextColor() 
+                        }}
                       />
                     )}
                   </Box>
@@ -328,7 +382,10 @@ const Navbar = ({
             <Box className={styles.menuHeader}>
               <Avatar 
                 className={styles.menuAvatar}
-                style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
+                style={{ 
+                  background: getAvatarBackground(), 
+                  color: getAvatarTextColor() 
+                }}
               >
                 {userData.avatar}
               </Avatar>
@@ -345,7 +402,10 @@ const Navbar = ({
                     size="small"
                     className={styles.menuProChip}
                     icon={<CheckCircleIcon className={styles.menuProIcon} />}
-                    style={{ background: accentColor, color: isDarkMode ? '#000000' : '#FFFFFF' }}
+                    style={{ 
+                      background: getAvatarBackground(), 
+                      color: getAvatarTextColor() 
+                    }}
                   />
                 )}
               </Box>

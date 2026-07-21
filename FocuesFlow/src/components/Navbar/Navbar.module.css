@@ -73,8 +73,8 @@
 
 .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
   background: var(--color-white);
-  border-color: var(--color-accent-orange);
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.08);
 }
 
 .searchField :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
@@ -98,7 +98,7 @@
 }
 
 .searchField :global(.Mui-focused) .searchIcon {
-  color: var(--color-accent-orange);
+  color: var(--accent-color);
 }
 
 .searchFieldMobile :global(.MuiInputBase-input) {
@@ -121,8 +121,8 @@
 }
 
 .iconButton:hover {
-  background: rgba(136, 82, 16, 0.08);
-  color: var(--color-accent-orange);
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent-color);
 }
 
 .icon {
@@ -151,8 +151,8 @@
 }
 
 .profileSection:hover {
-  background: rgba(136, 82, 16, 0.06);
-  border-color: rgba(136, 82, 16, 0.1);
+  background: rgba(var(--accent-rgb), 0.06);
+  border-color: rgba(var(--accent-rgb), 0.1);
 }
 
 .profileSectionMobile {
@@ -244,7 +244,7 @@
 }
 
 .profileSection:hover .dropdownIcon {
-  color: var(--color-accent-orange);
+  color: var(--accent-color);
 }
 
 /* Profile Menu */
@@ -318,11 +318,11 @@
 }
 
 .menuItem:hover {
-  background: rgba(136, 82, 16, 0.06);
+  background: rgba(var(--accent-rgb), 0.06);
 }
 
 .menuItem:hover .menuItemIcon {
-  color: var(--color-accent-orange);
+  color: var(--accent-color);
 }
 
 .menuItemIcon {
@@ -377,15 +377,17 @@
   font-size: 1rem;
 }
 
+/* Default (light mode) - use orange */
 .markAllRead {
-  color: var(--color-accent-orange);
+  color: var(--color-accent-orange) !important;
   font-weight: 600;
   text-transform: none;
   font-size: 0.75rem;
+  transition: var(--transition-default);
 }
 
 .markAllRead:hover {
-  background: rgba(136, 82, 16, 0.06);
+  background: rgba(136, 82, 16, 0.06) !important;
 }
 
 .notificationDivider {
@@ -403,11 +405,12 @@
 }
 
 .notificationItem:hover {
-  background: rgba(136, 82, 16, 0.04);
+  background: rgba(136, 82, 16, 0.04) !important;
 }
 
+/* Default (light mode) - use orange */
 .unreadNotification {
-  background: rgba(136, 82, 16, 0.04);
+  background: rgba(136, 82, 16, 0.04) !important;
 }
 
 .unreadNotification::before {
@@ -417,7 +420,7 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--color-accent-orange);
+  background: var(--color-accent-orange) !important;
 }
 
 .notificationContent {
@@ -438,10 +441,11 @@
   margin-top: 2px;
 }
 
+/* Default (light mode) - use orange */
 .unreadDot {
   width: 8px;
   height: 8px;
-  background: var(--color-accent-orange);
+  background: var(--color-accent-orange) !important;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -450,16 +454,18 @@
   padding: 0.75rem 1.5rem;
 }
 
+/* Default (light mode) - use orange */
 .viewAllButton {
-  color: var(--color-accent-orange);
+  color: var(--color-accent-orange) !important;
   font-weight: 600;
   text-transform: none;
   padding: 0.5rem;
   border-radius: var(--radius-sm);
+  transition: var(--transition-default);
 }
 
 .viewAllButton:hover {
-  background: rgba(136, 82, 16, 0.06);
+  background: rgba(136, 82, 16, 0.06) !important;
 }
 
 /* Responsive Styles */
@@ -619,7 +625,9 @@
   .profileSection,
   .iconButton,
   .menuItem,
-  .notificationItem {
+  .notificationItem,
+  .markAllRead,
+  .viewAllButton {
     transition: none;
   }
 
@@ -646,7 +654,13 @@
   background: var(--color-text-muted);
 }
 
+/* Theme toggle button - use accent color (handled by inline styles) */
+.themeToggleBtn {
+  /* inline styles handle this */
+}
+
 /* ==================== DARK MODE SUPPORT ==================== */
+
 [data-theme="dark"] .navbar {
   background: rgba(0, 0, 0, 0.85) !important;
   border-bottom: 1px solid rgba(56, 59, 64, 0.3) !important;
@@ -656,7 +670,7 @@
   background: #1A1A1A;
 }
 
-/* NEW: Dark mode search field hover state */
+/* Dark mode search field hover state */
 [data-theme="dark"] .searchField:hover {
   background: #2A2A2A !important;
 }
@@ -665,15 +679,15 @@
   border-color: #383B40;
 }
 
-/* NEW: Dark mode search field hover - input root */
+/* Dark mode search field hover - input root */
 [data-theme="dark"] .searchField :global(.MuiOutlinedInput-root:hover) {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color) !important;
   background: #2A2A2A !important;
 }
 
-/* NEW: Dark mode search field hover - icon */
+/* Dark mode search field hover - icon */
 [data-theme="dark"] .searchField:hover .searchIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .searchField :global(.MuiInputBase-input) {
@@ -684,22 +698,9 @@
   color: #857B6B;
 }
 
-/* Keep existing styles */
+/* Dark mode profile section */
 [data-theme="dark"] .profileSection:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
-}
-
-[data-theme="dark"] .avatar {
-  background: #FBBC00 !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .userName {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .userEmail {
-  color: #6A6255 !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 [data-theme="dark"] .dropdownIcon {
@@ -711,17 +712,8 @@
 }
 
 [data-theme="dark"] .iconButton:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
-  color: #FBBC00 !important;
-}
-
-[data-theme="dark"] .proChip {
-  background: #FBBC00 !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .chipStarIcon {
-  color: #000000 !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .profileMenuPaper {
@@ -742,7 +734,7 @@
 }
 
 [data-theme="dark"] .menuItem:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 [data-theme="dark"] .menuItemIcon {
@@ -774,28 +766,39 @@
   color: #6A6255 !important;
 }
 
+/* Dark mode notification - use accent color */
 [data-theme="dark"] .unreadNotification {
-  background: rgba(251, 188, 0, 0.06) !important;
+  background: rgba(var(--accent-rgb), 0.06) !important;
 }
 
 [data-theme="dark"] .unreadNotification::before {
-  background: #FBBC00 !important;
+  background: var(--accent-color) !important;
 }
 
+/* Dark mode - Mark All Read button */
 [data-theme="dark"] .markAllRead {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .markAllRead:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
+/* Dark mode - View All button */
 [data-theme="dark"] .viewAllButton {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .viewAllButton:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .unreadDot {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .notificationItem:hover {
+  background: rgba(var(--accent-rgb), 0.04) !important;
 }
 
 [data-theme="dark"] .leftSection {
@@ -810,18 +813,17 @@
   color: #6A6255 !important;
 }
 
-/* Keep existing focused state */
 [data-theme="dark"] .searchField :global(.Mui-focused) .searchIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color) !important;
   background: #1A1A1A !important;
 }
 
 [data-theme="dark"] .proBadge {
-  background: #FBBC00 !important;
+  background: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .proStarIcon {
@@ -832,179 +834,111 @@
   background: #ef4444 !important;
 }
 
-/* Search field focus - use accent color */
-.searchField :global(.MuiOutlinedInput-root.Mui-focused) {
-  background: var(--color-white);
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.08);
+/* ==================== LIGHT MODE OVERRIDES ==================== */
+/* In light mode, always use default colors */
+
+/* Light mode avatar - brown by default */
+[data-theme="light"] .avatar {
+  background: var(--color-brown-surface) !important;
+  color: var(--color-white) !important;
 }
 
-.searchField :global(.Mui-focused) .searchIcon {
-  color: var(--accent-color);
+[data-theme="light"] .proBadge {
+  background: var(--color-accent-orange) !important;
 }
 
-/* Icon button hover - use accent color */
-.iconButton:hover {
-  background: rgba(var(--accent-rgb), 0.08);
-  color: var(--accent-color);
+[data-theme="light"] .proStarIcon {
+  color: var(--color-white) !important;
 }
 
-/* Profile section hover - use accent color */
-.profileSection:hover {
-  background: rgba(var(--accent-rgb), 0.06);
-  border-color: rgba(var(--accent-rgb), 0.1);
+[data-theme="light"] .proChip {
+  background: var(--color-brown-surface) !important;
+  color: var(--color-white) !important;
 }
 
-.profileSection:hover .dropdownIcon {
-  color: var(--accent-color);
+[data-theme="light"] .chipStarIcon {
+  color: var(--color-avatar-orange) !important;
 }
 
-/* Menu item hover - use accent color */
-.menuItem:hover {
-  background: rgba(var(--accent-rgb), 0.06);
+[data-theme="light"] .menuAvatar {
+  background: var(--color-brown-surface) !important;
+  color: var(--color-white) !important;
 }
 
-.menuItem:hover .menuItemIcon {
-  color: var(--accent-color);
+[data-theme="light"] .menuProChip {
+  background: var(--color-brown-surface) !important;
+  color: var(--color-white) !important;
 }
 
-/* Notification unread dot and border - use accent color */
-.unreadNotification::before {
-  background: var(--accent-color);
+[data-theme="light"] .menuProIcon {
+  color: var(--color-avatar-orange) !important;
 }
 
-.unreadDot {
-  background: var(--accent-color);
+[data-theme="light"] .iconButton:hover {
+  background: rgba(136, 82, 16, 0.08) !important;
+  color: var(--color-accent-orange) !important;
 }
 
-/* Mark all read and view all buttons - use accent color */
-.markAllRead {
-  color: var(--accent-color);
+[data-theme="light"] .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
+  border-color: var(--color-accent-orange) !important;
 }
 
-.markAllRead:hover {
-  background: rgba(var(--accent-rgb), 0.06);
+[data-theme="light"] .searchField :global(.Mui-focused) .searchIcon {
+  color: var(--color-accent-orange) !important;
 }
 
-.viewAllButton {
-  color: var(--accent-color);
+/* Light mode notification - use orange */
+[data-theme="light"] .unreadNotification {
+  background: rgba(136, 82, 16, 0.04) !important;
 }
 
-.viewAllButton:hover {
-  background: rgba(var(--accent-rgb), 0.06);
+[data-theme="light"] .unreadNotification::before {
+  background: var(--color-accent-orange) !important;
 }
 
-/* Notification unread background - use accent color with opacity */
-.unreadNotification {
-  background: rgba(var(--accent-rgb), 0.04);
+/* Light mode - Mark All Read button */
+[data-theme="light"] .markAllRead {
+  color: var(--color-accent-orange) !important;
 }
 
-/* Theme toggle button - use accent color (already handled by inline styles) */
-.themeToggleBtn {
-  /* inline styles handle this */
+[data-theme="light"] .markAllRead:hover {
+  background: rgba(136, 82, 16, 0.06) !important;
 }
 
-/* ==================== DARK MODE SUPPORT ==================== */
-
-[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root.Mui-focused) {
-  border-color: var(--accent-color) !important;
-  background: #1A1A1A !important;
+/* Light mode - View All button */
+[data-theme="light"] .viewAllButton {
+  color: var(--color-accent-orange) !important;
 }
 
-[data-theme="dark"] .searchField :global(.Mui-focused) .searchIcon {
-  color: var(--accent-color) !important;
+[data-theme="light"] .viewAllButton:hover {
+  background: rgba(136, 82, 16, 0.06) !important;
 }
 
-[data-theme="dark"] .iconButton {
-  color: #6A6255 !important;
+[data-theme="light"] .unreadDot {
+  background: var(--color-accent-orange) !important;
 }
 
-[data-theme="dark"] .iconButton:hover {
-  background: rgba(var(--accent-rgb), 0.08) !important;
-  color: var(--accent-color) !important;
+[data-theme="light"] .notificationItem:hover {
+  background: rgba(136, 82, 16, 0.04) !important;
 }
 
-[data-theme="dark"] .profileSection:hover {
-  background: rgba(var(--accent-rgb), 0.08) !important;
+[data-theme="light"] .profileSection:hover {
+  background: rgba(136, 82, 16, 0.06) !important;
+  border-color: rgba(136, 82, 16, 0.1) !important;
 }
 
-[data-theme="dark"] .dropdownIcon {
-  color: #6A6255 !important;
+[data-theme="light"] .profileSection:hover .dropdownIcon {
+  color: var(--color-accent-orange) !important;
 }
 
-[data-theme="dark"] .profileSection:hover .dropdownIcon {
-  color: var(--accent-color) !important;
+[data-theme="light"] .menuItem:hover {
+  background: rgba(136, 82, 16, 0.06) !important;
 }
 
-[data-theme="dark"] .menuItem:hover {
-  background: rgba(var(--accent-rgb), 0.08) !important;
+[data-theme="light"] .menuItem:hover .menuItemIcon {
+  color: var(--color-accent-orange) !important;
 }
 
-[data-theme="dark"] .menuItem:hover .menuItemIcon {
-  color: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .unreadNotification {
-  background: rgba(var(--accent-rgb), 0.06) !important;
-}
-
-[data-theme="dark"] .unreadNotification::before {
-  background: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .markAllRead {
-  color: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .markAllRead:hover {
-  background: rgba(var(--accent-rgb), 0.08) !important;
-}
-
-[data-theme="dark"] .viewAllButton {
-  color: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .viewAllButton:hover {
-  background: rgba(var(--accent-rgb), 0.08) !important;
-}
-
-[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root:hover) {
-  border-color: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .searchField:hover .searchIcon {
-  color: var(--accent-color) !important;
-}
-
-/* Dark mode profile chip */
-[data-theme="dark"] .proChip {
-  background: var(--accent-color) !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .menuProChip {
-  background: var(--accent-color) !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .proBadge {
-  background: var(--accent-color) !important;
-}
-
-[data-theme="dark"] .proStarIcon {
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .chipStarIcon {
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .avatar {
-  background: var(--accent-color) !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .menuAvatar {
-  background: var(--accent-color) !important;
-  color: #000000 !important;
+[data-theme="light"] .searchField :global(.MuiOutlinedInput-root:hover) {
+  border-color: var(--color-gray-card) !important;
 }
