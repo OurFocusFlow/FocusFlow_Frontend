@@ -599,3 +599,226 @@
     height: 130px;
   }
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkNfPage {
+  background: #000000 !important;
+}
+
+/* Vignette Dark Mode */
+.darkNfVignette {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    transparent 45%,
+    rgba(251, 188, 0, 0.05) 100%
+  ) !important;
+}
+
+/* Header Dark Mode */
+.darkNfHeader {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkNfLogo {
+  color: #FFFFFF !important;
+}
+
+.darkNfLogoIcon {
+  color: #FBBC00 !important;
+}
+
+.darkNfNav a {
+  color: #6A6255 !important;
+}
+
+.darkNfNav a:hover {
+  color: #FFFFFF !important;
+}
+
+/* Main Dark Mode */
+.darkNfMain {
+  color: #FFFFFF !important;
+}
+
+/* Scope Dark Mode */
+.darkNfRingWrapper {
+  color: #FBBC00 !important;
+  opacity: 0.15 !important;
+}
+
+.darkNfRing {
+  color: #FBBC00 !important;
+}
+
+.darkNfClockFace {
+  background: #030202 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkNfClockFace::before {
+  border-color: #383B40 !important;
+}
+
+.darkNfClock12 {
+  color: #383B40 !important;
+}
+
+.darkNfHandHour {
+  background: #FFFFFF !important;
+}
+
+.darkNfHandMinute {
+  background: #FBBC00 !important;
+}
+
+.darkNfHandMinute::after {
+  background: #FBBC00 !important;
+}
+
+.darkNfHandSecond {
+  background: #ef4444 !important;
+}
+
+.darkNfClockPin {
+  background: #1A1A1A !important;
+}
+
+.darkNfClockCorner {
+  border-color: #383B40 !important;
+}
+
+/* Chip Dark Mode */
+.darkNfChip {
+  background: #1A1A1A !important;
+}
+
+.darkNfRecDot {
+  background: #FBBC00 !important;
+}
+
+.darkNfChipLabel {
+  color: #6A6255 !important;
+}
+
+.darkNfChipDigits {
+  color: #FBBC00 !important;
+}
+
+/* Title Dark Mode */
+.darkNfTitle {
+  color: #FFFFFF !important;
+}
+
+.darkNfEm {
+  color: #FBBC00 !important;
+  text-decoration-color: #FBBC00 !important;
+}
+
+.darkNfSubtitle {
+  color: #6A6255 !important;
+}
+
+/* Buttons Dark Mode */
+.darkNfBtnPrimary {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 24px rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkNfBtnPrimary:hover {
+  background: #E2A900 !important;
+  color: #000000 !important;
+  transform: translateY(-2px) !important;
+}
+
+.darkNfBtnSecondary {
+  background: #1A1A1A !important;
+  color: #FFFFFF !important;
+  border-color: #383B40 !important;
+}
+
+.darkNfBtnSecondary:hover {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.06) !important;
+}
+
+.darkNfBtnIcon {
+  color: inherit !important;
+}
+
+/* Skeleton Cards Dark Mode */
+.darkNfSkeletonCard {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkNfSkeletonCard svg {
+  color: #FBBC00 !important;
+}
+
+.darkNfSkeletonBar {
+  background: linear-gradient(
+    90deg,
+    #383B40 25%,
+    #1A1A1A 50%,
+    #383B40 75%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: nf-shimmer-dark 2.2s ease-in-out infinite !important;
+}
+
+/* Dark Shimmer Animation */
+@keyframes nf-shimmer-dark {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkNfHeader {
+    border-bottom-color: #383B40 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkNfHeader {
+    border-bottom-color: #383B40 !important;
+  }
+  
+  .darkNfBtnPrimary {
+    box-shadow: none !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkNfLogoIcon,
+  .darkNfRingWrapper,
+  .darkNfClockFace,
+  .darkNfHandSecond,
+  .darkNfRecDot,
+  .darkNfSkeletonBar,
+  .darkNfMain {
+    animation: none !important;
+  }
+  
+  .darkNfClockFace {
+    filter: blur(0) !important;
+  }
+  
+  .darkNfSkeletonBar {
+    animation: none !important;
+  }
+  
+  .darkNfBtnPrimary:hover,
+  .darkNfBtnSecondary:hover {
+    transform: none !important;
+  }
+}
