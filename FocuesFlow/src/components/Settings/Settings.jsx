@@ -1,4 +1,4 @@
-// Settings.jsx - Updated with mode-specific accent colors and reset functionality
+// Settings.jsx - Updated with mode-specific accent colors and proper text colors
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -473,20 +473,8 @@ const Settings = () => {
                   <MenuItem value="en-US" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
                     🇺🇸 English (US)
                   </MenuItem>
-                  <MenuItem value="en-GB" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
-                    🇬🇧 English (UK)
-                  </MenuItem>
                   <MenuItem value="ar-EG" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
                     🇪🇬 العربية
-                  </MenuItem>
-                  <MenuItem value="fr-FR" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
-                    🇫🇷 Français
-                  </MenuItem>
-                  <MenuItem value="es-ES" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
-                    🇪🇸 Español
-                  </MenuItem>
-                  <MenuItem value="de-DE" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
-                    🇩🇪 Deutsch
                   </MenuItem>
                 </Select>
               }
@@ -556,6 +544,10 @@ const Settings = () => {
                 <Button 
                   className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`} 
                   onClick={handleOpenPasswordModal}
+                  style={{
+                    backgroundColor: isDarkMode ? accentColor : undefined,
+                    color: isDarkMode ? '#FFFFFF' : undefined,
+                  }}
                 >
                   <SecurityIcon />
                   Update Password
@@ -568,7 +560,13 @@ const Settings = () => {
               description="Add an extra layer of protection to your account"
               isDarkMode={isDarkMode}
               control={
-                <Button className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`}>
+                <Button 
+                  className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`}
+                  style={{
+                    backgroundColor: isDarkMode ? accentColor : undefined,
+                    color: isDarkMode ? '#FFFFFF' : undefined,
+                  }}
+                >
                   Enable 2FA
                 </Button>
               }
@@ -662,7 +660,13 @@ const Settings = () => {
 
         {/* Save Button */}
         <Box className={`${styles.saveSection} ${isDarkMode ? styles.darkSaveSection : ''}`}>
-          <Button className={`${isDarkMode ? styles.darkButton : styles.saveButton}`}>
+          <Button 
+            className={`${isDarkMode ? styles.darkButton : styles.saveButton}`}
+            style={{
+              backgroundColor: isDarkMode ? accentColor : undefined,
+              color: isDarkMode ? '#FFFFFF' : undefined,
+            }}
+          >
             <CheckCircleIcon />
             Save Changes
           </Button>
@@ -844,6 +848,10 @@ const Settings = () => {
               className={`${styles.passwordModalConfirm} ${isDarkMode ? styles.darkPasswordModalConfirm : ''}`}
               onClick={handleUpdatePassword}
               disabled={isUpdatingPassword}
+              style={{
+                backgroundColor: isDarkMode ? accentColor : undefined,
+                color: isDarkMode ? '#FFFFFF' : undefined,
+              }}
             >
               {isUpdatingPassword ? 'Updating...' : 'Update Password'}
             </Button>

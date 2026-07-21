@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800;900&display=swap');
 
+/* ==================== CSS VARIABLES ==================== */
+:root {
+  --accent-color: #885210;
+  --accent-rgb: 136, 82, 16;
+}
+
 /* ==================== PAGE ==================== */
 .page {
   position: relative;
@@ -298,7 +304,7 @@
   background: #FFFFFF;
 }
 
-/* ==================== SWATCH ROW - LIGHT MODE FIXED TO #885210 ==================== */
+/* ==================== SWATCH ROW ==================== */
 .swatchRow {
   display: flex;
   gap: 12px;
@@ -318,16 +324,10 @@
   transform: scale(1.15);
 }
 
-/* Light mode - always #885210 when selected */
 .swatchActive {
   border-color: #33231D;
   outline: 3px solid #FBEAD9;
   outline-offset: 3px;
-}
-
-/* Light mode - always use #885210 for checked state */
-.swatch[style*="background-color"] {
-  /* Keep original colors for swatches */
 }
 
 /* ==================== FONT SIZE CONTROL ==================== */
@@ -1265,7 +1265,6 @@
 }
 
 /* ==================== CUSTOM SWITCH ==================== */
-
 .switch {
   position: relative;
   display: inline-block;
@@ -1427,17 +1426,17 @@
 
 .darkSettingsBgGrid {
   background-image: 
-    linear-gradient(rgba(var(--accent-color-rgb), 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--accent-color-rgb), 0.03) 1px, transparent 1px) !important;
+    linear-gradient(rgba(var(--accent-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.03) 1px, transparent 1px) !important;
 }
 
 .darkSettingsBgGlow {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
 }
 
 /* Dark Mode Orbs with ACCENT COLOR */
 [data-theme="dark"] .settings-bg-orb:nth-child(1) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.12) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 500px;
   height: 500px;
   top: -150px;
@@ -1447,7 +1446,7 @@
 }
 
 [data-theme="dark"] .settings-bg-orb:nth-child(2) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.08) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 400px;
   height: 400px;
   bottom: -100px;
@@ -1457,7 +1456,7 @@
 }
 
 [data-theme="dark"] .settings-bg-orb:nth-child(3) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 350px;
   height: 350px;
   top: 40%;
@@ -1486,7 +1485,7 @@
 }
 
 .darkSectionIcon {
-  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
   color: var(--accent-color) !important;
 }
 
@@ -1562,7 +1561,7 @@
 
 .darkSwatch.swatchActive {
   border-color: var(--accent-color) !important;
-  outline: 3px solid rgba(var(--accent-color-rgb), 0.3) !important;
+  outline: 3px solid rgba(var(--accent-rgb), 0.3) !important;
   outline-offset: 3px !important;
 }
 
@@ -1614,28 +1613,49 @@
 }
 
 .darkSelect :global(.MuiMenuItem-root:hover) {
-  background: rgba(var(--accent-color-rgb), 0.08) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
 }
 
 .darkSelect :global(.MuiMenuItem-root.Mui-selected) {
-  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
 }
 
 /* ==================== BUTTONS DARK MODE ==================== */
 .darkButton {
   background: var(--accent-color) !important;
-  color: #000000 !important;
+  color: #FFFFFF !important;
 }
 
 .darkButton:hover {
   background: var(--accent-color) !important;
   opacity: 0.85;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(var(--accent-color-rgb), 0.3) !important;
+  box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.3) !important;
+  color: #FFFFFF !important;
 }
 
 .darkButton svg {
-  color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.darkButton:hover svg {
+  color: #FFFFFF !important;
+}
+
+/* ==================== SAVE BUTTON DARK MODE ==================== */
+.darkSaveButton {
+  background: var(--accent-color) !important;
+  color: #FFFFFF !important;
+}
+
+.darkSaveButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  color: #FFFFFF !important;
+}
+
+.darkSaveButton svg {
+  color: #FFFFFF !important;
 }
 
 /* ==================== DANGER ZONE DARK MODE ==================== */
@@ -1682,6 +1702,11 @@
 
 .darkDeleteButton:hover {
   background: #dc2626 !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteButton svg {
+  color: #FFFFFF !important;
 }
 
 /* ==================== SAVE SECTION DARK MODE ==================== */
@@ -1771,7 +1796,7 @@
 }
 
 .darkPasswordModalIconWrapper {
-  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
 }
 
 .darkPasswordModalIcon {
@@ -1813,7 +1838,7 @@
 
 .darkPasswordInputWrap:focus-within {
   border-color: var(--accent-color) !important;
-  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08) !important;
 }
 
 .darkPasswordInput {
@@ -1869,12 +1894,17 @@
 
 .darkPasswordModalConfirm {
   background: var(--accent-color) !important;
-  color: #000000 !important;
+  color: #FFFFFF !important;
 }
 
 .darkPasswordModalConfirm:hover {
   background: var(--accent-color) !important;
   opacity: 0.85;
+  color: #FFFFFF !important;
+}
+
+.darkPasswordModalConfirm svg {
+  color: #FFFFFF !important;
 }
 
 /* ==================== SWITCH DARK MODE - WITH ACCENT COLOR ==================== */
@@ -1901,7 +1931,7 @@
 }
 
 [data-theme="dark"] .switch input:focus + .switchSlider {
-  box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.3) !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.3) !important;
 }
 
 [data-theme="dark"] .switch input:checked:active + .switchSlider::before {
@@ -2056,13 +2086,13 @@
 /* Dark mode swatch active */
 .darkSwatch.swatchActive {
   border-color: var(--accent-color) !important;
-  outline: 3px solid rgba(var(--accent-color-rgb), 0.3) !important;
+  outline: 3px solid rgba(var(--accent-rgb), 0.3) !important;
   outline-offset: 3px !important;
 }
 
 /* ==================== DARK MODE BACKGROUND ORBS ==================== */
 [data-theme="dark"] .settings-bg-orb:nth-child(1) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.12) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.12) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 500px;
   height: 500px;
   top: -150px;
@@ -2072,7 +2102,7 @@
 }
 
 [data-theme="dark"] .settings-bg-orb:nth-child(2) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.08) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 400px;
   height: 400px;
   bottom: -100px;
@@ -2082,7 +2112,7 @@
 }
 
 [data-theme="dark"] .settings-bg-orb:nth-child(3) {
-  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
   width: 350px;
   height: 350px;
   top: 40%;
@@ -2161,17 +2191,17 @@
 }
 
 .darkMenuItem:hover {
-  background: rgba(var(--accent-color-rgb), 0.08) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
   color: var(--accent-color) !important;
 }
 
 .darkMenuItem.Mui-selected {
-  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  background: rgba(var(--accent-rgb), 0.12) !important;
   color: var(--accent-color) !important;
 }
 
 .darkMenuItem.Mui-selected:hover {
-  background: rgba(var(--accent-color-rgb), 0.16) !important;
+  background: rgba(var(--accent-rgb), 0.16) !important;
   color: var(--accent-color) !important;
 }
 
@@ -2198,11 +2228,11 @@
 }
 
 .darkMenuPaper::-webkit-scrollbar-thumb {
-  background: rgba(var(--accent-color-rgb), 0.15);
+  background: rgba(var(--accent-rgb), 0.15);
 }
 
 .darkMenuPaper::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--accent-color-rgb), 0.3);
+  background: rgba(var(--accent-rgb), 0.3);
 }
 
 /* ==================== RESPONSIVE SELECT ==================== */
@@ -2219,4 +2249,38 @@
   .darkMenuPaper {
     max-width: calc(100% - 32px) !important;
   }
+}
+
+/* ==================== FORCE WHITE TEXT ON ALL BUTTONS IN DARK MODE ==================== */
+[data-theme="dark"] .primaryButton,
+[data-theme="dark"] .saveButton,
+[data-theme="dark"] .darkButton,
+[data-theme="dark"] .deleteButton,
+[data-theme="dark"] .deleteButtonRed,
+[data-theme="dark"] .passwordModalConfirm {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton svg,
+[data-theme="dark"] .saveButton svg,
+[data-theme="dark"] .darkButton svg,
+[data-theme="dark"] .deleteButton svg,
+[data-theme="dark"] .passwordModalConfirm svg {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton:hover,
+[data-theme="dark"] .saveButton:hover,
+[data-theme="dark"] .darkButton:hover,
+[data-theme="dark"] .deleteButton:hover,
+[data-theme="dark"] .passwordModalConfirm:hover {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton:hover svg,
+[data-theme="dark"] .saveButton:hover svg,
+[data-theme="dark"] .darkButton:hover svg,
+[data-theme="dark"] .deleteButton:hover svg,
+[data-theme="dark"] .passwordModalConfirm:hover svg {
+  color: #FFFFFF !important;
 }
