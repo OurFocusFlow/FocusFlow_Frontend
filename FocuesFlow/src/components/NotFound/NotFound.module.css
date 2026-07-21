@@ -822,3 +822,100 @@
     transform: none !important;
   }
 }
+
+/* ==================== NOTFOUND PAGE ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfVignette {
+  background: radial-gradient(
+    ellipse at 50% 38%,
+    transparent 45%,
+    rgba(var(--accent-rgb), 0.05) 100%
+  ) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfLogoIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfRingWrapper {
+  color: var(--accent-color) !important;
+  opacity: 0.15 !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfRing {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfHandMinute {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfHandMinute::after {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfClockPin {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfRecDot {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfChipDigits {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfEm {
+  color: var(--accent-color) !important;
+  text-decoration-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfBtnPrimary {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 24px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfBtnPrimary:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  transform: translateY(-2px) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfBtnSecondary {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfBtnSecondary:hover {
+  background: rgba(var(--accent-rgb), 0.06) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) .darkNfSkeletonCard svg {
+  color: var(--accent-color) !important;
+}
+
+/* Dark mode scrollbar for NotFound page with accent */
+[data-theme="dark"] .nf-page:not(.default-accent)::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent)::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .nf-page:not(.default-accent) {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}
+
+/* ==================== ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .nf-page {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
