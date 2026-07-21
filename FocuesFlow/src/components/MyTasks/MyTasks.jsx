@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTasks } from "../Context/TaskContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 import styles from "./MyTasks.module.css";
 import CreateTaskModal from "../CreateTaskModal/CreateTaskModal";
 import ToastNotification from "../ToastNotification/ToastNotification";
@@ -111,6 +112,7 @@ export default function MyTasks() {
     getCompletedCount,
     isLoading 
   } = useTasks();
+  const { isDarkMode } = useDarkMode();
   
   const [activeTab, setActiveTab] = useState("all");
   const [viewMode, setViewMode] = useState("list");
@@ -369,6 +371,7 @@ export default function MyTasks() {
     }
   };
 
+  // Updated sorting: newest to oldest by due date
   const filteredTasks = tasks
     .filter((task) => {
       if (activeTab === "all") return true;
@@ -390,8 +393,19 @@ export default function MyTasks() {
              task.description.toLowerCase().includes(searchTerm.toLowerCase());
     })
     .sort((a, b) => {
+      // First: incomplete tasks first
       if (a.completed && !b.completed) return 1;
       if (!a.completed && b.completed) return -1;
+      
+      // Then: sort by due date - newest first (descending)
+      // Tasks with no due date go to the bottom
+      if (a.dueSort && b.dueSort) {
+        return b.dueSort - a.dueSort; // Newest first
+      }
+      if (a.dueSort) return -1;
+      if (b.dueSort) return 1;
+      
+      // If both have no due date, sort by priority
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     });
 
@@ -418,26 +432,26 @@ export default function MyTasks() {
   };
 
   return (
-    <div className={styles["mytasks-container"]}>
-      <div className={styles["mytasks-bg"]}>
+    <div className={`${styles["mytasks-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
+      <div className={`${styles["mytasks-bg"]} ${isDarkMode ? styles["darkBg"] : ""}`}>
         <div className={styles["mytasks-bg-orb"]} />
         <div className={styles["mytasks-bg-orb"]} />
         <div className={styles["mytasks-bg-orb"]} />
-        <div className={styles["mytasks-bg-grid"]} />
-        <div className={styles["mytasks-bg-glow"]} />
+        <div className={`${styles["mytasks-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`} />
+        <div className={`${styles["mytasks-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`} />
       </div>
 
       <div className={styles["mytasks-content-wrapper"]}>
         <div className={styles["mytasks-header-section"]}>
           <div className={styles["mytasks-header"]}>
             <div>
-              <h1 className={styles["mytasks-title"]}>My Tasks</h1>
-              <p className={styles["mytasks-subtitle"]}>
+              <h1 className={`${styles["mytasks-title"]} ${isDarkMode ? styles["darkTitle"] : ""}`}>My Tasks</h1>
+              <p className={`${styles["mytasks-subtitle"]} ${isDarkMode ? styles["darkSubtitle"] : ""}`}>
                 Manage and track all your tasks in one place
               </p>
             </div>
             <button 
-              className={styles["mytasks-new-task-btn"]}
+              className={`${styles["mytasks-new-task-btn"]} ${isDarkMode ? styles["darkNewTaskBtn"] : ""}`}
               onClick={handleOpenModal}
               disabled={isLoading}
             >
@@ -447,60 +461,61 @@ export default function MyTasks() {
           </div>
 
           <div className={styles["mytasks-stats-row"]}>
-            <div className={styles["mytasks-stat-box"]}>
+            <div className={`${styles["mytasks-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
               <div className={styles["mytasks-stat-top"]}>
-                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-total"]}`}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-total"]} ${isDarkMode ? styles["darkIconTotal"] : ""}`}>
                   <Icon name="list" className={styles["mytasks-stat-icon"]} />
                 </div>
-                <span className={styles["mytasks-stat-trend"]}>Total</span>
+                <span className={`${styles["mytasks-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>Total</span>
               </div>
-              <span className={styles["mytasks-stat-label"]}>All Tasks</span>
-              <span className={styles["mytasks-stat-value"]}>{stats.total}</span>
+              <span className={`${styles["mytasks-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>All Tasks</span>
+              <span className={`${styles["mytasks-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.total}</span>
             </div>
 
-            <div className={styles["mytasks-stat-box"]}>
+            <div className={`${styles["mytasks-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
               <div className={styles["mytasks-stat-top"]}>
-                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-completed"]}`}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-completed"]} ${isDarkMode ? styles["darkIconCompleted"] : ""}`}>
                   <Icon name="check" className={styles["mytasks-stat-icon"]} />
                 </div>
-                <span className={styles["mytasks-stat-trend"]}>Done</span>
+                <span className={`${styles["mytasks-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>Done</span>
               </div>
-              <span className={styles["mytasks-stat-label"]}>Completed</span>
-              <span className={styles["mytasks-stat-value"]}>{stats.completed}</span>
+              <span className={`${styles["mytasks-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>Completed</span>
+              <span className={`${styles["mytasks-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.completed}</span>
             </div>
 
-            <div className={styles["mytasks-stat-box"]}>
+            <div className={`${styles["mytasks-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
               <div className={styles["mytasks-stat-top"]}>
-                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-progress"]}`}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-progress"]} ${isDarkMode ? styles["darkIconProgress"] : ""}`}>
                   <Icon name="clock" className={styles["mytasks-stat-icon"]} />
                 </div>
-                <span className={styles["mytasks-stat-trend"]}>Active</span>
+                <span className={`${styles["mytasks-stat-trend"]} ${isDarkMode ? styles["darkStatTrend"] : ""}`}>Active</span>
               </div>
-              <span className={styles["mytasks-stat-label"]}>In Progress</span>
-              <span className={styles["mytasks-stat-value"]}>{stats.inProgress}</span>
+              <span className={`${styles["mytasks-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>In Progress</span>
+              <span className={`${styles["mytasks-stat-value"]} ${isDarkMode ? styles["darkStatValue"] : ""}`}>{stats.inProgress}</span>
             </div>
 
-            <div className={styles["mytasks-stat-box"]}>
+            <div className={`${styles["mytasks-stat-box"]} ${isDarkMode ? styles["darkStatBox"] : ""}`}>
               <div className={styles["mytasks-stat-top"]}>
-                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-high"]}`}>
+                <div className={`${styles["mytasks-stat-icon-wrap"]} ${styles["icon-high"]} ${isDarkMode ? styles["darkIconHigh"] : ""}`}>
                   <Icon name="alertCircle" className={styles["mytasks-stat-icon"]} />
                 </div>
-                <span className={`${styles["mytasks-stat-trend"]} ${styles["trend-urgent"]}`}>Urgent</span>
+                <span className={`${styles["mytasks-stat-trend"]} ${styles["trend-urgent"]} ${isDarkMode ? styles["darkTrendUrgent"] : ""}`}>Urgent</span>
               </div>
-              <span className={styles["mytasks-stat-label"]}>High Priority</span>
-              <span className={`${styles["mytasks-stat-value"]} ${styles["value-urgent"]}`}>{stats.highPriority}</span>
+              <span className={`${styles["mytasks-stat-label"]} ${isDarkMode ? styles["darkStatLabel"] : ""}`}>High Priority</span>
+              <span className={`${styles["mytasks-stat-value"]} ${styles["value-urgent"]} ${isDarkMode ? styles["darkValueUrgent"] : ""}`}>{stats.highPriority}</span>
             </div>
           </div>
         </div>
 
         <div className={styles["mytasks-filters"]}>
-          <div className={styles["mytasks-search"]}>
-            <Icon name="search" className={styles["mytasks-search-icon"]} />
+          <div className={`${styles["mytasks-search"]} ${isDarkMode ? styles["darkSearch"] : ""}`}>
+            <Icon name="search" className={`${styles["mytasks-search-icon"]} ${isDarkMode ? styles["darkSearchIcon"] : ""}`} />
             <input
               type="text"
               placeholder="Search tasks..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className={isDarkMode ? styles["darkSearchInput"] : ""}
             />
           </div>
 
@@ -508,7 +523,7 @@ export default function MyTasks() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className={styles["mytasks-filter-select"]}
+              className={`${styles["mytasks-filter-select"]} ${isDarkMode ? styles["darkFilterSelect"] : ""}`}
             >
               {categories.map(cat => (
                 <option key={cat} value={cat === "All" ? "all" : cat}>
@@ -520,7 +535,7 @@ export default function MyTasks() {
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className={styles["mytasks-filter-select"]}
+              className={`${styles["mytasks-filter-select"]} ${isDarkMode ? styles["darkFilterSelect"] : ""}`}
             >
               {priorities.map(pri => (
                 <option key={pri} value={pri === "All" ? "all" : pri}>
@@ -532,19 +547,19 @@ export default function MyTasks() {
         </div>
 
         <div className={styles["mytasks-tabs-section"]}>
-          <div className={styles["mytasks-tabs"]}>
+          <div className={`${styles["mytasks-tabs"]} ${isDarkMode ? styles["darkTabs"] : ""}`}>
             {["all", "todo", "done"].map((tab) => (
               <button
                 key={tab}
                 className={`${styles["mytasks-tab"]} ${
                   activeTab === tab ? styles["mytasks-tab-active"] : ""
-                }`}
+                } ${isDarkMode ? styles["darkTab"] : ""}`}
                 onClick={() => setActiveTab(tab)}
               >
                 <span className={styles["mytasks-tab-text"]}>
                   {tab === "all" ? "All Tasks" : tab === "todo" ? "To Do" : "Completed"}
                 </span>
-                <span className={styles["mytasks-tab-badge"]}>
+                <span className={`${styles["mytasks-tab-badge"]} ${isDarkMode ? styles["darkTabBadge"] : ""}`}>
                   {tab === "all"
                     ? tasks.length
                     : tab === "todo"
@@ -555,11 +570,11 @@ export default function MyTasks() {
             ))}
           </div>
 
-          <div className={styles["mytasks-view-toggle"]}>
+          <div className={`${styles["mytasks-view-toggle"]} ${isDarkMode ? styles["darkViewToggle"] : ""}`}>
             <button
               className={`${styles["mytasks-view-btn"]} ${
                 viewMode === "list" ? styles["mytasks-view-active"] : ""
-              }`}
+              } ${isDarkMode ? styles["darkViewBtn"] : ""}`}
               onClick={() => setViewMode("list")}
               title="List View"
             >
@@ -568,7 +583,7 @@ export default function MyTasks() {
             <button
               className={`${styles["mytasks-view-btn"]} ${
                 viewMode === "grid" ? styles["mytasks-view-active"] : ""
-              }`}
+              } ${isDarkMode ? styles["darkViewBtn"] : ""}`}
               onClick={() => setViewMode("grid")}
               title="Grid View"
             >
@@ -579,7 +594,7 @@ export default function MyTasks() {
 
         <div className={styles["mytasks-task-list"]}>
           {filteredTasks.length === 0 ? (
-            <div className={styles["mytasks-empty"]}>
+            <div className={`${styles["mytasks-empty"]} ${isDarkMode ? styles["darkEmpty"] : ""}`}>
               <span className={styles["mytasks-empty-icon"]}>📭</span>
               <h3>No tasks found</h3>
               <p>Try adjusting your filters or create a new task</p>
@@ -590,7 +605,7 @@ export default function MyTasks() {
                 key={task.id}
                 className={`${styles["mytasks-task-item"]} ${styles[priorityClass(task.priority)]} ${
                   task.completed ? styles["mytasks-task-completed"] : ""
-                } ${hoveredTask === task.id ? styles["mytasks-task-hovered"] : ""}`}
+                } ${hoveredTask === task.id ? styles["mytasks-task-hovered"] : ""} ${isDarkMode ? styles["darkTaskItem"] : ""}`}
                 onMouseEnter={() => setHoveredTask(task.id)}
                 onMouseLeave={() => setHoveredTask(null)}
                 style={{ animationDelay: `${index * 0.08}s` }}
@@ -600,49 +615,49 @@ export default function MyTasks() {
                     type="checkbox"
                     checked={task.completed}
                     onChange={() => toggleTaskComplete(task.id)}
-                    className={styles["mytasks-task-checkbox"]}
+                    className={`${styles["mytasks-task-checkbox"]} ${isDarkMode ? styles["darkTaskCheckbox"] : ""}`}
                     disabled={isLoading}
                   />
                 </div>
 
                 <div className={styles["mytasks-task-content"]}>
                   <div className={styles["mytasks-task-title-row"]}>
-                    <h3>{task.title}</h3>
+                    <h3 className={isDarkMode ? styles["darkTaskTitle"] : ""}>{task.title}</h3>
                     <div className={styles["mytasks-task-tags"]}>
-                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]}`}>
+                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}>
                         {task.priority}
                       </span>
-                      <span className={styles["mytasks-task-category"]}>
+                      <span className={`${styles["mytasks-task-category"]} ${isDarkMode ? styles["darkTaskCategory"] : ""}`}>
                         {getCategoryIcon(task.category)} {task.category}
                       </span>
                     </div>
                   </div>
 
-                  <p className={styles["mytasks-task-description"]}>{task.description}</p>
+                  <p className={`${styles["mytasks-task-description"]} ${isDarkMode ? styles["darkTaskDescription"] : ""}`}>{task.description}</p>
 
                   <div className={styles["mytasks-task-meta"]}>
                     <div className={styles["mytasks-task-meta-left"]}>
                       {task.dueDate && (
-                        <span className={styles["mytasks-task-meta-item"]}>
+                        <span className={`${styles["mytasks-task-meta-item"]} ${isDarkMode ? styles["darkTaskMetaItem"] : ""}`}>
                           <Icon name="calendar" className={styles["mytasks-meta-icon"]} />
                           {task.dueDate}
                         </span>
                       )}
-                      <span className={styles["mytasks-task-meta-item"]}>
+                      <span className={`${styles["mytasks-task-meta-item"]} ${isDarkMode ? styles["darkTaskMetaItem"] : ""}`}>
                         {getStatusIcon(task.status)} {task.status || 'Pending'}
                       </span>
                     </div>
                     <div className={styles["mytasks-task-meta-right"]}>
                       <div className={styles["mytasks-task-avatars"]}>
                         {task.assignees && task.assignees.map((initials, i) => (
-                          <span key={i} className={styles["mytasks-avatar"]} style={{ zIndex: task.assignees.length - i }}>
+                          <span key={i} className={`${styles["mytasks-avatar"]} ${isDarkMode ? styles["darkAvatar"] : ""}`} style={{ zIndex: task.assignees.length - i }}>
                             {initials}
                           </span>
                         ))}
                       </div>
                       <div className={styles["mytasks-task-actions"]}>
                         <button 
-                          className={styles["mytasks-edit-btn"]}
+                          className={`${styles["mytasks-edit-btn"]} ${isDarkMode ? styles["darkEditBtn"] : ""}`}
                           onClick={() => handleEditClick(task)}
                           aria-label="Edit task"
                           disabled={isLoading}
@@ -650,7 +665,7 @@ export default function MyTasks() {
                           <Icon name="edit" className={styles["mytasks-action-icon"]} />
                         </button>
                         <button 
-                          className={styles["mytasks-delete-btn"]}
+                          className={`${styles["mytasks-delete-btn"]} ${isDarkMode ? styles["darkDeleteBtn"] : ""}`}
                           onClick={() => handleDeleteClick(task)}
                           aria-label="Delete task"
                           disabled={isLoading}
@@ -659,7 +674,7 @@ export default function MyTasks() {
                         </button>
                       </div>
                       {task.completed && (
-                        <span className={styles["mytasks-task-completed-badge"]}>
+                        <span className={`${styles["mytasks-task-completed-badge"]} ${isDarkMode ? styles["darkCompletedBadge"] : ""}`}>
                           <Icon name="check" className={styles["mytasks-badge-icon"]} />
                           Done
                         </span>
@@ -676,7 +691,7 @@ export default function MyTasks() {
                   key={task.id}
                   className={`${styles["mytasks-grid-item"]} ${styles[priorityClass(task.priority)]} ${
                     task.completed ? styles["mytasks-grid-completed"] : ""
-                  } ${hoveredTask === task.id ? styles["mytasks-grid-hovered"] : ""}`}
+                  } ${hoveredTask === task.id ? styles["mytasks-grid-hovered"] : ""} ${isDarkMode ? styles["darkGridItem"] : ""}`}
                   onMouseEnter={() => setHoveredTask(task.id)}
                   onMouseLeave={() => setHoveredTask(null)}
                 >
@@ -686,35 +701,35 @@ export default function MyTasks() {
                         type="checkbox"
                         checked={task.completed}
                         onChange={() => toggleTaskComplete(task.id)}
-                        className={styles["mytasks-grid-checkbox"]}
+                        className={`${styles["mytasks-grid-checkbox"]} ${isDarkMode ? styles["darkGridCheckbox"] : ""}`}
                         disabled={isLoading}
                       />
                     </div>
                     <div className={styles["mytasks-grid-badges"]}>
-                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]}`}>
+                      <span className={`${styles["mytasks-task-priority"]} ${styles[priorityClass(task.priority)]} ${isDarkMode ? styles["darkTaskPriority"] : ""}`}>
                         {task.priority}
                       </span>
                     </div>
                   </div>
 
-                  <h4 className={styles["mytasks-grid-title"]}>{task.title}</h4>
-                  <p className={styles["mytasks-grid-description"]}>{task.description}</p>
+                  <h4 className={`${styles["mytasks-grid-title"]} ${isDarkMode ? styles["darkGridTitle"] : ""}`}>{task.title}</h4>
+                  <p className={`${styles["mytasks-grid-description"]} ${isDarkMode ? styles["darkGridDescription"] : ""}`}>{task.description}</p>
 
                   <div className={styles["mytasks-grid-meta"]}>
                     <div className={styles["mytasks-grid-meta-left"]}>
                       {task.dueDate && (
-                        <span className={styles["mytasks-grid-due"]}>
+                        <span className={`${styles["mytasks-grid-due"]} ${isDarkMode ? styles["darkGridDue"] : ""}`}>
                           <Icon name="calendar" className={styles["mytasks-grid-icon"]} />
                           {task.dueDate}
                         </span>
                       )}
-                      <span className={styles["mytasks-grid-status-text"]}>
+                      <span className={`${styles["mytasks-grid-status-text"]} ${isDarkMode ? styles["darkGridStatusText"] : ""}`}>
                         {getStatusIcon(task.status)} {task.status || 'Pending'}
                       </span>
                     </div>
                     <div className={styles["mytasks-grid-actions"]}>
                       <button 
-                        className={styles["mytasks-edit-btn"]}
+                        className={`${styles["mytasks-edit-btn"]} ${isDarkMode ? styles["darkEditBtn"] : ""}`}
                         onClick={() => handleEditClick(task)}
                         aria-label="Edit task"
                         disabled={isLoading}
@@ -722,7 +737,7 @@ export default function MyTasks() {
                         <Icon name="edit" className={styles["mytasks-action-icon"]} />
                       </button>
                       <button 
-                        className={styles["mytasks-delete-btn"]}
+                        className={`${styles["mytasks-delete-btn"]} ${isDarkMode ? styles["darkDeleteBtn"] : ""}`}
                         onClick={() => handleDeleteClick(task)}
                         aria-label="Delete task"
                         disabled={isLoading}
@@ -733,7 +748,7 @@ export default function MyTasks() {
                   </div>
 
                   {task.completed && (
-                    <div className={styles["mytasks-grid-completed-badge"]}>
+                    <div className={`${styles["mytasks-grid-completed-badge"]} ${isDarkMode ? styles["darkGridCompletedBadge"] : ""}`}>
                       <Icon name="check" className={styles["mytasks-grid-badge-icon"]} />
                       Completed
                     </div>
@@ -750,11 +765,11 @@ export default function MyTasks() {
           setShowEditModal(false);
           setEditErrors({ title: '', description: '', dueDate: '' });
         }}>
-          <div className={styles["mytasks-modal"]} onClick={(e) => e.stopPropagation()}>
+          <div className={`${styles["mytasks-modal"]} ${isDarkMode ? styles["darkModal"] : ""}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles["mytasks-modal-header"]}>
-              <h2>Edit Task</h2>
+              <h2 className={isDarkMode ? styles["darkModalTitle"] : ""}>Edit Task</h2>
               <button 
-                className={styles["mytasks-modal-close"]}
+                className={`${styles["mytasks-modal-close"]} ${isDarkMode ? styles["darkModalClose"] : ""}`}
                 onClick={() => {
                   setShowEditModal(false);
                   setEditErrors({ title: '', description: '', dueDate: '' });
@@ -766,13 +781,13 @@ export default function MyTasks() {
             
             <div className={styles["mytasks-modal-body"]}>
               <div className={styles["mytasks-modal-field"]}>
-                <label>Task Title <span className={styles["mytasks-required-star"]}>*</span></label>
+                <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Task Title <span className={styles["mytasks-required-star"]}>*</span></label>
                 <input
                   name="title"
                   value={editForm.title}
                   onChange={handleEditChange}
                   placeholder="Enter task title"
-                  className={editErrors.title ? styles["mytasks-modal-input-error"] : ''}
+                  className={`${editErrors.title ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
                 />
                 {editErrors.title && (
                   <span className={styles["mytasks-modal-error"]}>{editErrors.title}</span>
@@ -780,14 +795,14 @@ export default function MyTasks() {
               </div>
               
               <div className={styles["mytasks-modal-field"]}>
-                <label>Description <span className={styles["mytasks-required-star"]}>*</span></label>
+                <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Description <span className={styles["mytasks-required-star"]}>*</span></label>
                 <textarea
                   name="description"
                   value={editForm.description}
                   onChange={handleEditChange}
                   placeholder="Enter task description"
                   rows="3"
-                  className={editErrors.description ? styles["mytasks-modal-input-error"] : ''}
+                  className={`${editErrors.description ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
                 />
                 {editErrors.description && (
                   <span className={styles["mytasks-modal-error"]}>{editErrors.description}</span>
@@ -796,14 +811,14 @@ export default function MyTasks() {
               
               <div className={styles["mytasks-modal-row"]}>
                 <div className={styles["mytasks-modal-field"]}>
-                  <label>Due Date <span className={styles["mytasks-required-star"]}>*</span></label>
+                  <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Due Date <span className={styles["mytasks-required-star"]}>*</span></label>
                   <input
                     name="dueDate"
                     type="date"
                     value={editForm.dueDate}
                     onChange={handleEditChange}
                     min={today}
-                    className={editErrors.dueDate ? styles["mytasks-modal-input-error"] : ''}
+                    className={`${editErrors.dueDate ? styles["mytasks-modal-input-error"] : ""} ${isDarkMode ? styles["darkModalInput"] : ""}`}
                   />
                   {editErrors.dueDate && (
                     <span className={styles["mytasks-modal-error"]}>{editErrors.dueDate}</span>
@@ -811,11 +826,12 @@ export default function MyTasks() {
                 </div>
                 
                 <div className={styles["mytasks-modal-field"]}>
-                  <label>Priority</label>
+                  <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Priority</label>
                   <select
                     name="priority"
                     value={editForm.priority}
                     onChange={handleEditChange}
+                    className={isDarkMode ? styles["darkModalSelect"] : ""}
                   >
                     <option value="High">High</option>
                     <option value="Medium">Medium</option>
@@ -826,11 +842,12 @@ export default function MyTasks() {
               
               <div className={styles["mytasks-modal-row"]}>
                 <div className={styles["mytasks-modal-field"]}>
-                  <label>Category</label>
+                  <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Category</label>
                   <select
                     name="category"
                     value={editForm.category}
                     onChange={handleEditChange}
+                    className={isDarkMode ? styles["darkModalSelect"] : ""}
                   >
                     {categories.filter(c => c !== "All").map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -839,12 +856,13 @@ export default function MyTasks() {
                 </div>
                 
                 <div className={styles["mytasks-modal-field"]}>
-                  <label>Assignees (comma separated)</label>
+                  <label className={isDarkMode ? styles["darkModalLabel"] : ""}>Assignees (comma separated)</label>
                   <input
                     name="assignees"
                     value={editForm.assignees}
                     onChange={handleEditChange}
                     placeholder="JD, AR"
+                    className={isDarkMode ? styles["darkModalInput"] : ""}
                   />
                 </div>
               </div>
@@ -852,7 +870,7 @@ export default function MyTasks() {
             
             <div className={styles["mytasks-modal-footer"]}>
               <button 
-                className={styles["mytasks-modal-cancel"]}
+                className={`${styles["mytasks-modal-cancel"]} ${isDarkMode ? styles["darkModalCancel"] : ""}`}
                 onClick={() => {
                   setShowEditModal(false);
                   setEditErrors({ title: '', description: '', dueDate: '' });
@@ -861,7 +879,7 @@ export default function MyTasks() {
                 Cancel
               </button>
               <button 
-                className={styles["mytasks-modal-save"]}
+                className={`${styles["mytasks-modal-save"]} ${isDarkMode ? styles["darkModalSave"] : ""}`}
                 onClick={handleEditSubmit}
                 disabled={isLoading}
               >
@@ -874,23 +892,23 @@ export default function MyTasks() {
 
       {showDeleteModal && taskToDelete && (
         <div className={styles["mytasks-modal-overlay"]} onClick={handleDeleteCancel}>
-          <div className={styles["mytasks-delete-modal"]} onClick={(e) => e.stopPropagation()}>
+          <div className={`${styles["mytasks-delete-modal"]} ${isDarkMode ? styles["darkDeleteModal"] : ""}`} onClick={(e) => e.stopPropagation()}>
             <div className={styles["mytasks-delete-icon"]}>🗑️</div>
-            <h3>Delete Task?</h3>
-            <p>
+            <h3 className={isDarkMode ? styles["darkDeleteModalTitle"] : ""}>Delete Task?</h3>
+            <p className={isDarkMode ? styles["darkDeleteModalText"] : ""}>
               Are you sure you want to delete <strong>"{taskToDelete.title}"</strong>?
               <br />
               This action cannot be undone.
             </p>
             <div className={styles["mytasks-delete-actions"]}>
               <button 
-                className={styles["mytasks-delete-cancel"]}
+                className={`${styles["mytasks-delete-cancel"]} ${isDarkMode ? styles["darkDeleteCancel"] : ""}`}
                 onClick={handleDeleteCancel}
               >
                 Cancel
               </button>
               <button 
-                className={styles["mytasks-delete-confirm"]}
+                className={`${styles["mytasks-delete-confirm"]} ${isDarkMode ? styles["darkDeleteConfirm"] : ""}`}
                 onClick={handleDeleteConfirm}
                 disabled={isLoading}
               >
