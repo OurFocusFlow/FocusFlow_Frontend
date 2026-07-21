@@ -290,20 +290,28 @@ const ProjectDetails = () => {
   const handleToggleTaskComplete = async (taskId) => {
     const task = projectTasks.find(t => t.id === taskId);
     if (task) {
+      const newStatus = !task.completed;
       const result = await updateTask(taskId, { 
-        completed: !task.completed,
-        status: !task.completed ? 'Completed' : 'Pending'
+        completed: newStatus,
+        status: newStatus ? 'Completed' : 'Pending'
       });
-      if (!result.success) {
+      
+      if (result.success) {
+        const statusText = newStatus ? 'completed' : 'uncompleted';
+        showToast('success', `Task "${task.title}" marked as ${statusText}`, 'Task Updated');
+      } else {
         showToast('error', 'Failed to update task status', 'Error');
       }
     }
   };
 
   const handleDeleteTask = async (taskId) => {
+    const task = projectTasks.find(t => t.id === taskId);
+    if (!task) return;
+    
     const result = await deleteTask(taskId);
     if (result.success) {
-      showToast('success', 'Task removed from project', 'Task Deleted');
+      showToast('success', `Task "${task.title}" has been removed from the project.`, 'Task Deleted');
     } else {
       showToast('error', 'Failed to delete task', 'Error');
     }
