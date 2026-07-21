@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useLayoutEffect } from "re
 import ReactDOM from "react-dom";
 import { useTasks } from "../Context/TaskContext";
 import { useDarkMode } from "../Context/DarkModeContext";
+import { useAccentColor } from "../Context/AccentColorContext";
 import ToastNotification from "../ToastNotification/ToastNotification";
 import styles from "./Calendar.module.css";
 
@@ -51,6 +52,18 @@ function startOfWeek(date) {
   return d;
 }
 
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
 export default function Calendar() {
   const { 
     tasks, 
@@ -60,7 +73,11 @@ export default function Calendar() {
     isLoading 
   } = useTasks();
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   
+  // Compute RGB for CSS variable
+  const accentRgb = hexToRgb(accentColor);
+
   const today = new Date();
   const [viewMode, setViewMode] = useState("month");
   const [anchorDate, setAnchorDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -707,7 +724,13 @@ export default function Calendar() {
   };
 
   return (
-    <div className={`${styles["cal-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
+    <div 
+      className={`${styles["cal-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       {toast && (
         <ToastNotification
           type={toast.type}
