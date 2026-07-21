@@ -1572,3 +1572,134 @@
     transition: none !important;
   }
 }
+
+/* ==================== DARK MODE DATE INPUT ==================== */
+
+/* Dark Mode Date Input - matches CreateTaskModal */
+.darkDateInput[type="date"] {
+  color-scheme: dark !important;
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Make the calendar picker icon visible in dark mode */
+.darkDateInput[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(2) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+  transition: background 0.2s ease !important;
+  background: transparent !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit-text {
+  color: #6A6255 !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit-month-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit-day-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]::-webkit-datetime-edit-year-field {
+  color: #FFFFFF !important;
+}
+
+.darkDateInput[type="date"]::-webkit-inner-spin-button {
+  display: none !important;
+}
+
+.darkDateInput[type="date"]::-webkit-clear-button {
+  display: none !important;
+}
+
+.darkDateInput[type="date"] {
+  -moz-appearance: textfield !important;
+}
+
+.darkDateInput[type="date"]::-ms-clear {
+  display: none !important;
+}
+
+.darkDateInput[type="date"]::-ms-reveal {
+  display: none !important;
+}
+
+/* Alternative: using a custom SVG icon for the calendar picker */
+.darkDateInput[type="date"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+.darkDateInput[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-size: 16px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  filter: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 2px !important;
+  opacity: 1 !important;
+}
+
+/* Update dark edit input to handle date type properly */
+.darkEditInput[type="date"] {
+  color-scheme: dark !important;
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkEditInput[type="date"]:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkEditInput[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-size: 16px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  filter: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 2px !important;
+  opacity: 1 !important;
+}
+
+/* Update existing darkEditInput styles */
+.darkEditInput {
+  background: #1A1A1A !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkEditInput:focus {
+  border-color: #FBBC00 !important;
+  outline: none !important;
+}
+
+.darkEditInput::placeholder {
+  color: #857B6B !important;
+}

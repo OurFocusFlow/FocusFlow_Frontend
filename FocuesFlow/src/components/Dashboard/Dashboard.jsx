@@ -491,7 +491,7 @@ export default function Dashboard() {
                         type="date"
                         value={editForm.dueDate}
                         onChange={handleEditChange}
-                        className={`${styles["home-edit-input-sm"]} ${isDarkMode ? styles["darkEditInput"] : ""}`}
+                        className={`${styles["home-edit-input-sm"]} ${isDarkMode ? styles["darkEditInput"] : ""} ${isDarkMode ? styles["darkDateInput"] : ""}`}
                         min={today}
                       />
                     </div>
