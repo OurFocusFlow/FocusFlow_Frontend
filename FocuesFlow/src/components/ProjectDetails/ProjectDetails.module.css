@@ -383,7 +383,7 @@
 
 .progressBar {
   height: 100%;
-  background: linear-gradient(90deg, #885210, #4B3832);
+  background: linear-gradient(90deg, var(--accent-color, #885210), var(--accent-color, #4B3832));
   border-radius: 4px;
   transition: width 0.6s ease;
 }
@@ -528,8 +528,8 @@
 }
 
 .searchWrapper:focus-within {
-  border-color: #885210;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  border-color: var(--accent-color, #885210);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
 }
 
 .searchIcon {
@@ -772,7 +772,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #E6E2DF;
-  border-top-color: #885210;
+  border-top-color: var(--accent-color, #885210);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -790,10 +790,17 @@
   box-shadow: 0 8px 48px rgba(31,17,10,0.12) !important;
   max-width: 580px !important;
   overflow: hidden;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .editModalContent {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
 }
 
 .editModalHeader {
@@ -807,7 +814,8 @@
   background: rgba(253, 248, 245, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 1;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .editModalHeaderLeft {
@@ -820,13 +828,13 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #4B3832;
+  background: var(--accent-color, #4B3832);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb, 75, 56, 50), 0.25);
 }
 
 .editModalIcon {
@@ -875,8 +883,29 @@
 
 .editModalForm {
   padding: 1.5rem 1.75rem 0.9rem;
+  overflow-y: auto;
+  flex: 1;
+  scroll-behavior: smooth;
 }
 
+.editModalForm::-webkit-scrollbar {
+  width: 4px;
+}
+
+.editModalForm::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editModalForm::-webkit-scrollbar-thumb {
+  background: rgba(136, 82, 16, 0.15);
+  border-radius: 4px;
+}
+
+.editModalForm::-webkit-scrollbar-thumb:hover {
+  background: rgba(136, 82, 16, 0.3);
+}
+
+/* ==================== EDIT MODAL FORM FIELDS ==================== */
 .formGroup {
   margin-bottom: 1.25rem;
 }
@@ -919,9 +948,9 @@
 
 .formInput:focus {
   outline: none;
-  border-color: #885210;
+  border-color: var(--accent-color, #885210);
   background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
 }
 
 .formInput::placeholder {
@@ -961,9 +990,9 @@
 
 .formTextarea:focus {
   outline: none;
-  border-color: #885210;
+  border-color: var(--accent-color, #885210);
   background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
 }
 
 .formTextarea::placeholder {
@@ -991,9 +1020,9 @@
 
 .formSelect:focus {
   outline: none;
-  border-color: #885210;
+  border-color: var(--accent-color, #885210);
   background: #FDF8F5;
-  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
 }
 
 .formSelect:disabled {
@@ -1001,6 +1030,7 @@
   cursor: not-allowed;
 }
 
+/* ==================== EDIT MODAL FOOTER ==================== */
 .editModalFooter {
   display: flex;
   align-items: center;
@@ -1008,6 +1038,12 @@
   gap: 10px;
   padding: 0.5rem 1.75rem 1.25rem;
   border-top: 1px solid rgba(230, 226, 223, 0.3);
+  position: sticky;
+  bottom: 0;
+  background: rgba(253, 248, 245, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-shrink: 0;
 }
 
 .cancelBtn {
@@ -1040,19 +1076,19 @@
   padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 10px;
-  background: #4B3832;
+  background: var(--accent-color, #4B3832);
   color: white;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb, 75, 56, 50), 0.25);
   font-family: inherit;
 }
 
 .saveBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(75, 56, 50, 0.35);
+  box-shadow: 0 8px 24px rgba(var(--accent-rgb, 75, 56, 50), 0.35);
 }
 
 .saveBtn:active {
@@ -1383,15 +1419,15 @@
 
 .darkBgGrid {
   background-image: 
-    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+    linear-gradient(rgba(var(--accent-rgb, 251, 188, 0), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb, 251, 188, 0), 0.02) 1px, transparent 1px) !important;
 }
 
 .darkBgGlow {
-  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb, 251, 188, 0), 0.06) 0%, transparent 70%) !important;
 }
 
-/* ==================== BACK BUTTON DARK MODE - REDUCED WIDTH ==================== */
+/* ==================== BACK BUTTON DARK MODE ==================== */
 .darkBackBtn {
   display: inline-flex !important;
   align-items: center !important;
@@ -1415,11 +1451,11 @@
 }
 
 .darkBackBtn:hover {
-  border-color: #FBBC00 !important;
-  color: #FBBC00 !important;
-  background: rgba(251, 188, 0, 0.08) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
+  color: var(--accent-color, #FBBC00) !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
   transform: translateX(-3px) !important;
-  box-shadow: 0 4px 16px rgba(251, 188, 0, 0.05) !important;
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb, 251, 188, 0), 0.05) !important;
 }
 
 .darkBackBtn .backIcon {
@@ -1429,7 +1465,7 @@
 }
 
 .darkBackBtn:hover .backIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 /* Project Header Dark Mode */
@@ -1447,7 +1483,7 @@
 }
 
 .darkStarBtn:hover {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkStarIcon {
@@ -1455,12 +1491,12 @@
 }
 
 .darkStarIconActive {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkPriorityBadge {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkPriorityBadge.priorityHigh {
@@ -1469,8 +1505,8 @@
 }
 
 .darkPriorityBadge.priorityMedium {
-  background: rgba(251, 188, 0, 0.15) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.15) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkPriorityBadge.priorityLow {
@@ -1479,17 +1515,17 @@
 }
 
 .darkCategoryBadge {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkEditBtn {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkEditBtn:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 .darkDeleteBtn {
@@ -1538,7 +1574,7 @@
 }
 
 .darkProgressBar {
-  background: linear-gradient(90deg, #FBBC00, #E2A900) !important;
+  background: linear-gradient(90deg, var(--accent-color, #FBBC00), var(--accent-color, #E2A900)) !important;
 }
 
 /* Description Dark Mode */
@@ -1562,7 +1598,7 @@
 }
 
 .darkMetaIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkMetaLabel {
@@ -1574,7 +1610,7 @@
 }
 
 .darkTeamAvatar {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
@@ -1590,12 +1626,12 @@
 }
 
 .darkAddTaskBtn {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkAddTaskBtn:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* Search Dark Mode */
@@ -1605,7 +1641,7 @@
 }
 
 .darkSearchWrapper:focus-within {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkSearchIcon {
@@ -1627,18 +1663,18 @@
 }
 
 .darkFilterBtn:hover {
-  background: rgba(251, 188, 0, 0.06) !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.06) !important;
   color: #FFFFFF !important;
 }
 
 .darkFilterBtn.filterBtnActive {
-  background: #FBBC00 !important;
-  border-color: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkFilterBtn.filterBtnActive:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* Task Item Dark Mode */
@@ -1648,7 +1684,7 @@
 }
 
 .darkTaskItem:hover {
-  border-color: rgba(251, 188, 0, 0.2) !important;
+  border-color: rgba(var(--accent-rgb, 251, 188, 0), 0.2) !important;
 }
 
 .darkTaskCheckbox {
@@ -1657,8 +1693,8 @@
 }
 
 .darkTaskCheckbox:checked {
-  background: #FBBC00 !important;
-  border-color: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkTaskCheckbox:checked::after {
@@ -1674,8 +1710,8 @@
 }
 
 .darkTaskPriority {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkTaskPriority.priorityHigh {
@@ -1684,8 +1720,8 @@
 }
 
 .darkTaskPriority.priorityMedium {
-  background: rgba(251, 188, 0, 0.15) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.15) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkTaskPriority.priorityLow {
@@ -1694,8 +1730,8 @@
 }
 
 .darkTaskCategory {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkTaskDescription {
@@ -1741,6 +1777,7 @@
 .darkEditDialogPaper {
   background: #030202 !important;
   border: 1px solid #383B40 !important;
+  max-height: 90vh !important;
 }
 
 .darkEditModalHeader {
@@ -1749,7 +1786,8 @@
 }
 
 .darkEditModalIconWrapper {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
+  color: #000000 !important;
 }
 
 .darkEditModalTitle {
@@ -1774,6 +1812,14 @@
   background: #030202 !important;
 }
 
+.darkEditModalForm::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.15) !important;
+}
+
+.darkEditModalForm::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.3) !important;
+}
+
 .darkFormLabel {
   color: #6A6255 !important;
 }
@@ -1785,12 +1831,22 @@
 }
 
 .darkFormInput:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
 }
 
 .darkFormInput::placeholder {
   color: #857B6B !important;
+}
+
+.darkFormInput.formInputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.darkFormInput.formInputError:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08) !important;
 }
 
 .darkFormTextarea {
@@ -1800,7 +1856,7 @@
 }
 
 .darkFormTextarea:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
 }
 
@@ -1815,7 +1871,7 @@
 }
 
 .darkFormSelect:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
 }
 
@@ -1830,7 +1886,7 @@
 
 .darkEditModalFooter {
   border-top-color: #383B40 !important;
-  background: #030202 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
 }
 
 .darkCancelBtn {
@@ -1844,12 +1900,12 @@
 }
 
 .darkSaveBtn {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkSaveBtn:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* Delete Modal Dark Mode */
@@ -1960,9 +2016,9 @@
 }
 
 .darkDateInput:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
-  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 .darkDateInput::-webkit-calendar-picker-indicator {
@@ -2021,9 +2077,9 @@
 }
 
 .darkFormInput:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
-  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 .darkFormInput::placeholder {
@@ -2054,9 +2110,9 @@
 }
 
 .darkFormSelect:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
-  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 .darkFormSelect option {
@@ -2065,7 +2121,7 @@
 }
 
 .darkFormSelect option:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 /* Dark Mode Form Textarea */
@@ -2076,23 +2132,25 @@
 }
 
 .darkFormTextarea:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
-  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 .darkFormTextarea::placeholder {
   color: #857B6B !important;
 }
 
-/* Dark Mode Form Label */
-.darkFormLabel {
-  color: #6A6255 !important;
-}
-
-/* Dark Mode Form Error Text */
-.darkFormError {
-  color: #ef4444 !important;
+.darkFormInput[type="date"]::-webkit-calendar-picker-indicator {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") !important;
+  background-size: 16px !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  filter: none !important;
+  width: 20px !important;
+  height: 20px !important;
+  padding: 2px !important;
+  opacity: 1 !important;
 }
 
 /* ==================== TASK ACTIONS ==================== */
@@ -2126,8 +2184,8 @@
 }
 
 .darkEditTaskBtn:hover {
-  color: #FBBC00 !important;
-  background: rgba(251, 188, 0, 0.08) !important;
+  color: var(--accent-color, #FBBC00) !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
 }
 
 /* Update existing delete task button to work with actions container */
@@ -2160,129 +2218,4 @@
 
 .btnIconSmall {
   font-size: 16px;
-}
-
-/* ==================== EDIT MODAL - SCROLLABLE ==================== */
-
-/* Update the edit dialog paper to handle scrolling */
-.editDialogPaper {
-  border-radius: 20px !important;
-  background: rgba(253, 248, 245, 0.95) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 8px 48px rgba(31,17,10,0.12) !important;
-  max-width: 580px !important;
-  overflow: hidden;
-  max-height: 90vh !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* Modal content wrapper - scrollable */
-.editModalContent {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
-  overflow: hidden;
-}
-
-/* Modal header - sticky */
-.editModalHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid rgba(230, 226, 223, 0.3);
-  position: sticky;
-  top: 0;
-  background: rgba(253, 248, 245, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 10;
-  flex-shrink: 0;
-}
-
-/* Modal body - scrollable */
-.editModalForm {
-  padding: 1.5rem 1.75rem 0.9rem;
-  overflow-y: auto;
-  flex: 1;
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar for edit modal form */
-.editModalForm::-webkit-scrollbar {
-  width: 4px;
-}
-
-.editModalForm::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.editModalForm::-webkit-scrollbar-thumb {
-  background: rgba(136, 82, 16, 0.15);
-  border-radius: 4px;
-}
-
-.editModalForm::-webkit-scrollbar-thumb:hover {
-  background: rgba(136, 82, 16, 0.3);
-}
-
-/* Modal footer - sticky at bottom */
-.editModalFooter {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  padding: 0.5rem 1.75rem 1.25rem;
-  border-top: 1px solid rgba(230, 226, 223, 0.3);
-  position: sticky;
-  bottom: 0;
-  background: rgba(253, 248, 245, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  flex-shrink: 0;
-}
-
-/* ==================== DARK MODE EDIT MODAL - SCROLLABLE ==================== */
-
-.darkEditDialogPaper {
-  background: #030202 !important;
-  border: 1px solid #383B40 !important;
-  max-height: 90vh !important;
-}
-
-.darkEditModalHeader {
-  background: rgba(0, 0, 0, 0.8) !important;
-  border-bottom-color: #383B40 !important;
-}
-
-.darkEditModalForm {
-  background: #030202 !important;
-}
-
-.darkEditModalForm::-webkit-scrollbar-thumb {
-  background: rgba(251, 188, 0, 0.15) !important;
-}
-
-.darkEditModalForm::-webkit-scrollbar-thumb:hover {
-  background: rgba(251, 188, 0, 0.3) !important;
-}
-
-.darkEditModalFooter {
-  border-top-color: #383B40 !important;
-  background: rgba(0, 0, 0, 0.8) !important;
-}
-
-.darkFormInput[type="date"]::-webkit-calendar-picker-indicator {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E") !important;
-  background-size: 16px !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  filter: none !important;
-  width: 20px !important;
-  height: 20px !important;
-  padding: 2px !important;
-  opacity: 1 !important;
 }

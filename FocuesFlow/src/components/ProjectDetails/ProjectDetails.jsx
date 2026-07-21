@@ -37,14 +37,44 @@ import {
 import { useProjects } from '../Context/ProjectContext';
 import { useTasks } from '../Context/TaskContext';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './ProjectDetails.module.css';
 import ToastNotification from '../ToastNotification/ToastNotification';
 import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
+
+// Helper functions
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
+
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const { 
     projects, 
     getProjectById,
@@ -103,6 +133,36 @@ const ProjectDetails = () => {
     description: '',
     dueDate: '',
   });
+
+  // Determine accent usage
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  const accentRgb = hexToRgb(accentColor);
+
+  const getAccentColor = () => {
+    if (shouldUseAccent) return accentColor;
+    if (isDarkMode) return '#FBBC00';
+    return '#885210';
+  };
+
+  const getAccentRgb = () => {
+    if (shouldUseAccent) return accentRgb;
+    if (isDarkMode) return '251, 188, 0';
+    return '136, 82, 16';
+  };
+
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      const color = shouldUseAccent ? accentColor : '#FBBC00';
+      return isLightColor(color) ? '#000000' : '#FFFFFF';
+    }
+    return '#FFFFFF';
+  };
+
+  const getButtonBackground = () => {
+    if (shouldUseAccent) return accentColor;
+    if (isDarkMode) return '#FBBC00';
+    return '#885210';
+  };
 
   // Get project from context when ID changes
   useEffect(() => {
@@ -510,7 +570,13 @@ const ProjectDetails = () => {
   const isLoading = projectsLoading || tasksLoading;
 
   return (
-    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}>
+    <Box 
+      className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}
+      style={{
+        '--accent-color': getAccentColor(),
+        '--accent-rgb': getAccentRgb(),
+      }}
+    >
       {/* Background Decorations */}
       <div className={`${styles["project-bg"]} ${isDarkMode ? styles.darkBg : ""}`}>
         <div className={styles["project-bg-orb"]} />
@@ -525,6 +591,9 @@ const ProjectDetails = () => {
         <button 
           className={`${styles.backBtn} ${isDarkMode ? styles.darkBackBtn : ""}`} 
           onClick={handleBack}
+          style={{
+            color: getAccentColor(),
+          }}
         >
           <ArrowBackIcon className={styles.backIcon} />
           <span>Back to Projects</span>
@@ -569,6 +638,10 @@ const ProjectDetails = () => {
               className={`${styles.editBtn} ${isDarkMode ? styles.darkEditBtn : ""}`} 
               onClick={handleEditProject}
               disabled={isLoading}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               <EditIcon className={styles.btnIcon} />
               Edit Project
@@ -661,6 +734,10 @@ const ProjectDetails = () => {
               className={`${styles.addTaskBtn} ${isDarkMode ? styles.darkAddTaskBtn : ""}`}
               onClick={() => setIsCreateTaskModalOpen(true)}
               disabled={isLoading}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               <AddIcon className={styles.btnIcon} />
               Add Task
@@ -685,6 +762,13 @@ const ProjectDetails = () => {
                   key={status}
                   className={`${styles.filterBtn} ${filterStatus === status ? styles.filterBtnActive : ''} ${isDarkMode ? styles.darkFilterBtn : ''}`}
                   onClick={() => setFilterStatus(status)}
+                  style={{
+                    ...(filterStatus === status && {
+                      background: getButtonBackground(),
+                      borderColor: getButtonBackground(),
+                      color: getButtonTextColor(),
+                    }),
+                  }}
                 >
                   {status === 'all' ? 'All' : status === 'pending' ? 'Pending' : 'Completed'}
                 </button>
@@ -746,6 +830,9 @@ const ProjectDetails = () => {
                       onClick={() => handleEditTaskClick(task)}
                       disabled={isLoading}
                       aria-label="Edit task"
+                      style={{
+                        color: getAccentColor(),
+                      }}
                     >
                       <EditIcon className={styles.btnIconSmall} />
                     </button>
@@ -779,7 +866,13 @@ const ProjectDetails = () => {
         <Box className={`${styles.editModalContent} ${isDarkMode ? styles.darkEditModalContent : ""}`}>
           <Box className={`${styles.editModalHeader} ${isDarkMode ? styles.darkEditModalHeader : ""}`}>
             <Box className={styles.editModalHeaderLeft}>
-              <Box className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}>
+              <Box 
+                className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}
+                style={{
+                  background: getButtonBackground(),
+                  color: getButtonTextColor(),
+                }}
+              >
                 <EditIcon className={styles.editModalIcon} />
               </Box>
               <Box>
@@ -898,6 +991,10 @@ const ProjectDetails = () => {
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEdit}
               disabled={isSubmitting}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               {isSubmitting ? (
                 <>
@@ -935,7 +1032,13 @@ const ProjectDetails = () => {
         <Box className={`${styles.editModalContent} ${isDarkMode ? styles.darkEditModalContent : ""}`}>
           <Box className={`${styles.editModalHeader} ${isDarkMode ? styles.darkEditModalHeader : ""}`}>
             <Box className={styles.editModalHeaderLeft}>
-              <Box className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}>
+              <Box 
+                className={`${styles.editModalIconWrapper} ${isDarkMode ? styles.darkEditModalIconWrapper : ""}`}
+                style={{
+                  background: getButtonBackground(),
+                  color: getButtonTextColor(),
+                }}
+              >
                 <EditIcon className={styles.editModalIcon} />
               </Box>
               <Box>
@@ -1062,6 +1165,10 @@ const ProjectDetails = () => {
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEditTask}
               disabled={isSubmitting}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               {isSubmitting ? (
                 <>
