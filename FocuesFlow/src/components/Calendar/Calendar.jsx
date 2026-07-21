@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect, useLayoutEffect } from "react";
 import ReactDOM from "react-dom";
 import { useTasks } from "../Context/TaskContext";
+import { useDarkMode } from "../Context/DarkModeContext";
 import ToastNotification from "../ToastNotification/ToastNotification";
 import styles from "./Calendar.module.css";
 
@@ -58,6 +59,7 @@ export default function Calendar() {
     deleteTask, 
     isLoading 
   } = useTasks();
+  const { isDarkMode } = useDarkMode();
   
   const today = new Date();
   const [viewMode, setViewMode] = useState("month");
@@ -76,7 +78,7 @@ export default function Calendar() {
   // Week day-carousel state
   const [weekDayIndex, setWeekDayIndex] = useState(0);
   const weekScrollRef = useRef(null);
-  const weekJumpTargetRef = useRef(null); // 'start' | 'end' | null — used when crossing week boundaries
+  const weekJumpTargetRef = useRef(null);
 
   // Month/Year picker state
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -87,11 +89,9 @@ export default function Calendar() {
   const year = anchorDate.getFullYear();
   const month = anchorDate.getMonth();
 
-  // Get today's date for validation
   const todayDate = new Date();
   const todayKey = toDateKey(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate());
 
-  // Close pickers when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (monthPickerRef.current && !monthPickerRef.current.contains(event.target)) {
@@ -105,7 +105,6 @@ export default function Calendar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Toast helper
   const showToast = (type, message, title) => {
     setToast({ type, message, title });
     setTimeout(() => {
@@ -113,7 +112,6 @@ export default function Calendar() {
     }, 5000);
   };
 
-  // Get tasks by date
   const tasksByDate = useMemo(() => {
     const map = {};
     tasks.forEach((t) => {
@@ -186,10 +184,6 @@ export default function Calendar() {
   };
   const goToday = () => setAnchorDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
 
-  // Sync the day-carousel position whenever we enter week view or the anchor week changes.
-  // weekJumpTargetRef lets goPrevDay/goNextDay land on the first/last day when crossing a week boundary.
-  // useLayoutEffect + clientWidth-based scrollLeft (instead of a child's offsetLeft) guarantees the
-  // reset happens synchronously before paint, so you never briefly see the previous week's day.
   useLayoutEffect(() => {
     if (viewMode !== "week") return;
     let startIdx;
@@ -205,7 +199,6 @@ export default function Calendar() {
     if (el) {
       el.scrollLeft = startIdx * el.clientWidth;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewMode, anchorDate]);
 
   const scrollToDayIndex = (idx) => {
@@ -219,7 +212,7 @@ export default function Calendar() {
   const goPrevDay = () => {
     if (weekDayIndex === 0) {
       weekJumpTargetRef.current = "end";
-      goPrev(); // shifts anchorDate back a week; effect above lands on the last day
+      goPrev();
     } else {
       scrollToDayIndex(weekDayIndex - 1);
     }
@@ -228,7 +221,7 @@ export default function Calendar() {
   const goNextDay = () => {
     if (weekDayIndex === 6) {
       weekJumpTargetRef.current = "start";
-      goNext(); // shifts anchorDate forward a week; effect above lands on the first day
+      goNext();
     } else {
       scrollToDayIndex(weekDayIndex + 1);
     }
@@ -245,7 +238,6 @@ export default function Calendar() {
     }, 100);
   };
 
-  // Month/Year picker functions
   const handleMonthSelect = (selectedMonth) => {
     setAnchorDate(new Date(year, selectedMonth, 1));
     setShowMonthPicker(false);
@@ -279,7 +271,6 @@ export default function Calendar() {
     const todayObj = new Date();
     todayObj.setHours(0, 0, 0, 0);
     
-    // Check if the date is in the past
     const isPastDate = dateObj < todayObj;
     
     setSelectedDate({ 
@@ -312,13 +303,11 @@ export default function Calendar() {
   };
 
   const saveEdit = async (id) => {
-    // Validate Title
     if (!editDraft.title.trim()) {
       showToast('error', 'Please enter a task title.', 'Missing Title');
       return;
     }
 
-    // Validate Description
     if (!editDraft.description.trim()) {
       showToast('error', 'Please enter a task description.', 'Missing Description');
       return;
@@ -363,13 +352,11 @@ export default function Calendar() {
   };
 
   const submitAdd = async () => {
-    // Validate Title
     if (!addDraft.title.trim()) {
       showToast('error', 'Please enter a task title.', 'Missing Title');
       return;
     }
 
-    // Validate Description
     if (!addDraft.description.trim()) {
       showToast('error', 'Please enter a task description.', 'Missing Description');
       return;
@@ -377,7 +364,6 @@ export default function Calendar() {
 
     if (!selectedDate) return;
     
-    // Check if the selected date is in the past
     const selectedKey = selectedDate.key;
     const todayObj = new Date();
     todayObj.setHours(0, 0, 0, 0);
@@ -412,13 +398,11 @@ export default function Calendar() {
     
     const result = await addTask(newTask);
     
-    // Close the modal and reset form
-    setSelectedDate(null);          // Close the modal
-    setShowAddForm(false);          // Hide the add form
-    setIsActionInProgress(false);   // Reset loading state
-    setAddDraft({ title: "", description: "", priority: "Medium", category: "Design" }); // Reset form
+    setSelectedDate(null);
+    setShowAddForm(false);
+    setIsActionInProgress(false);
+    setAddDraft({ title: "", description: "", priority: "Medium", category: "Design" });
     
-    // Show appropriate toast message
     if (result.success) {
       showToast('success', `Task "${taskTitle}" has been created.`, 'Task Created');
     } else {
@@ -429,7 +413,6 @@ export default function Calendar() {
   const handleDrop = async (y, m, d) => {
     const key = toDateKey(y, m, d);
     if (dragTaskId != null) {
-      // Check if the target date is in the past
       const todayObj = new Date();
       todayObj.setHours(0, 0, 0, 0);
       const targetDate = new Date(y, m, d);
@@ -458,33 +441,19 @@ export default function Calendar() {
 
   const selectedTasks = selectedDate ? tasksByDate[selectedDate.key] || [] : [];
 
-  const renderChip = (t) => (
-    <span
-      key={t.id}
-      className={`${styles["cal-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""}`}
-      draggable
-      onDragStart={(e) => { e.stopPropagation(); setDragTaskId(t.id); }}
-      onDragEnd={() => setDragTaskId(null)}
-    >
-      <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(t.priority)}`} />
-      <span className={styles["cal-chip-text"]}>{t.title}</span>
-    </span>
-  );
-
-  // Render modal using ReactDOM.createPortal
   const renderModal = () => {
     if (!selectedDate) return null;
 
     const modalContent = (
       <div 
-        className={`${styles["cal-modal-overlay"]} ${isActionInProgress ? styles["cal-modal-processing"] : ""}`} 
+        className={`${styles["cal-modal-overlay"]} ${isActionInProgress ? styles["cal-modal-processing"] : ""} ${isDarkMode ? styles["darkModalOverlay"] : ""}`} 
         onClick={closeModal}
       >
-        <div className={styles["cal-modal"]} onClick={(e) => e.stopPropagation()}>
-          <div className={styles["cal-modal-header"]}>
-            <h3 className={styles["cal-modal-title"]}>{selectedDate.label}</h3>
+        <div className={`${styles["cal-modal"]} ${isDarkMode ? styles["darkModal"] : ""}`} onClick={(e) => e.stopPropagation()}>
+          <div className={`${styles["cal-modal-header"]} ${isDarkMode ? styles["darkModalHeader"] : ""}`}>
+            <h3 className={`${styles["cal-modal-title"]} ${isDarkMode ? styles["darkModalTitle"] : ""}`}>{selectedDate.label}</h3>
             <button 
-              className={styles["cal-modal-close"]} 
+              className={`${styles["cal-modal-close"]} ${isDarkMode ? styles["darkModalClose"] : ""}`} 
               onClick={closeModal} 
               aria-label="Close"
               disabled={isActionInProgress || isLoading}
@@ -494,7 +463,7 @@ export default function Calendar() {
           </div>
 
           {selectedTasks.length === 0 && !showAddForm && (
-            <div className={styles["cal-modal-empty"]}>
+            <div className={`${styles["cal-modal-empty"]} ${isDarkMode ? styles["darkModalEmpty"] : ""}`}>
               <Icon name="calendar" className={styles["cal-modal-empty-icon"]} />
               <p>No rituals scheduled for this day.</p>
             </div>
@@ -504,20 +473,20 @@ export default function Calendar() {
             {selectedTasks.map((t) => {
               if (deleteConfirmId === t.id) {
                 return (
-                  <div key={t.id} className={styles["cal-delete-confirm"]}>
-                    <p className={styles["cal-delete-text"]}>
+                  <div key={t.id} className={`${styles["cal-delete-confirm"]} ${isDarkMode ? styles["darkDeleteConfirm"] : ""}`}>
+                    <p className={`${styles["cal-delete-text"]} ${isDarkMode ? styles["darkDeleteText"] : ""}`}>
                       Are you sure you want to delete <strong>"{t.title}"</strong>?
                     </p>
                     <div className={styles["cal-delete-actions"]}>
                       <button 
-                        className={styles["cal-delete-cancel"]} 
+                        className={`${styles["cal-delete-cancel"]} ${isDarkMode ? styles["darkDeleteCancel"] : ""}`} 
                         onClick={cancelDelete}
                         disabled={isActionInProgress || isLoading}
                       >
                         Cancel
                       </button>
                       <button 
-                        className={styles["cal-delete-confirm-btn"]} 
+                        className={`${styles["cal-delete-confirm-btn"]} ${isDarkMode ? styles["darkDeleteConfirmBtn"] : ""}`} 
                         onClick={() => deleteTaskHandler(t.id)}
                         disabled={isActionInProgress || isLoading}
                       >
@@ -529,130 +498,129 @@ export default function Calendar() {
               }
 
               return editingId === t.id ? (
-                <div key={t.id} className={styles["cal-modal-item"]}>
-                <div className={styles["cal-form-group"]}>
-                  <label className={styles["cal-form-label"]}>
-                    Task Title <span className={styles["cal-required-star"]}>*</span>
-                  </label>
-                  <input
-                    className={styles["cal-input"]}
-                    value={editDraft.title}
-                    onChange={(e) => setEditDraft((d) => ({ ...d, title: e.target.value }))}
-                    placeholder="Enter task title"
-                    autoFocus
-                    disabled={isActionInProgress || isLoading}
-                  />
-                </div>
-                <div className={styles["cal-form-group"]}>
-                  <label className={styles["cal-form-label"]}>
-                    Description <span className={styles["cal-required-star"]}>*</span>
-                  </label>
-                  <textarea
-                    className={styles["cal-textarea"]}
-                    value={editDraft.description}
-                    onChange={(e) => setEditDraft((d) => ({ ...d, description: e.target.value }))}
-                    placeholder="Enter task description"
-                    rows="2"
-                    disabled={isActionInProgress || isLoading}
-                  />
-                </div>
-                <div className={styles["cal-form-row"]}>
+                <div key={t.id} className={`${styles["cal-modal-item"]} ${isDarkMode ? styles["darkModalItem"] : ""}`}>
                   <div className={styles["cal-form-group"]}>
-                    <label className={styles["cal-form-label"]}>Priority</label>
-                    <select 
-                      className={styles["cal-select"]} 
-                      value={editDraft.priority} 
-                      onChange={(e) => setEditDraft((d) => ({ ...d, priority: e.target.value }))}
+                    <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>
+                      Task Title <span className={styles["cal-required-star"]}>*</span>
+                    </label>
+                    <input
+                      className={`${styles["cal-input"]} ${isDarkMode ? styles["darkInput"] : ""}`}
+                      value={editDraft.title}
+                      onChange={(e) => setEditDraft((d) => ({ ...d, title: e.target.value }))}
+                      placeholder="Enter task title"
+                      autoFocus
                       disabled={isActionInProgress || isLoading}
-                    >
-                      {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
-                    </select>
+                    />
                   </div>
                   <div className={styles["cal-form-group"]}>
-                    <label className={styles["cal-form-label"]}>Category</label>
-                    <select 
-                      className={styles["cal-select"]} 
-                      value={editDraft.category} 
-                      onChange={(e) => setEditDraft((d) => ({ ...d, category: e.target.value }))}
+                    <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>
+                      Description <span className={styles["cal-required-star"]}>*</span>
+                    </label>
+                    <textarea
+                      className={`${styles["cal-textarea"]} ${isDarkMode ? styles["darkTextarea"] : ""}`}
+                      value={editDraft.description}
+                      onChange={(e) => setEditDraft((d) => ({ ...d, description: e.target.value }))}
+                      placeholder="Enter task description"
+                      rows="2"
                       disabled={isActionInProgress || isLoading}
-                    >
-                      {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-                    </select>
+                    />
                   </div>
-                </div>
-                <div className={styles["cal-form-actions"]}>
-                  <button 
-                    className={styles["cal-btn-primary"]} 
-                    onClick={() => saveEdit(t.id)}
-                    disabled={isActionInProgress || isLoading}
-                  >
-                    {isActionInProgress || isLoading ? 'Saving...' : 'Save'}
-                  </button>
-                  <button 
-                    className={styles["cal-btn-ghost"]} 
-                    onClick={() => setEditingId(null)}
-                    disabled={isActionInProgress || isLoading}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              // Display mode
-              <div key={t.id} className={styles["cal-modal-item"]}>
-                <div className={styles["cal-modal-item-top"]}>
-                  <span className={styles["cal-modal-item-title"]}>{t.title}</span>
-                  <div className={styles["cal-modal-item-icons"]}>
+                  <div className={styles["cal-form-row"]}>
+                    <div className={styles["cal-form-group"]}>
+                      <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>Priority</label>
+                      <select 
+                        className={`${styles["cal-select"]} ${isDarkMode ? styles["darkSelect"] : ""}`} 
+                        value={editDraft.priority} 
+                        onChange={(e) => setEditDraft((d) => ({ ...d, priority: e.target.value }))}
+                        disabled={isActionInProgress || isLoading}
+                      >
+                        {PRIORITIES.map((p) => <option key={p} value={p}>{p}</option>)}
+                      </select>
+                    </div>
+                    <div className={styles["cal-form-group"]}>
+                      <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>Category</label>
+                      <select 
+                        className={`${styles["cal-select"]} ${isDarkMode ? styles["darkSelect"] : ""}`} 
+                        value={editDraft.category} 
+                        onChange={(e) => setEditDraft((d) => ({ ...d, category: e.target.value }))}
+                        disabled={isActionInProgress || isLoading}
+                      >
+                        {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                  <div className={styles["cal-form-actions"]}>
                     <button 
-                      className={styles["cal-icon-btn"]} 
-                      onClick={() => startEdit(t)} 
-                      aria-label="Edit"
+                      className={`${styles["cal-btn-primary"]} ${isDarkMode ? styles["darkBtnPrimary"] : ""}`} 
+                      onClick={() => saveEdit(t.id)}
                       disabled={isActionInProgress || isLoading}
                     >
-                      <Icon name="edit" className={styles["cal-icon-btn-svg"]} />
+                      {isActionInProgress || isLoading ? 'Saving...' : 'Save'}
                     </button>
                     <button 
-                      className={styles["cal-icon-btn"]} 
-                      onClick={() => confirmDelete(t.id)} 
-                      aria-label="Delete"
+                      className={`${styles["cal-btn-ghost"]} ${isDarkMode ? styles["darkBtnGhost"] : ""}`} 
+                      onClick={() => setEditingId(null)}
                       disabled={isActionInProgress || isLoading}
                     >
-                      <Icon name="trash" className={styles["cal-icon-btn-svg"]} />
+                      Cancel
                     </button>
                   </div>
                 </div>
-                {t.description && (
-                  <p className={styles["cal-modal-item-description"]}>{t.description}</p>
-                )}
-                <div className={styles["cal-modal-item-badges"]}>
-                  <span className={`${styles["cal-badge"]} ${priorityBadgeClass(t.priority)}`}>{t.priority}</span>
-                  <span className={`${styles["cal-badge"]} ${categoryBadgeClass(t.category || 'Design')}`}>{t.category || 'Design'}</span>
+              ) : (
+                <div key={t.id} className={`${styles["cal-modal-item"]} ${isDarkMode ? styles["darkModalItem"] : ""}`}>
+                  <div className={styles["cal-modal-item-top"]}>
+                    <span className={`${styles["cal-modal-item-title"]} ${isDarkMode ? styles["darkModalItemTitle"] : ""}`}>{t.title}</span>
+                    <div className={styles["cal-modal-item-icons"]}>
+                      <button 
+                        className={`${styles["cal-icon-btn"]} ${isDarkMode ? styles["darkIconBtn"] : ""}`} 
+                        onClick={() => startEdit(t)} 
+                        aria-label="Edit"
+                        disabled={isActionInProgress || isLoading}
+                      >
+                        <Icon name="edit" className={styles["cal-icon-btn-svg"]} />
+                      </button>
+                      <button 
+                        className={`${styles["cal-icon-btn"]} ${isDarkMode ? styles["darkIconBtn"] : ""}`} 
+                        onClick={() => confirmDelete(t.id)} 
+                        aria-label="Delete"
+                        disabled={isActionInProgress || isLoading}
+                      >
+                        <Icon name="trash" className={styles["cal-icon-btn-svg"]} />
+                      </button>
+                    </div>
+                  </div>
+                  {t.description && (
+                    <p className={`${styles["cal-modal-item-description"]} ${isDarkMode ? styles["darkModalItemDescription"] : ""}`}>{t.description}</p>
+                  )}
+                  <div className={styles["cal-modal-item-badges"]}>
+                    <span className={`${styles["cal-badge"]} ${priorityBadgeClass(t.priority)} ${isDarkMode ? styles["darkBadge"] : ""}`}>{t.priority}</span>
+                    <span className={`${styles["cal-badge"]} ${categoryBadgeClass(t.category || 'Design')} ${isDarkMode ? styles["darkBadge"] : ""}`}>{t.category || 'Design'}</span>
+                  </div>
                 </div>
-              </div>
-            );
+              );
             })}
           </div>
 
           {showAddForm ? (
             selectedDate && selectedDate.isPast ? (
-              <div className={styles["cal-past-date-message"]}>
+              <div className={`${styles["cal-past-date-message"]} ${isDarkMode ? styles["darkPastDateMessage"] : ""}`}>
                 <span className={styles["cal-past-date-icon"]}>⛔</span>
                 <p>Cannot add tasks to past dates.</p>
                 <button 
-                  className={styles["cal-btn-ghost"]} 
+                  className={`${styles["cal-btn-ghost"]} ${isDarkMode ? styles["darkBtnGhost"] : ""}`} 
                   onClick={() => setShowAddForm(false)}
                 >
                   Close
                 </button>
               </div>
             ) : (
-              <div className={styles["cal-modal-item"]}>
+              <div className={`${styles["cal-modal-item"]} ${isDarkMode ? styles["darkModalItem"] : ""}`}>
                 <div className={styles["cal-form-group"]}>
-                  <label className={styles["cal-form-label"]}>
+                  <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>
                     Task Title <span className={styles["cal-required-star"]}>*</span>
                   </label>
                   <input
-                    className={styles["cal-input"]}
+                    className={`${styles["cal-input"]} ${isDarkMode ? styles["darkInput"] : ""}`}
                     placeholder="Enter task title"
                     value={addDraft.title}
                     onChange={(e) => setAddDraft((d) => ({ ...d, title: e.target.value }))}
@@ -661,11 +629,11 @@ export default function Calendar() {
                   />
                 </div>
                 <div className={styles["cal-form-group"]}>
-                  <label className={styles["cal-form-label"]}>
+                  <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>
                     Description <span className={styles["cal-required-star"]}>*</span>
                   </label>
                   <textarea
-                    className={styles["cal-textarea"]}
+                    className={`${styles["cal-textarea"]} ${isDarkMode ? styles["darkTextarea"] : ""}`}
                     placeholder="Enter task description"
                     value={addDraft.description}
                     onChange={(e) => setAddDraft((d) => ({ ...d, description: e.target.value }))}
@@ -675,9 +643,9 @@ export default function Calendar() {
                 </div>
                 <div className={styles["cal-form-row"]}>
                   <div className={styles["cal-form-group"]}>
-                    <label className={styles["cal-form-label"]}>Priority</label>
+                    <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>Priority</label>
                     <select 
-                      className={styles["cal-select"]} 
+                      className={`${styles["cal-select"]} ${isDarkMode ? styles["darkSelect"] : ""}`} 
                       value={addDraft.priority} 
                       onChange={(e) => setAddDraft((d) => ({ ...d, priority: e.target.value }))}
                       disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
@@ -686,9 +654,9 @@ export default function Calendar() {
                     </select>
                   </div>
                   <div className={styles["cal-form-group"]}>
-                    <label className={styles["cal-form-label"]}>Category</label>
+                    <label className={`${styles["cal-form-label"]} ${isDarkMode ? styles["darkFormLabel"] : ""}`}>Category</label>
                     <select 
-                      className={styles["cal-select"]} 
+                      className={`${styles["cal-select"]} ${isDarkMode ? styles["darkSelect"] : ""}`} 
                       value={addDraft.category} 
                       onChange={(e) => setAddDraft((d) => ({ ...d, category: e.target.value }))}
                       disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
@@ -699,14 +667,14 @@ export default function Calendar() {
                 </div>
                 <div className={styles["cal-form-actions"]}>
                   <button 
-                    className={styles["cal-btn-primary"]} 
+                    className={`${styles["cal-btn-primary"]} ${isDarkMode ? styles["darkBtnPrimary"] : ""}`} 
                     onClick={submitAdd}
                     disabled={isActionInProgress || isLoading || (selectedDate && selectedDate.isPast)}
                   >
                     {isActionInProgress || isLoading ? 'Adding...' : 'Add task'}
                   </button>
                   <button 
-                    className={styles["cal-btn-ghost"]} 
+                    className={`${styles["cal-btn-ghost"]} ${isDarkMode ? styles["darkBtnGhost"] : ""}`} 
                     onClick={() => setShowAddForm(false)}
                     disabled={isActionInProgress || isLoading}
                   >
@@ -717,7 +685,7 @@ export default function Calendar() {
             )
           ) : (
             <button 
-              className={`${styles["cal-add-trigger"]} ${selectedDate && selectedDate.isPast ? styles["cal-add-trigger-disabled"] : ""}`} 
+              className={`${styles["cal-add-trigger"]} ${selectedDate && selectedDate.isPast ? styles["cal-add-trigger-disabled"] : ""} ${isDarkMode ? styles["darkAddTrigger"] : ""}`} 
               onClick={() => {
                 if (selectedDate && !selectedDate.isPast) {
                   setShowAddForm(true);
@@ -739,8 +707,7 @@ export default function Calendar() {
   };
 
   return (
-    <div className={styles["cal-container"]}>
-      {/* Toast Notification */}
+    <div className={`${styles["cal-container"]} ${isDarkMode ? styles["darkContainer"] : ""}`}>
       {toast && (
         <ToastNotification
           type={toast.type}
@@ -750,57 +717,55 @@ export default function Calendar() {
         />
       )}
 
-      {/* Background Decorations */}
-      <div className={styles["cal-bg"]}>
+      <div className={`${styles["cal-bg"]} ${isDarkMode ? styles["darkBg"] : ""}`}>
         <div className={styles["cal-bg-orb"]} />
         <div className={styles["cal-bg-orb"]} />
         <div className={styles["cal-bg-orb"]} />
-        <div className={styles["cal-bg-grid"]} />
-        <div className={styles["cal-bg-glow"]} />
+        <div className={`${styles["cal-bg-grid"]} ${isDarkMode ? styles["darkBgGrid"] : ""}`} />
+        <div className={`${styles["cal-bg-glow"]} ${isDarkMode ? styles["darkBgGlow"] : ""}`} />
       </div>
 
       <div className={styles["cal-content-wrapper"]}>
         <div className={styles["cal-header"]}>
           <div>
-            <h2 className={styles["cal-title"]}>Calendar</h2>
-            <p className={styles["cal-sub"]}>See where your rituals land this month.</p>
+            <h2 className={`${styles["cal-title"]} ${isDarkMode ? styles["darkTitle"] : ""}`}>Calendar</h2>
+            <p className={`${styles["cal-sub"]} ${isDarkMode ? styles["darkSub"] : ""}`}>See where your rituals land this month.</p>
           </div>
 
           <div className={styles["cal-nav"]}>
-            <div className={styles["cal-view-toggle"]}>
+            <div className={`${styles["cal-view-toggle"]} ${isDarkMode ? styles["darkViewToggle"] : ""}`}>
               <button
-                className={`${styles["cal-toggle-btn"]} ${viewMode === "month" ? styles["cal-toggle-active"] : ""}`}
+                className={`${styles["cal-toggle-btn"]} ${viewMode === "month" ? styles["cal-toggle-active"] : ""} ${isDarkMode ? styles["darkToggleBtn"] : ""}`}
                 onClick={() => setViewMode("month")}
               >
                 Month
               </button>
               <button
-                className={`${styles["cal-toggle-btn"]} ${viewMode === "week" ? styles["cal-toggle-active"] : ""}`}
+                className={`${styles["cal-toggle-btn"]} ${viewMode === "week" ? styles["cal-toggle-active"] : ""} ${isDarkMode ? styles["darkToggleBtn"] : ""}`}
                 onClick={() => setViewMode("week")}
               >
                 Week
               </button>
             </div>
 
-            <button className={styles["cal-today-btn"]} onClick={goToday}>Today</button>
+            <button className={`${styles["cal-today-btn"]} ${isDarkMode ? styles["darkTodayBtn"] : ""}`} onClick={goToday}>Today</button>
 
-            {/* Month/Year Picker */}
             <div className={styles["cal-month-picker-wrapper"]}>
-              <div className={styles["cal-month-switcher"]}>
-                <button className={styles["cal-arrow-btn"]} onClick={goPrev} aria-label="Previous">
+              <div className={`${styles["cal-month-switcher"]} ${isDarkMode ? styles["darkMonthSwitcher"] : ""}`}>
+                <button className={`${styles["cal-arrow-btn"]} ${isDarkMode ? styles["darkArrowBtn"] : ""}`} onClick={goPrev} aria-label="Previous">
                   <Icon name="chevronLeft" className={styles["cal-arrow-icon"]} />
                 </button>
                 
                 <div className={styles["cal-month-year-display"]}>
                   <button 
-                    className={styles["cal-month-btn"]}
+                    className={`${styles["cal-month-btn"]} ${isDarkMode ? styles["darkMonthBtn"] : ""}`}
                     onClick={() => setShowMonthPicker(!showMonthPicker)}
                   >
                     {MONTH_NAMES[month]}
                     <Icon name="chevronDown" className={styles["cal-chevron-icon"]} />
                   </button>
                   <button 
-                    className={styles["cal-year-btn"]}
+                    className={`${styles["cal-year-btn"]} ${isDarkMode ? styles["darkYearBtn"] : ""}`}
                     onClick={() => setShowYearPicker(!showYearPicker)}
                   >
                     {year}
@@ -808,18 +773,17 @@ export default function Calendar() {
                   </button>
                 </div>
 
-                <button className={styles["cal-arrow-btn"]} onClick={goNext} aria-label="Next">
+                <button className={`${styles["cal-arrow-btn"]} ${isDarkMode ? styles["darkArrowBtn"] : ""}`} onClick={goNext} aria-label="Next">
                   <Icon name="chevronRight" className={styles["cal-arrow-icon"]} />
                 </button>
               </div>
 
-              {/* Month Picker Dropdown */}
               {showMonthPicker && (
-                <div className={styles["cal-month-dropdown"]} ref={monthPickerRef}>
+                <div className={`${styles["cal-month-dropdown"]} ${isDarkMode ? styles["darkMonthDropdown"] : ""}`} ref={monthPickerRef}>
                   {MONTH_NAMES.map((monthName, index) => (
                     <button
                       key={index}
-                      className={`${styles["cal-month-option"]} ${month === index ? styles["cal-month-option-active"] : ""}`}
+                      className={`${styles["cal-month-option"]} ${month === index ? styles["cal-month-option-active"] : ""} ${isDarkMode ? styles["darkMonthOption"] : ""}`}
                       onClick={() => handleMonthSelect(index)}
                     >
                       {monthName}
@@ -828,31 +792,30 @@ export default function Calendar() {
                 </div>
               )}
 
-              {/* Year Picker Dropdown */}
               {showYearPicker && (
-                <div className={styles["cal-year-dropdown"]} ref={yearPickerRef}>
-                  <div className={styles["cal-year-nav"]}>
-                    <button onClick={() => goToYear(-5)} className={styles["cal-year-nav-btn"]}>
+                <div className={`${styles["cal-year-dropdown"]} ${isDarkMode ? styles["darkYearDropdown"] : ""}`} ref={yearPickerRef}>
+                  <div className={`${styles["cal-year-nav"]} ${isDarkMode ? styles["darkYearNav"] : ""}`}>
+                    <button onClick={() => goToYear(-5)} className={`${styles["cal-year-nav-btn"]} ${isDarkMode ? styles["darkYearNavBtn"] : ""}`}>
                       <Icon name="chevronLeft" className={styles["cal-arrow-icon"]} />
                       -5
                     </button>
-                    <button onClick={() => goToYear(-1)} className={styles["cal-year-nav-btn"]}>
+                    <button onClick={() => goToYear(-1)} className={`${styles["cal-year-nav-btn"]} ${isDarkMode ? styles["darkYearNavBtn"] : ""}`}>
                       <Icon name="chevronLeft" className={styles["cal-arrow-icon"]} />
                     </button>
-                    <span className={styles["cal-year-label"]}>{year}</span>
-                    <button onClick={() => goToYear(1)} className={styles["cal-year-nav-btn"]}>
+                    <span className={`${styles["cal-year-label"]} ${isDarkMode ? styles["darkYearLabel"] : ""}`}>{year}</span>
+                    <button onClick={() => goToYear(1)} className={`${styles["cal-year-nav-btn"]} ${isDarkMode ? styles["darkYearNavBtn"] : ""}`}>
                       <Icon name="chevronRight" className={styles["cal-arrow-icon"]} />
                     </button>
-                    <button onClick={() => goToYear(5)} className={styles["cal-year-nav-btn"]}>
+                    <button onClick={() => goToYear(5)} className={`${styles["cal-year-nav-btn"]} ${isDarkMode ? styles["darkYearNavBtn"] : ""}`}>
                       +5
                       <Icon name="chevronRight" className={styles["cal-arrow-icon"]} />
                     </button>
                   </div>
-                  <div className={styles["cal-year-grid"]}>
+                  <div className={`${styles["cal-year-grid"]} ${isDarkMode ? styles["darkYearGrid"] : ""}`}>
                     {Array.from({ length: 21 }, (_, i) => year - 10 + i).map((y) => (
                       <button
                         key={y}
-                        className={`${styles["cal-year-option"]} ${year === y ? styles["cal-year-option-active"] : ""}`}
+                        className={`${styles["cal-year-option"]} ${year === y ? styles["cal-year-option-active"] : ""} ${isDarkMode ? styles["darkYearOption"] : ""}`}
                         onClick={() => handleYearSelect(y)}
                       >
                         {y}
@@ -865,25 +828,24 @@ export default function Calendar() {
           </div>
         </div>
 
-        {/* Mini stats + legend */}
-        <div className={styles["cal-substrip"]}>
+        <div className={`${styles["cal-substrip"]} ${isDarkMode ? styles["darkSubstrip"] : ""}`}>
           <div className={styles["cal-mini-stats"]}>
-            <span className={styles["cal-mini-stat"]}>
+            <span className={`${styles["cal-mini-stat"]} ${isDarkMode ? styles["darkMiniStat"] : ""}`}>
               <span className={styles["stat-icon"]}>📋</span>
               <strong>{monthStats.total}</strong> this month
             </span>
-            <span className={styles["cal-mini-stat"]}>
+            <span className={`${styles["cal-mini-stat"]} ${isDarkMode ? styles["darkMiniStat"] : ""}`}>
               <span className={styles["stat-icon"]}>🔴</span>
               <strong>{monthStats.high}</strong> high priority
             </span>
-            <span className={styles["cal-mini-stat"]}>
+            <span className={`${styles["cal-mini-stat"]} ${isDarkMode ? styles["darkMiniStat"] : ""}`}>
               <span className={styles["stat-icon"]}>✅</span>
               <strong>{monthStats.completed}</strong> completed
             </span>
           </div>
-          <div className={styles["cal-legend"]}>
+          <div className={`${styles["cal-legend"]} ${isDarkMode ? styles["darkLegend"] : ""}`}>
             {PRIORITIES.map((p) => (
-              <span key={p} className={styles["cal-legend-item"]}>
+              <span key={p} className={`${styles["cal-legend-item"]} ${isDarkMode ? styles["darkLegendItem"] : ""}`}>
                 <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(p)}`} /> {p}
               </span>
             ))}
@@ -891,9 +853,9 @@ export default function Calendar() {
         </div>
 
         {viewMode === "month" ? (
-          <div className={styles["cal-grid-card"]}>
+          <div className={`${styles["cal-grid-card"]} ${isDarkMode ? styles["darkGridCard"] : ""}`}>
             <div className={styles["cal-weekdays"]}>
-              {WEEKDAYS.map((w) => <span key={w} className={styles["cal-weekday"]}>{w}</span>)}
+              {WEEKDAYS.map((w) => <span key={w} className={`${styles["cal-weekday"]} ${isDarkMode ? styles["darkWeekday"] : ""}`}>{w}</span>)}
             </div>
 
             <div className={styles["cal-grid"]}>
@@ -908,11 +870,10 @@ export default function Calendar() {
                 return (
                   <div
                     key={i}
-                    className={`${styles["cal-cell"]} ${!cell.inMonth ? styles["cal-cell-muted"] : ""} ${todayFlag ? styles["cal-cell-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""}`}
+                    className={`${styles["cal-cell"]} ${!cell.inMonth ? styles["cal-cell-muted"] : ""} ${todayFlag ? styles["cal-cell-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""} ${isDarkMode ? styles["darkCell"] : ""}`}
                     onClick={() => openDay(cell.y, cell.m, cell.day)}
                     onDragOver={(e) => { 
                       e.preventDefault(); 
-                      // Check if the target date is in the past
                       const todayObj = new Date();
                       todayObj.setHours(0, 0, 0, 0);
                       const targetDate = new Date(cell.y, cell.m, cell.day);
@@ -924,11 +885,11 @@ export default function Calendar() {
                     onDrop={(e) => { e.preventDefault(); handleDrop(cell.y, cell.m, cell.day); }}
                   >
                     <div className={styles["cal-cell-top"]}>
-                      <span className={`${styles["cal-cell-day"]} ${todayFlag ? styles["cal-cell-day-today"] : ""}`}>
+                      <span className={`${styles["cal-cell-day"]} ${todayFlag ? styles["cal-cell-day-today"] : ""} ${isDarkMode ? styles["darkCellDay"] : ""}`}>
                         {cell.day}
                       </span>
                       <button
-                        className={styles["cal-cell-add"]}
+                        className={`${styles["cal-cell-add"]} ${isDarkMode ? styles["darkCellAdd"] : ""}`}
                         onClick={(e) => { e.stopPropagation(); openDay(cell.y, cell.m, cell.day); setShowAddForm(true); }}
                         aria-label="Add task"
                         disabled={isLoading}
@@ -941,17 +902,17 @@ export default function Calendar() {
                       {dayTasks.slice(0, 2).map((t) => (
                         <span
                           key={t.id}
-                          className={`${styles["cal-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""}`}
+                          className={`${styles["cal-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""} ${isDarkMode ? styles["darkChip"] : ""}`}
                           draggable
                           onDragStart={(e) => { e.stopPropagation(); setDragTaskId(t.id); }}
                           onDragEnd={() => setDragTaskId(null)}
                           title={t.title}
                         >
                           <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(t.priority)}`} />
-                          <span className={styles["cal-chip-text"]}>{t.title}</span>
+                          <span className={`${styles["cal-chip-text"]} ${isDarkMode ? styles["darkChipText"] : ""}`}>{t.title}</span>
                         </span>
                       ))}
-                      {dayTasks.length > 2 && <span className={styles["cal-chip-more"]}>+{dayTasks.length - 2} more</span>}
+                      {dayTasks.length > 2 && <span className={`${styles["cal-chip-more"]} ${isDarkMode ? styles["darkChipMore"] : ""}`}>+{dayTasks.length - 2} more</span>}
                     </div>
                   </div>
                 );
@@ -960,16 +921,15 @@ export default function Calendar() {
           </div>
         ) : (
           <div className={styles["cal-week-wrap"]}>
-            {/* Mobile day-carousel controls: prev/next day, like switching between images */}
-            <div className={styles["cal-week-carousel-nav"]}>
-              <button className={styles["cal-arrow-btn"]} onClick={goPrevDay} aria-label="Previous day">
+            <div className={`${styles["cal-week-carousel-nav"]} ${isDarkMode ? styles["darkWeekCarouselNav"] : ""}`}>
+              <button className={`${styles["cal-arrow-btn"]} ${isDarkMode ? styles["darkArrowBtn"] : ""}`} onClick={goPrevDay} aria-label="Previous day">
                 <Icon name="chevronLeft" className={styles["cal-arrow-icon"]} />
               </button>
-              <span className={styles["cal-week-carousel-label"]}>
+              <span className={`${styles["cal-week-carousel-label"]} ${isDarkMode ? styles["darkWeekCarouselLabel"] : ""}`}>
                 {weekDays[weekDayIndex] &&
                   `${WEEKDAYS[new Date(weekDays[weekDayIndex].y, weekDays[weekDayIndex].m, weekDays[weekDayIndex].day).getDay()]}, ${MONTH_NAMES[weekDays[weekDayIndex].m]} ${weekDays[weekDayIndex].day}`}
               </span>
-              <button className={styles["cal-arrow-btn"]} onClick={goNextDay} aria-label="Next day">
+              <button className={`${styles["cal-arrow-btn"]} ${isDarkMode ? styles["darkArrowBtn"] : ""}`} onClick={goNextDay} aria-label="Next day">
                 <Icon name="chevronRight" className={styles["cal-arrow-icon"]} />
               </button>
             </div>
@@ -984,10 +944,9 @@ export default function Calendar() {
                 return (
                   <div
                     key={key}
-                    className={`${styles["cal-week-col"]} ${todayFlag ? styles["cal-week-col-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""}`}
+                    className={`${styles["cal-week-col"]} ${todayFlag ? styles["cal-week-col-today"] : ""} ${isDragOver ? styles["cal-cell-dragover"] : ""} ${isDarkMode ? styles["darkWeekCol"] : ""}`}
                     onDragOver={(e) => { 
                       e.preventDefault(); 
-                      // Check if the target date is in the past
                       const todayObj = new Date();
                       todayObj.setHours(0, 0, 0, 0);
                       const targetDate = new Date(cell.y, cell.m, cell.day);
@@ -998,16 +957,16 @@ export default function Calendar() {
                     onDragLeave={() => setDragOverKey((k) => (k === key ? null : k))}
                     onDrop={(e) => { e.preventDefault(); handleDrop(cell.y, cell.m, cell.day); }}
                   >
-                    <div className={styles["cal-week-col-header"]}>
-                      <span className={styles["cal-week-col-dayname"]}>{WEEKDAYS[new Date(cell.y, cell.m, cell.day).getDay()]}</span>
-                      <span className={`${styles["cal-week-col-daynum"]} ${todayFlag ? styles["cal-cell-day-today"] : ""}`}>{cell.day}</span>
+                    <div className={`${styles["cal-week-col-header"]} ${isDarkMode ? styles["darkWeekColHeader"] : ""}`}>
+                      <span className={`${styles["cal-week-col-dayname"]} ${isDarkMode ? styles["darkWeekColDayname"] : ""}`}>{WEEKDAYS[new Date(cell.y, cell.m, cell.day).getDay()]}</span>
+                      <span className={`${styles["cal-week-col-daynum"]} ${todayFlag ? styles["cal-cell-day-today"] : ""} ${isDarkMode ? styles["darkWeekColDaynum"] : ""}`}>{cell.day}</span>
                     </div>
 
                     <div className={styles["cal-week-col-tasks"]}>
                       {dayTasks.map((t) => (
                         <div
                           key={t.id}
-                          className={`${styles["cal-week-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""}`}
+                          className={`${styles["cal-week-chip"]} ${t.status === "Completed" || t.completed ? styles["cal-chip-done"] : ""} ${isDarkMode ? styles["darkWeekChip"] : ""}`}
                           draggable
                           onDragStart={() => setDragTaskId(t.id)}
                           onDragEnd={() => setDragTaskId(null)}
@@ -1015,11 +974,11 @@ export default function Calendar() {
                           title={t.title}
                         >
                           <span className={`${styles["cal-chip-dot"]} ${priorityDotClass(t.priority)}`} />
-                          <span className={styles["cal-week-chip-text"]}>{t.title}</span>
+                          <span className={`${styles["cal-week-chip-text"]} ${isDarkMode ? styles["darkWeekChipText"] : ""}`}>{t.title}</span>
                         </div>
                       ))}
                       <button 
-                        className={styles["cal-week-add"]} 
+                        className={`${styles["cal-week-add"]} ${isDarkMode ? styles["darkWeekAdd"] : ""}`} 
                         onClick={() => { openDay(cell.y, cell.m, cell.day); setShowAddForm(true); }}
                         disabled={isLoading}
                       >
@@ -1031,12 +990,11 @@ export default function Calendar() {
               })}
             </div>
 
-            {/* Mobile dot indicators, tap to jump to a specific day */}
-            <div className={styles["cal-week-dots"]}>
+            <div className={`${styles["cal-week-dots"]} ${isDarkMode ? styles["darkWeekDots"] : ""}`}>
               {weekDays.map((_, idx) => (
                 <button
                   key={idx}
-                  className={`${styles["cal-week-dot"]} ${idx === weekDayIndex ? styles["cal-week-dot-active"] : ""}`}
+                  className={`${styles["cal-week-dot"]} ${idx === weekDayIndex ? styles["cal-week-dot-active"] : ""} ${isDarkMode ? styles["darkWeekDot"] : ""}`}
                   onClick={() => scrollToDayIndex(idx)}
                   aria-label={`Go to day ${idx + 1}`}
                 />
@@ -1046,7 +1004,6 @@ export default function Calendar() {
         )}
       </div>
 
-      {/* Render modal via Portal */}
       {renderModal()}
     </div>
   );

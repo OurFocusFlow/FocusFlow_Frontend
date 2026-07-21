@@ -2205,3 +2205,554 @@
   transform: none;
   box-shadow: none;
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Container Dark Mode */
+.darkContainer {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkBg {
+  background: #000000 !important;
+}
+
+.darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Header Dark Mode */
+.darkTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSub {
+  color: #6A6255 !important;
+}
+
+/* View Toggle Dark Mode */
+.darkViewToggle {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkToggleBtn {
+  color: #6A6255 !important;
+}
+
+.darkToggleBtn:hover {
+  color: #FFFFFF !important;
+}
+
+.darkToggleBtn.cal-toggle-active {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+/* Today Button Dark Mode */
+.darkTodayBtn {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkTodayBtn:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+}
+
+/* Month Switcher Dark Mode */
+.darkMonthSwitcher {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkArrowBtn {
+  color: #6A6255 !important;
+}
+
+.darkArrowBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkMonthBtn {
+  color: #FFFFFF !important;
+}
+
+.darkMonthBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkYearBtn {
+  color: #FFFFFF !important;
+}
+
+.darkYearBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+/* Month Dropdown Dark Mode */
+.darkMonthDropdown {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkMonthOption {
+  color: #6A6255 !important;
+}
+
+.darkMonthOption:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+.darkMonthOption.cal-month-option-active {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+/* Year Dropdown Dark Mode */
+.darkYearDropdown {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkYearNav {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkYearNavBtn {
+  color: #6A6255 !important;
+}
+
+.darkYearNavBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkYearLabel {
+  color: #FFFFFF !important;
+}
+
+.darkYearGrid {
+  scrollbar-width: thin !important;
+}
+
+.darkYearGrid::-webkit-scrollbar-thumb {
+  background: rgba(251, 188, 0, 0.3) !important;
+}
+
+.darkYearOption {
+  color: #6A6255 !important;
+}
+
+.darkYearOption:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+.darkYearOption.cal-year-option-active {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+/* Substrip Dark Mode */
+.darkSubstrip {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkMiniStat {
+  color: #6A6255 !important;
+}
+
+.darkMiniStat strong {
+  color: #FFFFFF !important;
+}
+
+.darkLegend {
+  color: #6A6255 !important;
+}
+
+.darkLegendItem {
+  color: #6A6255 !important;
+}
+
+/* Grid Card Dark Mode */
+.darkGridCard {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkWeekday {
+  color: #6A6255 !important;
+}
+
+/* Cell Dark Mode */
+.darkCell {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkCell:hover {
+  background: #030202 !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkCell.cal-cell-today {
+  background: rgba(251, 188, 0, 0.06) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkCell.cal-cell-dragover {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkCellDay {
+  color: #FFFFFF !important;
+}
+
+.darkCellDay.cal-cell-day-today {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkCellAdd {
+  color: #6A6255 !important;
+}
+
+.darkCellAdd:hover {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Chip Dark Mode */
+.darkChip {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkChip:hover {
+  background: rgba(251, 188, 0, 0.06) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkChipText {
+  color: #FFFFFF !important;
+}
+
+.darkChipMore {
+  color: #FBBC00 !important;
+}
+
+/* Week View Dark Mode */
+.darkWeekCol {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkWeekCol:hover {
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkWeekCol.cal-week-col-today {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.04) !important;
+}
+
+.darkWeekColHeader {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkWeekColDayname {
+  color: #6A6255 !important;
+}
+
+.darkWeekColDaynum {
+  color: #FFFFFF !important;
+}
+
+.darkWeekChip {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkWeekChip:hover {
+  background: rgba(251, 188, 0, 0.06) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkWeekChipText {
+  color: #FFFFFF !important;
+}
+
+.darkWeekAdd {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkWeekAdd:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.04) !important;
+}
+
+.darkWeekCarouselNav {
+  color: #FFFFFF !important;
+}
+
+.darkWeekCarouselLabel {
+  color: #FFFFFF !important;
+}
+
+.darkWeekDots {
+  gap: 6px !important;
+}
+
+.darkWeekDot {
+  background: #383B40 !important;
+}
+
+.darkWeekDot.cal-week-dot-active {
+  background: #FBBC00 !important;
+}
+
+/* Modal Dark Mode */
+.darkModalOverlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.darkModal {
+  background: #030202 !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkModalHeader {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkModalClose {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #6A6255 !important;
+}
+
+.darkModalClose:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+.darkModalEmpty {
+  color: #6A6255 !important;
+}
+
+.darkModalItem {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkModalItem:hover {
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkModalItemTitle {
+  color: #FFFFFF !important;
+}
+
+.darkModalItemDescription {
+  color: #6A6255 !important;
+}
+
+.darkIconBtn {
+  color: #6A6255 !important;
+}
+
+.darkIconBtn:hover {
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkBadge.badge-high {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkBadge.badge-medium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkBadge.badge-low {
+  background: rgba(107, 98, 88, 0.2) !important;
+  color: #6A6255 !important;
+}
+
+/* Delete Confirmation Dark Mode */
+.darkDeleteConfirm {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.darkDeleteText {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteText strong {
+  color: #ef4444 !important;
+}
+
+.darkDeleteCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteConfirmBtn {
+  background: #ef4444 !important;
+}
+
+.darkDeleteConfirmBtn:hover {
+  background: #dc2626 !important;
+}
+
+/* Form Dark Mode */
+.darkFormLabel {
+  color: #6A6255 !important;
+}
+
+.darkInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkTextarea {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkTextarea::placeholder {
+  color: #857B6B !important;
+}
+
+.darkSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+.darkBtnPrimary {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkBtnPrimary:hover {
+  background: #E2A900 !important;
+}
+
+.darkBtnGhost {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkBtnGhost:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkAddTrigger {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkAddTrigger:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.04) !important;
+}
+
+.darkPastDateMessage {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.darkPastDateMessage p {
+  color: #FFFFFF !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkCell {
+    background: #0D0D0D !important;
+  }
+  
+  .darkWeekCol {
+    background: #030202 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkCell {
+    background: #0D0D0D !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkContainer,
+  .darkCell,
+  .darkModal {
+    transition: none !important;
+  }
+}
