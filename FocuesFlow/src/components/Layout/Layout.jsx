@@ -594,8 +594,6 @@ const Layout = ({ children }) => {
                     onNotificationClick={handleNotificationClick}
                     onProfileClick={handleProfileClick}
                     onLogout={handleLogout}
-                    onThemeToggle={handleThemeToggle}
-                    isDarkMode={isDarkMode}
                     showThemeToggle={true}
                     showNotifications={true}
                     showProfile={true}
