@@ -52,6 +52,9 @@ svg {
   --scrollbar-thumb-hover: #B8AFA1;
   --scrollbar-width: 6px;
   --scrollbar-radius: 4px;
+  /* Accent color defaults for dark mode */
+  --accent-color: #FBBC00;
+  --accent-color-rgb: 251, 188, 0;
 }
 
 /* WebKit Browsers (Chrome, Safari, Edge) - Light Mode */
@@ -85,32 +88,87 @@ svg {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-/* ==================== DARK MODE SCROLLBAR STYLES ==================== */
+/* ==================== DARK MODE SCROLLBAR - DEFAULT (AMBER) ==================== */
 
 [data-theme="dark"] {
   --scrollbar-track: #0D0D0D;
-  --scrollbar-thumb: #FBBC00;
-  --scrollbar-thumb-hover: #E2A900;
+  --scrollbar-thumb: #ffffff;
+  --scrollbar-thumb-hover: #ffffff;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #0D0D0D;
+  background: #0D0D0D !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #FBBC00;
+  background: #ffffff !important;
+  border-radius: 4px !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #E2A900;
+  background: #ffffff !important;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-corner {
-  background: #0D0D0D;
+  background: #0D0D0D !important;
 }
 
 [data-theme="dark"] * {
-  scrollbar-color: #FBBC00 #0D0D0D;
+  scrollbar-color: #ffffff #0D0D0D !important;
+}
+
+/* ==================== DARK MODE SCROLLBAR - WITH ACCENT COLOR ==================== */
+/* When accent color is applied (non-default), use the accent color for scrollbar */
+/* Using higher specificity with [data-theme="dark"] and ::-webkit-scrollbar-thumb */
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] * {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
+}
+
+/* ==================== HOME PAGE SCROLLBAR ==================== */
+/* Ensure Home page scrollbar also uses accent color */
+
+/* Home page - Default Dark Mode (Amber) */
+[data-theme="dark"] .page::-webkit-scrollbar-track {
+  background: #0D0D0D !important;
+}
+
+[data-theme="dark"] .page::-webkit-scrollbar-thumb {
+  background: #ffffff !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="dark"] .page::-webkit-scrollbar-thumb:hover {
+  background: #ffffff !important;
+}
+
+[data-theme="dark"] .page {
+  scrollbar-color: #ffffff #0D0D0D !important;
+}
+
+/* Home page - With Accent Color */
+[data-theme="dark"] .page::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="dark"] .page::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+[data-theme="dark"] .page {
+  scrollbar-color: var(--accent-color) #0D0D0D !important;
 }
 
 /* ==================== SCROLLBAR FOR SPECIFIC ELEMENTS ==================== */
@@ -147,17 +205,29 @@ svg {
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Dark mode for content-scroll */
+/* Dark mode for content-scroll - Default (Amber) */
 [data-theme="dark"] .content-scroll::-webkit-scrollbar-track {
-  background: #0D0D0D;
+  background: #0D0D0D !important;
 }
 
 [data-theme="dark"] .content-scroll::-webkit-scrollbar-thumb {
-  background: #FBBC00;
+  background: #ffffff !important;
+  border-radius: 4px !important;
 }
 
 [data-theme="dark"] .content-scroll::-webkit-scrollbar-thumb:hover {
-  background: #E2A900;
+  background: #ffffff !important;
+}
+
+/* Dark mode for content-scroll - With Accent Color */
+[data-theme="dark"] .content-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+  border-radius: 4px !important;
+}
+
+[data-theme="dark"] .content-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
 }
 
 /* ==================== THIN SCROLLBAR VARIANT ==================== */
@@ -181,17 +251,29 @@ svg {
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Dark mode for thin-scroll */
+/* Dark mode for thin-scroll - Default (Amber) */
 [data-theme="dark"] .thin-scroll::-webkit-scrollbar-track {
-  background: #0D0D0D;
+  background: #0D0D0D !important;
 }
 
 [data-theme="dark"] .thin-scroll::-webkit-scrollbar-thumb {
-  background: #FBBC00;
+  background: #ffffff !important;
+  border-radius: 2px !important;
 }
 
 [data-theme="dark"] .thin-scroll::-webkit-scrollbar-thumb:hover {
-  background: #E2A900;
+  background: #ffffff !important;
+}
+
+/* Dark mode for thin-scroll - With Accent Color */
+[data-theme="dark"] .thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent-color) !important;
+  border-radius: 2px !important;
+}
+
+[data-theme="dark"] .thin-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.8;
 }
 
 /* ==================== ACCESSIBILITY ==================== */
@@ -210,15 +292,13 @@ svg {
   }
   
   [data-theme="dark"] ::-webkit-scrollbar-thumb {
-    background: #FBBC00;
+    background: #ffffff;
   }
 }
 
-/* Add to darkMode.css */
-
 /* ==================== ACCENT COLOR CSS VARIABLES ==================== */
 :root {
-  --accent-color: #FBBC00;
+  --accent-color: #ffffff;
   --accent-color-rgb: 251, 188, 0;
 }
 
@@ -250,19 +330,4 @@ svg {
 
 .accent-hover:hover {
   color: var(--accent-color) !important;
-}
-
-/* Dark mode scrollbar with accent color */
-[data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #0D0D0D;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
-  border-radius: 4px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-color);
-  opacity: 0.8;
 }
