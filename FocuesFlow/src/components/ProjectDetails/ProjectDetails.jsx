@@ -68,8 +68,10 @@ const ProjectDetails = () => {
   const [filterStatus, setFilterStatus] = useState('all');
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteTaskModalOpen, setIsDeleteTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [taskToDelete, setTaskToDelete] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [toast, setToast] = useState(null);
   const [editErrors, setEditErrors] = useState({
@@ -305,16 +307,31 @@ const ProjectDetails = () => {
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
-    const task = projectTasks.find(t => t.id === taskId);
-    if (!task) return;
+  // Open delete task confirmation modal
+  const handleDeleteTaskClick = (task) => {
+    setTaskToDelete(task);
+    setIsDeleteTaskModalOpen(true);
+  };
+
+  // Confirm delete task
+  const handleConfirmDeleteTask = async () => {
+    if (!taskToDelete) return;
     
-    const result = await deleteTask(taskId);
+    const result = await deleteTask(taskToDelete.id);
+    setIsDeleteTaskModalOpen(false);
+    
     if (result.success) {
-      showToast('success', `Task "${task.title}" has been removed from the project.`, 'Task Deleted');
+      showToast('success', `Task "${taskToDelete.title}" has been removed from the project.`, 'Task Deleted');
+      setTaskToDelete(null);
     } else {
       showToast('error', 'Failed to delete task', 'Error');
     }
+  };
+
+  // Cancel delete task
+  const handleCancelDeleteTask = () => {
+    setIsDeleteTaskModalOpen(false);
+    setTaskToDelete(null);
   };
 
   const priorityColor = (priority) => {
@@ -591,7 +608,7 @@ const ProjectDetails = () => {
                   </Box>
                   <button 
                     className={`${styles.deleteTaskBtn} ${isDarkMode ? styles.darkDeleteTaskBtn : ""}`}
-                    onClick={() => handleDeleteTask(task.id)}
+                    onClick={() => handleDeleteTaskClick(task)}
                     disabled={isLoading}
                   >
                     <DeleteIcon className={styles.btnIconSmall} />
@@ -780,6 +797,37 @@ const ProjectDetails = () => {
               Cancel
             </button>
             <button onClick={handleDeleteProject} className={`${styles.deleteDialogConfirm} ${isDarkMode ? styles.darkDeleteDialogConfirm : ""}`} disabled={isLoading}>
+              {isLoading ? 'Deleting...' : 'Yes, Delete'}
+            </button>
+          </Box>
+        </Box>
+      </Dialog>
+
+      {/* Delete Task Confirmation Modal */}
+      <Dialog
+        open={isDeleteTaskModalOpen}
+        onClose={handleCancelDeleteTask}
+        maxWidth="xs"
+        fullWidth
+        className={styles.deleteDialog}
+        PaperProps={{
+          className: `${styles.deleteDialogPaper} ${isDarkMode ? styles.darkDeleteDialogPaper : ""}`,
+        }}
+      >
+        <Box className={`${styles.deleteDialogContent} ${isDarkMode ? styles.darkDeleteDialogContent : ""}`}>
+          <Box className={`${styles.deleteDialogIconWrapper} ${isDarkMode ? styles.darkDeleteDialogIconWrapper : ""}`}>
+            <DeleteIcon className={`${styles.deleteDialogIcon} ${isDarkMode ? styles.darkDeleteDialogIcon : ""}`} />
+          </Box>
+          <h3 className={`${styles.deleteDialogTitle} ${isDarkMode ? styles.darkDeleteDialogTitle : ""}`}>Delete Task?</h3>
+          <p className={`${styles.deleteDialogText} ${isDarkMode ? styles.darkDeleteDialogText : ""}`}>
+            Are you sure you want to delete <strong>"{taskToDelete?.title}"</strong>?<br />
+            This action cannot be undone.
+          </p>
+          <Box className={styles.deleteDialogActions}>
+            <button onClick={handleCancelDeleteTask} className={`${styles.deleteDialogCancel} ${isDarkMode ? styles.darkDeleteDialogCancel : ""}`}>
+              Cancel
+            </button>
+            <button onClick={handleConfirmDeleteTask} className={`${styles.deleteDialogConfirm} ${isDarkMode ? styles.darkDeleteDialogConfirm : ""}`} disabled={isLoading}>
               {isLoading ? 'Deleting...' : 'Yes, Delete'}
             </button>
           </Box>
