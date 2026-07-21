@@ -17,8 +17,52 @@ import {
 } from '@mui/icons-material';
 import { useProjects } from '../Context/ProjectContext';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Projects.module.css';
 import ToastNotification from '../ToastNotification/ToastNotification';
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if color is dark
+const isDarkColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance < 0.5;
+  }
+  return false;
+};
+
+// Helper function to check if color is light
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 function Icon({ name, className }) {
   const paths = {
@@ -87,6 +131,7 @@ function Icon({ name, className }) {
 const Projects = () => {
   const navigate = useNavigate();
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const { 
     projects, 
     addProject, 
@@ -133,6 +178,37 @@ const Projects = () => {
   // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
 
+  // Determine if accent should be used (only in dark mode AND when not default amber)
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  const accentRgb = hexToRgb(accentColor);
+
+  // Determine colors for accent-dependent elements
+  const getAccentColor = () => {
+    if (shouldUseAccent) return accentColor;
+    if (isDarkMode) return '#FBBC00';
+    return '#885210'; // default orange in light mode
+  };
+
+  const getAccentRgb = () => {
+    if (shouldUseAccent) return accentRgb;
+    if (isDarkMode) return '251, 188, 0';
+    return '136, 82, 16';
+  };
+
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      const color = shouldUseAccent ? accentColor : '#FBBC00';
+      return isLightColor(color) ? '#000000' : '#FFFFFF';
+    }
+    return '#FFFFFF';
+  };
+
+  const getButtonBackground = () => {
+    if (shouldUseAccent) return accentColor;
+    if (isDarkMode) return '#FBBC00';
+    return '#885210';
+  };
+
   const showToast = (type, message, title) => {
     setToast({ type, message, title });
     setTimeout(() => {
@@ -155,9 +231,17 @@ const Projects = () => {
   const getPriorityDotColor = (priority) => {
     const map = {
       High: '#dc2626',
-      Medium: '#d97706',
       Low: '#059669',
     };
+    
+    // For Medium priority, use accent color in dark mode
+    if (priority === 'Medium') {
+      if (isDarkMode) {
+        return shouldUseAccent ? accentColor : '#FBBC00';
+      }
+      return '#d97706';
+    }
+    
     return map[priority] || '#7E7471';
   };
 
@@ -356,7 +440,13 @@ const Projects = () => {
   };
 
   return (
-    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}>
+    <Box 
+      className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}
+      style={{
+        '--accent-color': getAccentColor(),
+        '--accent-rgb': getAccentRgb(),
+      }}
+    >
       {/* Background Decorations */}
       <div className={`${styles["projects-bg"]} ${isDarkMode ? styles.darkBg : ""}`}>
         <div className={styles["projects-bg-orb"]} />
@@ -376,6 +466,10 @@ const Projects = () => {
           <button
             className={`${styles.createBtn} ${isDarkMode ? styles.darkCreateBtn : ""}`}
             onClick={() => setShowCreateModal(true)}
+            style={{
+              background: getButtonBackground(),
+              color: getButtonTextColor(),
+            }}
           >
             <Icon name="plus" className={styles.createBtnIcon} />
             New Project
@@ -518,7 +612,7 @@ const Projects = () => {
                       <Box className={styles.projectBadges}>
                         <span className={`${styles.priorityBadge} ${getPriorityColor(project.priority)} ${isDarkMode ? styles.darkPriorityBadge : ""}`}>
                           <span 
-                            className={styles.priorityDot} 
+                            className={`${styles.priorityDot} ${project.priority === 'Medium' ? styles.mediumDot : ''}`}
                             style={{ backgroundColor: getPriorityDotColor(project.priority) }}
                           />
                           {project.priority}
@@ -592,6 +686,9 @@ const Projects = () => {
                   <button 
                     className={`${styles.viewBtn} ${isDarkMode ? styles.darkViewBtn : ""}`}
                     onClick={() => handleViewProject(project.id)}
+                    style={{
+                      color: getAccentColor(),
+                    }}
                   >
                     View Project
                     <Icon name="arrowForward" className={`${styles.viewBtnIcon} ${isDarkMode ? styles.darkViewBtnIcon : ""}`} />
@@ -637,7 +734,13 @@ const Projects = () => {
         <Box className={`${styles.createModalContent} ${isDarkMode ? styles.darkCreateModalContent : ""}`}>
           <Box className={`${styles.createModalHeader} ${isDarkMode ? styles.darkCreateModalHeader : ""}`}>
             <Box className={styles.createModalHeaderLeft}>
-              <Box className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}>
+              <Box 
+                className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}
+                style={{ 
+                  background: getButtonBackground(),
+                  color: getButtonTextColor(),
+                }}
+              >
                 <Icon name="folder" className={styles.createModalIcon} />
               </Box>
               <Box>
@@ -756,6 +859,10 @@ const Projects = () => {
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleCreateProject}
               disabled={isSubmitting}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               {isSubmitting ? (
                 <>
@@ -789,7 +896,13 @@ const Projects = () => {
         <Box className={`${styles.createModalContent} ${isDarkMode ? styles.darkCreateModalContent : ""}`}>
           <Box className={`${styles.createModalHeader} ${isDarkMode ? styles.darkCreateModalHeader : ""}`}>
             <Box className={styles.createModalHeaderLeft}>
-              <Box className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}>
+              <Box 
+                className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}
+                style={{ 
+                  background: getButtonBackground(),
+                  color: getButtonTextColor(),
+                }}
+              >
                 <Icon name="folder" className={styles.createModalIcon} />
               </Box>
               <Box>
@@ -886,6 +999,10 @@ const Projects = () => {
             <button 
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEdit}
+              style={{
+                background: getButtonBackground(),
+                color: getButtonTextColor(),
+              }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M20 6L9 17l-5-5" />
