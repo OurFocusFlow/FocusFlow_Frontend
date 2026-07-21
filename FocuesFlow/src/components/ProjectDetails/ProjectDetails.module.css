@@ -2161,3 +2161,116 @@
 .btnIconSmall {
   font-size: 16px;
 }
+
+/* ==================== EDIT MODAL - SCROLLABLE ==================== */
+
+/* Update the edit dialog paper to handle scrolling */
+.editDialogPaper {
+  border-radius: 20px !important;
+  background: rgba(253, 248, 245, 0.95) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 48px rgba(31,17,10,0.12) !important;
+  max-width: 580px !important;
+  overflow: hidden;
+  max-height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Modal content wrapper - scrollable */
+.editModalContent {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* Modal header - sticky */
+.editModalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid rgba(230, 226, 223, 0.3);
+  position: sticky;
+  top: 0;
+  background: rgba(253, 248, 245, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+/* Modal body - scrollable */
+.editModalForm {
+  padding: 1.5rem 1.75rem 0.9rem;
+  overflow-y: auto;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for edit modal form */
+.editModalForm::-webkit-scrollbar {
+  width: 4px;
+}
+
+.editModalForm::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editModalForm::-webkit-scrollbar-thumb {
+  background: rgba(136, 82, 16, 0.15);
+  border-radius: 4px;
+}
+
+.editModalForm::-webkit-scrollbar-thumb:hover {
+  background: rgba(136, 82, 16, 0.3);
+}
+
+/* Modal footer - sticky at bottom */
+.editModalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0.5rem 1.75rem 1.25rem;
+  border-top: 1px solid rgba(230, 226, 223, 0.3);
+  position: sticky;
+  bottom: 0;
+  background: rgba(253, 248, 245, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-shrink: 0;
+}
+
+/* ==================== DARK MODE EDIT MODAL - SCROLLABLE ==================== */
+
+.darkEditDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  max-height: 90vh !important;
+}
+
+.darkEditModalHeader {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom-color: #383B40 !important;
+}
+
+.darkEditModalForm {
+  background: #030202 !important;
+}
+
+.darkEditModalForm::-webkit-scrollbar-thumb {
+  background: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkEditModalForm::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 188, 0, 0.3) !important;
+}
+
+.darkEditModalFooter {
+  border-top-color: #383B40 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+}
