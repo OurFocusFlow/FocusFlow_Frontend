@@ -1,4 +1,3 @@
-// Layout.jsx - Updated with dynamic accent color support
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTasks } from '../Context/TaskContext';
@@ -356,20 +355,51 @@ const Layout = ({ children }) => {
   // Get accent color RGB for CSS
   const accentRgb = hexToRgb(accentColor);
   
+  // Determine if accent should be used (only in dark mode AND when not default amber)
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
   // Determine text color for the button
   const getButtonTextColor = () => {
     if (isDarkMode) {
       return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
     }
-    return isDarkColor(accentColor) ? '#FFFFFF' : '#33231D';
+    return '#FFFFFF'; // White text on brown button in light mode
   };
 
   // Get color for all MuiTypography text and icons in dark mode when accent is NOT default amber
   const getTextAndIconColor = () => {
-    if (isDarkMode && !isDefaultAmber(accentColor)) {
+    if (shouldUseAccent) {
       return '#e9e9e9';
     }
     return undefined; // Use default
+  };
+
+  // Get button background color
+  const getButtonBackground = () => {
+    if (shouldUseAccent) {
+      return accentColor;
+    }
+    // Default brown in light mode or dark mode with amber
+    return isDarkMode ? '#FBBC00' : '#4B3832';
+  };
+
+  // Get button shadow
+  const getButtonShadow = () => {
+    if (shouldUseAccent) {
+      return `0 4px 24px rgba(${accentRgb}, 0.25)`;
+    }
+    if (isDarkMode) {
+      return '0 4px 24px rgba(251, 188, 0, 0.25)';
+    }
+    return '0 4px 24px rgba(75, 56, 50, 0.25)';
+  };
+
+  // Get avatar text color
+  const getAvatarTextColor = () => {
+    if (isDarkMode) {
+      return '#000000';
+    }
+    return '#FFFFFF';
   };
 
   const drawerContent = (
@@ -379,7 +409,7 @@ const Layout = ({ children }) => {
         <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <rect width="36" height="36" rx="10" fill={isDarkMode ? accentColor : "url(#gradient)"} />
+              <rect width="36" height="36" rx="10" fill={isDarkMode ? (shouldUseAccent ? accentColor : '#FBBC00') : "url(#gradient)"} />
               <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               {!isDarkMode && (
                 <defs>
@@ -429,8 +459,8 @@ const Layout = ({ children }) => {
               className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
               onClick={() => handleNavItemClick(item.text, item.path)}
               style={{
-                '--accent-color': accentColor,
-                '--accent-rgb': accentRgb,
+                '--accent-color': shouldUseAccent ? accentColor : (isDarkMode ? '#FBBC00' : '#885210'),
+                '--accent-rgb': shouldUseAccent ? accentRgb : (isDarkMode ? '251, 188, 0' : '136, 82, 16'),
               }}
             >
               <ListItemIcon 
@@ -458,7 +488,7 @@ const Layout = ({ children }) => {
                 }}
               />
               {activeItem === item.text && (
-                <Box className={styles.activeIndicator} style={{ background: accentColor }} />
+                <Box className={styles.activeIndicator} style={{ background: shouldUseAccent ? accentColor : (isDarkMode ? '#FBBC00' : '#885210') }} />
               )}
             </ListItem>
           </Tooltip>
@@ -467,7 +497,7 @@ const Layout = ({ children }) => {
 
       <Divider className={styles.divider} />
 
-      {/* Modern New Task Button - Using accent color with proper text color */}
+      {/* Modern New Task Button - Using accent color only in dark mode */}
       <Box className={styles.newTaskWrapper}>
         <Button
           fullWidth
@@ -476,21 +506,21 @@ const Layout = ({ children }) => {
           className={styles.newTaskButton}
           onClick={handleNewTaskClick}
           style={{
-            backgroundColor: accentColor,
+            backgroundColor: getButtonBackground(),
             color: getButtonTextColor(),
-            boxShadow: `0 4px 24px rgba(${accentRgb}, 0.25)`,
+            boxShadow: getButtonShadow(),
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = accentColor;
+            e.currentTarget.style.backgroundColor = getButtonBackground();
             e.currentTarget.style.opacity = '0.85';
             e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = `0 8px 28px rgba(${accentRgb}, 0.35)`;
+            e.currentTarget.style.boxShadow = `0 8px 28px rgba(${shouldUseAccent ? accentRgb : (isDarkMode ? '251, 188, 0' : '75, 56, 50')}, 0.35)`;
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = accentColor;
+            e.currentTarget.style.backgroundColor = getButtonBackground();
             e.currentTarget.style.opacity = '1';
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = `0 4px 24px rgba(${accentRgb}, 0.25)`;
+            e.currentTarget.style.boxShadow = getButtonShadow();
           }}
         >
           New Task
@@ -515,8 +545,8 @@ const Layout = ({ children }) => {
                 }
               }}
               style={{
-                '--accent-color': accentColor,
-                '--accent-rgb': accentRgb,
+                '--accent-color': shouldUseAccent ? accentColor : (isDarkMode ? '#FBBC00' : '#885210'),
+                '--accent-rgb': shouldUseAccent ? accentRgb : (isDarkMode ? '251, 188, 0' : '136, 82, 16'),
               }}
             >
               <ListItemIcon 
@@ -585,8 +615,8 @@ const Layout = ({ children }) => {
           <Avatar 
             className={styles.avatar}
             style={{
-              background: accentColor,
-              color: getButtonTextColor(),
+              background: getButtonBackground(),
+              color: getAvatarTextColor(),
             }}
           >
             JD
@@ -684,7 +714,7 @@ const Layout = ({ children }) => {
                 </Tooltip>
                 <Box className={styles.profileLogo}>
                   <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-                    <rect width="36" height="36" rx="10" fill={isDarkMode ? accentColor : "url(#gradient)"} />
+                    <rect width="36" height="36" rx="10" fill={isDarkMode ? (shouldUseAccent ? accentColor : '#FBBC00') : "url(#gradient)"} />
                     <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     {!isDarkMode && (
                       <defs>
