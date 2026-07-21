@@ -654,8 +654,24 @@
   background: #1A1A1A;
 }
 
+/* NEW: Dark mode search field hover state */
+[data-theme="dark"] .searchField:hover {
+  background: #2A2A2A !important;
+}
+
 [data-theme="dark"] .searchField :global(.MuiOutlinedInput-root) {
   border-color: #383B40;
+}
+
+/* NEW: Dark mode search field hover - input root */
+[data-theme="dark"] .searchField :global(.MuiOutlinedInput-root:hover) {
+  border-color: #FBBC00 !important;
+  background: #2A2A2A !important;
+}
+
+/* NEW: Dark mode search field hover - icon */
+[data-theme="dark"] .searchField:hover .searchIcon {
+  color: #FBBC00 !important;
 }
 
 [data-theme="dark"] .searchField :global(.MuiInputBase-input) {
@@ -666,6 +682,7 @@
   color: #857B6B;
 }
 
+/* Keep existing styles */
 [data-theme="dark"] .profileSection:hover {
   background: rgba(251, 188, 0, 0.08) !important;
 }
@@ -791,6 +808,7 @@
   color: #6A6255 !important;
 }
 
+/* Keep existing focused state */
 [data-theme="dark"] .searchField :global(.Mui-focused) .searchIcon {
   color: #FBBC00 !important;
 }
