@@ -1388,3 +1388,804 @@ textarea.formInputError {
     font-size: 9px;
   }
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkBg {
+  background: #000000 !important;
+}
+
+.darkBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Page Header Dark Mode */
+.darkPageTitle {
+  color: #FFFFFF !important;
+}
+
+.darkPageSubtitle {
+  color: #6A6255 !important;
+}
+
+/* New Project Button Dark Mode - Amber */
+.darkCreateBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkCreateBtn:hover {
+  background: #E2A900 !important;
+  box-shadow: 0 8px 30px rgba(251, 188, 0, 0.25) !important;
+}
+
+/* Stats Box Dark Mode - Background #030202 */
+.darkStatBox {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkStatBox:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkStatValue {
+  color: #FFFFFF !important;
+}
+
+.darkStatLabel {
+  color: #6A6255 !important;
+}
+
+.darkStatTrend {
+  color: #FBBC00 !important;
+}
+
+/* Icon Wrappers Dark Mode */
+.darkIconTotal {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkIconHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkIconMedium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkIconLow {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+/* Search Dark Mode - Background #030202 */
+.darkSearchWrapper {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkSearchWrapper:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkSearchIcon {
+  color: #6A6255 !important;
+}
+
+.darkSearchInput {
+  color: #FFFFFF !important;
+}
+
+.darkSearchInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Filter Dark Mode - Background #030202 */
+.darkFilterLabel {
+  color: #6A6255 !important;
+}
+
+.darkFilterSelect {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFilterSelect:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkFilterSelect option {
+  background: #030202 !important;
+}
+
+/* Project Card Dark Mode - Background #030202 */
+.darkProjectCard {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkProjectCard:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkProjectName {
+  color: #FFFFFF !important;
+}
+
+.darkProjectDescription {
+  color: #6A6255 !important;
+}
+
+.darkPriorityBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkPriorityBadge.priorityHigh {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkPriorityBadge.priorityMedium {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkPriorityBadge.priorityLow {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkCategoryBadge {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+/* Star Button Dark Mode */
+.darkStarBtn {
+  color: #6A6255 !important;
+}
+
+.darkStarBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkStarIcon {
+  color: #6A6255 !important;
+}
+
+.darkStarIconActive {
+  color: #FBBC00 !important;
+}
+
+/* More Button Dark Mode */
+.darkMoreBtn {
+  color: #6A6255 !important;
+}
+
+.darkMoreBtn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkMoreIcon {
+  color: #6A6255 !important;
+}
+
+/* Progress Dark Mode */
+.darkProgressLabel {
+  color: #6A6255 !important;
+}
+
+.darkProgressValue {
+  color: #FFFFFF !important;
+}
+
+.darkProgressBarWrapper {
+  background: #2A2D33 !important;
+}
+
+.darkProgressBar {
+  background: linear-gradient(90deg, #FBBC00, #E2A900) !important;
+}
+
+/* Meta Dark Mode */
+.darkMetaLabel {
+  color: #6A6255 !important;
+}
+
+.darkMetaValue {
+  color: #FFFFFF !important;
+}
+
+/* Project Card Footer Dark Mode */
+.darkProjectCardFooter {
+  border-top-color: #383B40 !important;
+}
+
+.darkTeamAvatar {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkViewBtn {
+  color: #FBBC00 !important;
+}
+
+.darkViewBtn:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkViewBtnIcon {
+  color: #FBBC00 !important;
+}
+
+/* Empty State Dark Mode - Background #030202 */
+.darkEmptyState {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkEmptyTitle {
+  color: #FFFFFF !important;
+}
+
+.darkEmptyText {
+  color: #6A6255 !important;
+}
+
+/* Menu Dark Mode - Background #030202 */
+.darkMenuPaper {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkMenuItem {
+  color: #FFFFFF !important;
+}
+
+.darkMenuItem:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkMenuItemDanger {
+  color: #ef4444 !important;
+}
+
+.darkMenuItemDanger:hover {
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.darkMenuIcon {
+  color: #6A6255 !important;
+}
+
+/* Create/Edit Modal Dark Mode - Background #030202 */
+.darkCreateDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkCreateModalHeader {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom-color: #383B40 !important;
+}
+
+.darkCreateModalIconWrapper {
+  background: #FBBC00 !important;
+}
+
+.darkCreateModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkCreateModalSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkCreateModalClose {
+  color: #6A6255 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.darkCreateModalClose:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormLabel {
+  color: #6A6255 !important;
+}
+
+.darkFormInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkFormTextarea {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+}
+
+.darkFormSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormSelect:focus {
+  border-color: #FBBC00 !important;
+}
+
+.darkFormSelect option {
+  background: #030202 !important;
+}
+
+.darkCreateModalFooter {
+  border-top-color: #383B40 !important;
+}
+
+.darkCancelBtn {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkCancelBtn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkSaveBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSaveBtn:hover {
+  background: #E2A900 !important;
+}
+
+/* Delete Modal Dark Mode - Background #030202 */
+.darkDeleteDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDeleteDialogContent {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogIconWrapper {
+  background: rgba(239, 68, 68, 0.15) !important;
+}
+
+.darkDeleteDialogIcon {
+  color: #ef4444 !important;
+}
+
+.darkDeleteDialogTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogText {
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogText strong {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogConfirm {
+  background: #ef4444 !important;
+}
+
+.darkDeleteDialogConfirm:hover {
+  background: #dc2626 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkProjectCard {
+    border-color: #383B40 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkProjectCard {
+    border-color: #383B40 !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkPage,
+  .darkStatBox,
+  .darkProjectCard {
+    transition: none !important;
+  }
+}
+
+/* ==================== CREATE/EDIT MODAL DARK MODE ==================== */
+
+/* Create/Edit Modal Dark Mode - Background #030202 */
+.darkCreateDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkCreateModalContent {
+  background: #030202 !important;
+}
+
+.darkCreateModalHeader {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom-color: #383B40 !important;
+  padding: 1.5rem 1.75rem !important;
+}
+
+.darkCreateModalHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.darkCreateModalIconWrapper {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkCreateModalIconWrapper svg {
+  color: #000000 !important;
+}
+
+.darkCreateModalTitle {
+  color: #FFFFFF !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+}
+
+.darkCreateModalSubtitle {
+  color: #6A6255 !important;
+  font-size: 0.875rem !important;
+}
+
+.darkCreateModalClose {
+  color: #6A6255 !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  width: 36px !important;
+  height: 36px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.darkCreateModalClose:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  transform: rotate(90deg) !important;
+}
+
+/* Modal Form Dark Mode */
+.darkCreateModalForm {
+  padding: 1.5rem 1.75rem 0.9rem !important;
+  background: #030202 !important;
+}
+
+.darkFormGroup {
+  margin-bottom: 1.25rem !important;
+}
+
+.darkFormLabel {
+  color: #6A6255 !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  display: block !important;
+  margin-bottom: 0.35rem !important;
+  letter-spacing: 0.01em !important;
+}
+
+.darkFormLabel .requiredStar {
+  color: #ef4444 !important;
+  margin-left: 2px !important;
+}
+
+.darkFormInput {
+  background: #0D0D0D !important;
+  border: 1.5px solid #383B40 !important;
+  border-radius: 10px !important;
+  color: #FFFFFF !important;
+  font-size: 0.9rem !important;
+  padding: 0.6rem 0.85rem !important;
+  width: 100% !important;
+  font-family: inherit !important;
+  transition: all 0.2s ease !important;
+  outline: none !important;
+}
+
+.darkFormInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormInputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.darkFormTextarea {
+  background: #0D0D0D !important;
+  border: 1.5px solid #383B40 !important;
+  border-radius: 10px !important;
+  color: #FFFFFF !important;
+  font-size: 0.9rem !important;
+  padding: 0.6rem 0.85rem !important;
+  width: 100% !important;
+  font-family: inherit !important;
+  transition: all 0.2s ease !important;
+  resize: vertical !important;
+  min-height: 80px !important;
+  outline: none !important;
+}
+
+.darkFormTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormTextarea::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormSelect {
+  background: #0D0D0D !important;
+  border: 1.5px solid #383B40 !important;
+  border-radius: 10px !important;
+  color: #FFFFFF !important;
+  font-size: 0.9rem !important;
+  padding: 0.6rem 0.85rem !important;
+  width: 100% !important;
+  font-family: inherit !important;
+  transition: all 0.2s ease !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236A6255' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  padding-right: 32px !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+.darkFormSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+/* Modal Footer Dark Mode */
+.darkCreateModalFooter {
+  border-top-color: #383B40 !important;
+  padding: 0.5rem 1.75rem 1.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  background: #030202 !important;
+}
+
+.darkCancelBtn {
+  border: 1.5px solid #383B40 !important;
+  border-radius: 10px !important;
+  color: #6A6255 !important;
+  background: transparent !important;
+  padding: 0.5rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-family: inherit !important;
+}
+
+.darkCancelBtn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkSaveBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 0.5rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 16px rgba(251, 188, 0, 0.15) !important;
+  font-family: inherit !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.darkSaveBtn:hover {
+  background: #E2A900 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(251, 188, 0, 0.25) !important;
+}
+
+.darkSaveBtn:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Form Row Dark Mode */
+.darkFormRow {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1rem !important;
+}
+
+/* Form Error Dark Mode */
+.darkFormError {
+  color: #ef4444 !important;
+  font-size: 0.75rem !important;
+  margin-top: 4px !important;
+  display: block !important;
+}
+
+/* ==================== DELETE MODAL DARK MODE ==================== */
+
+/* Delete Modal Dark Mode - Background #030202 */
+.darkDeleteDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkDeleteDialogContent {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  padding: 32px 24px 24px !important;
+  text-align: center !important;
+  color: #FFFFFF !important;
+  background: #030202 !important;
+}
+
+.darkDeleteDialogIconWrapper {
+  background: rgba(239, 68, 68, 0.15) !important;
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 16px !important;
+}
+
+.darkDeleteDialogIcon {
+  color: #ef4444 !important;
+  font-size: 32px !important;
+}
+
+.darkDeleteDialogTitle {
+  color: #FFFFFF !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+}
+
+.darkDeleteDialogText {
+  color: #6A6255 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin-bottom: 24px !important;
+}
+
+.darkDeleteDialogText strong {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogActions {
+  display: flex !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.darkDeleteDialogCancel {
+  flex: 1 !important;
+  padding: 10px 20px !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #6A6255 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.darkDeleteDialogCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogConfirm {
+  flex: 1 !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.darkDeleteDialogConfirm:hover {
+  background: #dc2626 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3) !important;
+}

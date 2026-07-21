@@ -16,6 +16,7 @@ import {
   Delete as DeleteIcon,
 } from '@mui/icons-material';
 import { useProjects } from '../Context/ProjectContext';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Projects.module.css';
 import ToastNotification from '../ToastNotification/ToastNotification';
 
@@ -85,6 +86,7 @@ function Icon({ name, className }) {
 
 const Projects = () => {
   const navigate = useNavigate();
+  const { isDarkMode } = useDarkMode();
   const { 
     projects, 
     addProject, 
@@ -214,7 +216,6 @@ const Projects = () => {
   };
 
   const handleEditProject = () => {
-    // Convert dueDate from display format to input format if needed
     let dueDateValue = '';
     if (selectedProject.dueDate) {
       const dateParts = selectedProject.dueDate.split(' ');
@@ -239,31 +240,26 @@ const Projects = () => {
   };
 
   const handleSaveEdit = async () => {
-    // Validate Name
     if (!editForm.name.trim()) {
       showToast('error', 'Please enter a project name.', 'Missing Name');
       return;
     }
 
-    // Validate Description
     if (!editForm.description.trim()) {
       showToast('error', 'Please enter a project description.', 'Missing Description');
       return;
     }
 
-    // Validate Due Date
     if (!editForm.dueDate) {
       showToast('error', 'Please select a due date.', 'Missing Due Date');
       return;
     }
 
-    // Validate Due Date is not in the past
     if (editForm.dueDate < today) {
       showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
       return;
     }
 
-    // Format date for display
     const dateObj = new Date(editForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -294,28 +290,24 @@ const Projects = () => {
   };
 
   const handleCreateProject = async () => {
-    // Validate Name
     if (!createForm.name.trim()) {
       setCreateErrors(prev => ({ ...prev, name: 'Project name is required' }));
       showToast('error', 'Please enter a project name.', 'Missing Name');
       return;
     }
 
-    // Validate Description
     if (!createForm.description.trim()) {
       setCreateErrors(prev => ({ ...prev, description: 'Description is required' }));
       showToast('error', 'Please enter a project description.', 'Missing Description');
       return;
     }
 
-    // Validate Due Date
     if (!createForm.dueDate) {
       setCreateErrors(prev => ({ ...prev, dueDate: 'Due date is required' }));
       showToast('error', 'Please select a due date.', 'Missing Due Date');
       return;
     }
 
-    // Validate Due Date is not in the past
     if (createForm.dueDate < today) {
       setCreateErrors(prev => ({ ...prev, dueDate: 'Due date cannot be in the past' }));
       showToast('error', 'Due date cannot be in the past. Please select a future date.', 'Invalid Date');
@@ -324,7 +316,6 @@ const Projects = () => {
 
     setIsSubmitting(true);
     
-    // Format date for display
     const dateObj = new Date(createForm.dueDate + 'T00:00:00');
     const formattedDate = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
@@ -365,25 +356,25 @@ const Projects = () => {
   };
 
   return (
-    <Box className={styles.page}>
+    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ""}`}>
       {/* Background Decorations */}
-      <div className={styles["projects-bg"]}>
+      <div className={`${styles["projects-bg"]} ${isDarkMode ? styles.darkBg : ""}`}>
         <div className={styles["projects-bg-orb"]} />
         <div className={styles["projects-bg-orb"]} />
         <div className={styles["projects-bg-orb"]} />
-        <div className={styles["projects-bg-grid"]} />
-        <div className={styles["projects-bg-glow"]} />
+        <div className={`${styles["projects-bg-grid"]} ${isDarkMode ? styles.darkBgGrid : ""}`} />
+        <div className={`${styles["projects-bg-glow"]} ${isDarkMode ? styles.darkBgGlow : ""}`} />
       </div>
 
       <Box className={styles.pageInner}>
         {/* Page Header */}
         <Box className={styles.pageHeader}>
           <Box className={styles.pageHeaderLeft}>
-            <h1 className={styles.pageTitle}>Projects</h1>
-            <p className={styles.pageSubtitle}>Manage and track all your projects in one place</p>
+            <h1 className={`${styles.pageTitle} ${isDarkMode ? styles.darkPageTitle : ""}`}>Projects</h1>
+            <p className={`${styles.pageSubtitle} ${isDarkMode ? styles.darkPageSubtitle : ""}`}>Manage and track all your projects in one place</p>
           </Box>
           <button
-            className={styles.createBtn}
+            className={`${styles.createBtn} ${isDarkMode ? styles.darkCreateBtn : ""}`}
             onClick={() => setShowCreateModal(true)}
           >
             <Icon name="plus" className={styles.createBtnIcon} />
@@ -393,72 +384,72 @@ const Projects = () => {
 
         {/* Stats Row */}
         <Box className={styles.statsRow}>
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ""}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconTotal}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconTotal} ${isDarkMode ? styles.darkIconTotal : ""}`}>
                 <Icon name="folder" className={styles.statIcon} />
               </Box>
-              <span className={styles.statTrend}>Total</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ""}`}>Total</span>
             </Box>
-            <span className={styles.statLabel}>All Projects</span>
-            <span className={styles.statValue}>{stats.total}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>All Projects</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ""}`}>{stats.total}</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ""}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconHigh}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconHigh} ${isDarkMode ? styles.darkIconHigh : ""}`}>
                 <Icon name="alertCircle" className={styles.statIcon} />
               </Box>
-              <span className={styles.statTrend}>High</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ""}`}>High</span>
             </Box>
-            <span className={styles.statLabel}>High Priority</span>
-            <span className={styles.statValue}>{stats.high}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>High Priority</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ""}`}>{stats.high}</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ""}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconMedium}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconMedium} ${isDarkMode ? styles.darkIconMedium : ""}`}>
                 <Icon name="clock" className={styles.statIcon} />
               </Box>
-              <span className={styles.statTrend}>Medium</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ""}`}>Medium</span>
             </Box>
-            <span className={styles.statLabel}>Medium Priority</span>
-            <span className={styles.statValue}>{stats.medium}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Medium Priority</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ""}`}>{stats.medium}</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ""}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconLow}`}>
+              <Box className={`${styles.statIconWrap} ${styles.iconLow} ${isDarkMode ? styles.darkIconLow : ""}`}>
                 <Icon name="check" className={styles.statIcon} />
               </Box>
-              <span className={`${styles.statTrend} ${styles.trendPositive}`}>Low</span>
+              <span className={`${styles.statTrend} ${styles.trendPositive} ${isDarkMode ? styles.darkStatTrend : ""}`}>Low</span>
             </Box>
-            <span className={styles.statLabel}>Low Priority</span>
-            <span className={styles.statValue}>{stats.low}</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ""}`}>Low Priority</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ""}`}>{stats.low}</span>
           </Box>
         </Box>
 
         {/* Filters with Labels */}
         <Box className={styles.filtersSection}>
-          <Box className={styles.searchWrapper}>
-            <Icon name="search" className={styles.searchIcon} />
+          <Box className={`${styles.searchWrapper} ${isDarkMode ? styles.darkSearchWrapper : ""}`}>
+            <Icon name="search" className={`${styles.searchIcon} ${isDarkMode ? styles.darkSearchIcon : ""}`} />
             <input
               type="text"
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={styles.searchInput}
+              className={`${styles.searchInput} ${isDarkMode ? styles.darkSearchInput : ""}`}
             />
           </Box>
 
           <Box className={styles.filterGroup}>
             {/* Priority Filter */}
             <Box className={styles.filterWrapper}>
-              <label className={styles.filterLabel}>Priority</label>
+              <label className={`${styles.filterLabel} ${isDarkMode ? styles.darkFilterLabel : ""}`}>Priority</label>
               <select
                 value={filterPriority}
                 onChange={(e) => setFilterPriority(e.target.value)}
-                className={styles.filterSelect}
+                className={`${styles.filterSelect} ${isDarkMode ? styles.darkFilterSelect : ""}`}
               >
                 {priorityOptions.map((option) => (
                   <option key={option} value={option === 'All' ? 'all' : option}>
@@ -470,11 +461,11 @@ const Projects = () => {
 
             {/* Category Filter */}
             <Box className={styles.filterWrapper}>
-              <label className={styles.filterLabel}>Category</label>
+              <label className={`${styles.filterLabel} ${isDarkMode ? styles.darkFilterLabel : ""}`}>Category</label>
               <select
                 value={filterCategory}
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className={styles.filterSelect}
+                className={`${styles.filterSelect} ${isDarkMode ? styles.darkFilterSelect : ""}`}
               >
                 {categoryOptions.map((option) => (
                   <option key={option} value={option === 'All' ? 'all' : option}>
@@ -486,11 +477,11 @@ const Projects = () => {
 
             {/* Sort By */}
             <Box className={styles.filterWrapper}>
-              <label className={styles.filterLabel}>Sort By</label>
+              <label className={`${styles.filterLabel} ${isDarkMode ? styles.darkFilterLabel : ""}`}>Sort By</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className={styles.filterSelect}
+                className={`${styles.filterSelect} ${isDarkMode ? styles.darkFilterSelect : ""}`}
               >
                 <option value="recent">Most Recent</option>
                 <option value="progress">Progress</option>
@@ -502,10 +493,10 @@ const Projects = () => {
 
         {/* Projects Grid */}
         {filteredProjects.length === 0 ? (
-          <Box className={styles.emptyState}>
+          <Box className={`${styles.emptyState} ${isDarkMode ? styles.darkEmptyState : ""}`}>
             <span className={styles.emptyIcon}>📂</span>
-            <h3 className={styles.emptyTitle}>No projects found</h3>
-            <p className={styles.emptyText}>
+            <h3 className={`${styles.emptyTitle} ${isDarkMode ? styles.darkEmptyTitle : ""}`}>No projects found</h3>
+            <p className={`${styles.emptyText} ${isDarkMode ? styles.darkEmptyText : ""}`}>
               {searchTerm || filterPriority !== 'all' || filterCategory !== 'all'
                 ? 'Try adjusting your filters or search terms'
                 : 'Create your first project to get started'}
@@ -514,7 +505,7 @@ const Projects = () => {
         ) : (
           <Box className={styles.projectsGrid}>
             {filteredProjects.map((project) => (
-              <Box key={project.id} className={styles.projectCard}>
+              <Box key={project.id} className={`${styles.projectCard} ${isDarkMode ? styles.darkProjectCard : ""}`}>
                 {/* Header */}
                 <Box className={styles.projectCardHeader}>
                   <Box className={styles.projectCardTitleWrapper}>
@@ -523,16 +514,16 @@ const Projects = () => {
                       style={{ backgroundColor: project.color || '#E6E2DF' }}
                     />
                     <Box>
-                      <h3 className={styles.projectName}>{project.name}</h3>
+                      <h3 className={`${styles.projectName} ${isDarkMode ? styles.darkProjectName : ""}`}>{project.name}</h3>
                       <Box className={styles.projectBadges}>
-                        <span className={`${styles.priorityBadge} ${getPriorityColor(project.priority)}`}>
+                        <span className={`${styles.priorityBadge} ${getPriorityColor(project.priority)} ${isDarkMode ? styles.darkPriorityBadge : ""}`}>
                           <span 
                             className={styles.priorityDot} 
                             style={{ backgroundColor: getPriorityDotColor(project.priority) }}
                           />
                           {project.priority}
                         </span>
-                        <span className={styles.categoryBadge}>
+                        <span className={`${styles.categoryBadge} ${isDarkMode ? styles.darkCategoryBadge : ""}`}>
                           {project.category}
                         </span>
                       </Box>
@@ -540,36 +531,36 @@ const Projects = () => {
                   </Box>
                   <Box className={styles.projectCardActions}>
                     <button 
-                      className={styles.starBtn}
+                      className={`${styles.starBtn} ${isDarkMode ? styles.darkStarBtn : ""}`}
                       onClick={() => handleStarToggle(project.id)}
                     >
                       {project.starred ? (
-                        <Icon name="star" className={styles.starIconActive} />
+                        <Icon name="star" className={`${styles.starIconActive} ${isDarkMode ? styles.darkStarIconActive : ""}`} />
                       ) : (
-                        <Icon name="starBorder" className={styles.starIcon} />
+                        <Icon name="starBorder" className={`${styles.starIcon} ${isDarkMode ? styles.darkStarIcon : ""}`} />
                       )}
                     </button>
                     <button
-                      className={styles.moreBtn}
+                      className={`${styles.moreBtn} ${isDarkMode ? styles.darkMoreBtn : ""}`}
                       onClick={(e) => handleMenuOpen(e, project)}
                     >
-                      <MoreVertIcon className={styles.moreIcon} />
+                      <MoreVertIcon className={`${styles.moreIcon} ${isDarkMode ? styles.darkMoreIcon : ""}`} />
                     </button>
                   </Box>
                 </Box>
 
                 {/* Description */}
-                <p className={styles.projectDescription}>{project.description}</p>
+                <p className={`${styles.projectDescription} ${isDarkMode ? styles.darkProjectDescription : ""}`}>{project.description}</p>
 
                 {/* Progress */}
                 <Box className={styles.progressSection}>
                   <Box className={styles.progressHeader}>
-                    <span className={styles.progressLabel}>Progress</span>
-                    <span className={styles.progressValue}>{project.progress}%</span>
+                    <span className={`${styles.progressLabel} ${isDarkMode ? styles.darkProgressLabel : ""}`}>Progress</span>
+                    <span className={`${styles.progressValue} ${isDarkMode ? styles.darkProgressValue : ""}`}>{project.progress}%</span>
                   </Box>
-                  <Box className={styles.progressBarWrapper}>
+                  <Box className={`${styles.progressBarWrapper} ${isDarkMode ? styles.darkProgressBarWrapper : ""}`}>
                     <Box 
-                      className={styles.progressBar}
+                      className={`${styles.progressBar} ${isDarkMode ? styles.darkProgressBar : ""}`}
                       style={{ width: `${project.progress}%` }}
                     />
                   </Box>
@@ -578,32 +569,32 @@ const Projects = () => {
                 {/* Meta Info */}
                 <Box className={styles.projectMeta}>
                   <Box className={styles.metaItem}>
-                    <span className={styles.metaLabel}>Tasks</span>
-                    <span className={styles.metaValue}>
+                    <span className={`${styles.metaLabel} ${isDarkMode ? styles.darkMetaLabel : ""}`}>Tasks</span>
+                    <span className={`${styles.metaValue} ${isDarkMode ? styles.darkMetaValue : ""}`}>
                       {project.completed}/{project.tasks}
                     </span>
                   </Box>
                   <Box className={styles.metaItem}>
-                    <span className={styles.metaLabel}>Due Date</span>
-                    <span className={styles.metaValue}>{project.dueDate}</span>
+                    <span className={`${styles.metaLabel} ${isDarkMode ? styles.darkMetaLabel : ""}`}>Due Date</span>
+                    <span className={`${styles.metaValue} ${isDarkMode ? styles.darkMetaValue : ""}`}>{project.dueDate}</span>
                   </Box>
                 </Box>
 
                 {/* Footer */}
-                <Box className={styles.projectCardFooter}>
+                <Box className={`${styles.projectCardFooter} ${isDarkMode ? styles.darkProjectCardFooter : ""}`}>
                   <AvatarGroup max={3} className={styles.teamAvatars}>
                     {project.team.map((member, index) => (
-                      <Avatar key={index} className={styles.teamAvatar}>
+                      <Avatar key={index} className={`${styles.teamAvatar} ${isDarkMode ? styles.darkTeamAvatar : ""}`}>
                         {member}
                       </Avatar>
                     ))}
                   </AvatarGroup>
                   <button 
-                    className={styles.viewBtn}
+                    className={`${styles.viewBtn} ${isDarkMode ? styles.darkViewBtn : ""}`}
                     onClick={() => handleViewProject(project.id)}
                   >
                     View Project
-                    <Icon name="arrowForward" className={styles.viewBtnIcon} />
+                    <Icon name="arrowForward" className={`${styles.viewBtnIcon} ${isDarkMode ? styles.darkViewBtnIcon : ""}`} />
                   </button>
                 </Box>
               </Box>
@@ -619,15 +610,15 @@ const Projects = () => {
         onClose={handleMenuClose}
         className={styles.menu}
         classes={{
-          paper: styles.menuPaper,
+          paper: `${styles.menuPaper} ${isDarkMode ? styles.darkMenuPaper : ""}`,
         }}
       >
-        <MenuItem onClick={handleEditProject} className={styles.menuItem}>
-          <Icon name="edit" className={styles.menuIcon} />
+        <MenuItem onClick={handleEditProject} className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ""}`}>
+          <Icon name="edit" className={`${styles.menuIcon} ${isDarkMode ? styles.darkMenuIcon : ""}`} />
           Edit Project
         </MenuItem>
-        <MenuItem onClick={handleDeleteClick} className={styles.menuItemDanger}>
-          <Icon name="trash" className={styles.menuIcon} />
+        <MenuItem onClick={handleDeleteClick} className={`${styles.menuItemDanger} ${isDarkMode ? styles.darkMenuItemDanger : ""}`}>
+          <Icon name="trash" className={`${styles.menuIcon} ${isDarkMode ? styles.darkMenuIcon : ""}`} />
           Delete Project
         </MenuItem>
       </Menu>
@@ -640,22 +631,22 @@ const Projects = () => {
         fullWidth
         className={styles.createDialog}
         PaperProps={{
-          className: styles.createDialogPaper,
+          className: `${styles.createDialogPaper} ${isDarkMode ? styles.darkCreateDialogPaper : ""}`,
         }}
       >
-        <Box className={styles.createModalContent}>
-          <Box className={styles.createModalHeader}>
+        <Box className={`${styles.createModalContent} ${isDarkMode ? styles.darkCreateModalContent : ""}`}>
+          <Box className={`${styles.createModalHeader} ${isDarkMode ? styles.darkCreateModalHeader : ""}`}>
             <Box className={styles.createModalHeaderLeft}>
-              <Box className={styles.createModalIconWrapper}>
+              <Box className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}>
                 <Icon name="folder" className={styles.createModalIcon} />
               </Box>
               <Box>
-                <h2 className={styles.createModalTitle}>Create New Project</h2>
-                <p className={styles.createModalSubtitle}>Set up a new project to organize your team's work.</p>
+                <h2 className={`${styles.createModalTitle} ${isDarkMode ? styles.darkCreateModalTitle : ""}`}>Create New Project</h2>
+                <p className={`${styles.createModalSubtitle} ${isDarkMode ? styles.darkCreateModalSubtitle : ""}`}>Set up a new project to organize your team's work.</p>
               </Box>
             </Box>
             <button 
-              className={styles.createModalClose} 
+              className={`${styles.createModalClose} ${isDarkMode ? styles.darkCreateModalClose : ""}`}
               onClick={() => setShowCreateModal(false)}
               disabled={isSubmitting}
             >
@@ -665,7 +656,7 @@ const Projects = () => {
 
           <Box className={styles.createModalForm}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Project Name
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -675,7 +666,7 @@ const Projects = () => {
                 placeholder="e.g. Q4 Marketing Strategy"
                 value={createForm.name}
                 onChange={handleCreateInputChange}
-                className={`${styles.formInput} ${createErrors.name ? styles.formInputError : ''}`}
+                className={`${styles.formInput} ${createErrors.name ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
                 disabled={isSubmitting}
               />
               {createErrors.name && (
@@ -684,7 +675,7 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Description
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -693,7 +684,7 @@ const Projects = () => {
                 placeholder="Briefly describe the project goals and deliverables..."
                 value={createForm.description}
                 onChange={handleCreateInputChange}
-                className={`${styles.formTextarea} ${createErrors.description ? styles.formInputError : ''}`}
+                className={`${styles.formTextarea} ${createErrors.description ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormTextarea : ""}`}
                 rows="3"
                 disabled={isSubmitting}
               />
@@ -704,12 +695,12 @@ const Projects = () => {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Category</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Category</label>
                 <select
                   name="category"
                   value={createForm.category}
                   onChange={handleCreateInputChange}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                   disabled={isSubmitting}
                 >
                   {categoryOptions.filter(c => c !== 'All').map((cat) => (
@@ -718,12 +709,12 @@ const Projects = () => {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Priority</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Priority</label>
                 <select
                   name="priority"
                   value={createForm.priority}
                   onChange={handleCreateInputChange}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                   disabled={isSubmitting}
                 >
                   {priorityOptions.filter(p => p !== 'All').map((priority) => (
@@ -734,7 +725,7 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Due Date
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -743,7 +734,7 @@ const Projects = () => {
                 name="dueDate"
                 value={createForm.dueDate}
                 onChange={handleCreateInputChange}
-                className={`${styles.formInput} ${createErrors.dueDate ? styles.formInputError : ''}`}
+                className={`${styles.formInput} ${createErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
                 min={today}
                 disabled={isSubmitting}
               />
@@ -753,16 +744,16 @@ const Projects = () => {
             </div>
           </Box>
 
-          <Box className={styles.createModalFooter}>
+          <Box className={`${styles.createModalFooter} ${isDarkMode ? styles.darkCreateModalFooter : ""}`}>
             <button 
-              className={styles.cancelBtn} 
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ""}`}
               onClick={() => setShowCreateModal(false)}
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button 
-              className={styles.saveBtn}
+              className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleCreateProject}
               disabled={isSubmitting}
             >
@@ -792,22 +783,22 @@ const Projects = () => {
         fullWidth
         className={styles.createDialog}
         PaperProps={{
-          className: styles.createDialogPaper,
+          className: `${styles.createDialogPaper} ${isDarkMode ? styles.darkCreateDialogPaper : ""}`,
         }}
       >
-        <Box className={styles.createModalContent}>
-          <Box className={styles.createModalHeader}>
+        <Box className={`${styles.createModalContent} ${isDarkMode ? styles.darkCreateModalContent : ""}`}>
+          <Box className={`${styles.createModalHeader} ${isDarkMode ? styles.darkCreateModalHeader : ""}`}>
             <Box className={styles.createModalHeaderLeft}>
-              <Box className={styles.createModalIconWrapper}>
+              <Box className={`${styles.createModalIconWrapper} ${isDarkMode ? styles.darkCreateModalIconWrapper : ""}`}>
                 <Icon name="folder" className={styles.createModalIcon} />
               </Box>
               <Box>
-                <h2 className={styles.createModalTitle}>Edit Project</h2>
-                <p className={styles.createModalSubtitle}>Update your project details.</p>
+                <h2 className={`${styles.createModalTitle} ${isDarkMode ? styles.darkCreateModalTitle : ""}`}>Edit Project</h2>
+                <p className={`${styles.createModalSubtitle} ${isDarkMode ? styles.darkCreateModalSubtitle : ""}`}>Update your project details.</p>
               </Box>
             </Box>
             <button 
-              className={styles.createModalClose} 
+              className={`${styles.createModalClose} ${isDarkMode ? styles.darkCreateModalClose : ""}`}
               onClick={() => setShowEditModal(false)}
             >
               <CloseIcon />
@@ -816,7 +807,7 @@ const Projects = () => {
 
           <Box className={styles.createModalForm}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Project Name
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -825,12 +816,12 @@ const Projects = () => {
                 placeholder="e.g. Q4 Marketing Strategy"
                 value={editForm.name}
                 onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                className={styles.formInput}
+                className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ""}`}
               />
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Description
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -838,18 +829,18 @@ const Projects = () => {
                 placeholder="Briefly describe the project goals and deliverables..."
                 value={editForm.description}
                 onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                className={styles.formTextarea}
+                className={`${styles.formTextarea} ${isDarkMode ? styles.darkFormTextarea : ""}`}
                 rows="3"
               />
             </div>
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Category</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Category</label>
                 <select
                   value={editForm.category}
                   onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                 >
                   {categoryOptions.filter(c => c !== 'All').map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>
@@ -857,11 +848,11 @@ const Projects = () => {
                 </select>
               </div>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Priority</label>
+                <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>Priority</label>
                 <select
                   value={editForm.priority}
                   onChange={(e) => setEditForm({ ...editForm, priority: e.target.value })}
-                  className={styles.formSelect}
+                  className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ""}`}
                 >
                   {priorityOptions.filter(p => p !== 'All').map((priority) => (
                     <option key={priority} value={priority}>{priority}</option>
@@ -871,7 +862,7 @@ const Projects = () => {
             </div>
 
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ""}`}>
                 Due Date
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -879,21 +870,21 @@ const Projects = () => {
                 type="date"
                 value={editForm.dueDate}
                 onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
-                className={styles.formInput}
+                className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ""}`}
                 min={today}
               />
             </div>
           </Box>
 
-          <Box className={styles.createModalFooter}>
+          <Box className={`${styles.createModalFooter} ${isDarkMode ? styles.darkCreateModalFooter : ""}`}>
             <button 
-              className={styles.cancelBtn} 
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ""}`}
               onClick={() => setShowEditModal(false)}
             >
               Cancel
             </button>
             <button 
-              className={styles.saveBtn}
+              className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ""}`}
               onClick={handleSaveEdit}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -913,23 +904,23 @@ const Projects = () => {
         fullWidth
         className={styles.deleteDialog}
         PaperProps={{
-          className: styles.deleteDialogPaper,
+          className: `${styles.deleteDialogPaper} ${isDarkMode ? styles.darkDeleteDialogPaper : ""}`,
         }}
       >
-        <Box className={styles.deleteDialogContent}>
-          <Box className={styles.deleteDialogIconWrapper}>
-            <DeleteIcon className={styles.deleteDialogIcon} />
+        <Box className={`${styles.deleteDialogContent} ${isDarkMode ? styles.darkDeleteDialogContent : ""}`}>
+          <Box className={`${styles.deleteDialogIconWrapper} ${isDarkMode ? styles.darkDeleteDialogIconWrapper : ""}`}>
+            <DeleteIcon className={`${styles.deleteDialogIcon} ${isDarkMode ? styles.darkDeleteDialogIcon : ""}`} />
           </Box>
-          <h3 className={styles.deleteDialogTitle}>Delete Project?</h3>
-          <p className={styles.deleteDialogText}>
+          <h3 className={`${styles.deleteDialogTitle} ${isDarkMode ? styles.darkDeleteDialogTitle : ""}`}>Delete Project?</h3>
+          <p className={`${styles.deleteDialogText} ${isDarkMode ? styles.darkDeleteDialogText : ""}`}>
             Are you sure you want to delete <strong>"{selectedProject?.name}"</strong>?<br />
             This action cannot be undone and all associated tasks will be removed.
           </p>
           <Box className={styles.deleteDialogActions}>
-            <button onClick={() => setShowDeleteModal(false)} className={styles.deleteDialogCancel}>
+            <button onClick={() => setShowDeleteModal(false)} className={`${styles.deleteDialogCancel} ${isDarkMode ? styles.darkDeleteDialogCancel : ""}`}>
               Cancel
             </button>
-            <button onClick={handleDeleteProject} className={styles.deleteDialogConfirm}>
+            <button onClick={handleDeleteProject} className={`${styles.deleteDialogConfirm} ${isDarkMode ? styles.darkDeleteDialogConfirm : ""}`}>
               Yes, Delete
             </button>
           </Box>
