@@ -93,7 +93,7 @@
   overflow-y: auto;
   height: 100%;
   width: 100%;
-  max-width: 1800px; /* Increased width */
+  max-width: 1800px;
   margin: 0 auto;
 }
 .profileContent::-webkit-scrollbar {
@@ -1570,6 +1570,692 @@
 @media (prefers-reduced-motion: reduce) {
   .switchSlider,
   .switchSlider::before {
+    transition: none !important;
+  }
+}
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Container Dark Mode */
+.darkProfileContainer {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkProfileBg {
+  background: #000000 !important;
+}
+
+.darkProfileBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkProfileBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Profile Header Dark Mode */
+.darkProfileHeader {
+  background: rgba(3, 2, 2, 0.95) !important;
+  border-color: #383B40 !important;
+}
+
+.darkProfileAvatar {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  border-color: #383B40 !important;
+}
+
+.darkAvatarEditBtn {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkAvatarEditBtn:hover {
+  background: #1A1A1A !important;
+}
+
+.darkAvatarEditIcon {
+  color: #FBBC00 !important;
+}
+
+.darkProfileName {
+  color: #FFFFFF !important;
+}
+
+.darkProfileRole {
+  color: #6A6255 !important;
+}
+
+.darkProChip {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkChipIcon {
+  color: #000000 !important;
+}
+
+.darkActiveChip {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkQuickStats {
+  background: rgba(3, 2, 2, 0.8) !important;
+  border-color: #383B40 !important;
+}
+
+.darkQuickStatNumber {
+  color: #FFFFFF !important;
+}
+
+.darkQuickStatLabel {
+  color: #6A6255 !important;
+}
+
+/* Profile Paper Dark Mode */
+.darkProfilePaper {
+  background: rgba(3, 2, 2, 0.9) !important;
+  border-color: #383B40 !important;
+}
+
+.darkProfileTabs {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkTabIndicator {
+  background: #FBBC00 !important;
+}
+
+.darkProfileTab {
+  color: #6A6255 !important;
+}
+
+.darkProfileTab.Mui-selected {
+  color: #FBBC00 !important;
+}
+
+/* Tab Content Dark Mode */
+.darkTabContent {
+  background: transparent !important;
+}
+
+.darkTabTitle {
+  color: #FFFFFF !important;
+}
+
+.darkTabDivider {
+  border-color: #383B40 !important;
+}
+
+/* Edit Buttons Dark Mode */
+.darkEditButton {
+  color: #FBBC00 !important;
+}
+
+.darkEditButton:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkCancelButton {
+  color: #6A6255 !important;
+}
+
+.darkCancelButton:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkSaveButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSaveButton:hover {
+  background: #E2A900 !important;
+}
+
+/* ==================== AVATAR CARD DARK MODE ==================== */
+.darkAvatarCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkAvatarCard:hover {
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkAvatarCardImage {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  border: 3px solid #383B40 !important;
+}
+
+.darkAvatarCardEdit {
+  background: #030202 !important;
+  border: 2px solid #383B40 !important;
+}
+
+.darkAvatarCardEdit:hover {
+  background: #1A1A1A !important;
+}
+
+.darkAvatarCardEditIcon {
+  color: #FBBC00 !important;
+}
+
+.darkAvatarCardName {
+  color: #FFFFFF !important;
+}
+
+.darkAvatarCardRole {
+  color: #6A6255 !important;
+}
+
+.darkAvatarCardProChip {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkAvatarCardChipIcon {
+  color: #000000 !important;
+}
+
+.darkAvatarCardActiveChip {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+/* ==================== STATS GRID DARK MODE ==================== */
+.darkStatCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkStatCard:hover {
+  background: #0D0D0D !important;
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkStatCardIconWrapper {
+  background: rgba(251, 188, 0, 0.12) !important;
+}
+
+.darkStatCardIcon {
+  color: #FBBC00 !important;
+}
+
+.darkStatCardNumber {
+  color: #FFFFFF !important;
+}
+
+.darkStatCardLabel {
+  color: #6A6255 !important;
+}
+
+/* ==================== MEMBER CARD DARK MODE ==================== */
+.darkMemberCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkMemberCard:hover {
+  background: #0D0D0D !important;
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkMemberCardIconWrapper {
+  background: rgba(251, 188, 0, 0.08) !important;
+  color: #FBBC00 !important;
+}
+
+.darkMemberCardLabel {
+  color: #6A6255 !important;
+}
+
+.darkMemberCardDate {
+  color: #FFFFFF !important;
+}
+
+/* ==================== FORM CARD DARK MODE ==================== */
+.darkFormCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkFormCard:hover {
+  background: #0D0D0D !important;
+  border-color: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormCardHeader {
+  background: rgba(3, 2, 2, 0.8) !important;
+  border-bottom: 1px solid #383B40 !important;
+}
+
+.darkFormCardTitle {
+  color: #6A6255 !important;
+}
+
+.darkFormCardIcon {
+  color: #FBBC00 !important;
+}
+
+.darkFormCardContent {
+  background: #030202 !important;
+  padding: 1.5rem !important;
+}
+
+/* ==================== TEXT FIELD DARK MODE - FIXED LABEL BACKGROUND ==================== */
+.darkProfileTextField {
+  margin-bottom: 0 !important;
+  position: relative !important;
+}
+
+.darkProfileTextField :global(.MuiInputLabel-root) {
+  color: #6A6255 !important;
+  background: #030202 !important;
+  padding: 0 4px !important;
+  border-radius: 4px !important;
+  z-index: 1 !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+}
+
+.darkProfileTextField :global(.MuiInputLabel-root.Mui-focused) {
+  color: #FBBC00 !important;
+  background: #030202 !important;
+  padding: 0 4px !important;
+}
+
+.darkProfileTextField :global(.MuiInputLabel-root.MuiFormLabel-filled) {
+  background: #030202 !important;
+  padding: 0 4px !important;
+}
+
+.darkProfileTextField :global(.MuiInputLabel-root.Mui-disabled) {
+  color: #6A6255 !important;
+  background: #030202 !important;
+}
+
+.darkProfileTextField :global(.MuiOutlinedInput-root) {
+  background: #0D0D0D !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+.darkProfileTextField :global(.MuiOutlinedInput-root:hover) {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkProfileTextField :global(.MuiOutlinedInput-root.Mui-focused) {
+  background: #0D0D0D !important;
+  border-color: #FBBC00 !important;
+  box-shadow: 0 0 0 3px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkProfileTextField :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border: none !important;
+}
+
+.darkProfileTextField :global(.MuiInputBase-input) {
+  color: #FFFFFF !important;
+  font-size: 0.95rem !important;
+  padding: 14px 16px !important;
+  position: relative !important;
+  z-index: 0 !important;
+}
+
+.darkProfileTextField :global(.MuiInputBase-input.Mui-disabled) {
+  color: #6A6255 !important;
+  -webkit-text-fill-color: #6A6255 !important;
+}
+
+.darkProfileTextField :global(.MuiInputBase-input::placeholder) {
+  color: #6A6255 !important;
+  opacity: 1 !important;
+}
+
+.darkProfileTextField :global(.MuiFormHelperText-root) {
+  color: #6A6255 !important;
+}
+
+.darkProfileTextField :global(.MuiFormHelperText-root.Mui-error) {
+  color: #ef4444 !important;
+}
+
+.darkFieldIcon {
+  color: #6A6255 !important;
+}
+
+.darkProfileTextField :global(.Mui-focused) .darkFieldIcon {
+  color: #FBBC00 !important;
+}
+
+/* Fix for textarea in dark mode */
+.darkProfileTextField :global(.MuiInputBase-root.MuiOutlinedInput-root textarea) {
+  padding: 14px 16px !important;
+  font-size: 0.95rem !important;
+  color: #FFFFFF !important;
+}
+
+.darkProfileTextField :global(.MuiInputBase-root.MuiOutlinedInput-root textarea::placeholder) {
+  color: #6A6255 !important;
+  opacity: 1 !important;
+}
+
+/* ==================== PREFERENCES DARK MODE ==================== */
+.darkPreferencesSection {
+  color: #FFFFFF !important;
+}
+
+.darkSectionTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSectionIcon {
+  color: #FBBC00 !important;
+}
+
+.darkPreferenceItem {
+  color: #FFFFFF !important;
+  background: #030202 !important;
+  border-radius: 12px !important;
+  border: 1px solid #383B40 !important;
+  margin-bottom: 4px !important;
+}
+
+.darkPreferenceItem:hover {
+  background: #0D0D0D !important;
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkPreferenceDivider {
+  border-color: #383B40 !important;
+}
+
+.darkPreferenceLabel {
+  color: #6A6255 !important;
+}
+
+.darkPreferenceValue {
+  color: #FFFFFF !important;
+}
+
+.darkSwitchLabel {
+  color: #FFFFFF !important;
+}
+
+/* ==================== SECURITY DARK MODE ==================== */
+.darkSecuritySection {
+  color: #FFFFFF !important;
+}
+
+.darkSecurityItem {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 12px !important;
+  padding: 0.75rem 1rem !important;
+  margin-bottom: 4px !important;
+}
+
+.darkSecurityItem:hover {
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkSecurityIcon {
+  color: #FBBC00 !important;
+}
+
+.darkSecurityItemTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSecurityItemSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkSecurityDivider {
+  border-color: #383B40 !important;
+}
+
+.darkChangePasswordButton {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+  background: #0D0D0D !important;
+}
+
+.darkChangePasswordButton:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* ==================== SESSIONS DARK MODE ==================== */
+.darkSessionItem {
+  background: #0D0D0D !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 10px !important;
+  padding: 0.5rem 0.75rem !important;
+}
+
+.darkSessionItem:hover {
+  border-color: rgba(251, 188, 0, 0.15) !important;
+}
+
+.darkSessionName {
+  color: #FFFFFF !important;
+}
+
+.darkSessionSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkSessionLogout {
+  color: #ef4444 !important;
+}
+
+.darkSessionLogout:hover {
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+
+.darkDeleteAccountButton {
+  background: #ef4444 !important;
+}
+
+.darkDeleteAccountButton:hover {
+  background: #dc2626 !important;
+}
+
+/* ==================== PASSWORD DIALOG DARK MODE - FIXED ==================== */
+.darkPasswordDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDialogTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDialogIcon {
+  color: #FBBC00 !important;
+}
+
+.darkDialogContent {
+  background: transparent !important;
+}
+
+.darkPasswordField {
+  background: transparent !important;
+}
+
+.darkPasswordLabel {
+  color: #6A6255 !important;
+}
+
+.darkPasswordInputWrap {
+  background: #0D0D0D !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 10px !important;
+}
+
+.darkPasswordInputWrap:focus-within {
+  border-color: #FBBC00 !important;
+  box-shadow: 0 0 0 3px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkPasswordInput {
+  color: #FFFFFF !important;
+  background: #0D0D0D !important;
+  border: none !important;
+}
+
+.darkPasswordInput:focus {
+  border: none !important;
+  background: #0D0D0D !important;
+}
+
+.darkPasswordInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkPasswordInputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.darkPasswordEyeBtn {
+  color: #6A6255 !important;
+}
+
+.darkPasswordEyeBtn:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkPasswordEyeIcon {
+  color: #6A6255 !important;
+}
+
+.darkPasswordError {
+  color: #ef4444 !important;
+}
+
+.darkDialogActions {
+  border-top-color: #383B40 !important;
+}
+
+.darkDialogCancel {
+  color: #6A6255 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDialogCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDialogSave {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkDialogSave:hover {
+  background: #E2A900 !important;
+}
+
+/* ==================== DELETE DIALOG DARK MODE ==================== */
+.darkDeleteDialogPaper {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDeleteDialogContent {
+  color: #FFFFFF !important;
+  background: #030202 !important;
+}
+
+.darkDeleteDialogIconWrapper {
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+.darkDeleteDialogIcon {
+  color: #ef4444 !important;
+}
+
+.darkDeleteDialogTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogText {
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteDialogCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteDialogConfirm {
+  background: #ef4444 !important;
+}
+
+.darkDeleteDialogConfirm:hover {
+  background: #dc2626 !important;
+}
+
+/* ==================== SNACKBAR DARK MODE ==================== */
+.darkSnackbarAlert {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+/* ==================== RESPONSIVE DARK MODE ==================== */
+@media (max-width: 768px) {
+  .darkProfileHeader {
+    border-color: #383B40 !important;
+  }
+  
+  .darkPreferenceItem {
+    border-color: #383B40 !important;
+  }
+  
+  .darkSecurityItem {
+    border-color: #383B40 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkProfileHeader {
+    border-color: #383B40 !important;
+  }
+  
+  .darkPreferenceItem {
+    border-color: #383B40 !important;
+  }
+  
+  .darkSecurityItem {
+    border-color: #383B40 !important;
+  }
+}
+
+/* ==================== ACCESSIBILITY - REDUCED MOTION ==================== */
+@media (prefers-reduced-motion: reduce) {
+  .darkProfileContainer,
+  .darkStatCard,
+  .darkProfileHeader {
     transition: none !important;
   }
 }

@@ -47,6 +47,7 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Profile.module.css';
 
 // ==================== CUSTOM SWITCH COMPONENT ====================
@@ -109,6 +110,7 @@ const Profile = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   
   const [activeTab, setActiveTab] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
@@ -133,7 +135,7 @@ const Profile = () => {
   });
   
   const [preferences, setPreferences] = useState({
-    darkMode: false,
+    darkMode: isDarkMode,
     emailNotifications: true,
     pushNotifications: true,
     weeklyDigest: true,
@@ -165,6 +167,11 @@ const Profile = () => {
   };
 
   const handlePreferenceChange = (name, value) => {
+    if (name === 'darkMode') {
+      toggleDarkMode();
+      setPreferences(prev => ({ ...prev, darkMode: !prev.darkMode }));
+      return;
+    }
     setPreferences(prev => ({ ...prev, [name]: value }));
   };
 
@@ -253,31 +260,31 @@ const Profile = () => {
       onClose={() => setShowDeleteDialog(false)}
       maxWidth="xs"
       fullWidth
-      className={styles.deleteDialog}
+      className={`${styles.deleteDialog} ${isDarkMode ? styles.darkDeleteDialog : ''}`}
       PaperProps={{
-        className: styles.deleteDialogPaper,
+        className: `${styles.deleteDialogPaper} ${isDarkMode ? styles.darkDeleteDialogPaper : ''}`,
       }}
     >
-      <Box className={styles.deleteDialogContent}>
-        <Box className={styles.deleteDialogIconWrapper}>
-          <WarningIcon className={styles.deleteDialogIcon} />
+      <Box className={`${styles.deleteDialogContent} ${isDarkMode ? styles.darkDeleteDialogContent : ''}`}>
+        <Box className={`${styles.deleteDialogIconWrapper} ${isDarkMode ? styles.darkDeleteDialogIconWrapper : ''}`}>
+          <WarningIcon className={`${styles.deleteDialogIcon} ${isDarkMode ? styles.darkDeleteDialogIcon : ''}`} />
         </Box>
-        <Typography variant="h5" className={styles.deleteDialogTitle}>
+        <Typography variant="h5" className={`${styles.deleteDialogTitle} ${isDarkMode ? styles.darkDeleteDialogTitle : ''}`}>
           Delete Account?
         </Typography>
-        <Typography variant="body2" className={styles.deleteDialogText}>
+        <Typography variant="body2" className={`${styles.deleteDialogText} ${isDarkMode ? styles.darkDeleteDialogText : ''}`}>
           This action cannot be undone. All your data, projects, and tasks will be permanently removed.
         </Typography>
         <Box className={styles.deleteDialogActions}>
           <Button
             onClick={() => setShowDeleteDialog(false)}
-            className={styles.deleteDialogCancel}
+            className={`${styles.deleteDialogCancel} ${isDarkMode ? styles.darkDeleteDialogCancel : ''}`}
           >
             Cancel
           </Button>
           <Button
             onClick={handleDeleteAccount}
-            className={styles.deleteDialogConfirm}
+            className={`${styles.deleteDialogConfirm} ${isDarkMode ? styles.darkDeleteDialogConfirm : ''}`}
             startIcon={<DeleteIcon />}
           >
             Delete Account
@@ -288,54 +295,54 @@ const Profile = () => {
   );
 
   return (
-    <Box className={styles.profileContainer}>
+    <Box className={`${styles.profileContainer} ${isDarkMode ? styles.darkProfileContainer : ''}`}>
       {/* Background */}
-      <div className={styles.profileBg}>
+      <div className={`${styles.profileBg} ${isDarkMode ? styles.darkProfileBg : ''}`}>
         <div className={styles.profileBgOrb} />
         <div className={styles.profileBgOrb} />
         <div className={styles.profileBgOrb} />
-        <div className={styles.profileBgGrid} />
-        <div className={styles.profileBgGlow} />
+        <div className={`${styles.profileBgGrid} ${isDarkMode ? styles.darkProfileBgGrid : ''}`} />
+        <div className={`${styles.profileBgGlow} ${isDarkMode ? styles.darkProfileBgGlow : ''}`} />
       </div>
 
       <Container maxWidth="xl" className={styles.profileContent}>
         {/* Profile Header */}
-        <Box className={styles.profileHeader}>
+        <Box className={`${styles.profileHeader} ${isDarkMode ? styles.darkProfileHeader : ''}`}>
           <Box className={styles.profileHeaderContent}>
             <Box className={styles.avatarSection}>
               <Box className={styles.avatarWrapper}>
-                <Avatar className={styles.profileAvatar}>
+                <Avatar className={`${styles.profileAvatar} ${isDarkMode ? styles.darkProfileAvatar : ''}`}>
                   {userData.fullName.split(' ').map(n => n[0]).join('')}
                 </Avatar>
                 <Tooltip title="Change Avatar" arrow>
-                  <IconButton className={styles.avatarEditBtn} size="small">
-                    <PhotoCameraIcon className={styles.avatarEditIcon} />
+                  <IconButton className={`${styles.avatarEditBtn} ${isDarkMode ? styles.darkAvatarEditBtn : ''}`} size="small">
+                    <PhotoCameraIcon className={`${styles.avatarEditIcon} ${isDarkMode ? styles.darkAvatarEditIcon : ''}`} />
                   </IconButton>
                 </Tooltip>
               </Box>
               <Box className={styles.avatarInfo}>
-                <Typography variant="h4" className={styles.profileName}>
+                <Typography variant="h4" className={`${styles.profileName} ${isDarkMode ? styles.darkProfileName : ''}`}>
                   {userData.fullName}
                 </Typography>
-                <Typography variant="body2" className={styles.profileRole}>
+                <Typography variant="body2" className={`${styles.profileRole} ${isDarkMode ? styles.darkProfileRole : ''}`}>
                   {userData.role}
                 </Typography>
                 <Box className={styles.profileBadges}>
                   <Chip 
                     label="PRO ACCOUNT" 
                     size="small" 
-                    className={styles.proChip}
-                    icon={<CheckCircleIcon className={styles.chipIcon} />}
+                    className={`${styles.proChip} ${isDarkMode ? styles.darkProChip : ''}`}
+                    icon={<CheckCircleIcon className={`${styles.chipIcon} ${isDarkMode ? styles.darkChipIcon : ''}`} />}
                   />
                   <Chip 
                     label="Active" 
                     size="small" 
-                    className={styles.activeChip}
+                    className={`${styles.activeChip} ${isDarkMode ? styles.darkActiveChip : ''}`}
                   />
                 </Box>
               </Box>
             </Box>
-            <Box className={styles.quickStats}>
+            <Box className={`${styles.quickStats} ${isDarkMode ? styles.darkQuickStats : ''}`}>
               {[
                 { number: stats.tasksCompleted, label: 'Tasks Done' },
                 { number: stats.projects, label: 'Projects' },
@@ -343,8 +350,8 @@ const Profile = () => {
                 { number: stats.focusHours, label: 'Focus Hours' },
               ].map((stat, index) => (
                 <Box key={index} className={styles.quickStat}>
-                  <span className={styles.quickStatNumber}>{stat.number}</span>
-                  <span className={styles.quickStatLabel}>{stat.label}</span>
+                  <span className={`${styles.quickStatNumber} ${isDarkMode ? styles.darkQuickStatNumber : ''}`}>{stat.number}</span>
+                  <span className={`${styles.quickStatLabel} ${isDarkMode ? styles.darkQuickStatLabel : ''}`}>{stat.label}</span>
                 </Box>
               ))}
             </Box>
@@ -352,45 +359,45 @@ const Profile = () => {
         </Box>
 
         {/* Main Content */}
-        <Paper className={styles.profilePaper}>
+        <Paper className={`${styles.profilePaper} ${isDarkMode ? styles.darkProfilePaper : ''}`}>
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
             variant={isMobile ? "fullWidth" : "standard"}
-            className={styles.profileTabs}
+            className={`${styles.profileTabs} ${isDarkMode ? styles.darkProfileTabs : ''}`}
             TabIndicatorProps={{
-              className: styles.tabIndicator,
+              className: `${styles.tabIndicator} ${isDarkMode ? styles.darkTabIndicator : ''}`,
             }}
           >
             <Tab 
               icon={<PersonIcon />} 
               label="Profile" 
-              className={styles.profileTab}
+              className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
             />
             <Tab 
               icon={<NotificationsIcon />} 
               label="Preferences" 
-              className={styles.profileTab}
+              className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
             />
             <Tab 
               icon={<SecurityIcon />} 
               label="Security" 
-              className={styles.profileTab}
+              className={`${styles.profileTab} ${isDarkMode ? styles.darkProfileTab : ''}`}
             />
           </Tabs>
 
           {/* Profile Tab */}
           {activeTab === 0 && (
-            <Box className={styles.tabContent}>
+            <Box className={`${styles.tabContent} ${isDarkMode ? styles.darkTabContent : ''}`}>
               <Box className={styles.tabHeader}>
-                <Typography variant="h6" className={styles.tabTitle}>
+                <Typography variant="h6" className={`${styles.tabTitle} ${isDarkMode ? styles.darkTabTitle : ''}`}>
                   Personal Information
                 </Typography>
                 {!isEditing ? (
                   <Button
                     startIcon={<EditIcon />}
                     onClick={() => setIsEditing(true)}
-                    className={styles.editButton}
+                    className={`${styles.editButton} ${isDarkMode ? styles.darkEditButton : ''}`}
                   >
                     Edit Profile
                   </Button>
@@ -399,7 +406,7 @@ const Profile = () => {
                     <Button
                       startIcon={<CancelIcon />}
                       onClick={handleCancelEdit}
-                      className={styles.cancelButton}
+                      className={`${styles.cancelButton} ${isDarkMode ? styles.darkCancelButton : ''}`}
                     >
                       Cancel
                     </Button>
@@ -408,93 +415,93 @@ const Profile = () => {
                       startIcon={isSaving ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />}
                       onClick={handleSaveProfile}
                       disabled={isSaving}
-                      className={styles.saveButton}
+                      className={`${styles.saveButton} ${isDarkMode ? styles.darkSaveButton : ''}`}
                     >
                       {isSaving ? 'Saving...' : 'Save Changes'}
                     </Button>
                   </Box>
                 )}
               </Box>
-              <Divider className={styles.tabDivider} />
+              <Divider className={`${styles.tabDivider} ${isDarkMode ? styles.darkTabDivider : ''}`} />
               <Box className={styles.profileGrid}>
                 {/* Left Column */}
                 <Box className={styles.profileLeftColumn}>
-                  <Box className={styles.avatarCard}>
+                  <Box className={`${styles.avatarCard} ${isDarkMode ? styles.darkAvatarCard : ''}`}>
                     <Box className={styles.avatarCardContent}>
                       <Box className={styles.avatarCardAvatar}>
-                        <Avatar className={styles.avatarCardImage}>
+                        <Avatar className={`${styles.avatarCardImage} ${isDarkMode ? styles.darkAvatarCardImage : ''}`}>
                           {userData.fullName.split(' ').map(n => n[0]).join('')}
                         </Avatar>
                         {isEditing && (
-                          <IconButton className={styles.avatarCardEdit} size="small">
-                            <PhotoCameraIcon className={styles.avatarCardEditIcon} />
+                          <IconButton className={`${styles.avatarCardEdit} ${isDarkMode ? styles.darkAvatarCardEdit : ''}`} size="small">
+                            <PhotoCameraIcon className={`${styles.avatarCardEditIcon} ${isDarkMode ? styles.darkAvatarCardEditIcon : ''}`} />
                           </IconButton>
                         )}
                       </Box>
                       <Box className={styles.avatarCardInfo}>
-                        <Typography variant="h6" className={styles.avatarCardName}>
+                        <Typography variant="h6" className={`${styles.avatarCardName} ${isDarkMode ? styles.darkAvatarCardName : ''}`}>
                           {userData.fullName}
                         </Typography>
-                        <Typography variant="body2" className={styles.avatarCardRole}>
+                        <Typography variant="body2" className={`${styles.avatarCardRole} ${isDarkMode ? styles.darkAvatarCardRole : ''}`}>
                           {userData.role}
                         </Typography>
                         <Box className={styles.avatarCardBadges}>
                           <Chip 
                             label="PRO" 
                             size="small" 
-                            className={styles.avatarCardProChip}
-                            icon={<CheckCircleIcon className={styles.avatarCardChipIcon} />}
+                            className={`${styles.avatarCardProChip} ${isDarkMode ? styles.darkAvatarCardProChip : ''}`}
+                            icon={<CheckCircleIcon className={`${styles.avatarCardChipIcon} ${isDarkMode ? styles.darkAvatarCardChipIcon : ''}`} />}
                           />
                           <Chip 
                             label="Active" 
                             size="small" 
-                            className={styles.avatarCardActiveChip}
+                            className={`${styles.avatarCardActiveChip} ${isDarkMode ? styles.darkAvatarCardActiveChip : ''}`}
                           />
                         </Box>
                       </Box>
                     </Box>
                   </Box>
                   <Box className={styles.statsGrid}>
-                    <Box className={styles.statCard}>
-                      <Box className={styles.statCardIconWrapper}>
-                        <CheckCircleIcon className={styles.statCardIcon} />
+                    <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ''}`}>
+                      <Box className={`${styles.statCardIconWrapper} ${isDarkMode ? styles.darkStatCardIconWrapper : ''}`}>
+                        <CheckCircleIcon className={`${styles.statCardIcon} ${isDarkMode ? styles.darkStatCardIcon : ''}`} />
                       </Box>
                       <Box className={styles.statCardInfo}>
-                        <span className={styles.statCardNumber}>147</span>
-                        <span className={styles.statCardLabel}>Tasks Done</span>
+                        <span className={`${styles.statCardNumber} ${isDarkMode ? styles.darkStatCardNumber : ''}`}>147</span>
+                        <span className={`${styles.statCardLabel} ${isDarkMode ? styles.darkStatCardLabel : ''}`}>Tasks Done</span>
                       </Box>
                     </Box>
-                    <Box className={styles.statCard}>
-                      <Box className={styles.statCardIconWrapper}>
-                        <PersonIcon className={styles.statCardIcon} />
+                    <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ''}`}>
+                      <Box className={`${styles.statCardIconWrapper} ${isDarkMode ? styles.darkStatCardIconWrapper : ''}`}>
+                        <PersonIcon className={`${styles.statCardIcon} ${isDarkMode ? styles.darkStatCardIcon : ''}`} />
                       </Box>
                       <Box className={styles.statCardInfo}>
-                        <span className={styles.statCardNumber}>12</span>
-                        <span className={styles.statCardLabel}>Projects</span>
+                        <span className={`${styles.statCardNumber} ${isDarkMode ? styles.darkStatCardNumber : ''}`}>12</span>
+                        <span className={`${styles.statCardLabel} ${isDarkMode ? styles.darkStatCardLabel : ''}`}>Projects</span>
                       </Box>
                     </Box>
-                    <Box className={styles.statCard}>
-                      <Box className={styles.statCardIconWrapper}>
-                        <NotificationsIcon className={styles.statCardIcon} />
+                    <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ''}`}>
+                      <Box className={`${styles.statCardIconWrapper} ${isDarkMode ? styles.darkStatCardIconWrapper : ''}`}>
+                        <NotificationsIcon className={`${styles.statCardIcon} ${isDarkMode ? styles.darkStatCardIcon : ''}`} />
                       </Box>
                       <Box className={styles.statCardInfo}>
-                        <span className={styles.statCardNumber}>7</span>
-                        <span className={styles.statCardLabel}>Day Streak</span>
+                        <span className={`${styles.statCardNumber} ${isDarkMode ? styles.darkStatCardNumber : ''}`}>7</span>
+                        <span className={`${styles.statCardLabel} ${isDarkMode ? styles.darkStatCardLabel : ''}`}>Day Streak</span>
                       </Box>
                     </Box>
-                    <Box className={styles.statCard}>
-                      <Box className={styles.statCardIconWrapper}>
-                        <LockIcon className={styles.statCardIcon} />
+                    <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ''}`}>
+                      <Box className={`${styles.statCardIconWrapper} ${isDarkMode ? styles.darkStatCardIconWrapper : ''}`}>
+                        <LockIcon className={`${styles.statCardIcon} ${isDarkMode ? styles.darkStatCardIcon : ''}`} />
                       </Box>
                       <Box className={styles.statCardInfo}>
-                        <span className={styles.statCardNumber}>324</span>
-                        <span className={styles.statCardLabel}>Focus Hours</span>
+                        <span className={`${styles.statCardNumber} ${isDarkMode ? styles.darkStatCardNumber : ''}`}>324</span>
+                        <span className={`${styles.statCardLabel} ${isDarkMode ? styles.darkStatCardLabel : ''}`}>Focus Hours</span>
                       </Box>
                     </Box>
                   </Box>
-                  <Box className={styles.memberCard}>
+                  <Box className={`${styles.memberCard} ${isDarkMode ? styles.darkMemberCard : ''}`}>
                     <Box className={styles.memberCardContent}>
-                      <Box className={styles.memberCardIconWrapper}>
+                      <Box className={`${styles.memberCardIconWrapper} ${isDarkMode ? styles.darkMemberCardIconWrapper : ''}`}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                           <line x1="16" y1="2" x2="16" y2="6" />
@@ -503,10 +510,10 @@ const Profile = () => {
                         </svg>
                       </Box>
                       <Box>
-                        <Typography variant="body2" className={styles.memberCardLabel}>
+                        <Typography variant="body2" className={`${styles.memberCardLabel} ${isDarkMode ? styles.darkMemberCardLabel : ''}`}>
                           Member since
                         </Typography>
-                        <Typography variant="body1" className={styles.memberCardDate}>
+                        <Typography variant="body1" className={`${styles.memberCardDate} ${isDarkMode ? styles.darkMemberCardDate : ''}`}>
                           {userData.joinDate}
                         </Typography>
                       </Box>
@@ -516,14 +523,14 @@ const Profile = () => {
 
                 {/* Right Column - Form Fields */}
                 <Box className={styles.profileRightColumn}>
-                  <Box className={styles.formCard}>
-                    <Box className={styles.formCardHeader}>
-                      <Typography variant="subtitle2" className={styles.formCardTitle}>
-                        <PersonIcon className={styles.formCardIcon} />
+                  <Box className={`${styles.formCard} ${isDarkMode ? styles.darkFormCard : ''}`}>
+                    <Box className={`${styles.formCardHeader} ${isDarkMode ? styles.darkFormCardHeader : ''}`}>
+                      <Typography variant="subtitle2" className={`${styles.formCardTitle} ${isDarkMode ? styles.darkFormCardTitle : ''}`}>
+                        <PersonIcon className={`${styles.formCardIcon} ${isDarkMode ? styles.darkFormCardIcon : ''}`} />
                         Basic Information
                       </Typography>
                     </Box>
-                    <Box className={styles.formCardContent}>
+                    <Box className={`${styles.formCardContent} ${isDarkMode ? styles.darkFormCardContent : ''}`}>
                       <TextField
                         fullWidth
                         label="Full Name"
@@ -532,17 +539,17 @@ const Profile = () => {
                         onChange={handleInputChange}
                         disabled={!isEditing}
                         size="medium"
-                        className={styles.profileTextField}
+                        className={`${styles.profileTextField} ${isDarkMode ? styles.darkProfileTextField : ''}`}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <PersonIcon className={styles.fieldIcon} />
+                              <PersonIcon className={`${styles.fieldIcon} ${isDarkMode ? styles.darkFieldIcon : ''}`} />
                             </InputAdornment>
                           ),
                         }}
                         InputLabelProps={{
                           shrink: true,
-                          className: styles.inputLabel,
+                          className: `${styles.inputLabel} ${isDarkMode ? styles.darkInputLabel : ''}`,
                         }}
                       />
                       <TextField
@@ -553,24 +560,24 @@ const Profile = () => {
                         onChange={handleInputChange}
                         disabled={!isEditing}
                         size="medium"
-                        className={styles.profileTextField}
+                        className={`${styles.profileTextField} ${isDarkMode ? styles.darkProfileTextField : ''}`}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <EmailIcon className={styles.fieldIcon} />
+                              <EmailIcon className={`${styles.fieldIcon} ${isDarkMode ? styles.darkFieldIcon : ''}`} />
                             </InputAdornment>
                           ),
                         }}
                         InputLabelProps={{
                           shrink: true,
-                          className: styles.inputLabel,
+                          className: `${styles.inputLabel} ${isDarkMode ? styles.darkInputLabel : ''}`,
                         }}
                       />
                     </Box>
                   </Box>
-                  <Box className={styles.formCard}>
-                    <Box className={styles.formCardHeader}>
-                      <Typography variant="subtitle2" className={styles.formCardTitle}>
+                  <Box className={`${styles.formCard} ${isDarkMode ? styles.darkFormCard : ''}`}>
+                    <Box className={`${styles.formCardHeader} ${isDarkMode ? styles.darkFormCardHeader : ''}`}>
+                      <Typography variant="subtitle2" className={`${styles.formCardTitle} ${isDarkMode ? styles.darkFormCardTitle : ''}`}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                           <polyline points="9 12 11 14 15 10" />
@@ -578,7 +585,7 @@ const Profile = () => {
                         Additional Details
                       </Typography>
                     </Box>
-                    <Box className={styles.formCardContent}>
+                    <Box className={`${styles.formCardContent} ${isDarkMode ? styles.darkFormCardContent : ''}`}>
                       <TextField
                         fullWidth
                         label="Bio"
@@ -589,11 +596,11 @@ const Profile = () => {
                         multiline
                         rows={3}
                         size="medium"
-                        className={styles.profileTextField}
+                        className={`${styles.profileTextField} ${isDarkMode ? styles.darkProfileTextField : ''}`}
                         placeholder="Tell us about yourself..."
                         InputLabelProps={{
                           shrink: true,
-                          className: styles.inputLabel,
+                          className: `${styles.inputLabel} ${isDarkMode ? styles.darkInputLabel : ''}`,
                         }}
                       />
                       <Box className={styles.formRow}>
@@ -605,10 +612,10 @@ const Profile = () => {
                           onChange={handleInputChange}
                           disabled={!isEditing}
                           size="medium"
-                          className={styles.profileTextField}
+                          className={`${styles.profileTextField} ${isDarkMode ? styles.darkProfileTextField : ''}`}
                           InputLabelProps={{
                             shrink: true,
-                            className: styles.inputLabel,
+                            className: `${styles.inputLabel} ${isDarkMode ? styles.darkInputLabel : ''}`,
                           }}
                         />
                         <TextField
@@ -619,10 +626,10 @@ const Profile = () => {
                           onChange={handleInputChange}
                           disabled={!isEditing}
                           size="medium"
-                          className={styles.profileTextField}
+                          className={`${styles.profileTextField} ${isDarkMode ? styles.darkProfileTextField : ''}`}
                           InputLabelProps={{
                             shrink: true,
-                            className: styles.inputLabel,
+                            className: `${styles.inputLabel} ${isDarkMode ? styles.darkInputLabel : ''}`,
                           }}
                         />
                       </Box>
@@ -635,34 +642,34 @@ const Profile = () => {
 
           {/* Preferences Tab */}
           {activeTab === 1 && (
-            <Box className={styles.tabContent}>
+            <Box className={`${styles.tabContent} ${isDarkMode ? styles.darkTabContent : ''}`}>
               <Box className={styles.tabHeader}>
-                <Typography variant="h6" className={styles.tabTitle}>
+                <Typography variant="h6" className={`${styles.tabTitle} ${isDarkMode ? styles.darkTabTitle : ''}`}>
                   Preferences
                 </Typography>
               </Box>
-              <Divider className={styles.tabDivider} />
-              <Box className={styles.preferencesSection}>
+              <Divider className={`${styles.tabDivider} ${isDarkMode ? styles.darkTabDivider : ''}`} />
+              <Box className={`${styles.preferencesSection} ${isDarkMode ? styles.darkPreferencesSection : ''}`}>
                 <Box className={styles.preferenceGroup}>
-                  <Typography variant="subtitle1" className={styles.sectionTitle}>
-                    <NotificationsIcon className={styles.sectionIcon} />
+                  <Typography variant="subtitle1" className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>
+                    <NotificationsIcon className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`} />
                     Notifications
                   </Typography>
-                  <Box className={styles.preferenceItem}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
                     <SwitchWithLabel
                       checked={preferences.emailNotifications}
                       onChange={(checked) => handlePreferenceChange('emailNotifications', checked)}
                       label="Email Notifications"
                     />
                   </Box>
-                  <Box className={styles.preferenceItem}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
                     <SwitchWithLabel
                       checked={preferences.pushNotifications}
                       onChange={(checked) => handlePreferenceChange('pushNotifications', checked)}
                       label="Push Notifications"
                     />
                   </Box>
-                  <Box className={styles.preferenceItem}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
                     <SwitchWithLabel
                       checked={preferences.weeklyDigest}
                       onChange={(checked) => handlePreferenceChange('weeklyDigest', checked)}
@@ -670,19 +677,19 @@ const Profile = () => {
                     />
                   </Box>
                 </Box>
-                <Divider className={styles.preferenceDivider} />
+                <Divider className={`${styles.preferenceDivider} ${isDarkMode ? styles.darkPreferenceDivider : ''}`} />
                 <Box className={styles.preferenceGroup}>
-                  <Typography variant="subtitle1" className={styles.sectionTitle}>
-                    <PaletteIcon className={styles.sectionIcon} />
+                  <Typography variant="subtitle1" className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>
+                    <PaletteIcon className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`} />
                     Appearance
                   </Typography>
-                  <Box className={styles.preferenceItem}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
                     <div className={styles.switchWrapper}>
                       <CustomSwitch
                         checked={preferences.darkMode}
                         onChange={(checked) => handlePreferenceChange('darkMode', checked)}
                       />
-                      <span className={styles.switchLabel}>
+                      <span className={`${styles.switchLabel} ${isDarkMode ? styles.darkSwitchLabel : ''}`}>
                         {preferences.darkMode ? <DarkModeIcon /> : <LightModeIcon />}
                         <span style={{ marginLeft: '8px' }}>
                           {preferences.darkMode ? 'Dark Mode' : 'Light Mode'}
@@ -691,25 +698,25 @@ const Profile = () => {
                     </div>
                   </Box>
                 </Box>
-                <Divider className={styles.preferenceDivider} />
+                <Divider className={`${styles.preferenceDivider} ${isDarkMode ? styles.darkPreferenceDivider : ''}`} />
                 <Box className={styles.preferenceGroup}>
-                  <Typography variant="subtitle1" className={styles.sectionTitle}>
-                    <LanguageIcon className={styles.sectionIcon} />
+                  <Typography variant="subtitle1" className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>
+                    <LanguageIcon className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`} />
                     Language & Region
                   </Typography>
-                  <Box className={styles.preferenceItem}>
-                    <Typography variant="body2" className={styles.preferenceLabel}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
+                    <Typography variant="body2" className={`${styles.preferenceLabel} ${isDarkMode ? styles.darkPreferenceLabel : ''}`}>
                       Language
                     </Typography>
-                    <Typography variant="body1" className={styles.preferenceValue}>
+                    <Typography variant="body1" className={`${styles.preferenceValue} ${isDarkMode ? styles.darkPreferenceValue : ''}`}>
                       {preferences.language}
                     </Typography>
                   </Box>
-                  <Box className={styles.preferenceItem}>
-                    <Typography variant="body2" className={styles.preferenceLabel}>
+                  <Box className={`${styles.preferenceItem} ${isDarkMode ? styles.darkPreferenceItem : ''}`}>
+                    <Typography variant="body2" className={`${styles.preferenceLabel} ${isDarkMode ? styles.darkPreferenceLabel : ''}`}>
                       Timezone
                     </Typography>
-                    <Typography variant="body1" className={styles.preferenceValue}>
+                    <Typography variant="body1" className={`${styles.preferenceValue} ${isDarkMode ? styles.darkPreferenceValue : ''}`}>
                       {preferences.timezone}
                     </Typography>
                   </Box>
@@ -720,22 +727,22 @@ const Profile = () => {
 
           {/* Security Tab */}
           {activeTab === 2 && (
-            <Box className={styles.tabContent}>
+            <Box className={`${styles.tabContent} ${isDarkMode ? styles.darkTabContent : ''}`}>
               <Box className={styles.tabHeader}>
-                <Typography variant="h6" className={styles.tabTitle}>
+                <Typography variant="h6" className={`${styles.tabTitle} ${isDarkMode ? styles.darkTabTitle : ''}`}>
                   Security
                 </Typography>
               </Box>
-              <Divider className={styles.tabDivider} />
-              <Box className={styles.securitySection}>
-                <Box className={styles.securityItem}>
+              <Divider className={`${styles.tabDivider} ${isDarkMode ? styles.darkTabDivider : ''}`} />
+              <Box className={`${styles.securitySection} ${isDarkMode ? styles.darkSecuritySection : ''}`}>
+                <Box className={`${styles.securityItem} ${isDarkMode ? styles.darkSecurityItem : ''}`}>
                   <Box className={styles.securityItemHeader}>
-                    <LockIcon className={styles.securityIcon} />
+                    <LockIcon className={`${styles.securityIcon} ${isDarkMode ? styles.darkSecurityIcon : ''}`} />
                     <Box>
-                      <Typography variant="subtitle1" className={styles.securityItemTitle}>
+                      <Typography variant="subtitle1" className={`${styles.securityItemTitle} ${isDarkMode ? styles.darkSecurityItemTitle : ''}`}>
                         Password
                       </Typography>
-                      <Typography variant="body2" color="textSecondary">
+                      <Typography variant="body2" color="textSecondary" className={isDarkMode ? styles.darkSecurityItemSubtitle : ''}>
                         Last changed 3 months ago
                       </Typography>
                     </Box>
@@ -743,20 +750,20 @@ const Profile = () => {
                   <Button
                     variant="outlined"
                     onClick={() => setShowPasswordDialog(true)}
-                    className={styles.changePasswordButton}
+                    className={`${styles.changePasswordButton} ${isDarkMode ? styles.darkChangePasswordButton : ''}`}
                   >
                     Change Password
                   </Button>
                 </Box>
-                <Divider className={styles.securityDivider} />
-                <Box className={styles.securityItem}>
+                <Divider className={`${styles.securityDivider} ${isDarkMode ? styles.darkSecurityDivider : ''}`} />
+                <Box className={`${styles.securityItem} ${isDarkMode ? styles.darkSecurityItem : ''}`}>
                   <Box className={styles.securityItemHeader}>
-                    <SecurityIcon className={styles.securityIcon} />
+                    <SecurityIcon className={`${styles.securityIcon} ${isDarkMode ? styles.darkSecurityIcon : ''}`} />
                     <Box>
-                      <Typography variant="subtitle1" className={styles.securityItemTitle}>
+                      <Typography variant="subtitle1" className={`${styles.securityItemTitle} ${isDarkMode ? styles.darkSecurityItemTitle : ''}`}>
                         Two-Factor Authentication
                       </Typography>
-                      <Typography variant="body2" color="textSecondary">
+                      <Typography variant="body2" color="textSecondary" className={isDarkMode ? styles.darkSecurityItemSubtitle : ''}>
                         Add an extra layer of security
                       </Typography>
                     </Box>
@@ -767,27 +774,27 @@ const Profile = () => {
                     label="Enable 2FA"
                   />
                 </Box>
-                <Divider className={styles.securityDivider} />
-                <Box className={styles.securityItem}>
+                <Divider className={`${styles.securityDivider} ${isDarkMode ? styles.darkSecurityDivider : ''}`} />
+                <Box className={`${styles.securityItem} ${isDarkMode ? styles.darkSecurityItem : ''}`}>
                   <Box className={styles.securityItemHeader}>
-                    <Typography variant="subtitle1" className={styles.securityItemTitle}>
+                    <Typography variant="subtitle1" className={`${styles.securityItemTitle} ${isDarkMode ? styles.darkSecurityItemTitle : ''}`}>
                       Active Sessions
                     </Typography>
                   </Box>
                   <Box className={styles.sessionsList}>
                     {security.activeSessions.map((session, index) => (
-                      <Box key={index} className={styles.sessionItem}>
+                      <Box key={index} className={`${styles.sessionItem} ${isDarkMode ? styles.darkSessionItem : ''}`}>
                         <Box className={styles.sessionInfo}>
-                          <Typography variant="body2" className={styles.sessionName}>
+                          <Typography variant="body2" className={`${styles.sessionName} ${isDarkMode ? styles.darkSessionName : ''}`}>
                             {session}
                           </Typography>
-                          <Typography variant="caption" color="textSecondary">
+                          <Typography variant="caption" color="textSecondary" className={isDarkMode ? styles.darkSessionSubtitle : ''}>
                             Active now
                           </Typography>
                         </Box>
                         <Button
                           size="small"
-                          className={styles.sessionLogout}
+                          className={`${styles.sessionLogout} ${isDarkMode ? styles.darkSessionLogout : ''}`}
                           onClick={() => {
                             const updatedSessions = security.activeSessions.filter((_, i) => i !== index);
                             setSecurity(prev => ({ ...prev, activeSessions: updatedSessions }));
@@ -800,11 +807,11 @@ const Profile = () => {
                     ))}
                   </Box>
                 </Box>
-                <Divider className={styles.securityDivider} />
-                <Box className={styles.securityItem}>
+                <Divider className={`${styles.securityDivider} ${isDarkMode ? styles.darkSecurityDivider : ''}`} />
+                <Box className={`${styles.securityItem} ${isDarkMode ? styles.darkSecurityItem : ''}`}>
                   <Button
                     variant="contained"
-                    className={styles.deleteAccountButton}
+                    className={`${styles.deleteAccountButton} ${isDarkMode ? styles.darkDeleteAccountButton : ''}`}
                     onClick={() => setShowDeleteDialog(true)}
                     startIcon={<DeleteIcon />}
                   >
@@ -822,116 +829,116 @@ const Profile = () => {
           onClose={() => setShowPasswordDialog(false)}
           maxWidth="sm"
           fullWidth
-          className={styles.passwordDialog}
+          className={`${styles.passwordDialog} ${isDarkMode ? styles.darkPasswordDialog : ''}`}
           PaperProps={{
-            className: styles.passwordDialogPaper,
+            className: `${styles.passwordDialogPaper} ${isDarkMode ? styles.darkPasswordDialogPaper : ''}`,
           }}
         >
-          <DialogTitle className={styles.dialogTitle}>
-            <LockIcon className={styles.dialogIcon} />
+          <DialogTitle className={`${styles.dialogTitle} ${isDarkMode ? styles.darkDialogTitle : ''}`}>
+            <LockIcon className={`${styles.dialogIcon} ${isDarkMode ? styles.darkDialogIcon : ''}`} />
             Change Password
           </DialogTitle>
           <DialogContent>
-            <Box className={styles.dialogContent}>
+            <Box className={`${styles.dialogContent} ${isDarkMode ? styles.darkDialogContent : ''}`}>
               {/* Current Password */}
-              <div className={styles.passwordField}>
-                <label className={styles.passwordLabel}>Current Password</label>
-                <div className={styles.passwordInputWrap}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Current Password</label>
+                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                   <input
                     type={showCurrentPassword ? 'text' : 'password'}
                     name="currentPassword"
                     placeholder="Enter current password"
                     value={passwordData.currentPassword}
                     onChange={handlePasswordChange}
-                    className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''}`}
+                    className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                   />
                   <button
                     type="button"
-                    className={styles.passwordEyeBtn}
+                    className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
                   >
                     {showCurrentPassword ? (
-                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                      <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     ) : (
-                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                      <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     )}
                   </button>
                 </div>
                 {passwordErrors.currentPassword && (
-                  <span className={styles.passwordError}>{passwordErrors.currentPassword}</span>
+                  <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.currentPassword}</span>
                 )}
               </div>
 
               {/* New Password */}
-              <div className={styles.passwordField}>
-                <label className={styles.passwordLabel}>New Password</label>
-                <div className={styles.passwordInputWrap}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>New Password</label>
+                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                   <input
                     type={showNewPassword ? 'text' : 'password'}
                     name="newPassword"
                     placeholder="Enter new password"
                     value={passwordData.newPassword}
                     onChange={handlePasswordChange}
-                    className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''}`}
+                    className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                   />
                   <button
                     type="button"
-                    className={styles.passwordEyeBtn}
+                    className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowNewPassword(!showNewPassword)}
                     aria-label={showNewPassword ? 'Hide password' : 'Show password'}
                   >
                     {showNewPassword ? (
-                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                      <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     ) : (
-                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                      <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     )}
                   </button>
                 </div>
                 {passwordErrors.newPassword && (
-                  <span className={styles.passwordError}>{passwordErrors.newPassword}</span>
+                  <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.newPassword}</span>
                 )}
               </div>
 
               {/* Confirm New Password */}
-              <div className={styles.passwordField}>
-                <label className={styles.passwordLabel}>Confirm New Password</label>
-                <div className={styles.passwordInputWrap}>
+              <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+                <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Confirm New Password</label>
+                <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
                     name="confirmPassword"
                     placeholder="Confirm new password"
                     value={passwordData.confirmPassword}
                     onChange={handlePasswordChange}
-                    className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''}`}
+                    className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                   />
                   <button
                     type="button"
-                    className={styles.passwordEyeBtn}
+                    className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                   >
                     {showConfirmPassword ? (
-                      <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                      <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     ) : (
-                      <VisibilityIcon className={styles.passwordEyeIcon} />
+                      <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                     )}
                   </button>
                 </div>
                 {passwordErrors.confirmPassword && (
-                  <span className={styles.passwordError}>{passwordErrors.confirmPassword}</span>
+                  <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.confirmPassword}</span>
                 )}
               </div>
             </Box>
           </DialogContent>
-          <DialogActions className={styles.dialogActions}>
-            <Button onClick={() => setShowPasswordDialog(false)} className={styles.dialogCancel}>
+          <DialogActions className={`${styles.dialogActions} ${isDarkMode ? styles.darkDialogActions : ''}`}>
+            <Button onClick={() => setShowPasswordDialog(false)} className={`${styles.dialogCancel} ${isDarkMode ? styles.darkDialogCancel : ''}`}>
               Cancel
             </Button>
             <Button 
               onClick={handlePasswordSubmit} 
               variant="contained"
-              className={styles.dialogSave}
+              className={`${styles.dialogSave} ${isDarkMode ? styles.darkDialogSave : ''}`}
             >
               Update Password
             </Button>
@@ -951,7 +958,7 @@ const Profile = () => {
           <Alert 
             onClose={handleCloseSnackbar} 
             severity={snackbar.severity}
-            className={styles.snackbarAlert}
+            className={`${styles.snackbarAlert} ${isDarkMode ? styles.darkSnackbarAlert : ''}`}
           >
             {snackbar.message}
           </Alert>
