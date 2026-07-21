@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Box,
   Container,
@@ -121,6 +121,124 @@ const SwitchWithLabel = ({
         {label}
       </span>
     </div>
+  );
+};
+
+// ==================== AVATAR COMPONENT ====================
+const ProfileAvatar = ({ name, accentColor, isDarkMode, shouldUseAccent }) => {
+  const initials = useMemo(() => {
+    return name.split(' ').map(n => n[0]).join('');
+  }, [name]);
+
+  // Determine avatar background color based on mode
+  const getAvatarBackground = () => {
+    if (shouldUseAccent) {
+      return accentColor; // Use accent color when selected
+    }
+    if (isDarkMode) {
+      return '#FBBC00'; // Default dark mode amber
+    }
+    return '#4B3832'; // Light mode brown
+  };
+
+  // Determine avatar text color based on mode
+  const getAvatarTextColor = () => {
+    if (shouldUseAccent || isDarkMode) {
+      return '#000000'; // Black text for dark mode and accent
+    }
+    return '#FFFFFF'; // White text for light mode
+  };
+
+  return (
+    <Avatar 
+      className={`${styles.profileAvatar} ${isDarkMode ? styles.darkProfileAvatar : ''}`}
+      style={{
+        background: getAvatarBackground(),
+        color: getAvatarTextColor(),
+      }}
+    >
+      {initials}
+    </Avatar>
+  );
+};
+
+// ==================== AVATAR CARD COMPONENT ====================
+const AvatarCard = ({ name, role, accentColor, isDarkMode, shouldUseAccent, isEditing }) => {
+  const initials = useMemo(() => {
+    return name.split(' ').map(n => n[0]).join('');
+  }, [name]);
+
+  // Determine avatar background color based on mode
+  const getAvatarBackground = () => {
+    if (shouldUseAccent) {
+      return accentColor; // Use accent color when selected
+    }
+    if (isDarkMode) {
+      return '#FBBC00'; // Default dark mode amber
+    }
+    return '#4B3832'; // Light mode brown
+  };
+
+  // Determine avatar text color based on mode
+  const getAvatarTextColor = () => {
+    if (shouldUseAccent || isDarkMode) {
+      return '#000000'; // Black text for dark mode and accent
+    }
+    return '#FFFFFF'; // White text for light mode
+  };
+
+  return (
+    <Box className={`${styles.avatarCard} ${isDarkMode ? styles.darkAvatarCard : ''}`}>
+      <Box className={styles.avatarCardContent}>
+        <Box className={styles.avatarCardAvatar}>
+          <Avatar 
+            className={`${styles.avatarCardImage} ${isDarkMode ? styles.darkAvatarCardImage : ''}`}
+            style={{
+              background: getAvatarBackground(),
+              color: getAvatarTextColor(),
+            }}
+          >
+            {initials}
+          </Avatar>
+          {isEditing && (
+            <IconButton 
+              className={`${styles.avatarCardEdit} ${isDarkMode ? styles.darkAvatarCardEdit : ''}`} 
+              size="small"
+              style={{
+                color: shouldUseAccent ? accentColor : undefined,
+              }}
+            >
+              <PhotoCameraIcon className={`${styles.avatarCardEditIcon} ${isDarkMode ? styles.darkAvatarCardEditIcon : ''}`} />
+            </IconButton>
+          )}
+        </Box>
+        <Box className={styles.avatarCardInfo}>
+          <Typography variant="h6" className={`${styles.avatarCardName} ${isDarkMode ? styles.darkAvatarCardName : ''}`}>
+            {name}
+          </Typography>
+          <Typography variant="body2" className={`${styles.avatarCardRole} ${isDarkMode ? styles.darkAvatarCardRole : ''}`}>
+            {role}
+          </Typography>
+          <Box className={styles.avatarCardBadges}>
+            <Chip 
+              label="PRO" 
+              size="small" 
+              className={`${styles.avatarCardProChip} ${isDarkMode ? styles.darkAvatarCardProChip : ''}`}
+              icon={<CheckCircleIcon className={`${styles.avatarCardChipIcon} ${isDarkMode ? styles.darkAvatarCardChipIcon : ''}`} />}
+              style={{
+                background: getAvatarBackground(),
+                color: getAvatarTextColor(),
+              }}
+            />
+            <Chip 
+              label="Active" 
+              size="small" 
+              className={`${styles.avatarCardActiveChip} ${isDarkMode ? styles.darkAvatarCardActiveChip : ''}`}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
@@ -390,15 +508,12 @@ const Profile = () => {
           <Box className={styles.profileHeaderContent}>
             <Box className={styles.avatarSection}>
               <Box className={styles.avatarWrapper}>
-                <Avatar 
-                  className={`${styles.profileAvatar} ${isDarkMode ? styles.darkProfileAvatar : ''}`}
-                  style={{
-                    background: shouldUseAccent ? accentColor : undefined,
-                    color: shouldUseAccent ? '#000000' : undefined,
-                  }}
-                >
-                  {userData.fullName.split(' ').map(n => n[0]).join('')}
-                </Avatar>
+                <ProfileAvatar 
+                  name={userData.fullName}
+                  accentColor={accentColor}
+                  isDarkMode={isDarkMode}
+                  shouldUseAccent={shouldUseAccent}
+                />
                 <Tooltip title="Change Avatar" arrow>
                   <IconButton 
                     className={`${styles.avatarEditBtn} ${isDarkMode ? styles.darkAvatarEditBtn : ''}`} 
@@ -425,8 +540,8 @@ const Profile = () => {
                     className={`${styles.proChip} ${isDarkMode ? styles.darkProChip : ''}`}
                     icon={<CheckCircleIcon className={`${styles.chipIcon} ${isDarkMode ? styles.darkChipIcon : ''}`} />}
                     style={{
-                      background: shouldUseAccent ? accentColor : undefined,
-                      color: shouldUseAccent ? '#000000' : undefined,
+                      background: shouldUseAccent ? accentColor : (isDarkMode ? '#FBBC00' : '#4B3832'),
+                      color: shouldUseAccent ? '#000000' : (isDarkMode ? '#000000' : '#FFFFFF'),
                     }}
                   />
                   <Chip 
@@ -540,57 +655,14 @@ const Profile = () => {
               <Box className={styles.profileGrid}>
                 {/* Left Column */}
                 <Box className={styles.profileLeftColumn}>
-                  <Box className={`${styles.avatarCard} ${isDarkMode ? styles.darkAvatarCard : ''}`}>
-                    <Box className={styles.avatarCardContent}>
-                      <Box className={styles.avatarCardAvatar}>
-                        <Avatar 
-                          className={`${styles.avatarCardImage} ${isDarkMode ? styles.darkAvatarCardImage : ''}`}
-                          style={{
-                            background: shouldUseAccent ? accentColor : undefined,
-                            color: shouldUseAccent ? '#000000' : undefined,
-                          }}
-                        >
-                          {userData.fullName.split(' ').map(n => n[0]).join('')}
-                        </Avatar>
-                        {isEditing && (
-                          <IconButton 
-                            className={`${styles.avatarCardEdit} ${isDarkMode ? styles.darkAvatarCardEdit : ''}`} 
-                            size="small"
-                            style={{
-                              color: shouldUseAccent ? accentColor : undefined,
-                            }}
-                          >
-                            <PhotoCameraIcon className={`${styles.avatarCardEditIcon} ${isDarkMode ? styles.darkAvatarCardEditIcon : ''}`} />
-                          </IconButton>
-                        )}
-                      </Box>
-                      <Box className={styles.avatarCardInfo}>
-                        <Typography variant="h6" className={`${styles.avatarCardName} ${isDarkMode ? styles.darkAvatarCardName : ''}`}>
-                          {userData.fullName}
-                        </Typography>
-                        <Typography variant="body2" className={`${styles.avatarCardRole} ${isDarkMode ? styles.darkAvatarCardRole : ''}`}>
-                          {userData.role}
-                        </Typography>
-                        <Box className={styles.avatarCardBadges}>
-                          <Chip 
-                            label="PRO" 
-                            size="small" 
-                            className={`${styles.avatarCardProChip} ${isDarkMode ? styles.darkAvatarCardProChip : ''}`}
-                            icon={<CheckCircleIcon className={`${styles.avatarCardChipIcon} ${isDarkMode ? styles.darkAvatarCardChipIcon : ''}`} />}
-                            style={{
-                              background: shouldUseAccent ? accentColor : undefined,
-                              color: shouldUseAccent ? '#000000' : undefined,
-                            }}
-                          />
-                          <Chip 
-                            label="Active" 
-                            size="small" 
-                            className={`${styles.avatarCardActiveChip} ${isDarkMode ? styles.darkAvatarCardActiveChip : ''}`}
-                          />
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Box>
+                  <AvatarCard 
+                    name={userData.fullName}
+                    role={userData.role}
+                    accentColor={accentColor}
+                    isDarkMode={isDarkMode}
+                    shouldUseAccent={shouldUseAccent}
+                    isEditing={isEditing}
+                  />
                   <Box className={styles.statsGrid}>
                     <Box className={`${styles.statCard} ${isDarkMode ? styles.darkStatCard : ''}`}>
                       <Box className={`${styles.statCardIconWrapper} ${isDarkMode ? styles.darkStatCardIconWrapper : ''}`}>
