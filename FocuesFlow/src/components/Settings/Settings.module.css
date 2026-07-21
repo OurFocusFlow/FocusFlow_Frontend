@@ -2284,3 +2284,241 @@
 [data-theme="dark"] .passwordModalConfirm:hover svg {
   color: #FFFFFF !important;
 }
+
+/* ==================== FORCE WHITE TEXT ON ALL BUTTONS IN DARK MODE ==================== */
+[data-theme="dark"] .primaryButton,
+[data-theme="dark"] .saveButton,
+[data-theme="dark"] .darkButton,
+[data-theme="dark"] .deleteButton,
+[data-theme="dark"] .deleteButtonRed,
+[data-theme="dark"] .passwordModalConfirm {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton svg,
+[data-theme="dark"] .saveButton svg,
+[data-theme="dark"] .darkButton svg,
+[data-theme="dark"] .deleteButton svg,
+[data-theme="dark"] .passwordModalConfirm svg {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton:hover,
+[data-theme="dark"] .saveButton:hover,
+[data-theme="dark"] .darkButton:hover,
+[data-theme="dark"] .deleteButton:hover,
+[data-theme="dark"] .passwordModalConfirm:hover {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .primaryButton:hover svg,
+[data-theme="dark"] .saveButton:hover svg,
+[data-theme="dark"] .darkButton:hover svg,
+[data-theme="dark"] .deleteButton:hover svg,
+[data-theme="dark"] .passwordModalConfirm:hover svg {
+  color: #FFFFFF !important;
+}
+
+/* ==================== DARK MODE - ALL TEXT COLORS ==================== */
+[data-theme="dark"] .page {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pageTitle,
+[data-theme="dark"] .darkPageTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .pageSubtitle,
+[data-theme="dark"] .darkPageSubtitle {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .sectionTitle,
+[data-theme="dark"] .darkSectionTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rowLabel,
+[data-theme="dark"] .darkRowLabel {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .rowDescription,
+[data-theme="dark"] .darkRowDescription {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .themeOption {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .themeOptionActive {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .themeOption svg {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .themeOptionActive svg {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .fontSizeLabel,
+[data-theme="dark"] .darkFontSizeLabel {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .select :global(.MuiSelect-select) {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .select :global(.MuiSelect-icon) {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .dangerTitle,
+[data-theme="dark"] .darkDangerTitle {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .dangerLabel,
+[data-theme="dark"] .darkDangerLabel {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .dangerDescription,
+[data-theme="dark"] .darkDangerDescription {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .deleteModalTitle,
+[data-theme="dark"] .darkDeleteModalTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .deleteModalText,
+[data-theme="dark"] .darkDeleteModalText {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .deleteModalText strong {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .deleteModalCancel,
+[data-theme="dark"] .darkDeleteModalCancel {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .deleteModalCancel:hover {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .passwordModalTitle,
+[data-theme="dark"] .darkPasswordModalTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .passwordLabel,
+[data-theme="dark"] .darkPasswordLabel {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .passwordInput {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .passwordInput::placeholder {
+  color: #857B6B !important;
+}
+
+[data-theme="dark"] .passwordModalCancel,
+[data-theme="dark"] .darkPasswordModalCancel {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .passwordModalCancel:hover {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .passwordError,
+[data-theme="dark"] .darkPasswordError {
+  color: #ef4444 !important;
+}
+
+[data-theme="dark"] .switchWrapper .switchLabel {
+  color: #FFFFFF !important;
+}
+/* ==================== DYNAMIC BUTTON TEXT COLOR - DARK MODE ==================== */
+/* The inline styles from JSX handle the dynamic text color */
+/* These CSS rules provide fallback styling */
+
+/* ==================== DARK MODE BUTTON BACKGROUNDS ==================== */
+[data-theme="dark"] .darkButton {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .darkButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+/* ==================== SAVE BUTTON DARK MODE ==================== */
+[data-theme="dark"] .saveButton {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .saveButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* ==================== PASSWORD MODAL CONFIRM DARK MODE ==================== */
+[data-theme="dark"] .passwordModalConfirm {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .passwordModalConfirm:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* ==================== DELETE BUTTON DARK MODE ==================== */
+[data-theme="dark"] .deleteButton {
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .deleteButton:hover {
+  background: #dc2626 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .deleteButton svg {
+  color: #FFFFFF !important;
+}
+
+/* ==================== DARK MODE - PRIMARY BUTTON ==================== */
+[data-theme="dark"] .primaryButton {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .primaryButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+/* ==================== DARK MODE - DELETE MODAL CONFIRM ==================== */
+[data-theme="dark"] .deleteModalConfirm {
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .deleteModalConfirm:hover {
+  background: #dc2626 !important;
+  color: #FFFFFF !important;
+}

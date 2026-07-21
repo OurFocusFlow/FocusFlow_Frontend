@@ -33,6 +33,20 @@ const LIGHT_MODE_COLORS = [
   { hex: '#885210', name: 'Brown' }
 ];
 
+// Helper function to check if color is light (for determining text color)
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    // Calculate luminance - higher means lighter
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
+
 // ==================== CUSTOM SWITCH COMPONENT ====================
 const CustomSwitch = ({ 
   checked, 
@@ -337,6 +351,16 @@ const Settings = () => {
     return themeMode;
   };
 
+  // Get button text color based on accent color and mode
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      // In dark mode: if accent color is light (like amber), use black text, else use white
+      return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
+    }
+    // In light mode: if accent color is dark (like brown), use white text, else use dark text
+    return isLightColor(accentColor) ? '#33231D' : '#FFFFFF';
+  };
+
   const availableColors = getAvailableColors();
 
   return (
@@ -546,7 +570,7 @@ const Settings = () => {
                   onClick={handleOpenPasswordModal}
                   style={{
                     backgroundColor: isDarkMode ? accentColor : undefined,
-                    color: isDarkMode ? '#FFFFFF' : undefined,
+                    color: getButtonTextColor(),
                   }}
                 >
                   <SecurityIcon />
@@ -564,7 +588,7 @@ const Settings = () => {
                   className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`}
                   style={{
                     backgroundColor: isDarkMode ? accentColor : undefined,
-                    color: isDarkMode ? '#FFFFFF' : undefined,
+                    color: getButtonTextColor(),
                   }}
                 >
                   Enable 2FA
@@ -664,7 +688,7 @@ const Settings = () => {
             className={`${isDarkMode ? styles.darkButton : styles.saveButton}`}
             style={{
               backgroundColor: isDarkMode ? accentColor : undefined,
-              color: isDarkMode ? '#FFFFFF' : undefined,
+              color: getButtonTextColor(),
             }}
           >
             <CheckCircleIcon />
@@ -850,7 +874,7 @@ const Settings = () => {
               disabled={isUpdatingPassword}
               style={{
                 backgroundColor: isDarkMode ? accentColor : undefined,
-                color: isDarkMode ? '#FFFFFF' : undefined,
+                color: getButtonTextColor(),
               }}
             >
               {isUpdatingPassword ? 'Updating...' : 'Update Password'}
