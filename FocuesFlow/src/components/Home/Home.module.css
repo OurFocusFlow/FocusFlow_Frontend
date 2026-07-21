@@ -1189,7 +1189,7 @@
 }
 
 [data-theme="dark"] .navLink {
-  color: #6A6255;
+  color: #c3c3c7;
 }
 
 [data-theme="dark"] .navLink:hover {
@@ -1210,7 +1210,7 @@
 }
 
 [data-theme="dark"] .iconBtn {
-  color: #6A6255 !important;
+  color: #c3c3c7 !important;
 }
 
 [data-theme="dark"] .iconBtn:hover {
@@ -1401,7 +1401,7 @@
 
 /* CTA Dark Mode */
 [data-theme="dark"] .ctaSection {
-  background: #171511 !important;
+  background: #111117 !important;
 }
 
 [data-theme="dark"] .ctaSection::before {
@@ -1505,7 +1505,7 @@
 }
 
 [data-theme="dark"] .mobileMenuClose {
-  color: #6A6255 !important;
+  color: #c3c3c7 !important;
 }
 
 [data-theme="dark"] .mobileMenuClose:hover {
@@ -1523,4 +1523,645 @@
   [data-theme="dark"] .page::before {
     animation: none;
   }
+}
+
+/* ==================== ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .page .badge {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .badgeDot {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .heroAccent {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .primaryBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .primaryBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .secondaryBtn {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .secondaryBtn:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .eyebrow {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .signupBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .signupBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .avatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .dropdownAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .ctaButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .ctaButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .mobileNavLinkSignup {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .loginBtn:hover {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .iconBtn:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .navLink:hover {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .dropdownItem:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+/* ==================== ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .page {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
+
+/* ==================== ACCENT COLOR BACKGROUND SUPPORT ==================== */
+
+/* Accent color overlay for background */
+.home-bg-accent-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: accentPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes accentPulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .page .badge {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .badgeDot {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .heroAccent {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .primaryBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .primaryBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .secondaryBtn {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .secondaryBtn:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .eyebrow {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .signupBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .signupBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .avatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .dropdownAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .ctaButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .ctaButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .page .mobileNavLinkSignup {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .loginBtn:hover {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .iconBtn:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .navLink:hover {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .dropdownItem:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+/* ==================== DARK MODE BACKGROUND ORBS WITH ACCENT ==================== */
+[data-theme="dark"] .home-bg-orb:nth-child(1) {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.10) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
+  width: 500px;
+  height: 500px;
+  top: -200px;
+  right: -100px;
+  filter: blur(100px);
+  opacity: 0.8 !important;
+}
+
+[data-theme="dark"] .home-bg-orb:nth-child(2) {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  filter: blur(100px);
+  opacity: 0.6 !important;
+}
+
+[data-theme="dark"] .home-bg-orb:nth-child(3) {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.04) 0%, rgba(var(--accent-rgb), 0) 70%) !important;
+  width: 300px;
+  height: 300px;
+  top: 40%;
+  left: 60%;
+  filter: blur(100px);
+  opacity: 0.5 !important;
+}
+
+[data-theme="dark"] .home-bg-grid {
+  background-image: 
+    linear-gradient(rgba(var(--accent-rgb), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.02) 1px, transparent 1px) !important;
+}
+
+[data-theme="dark"] .home-bg-glow {
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+[data-theme="dark"] .page::before {
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(var(--accent-rgb), 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(var(--accent-rgb), 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb), 0.03) 0%, transparent 30%) !important;
+}
+
+/* ==================== ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .page {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
+
+/* ==================== ACCENT COLOR BACKGROUND EFFECTS ==================== */
+
+/* Ambient glow overlay */
+.home-bg-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: ambientPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambientPulse {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ==================== DARK MODE WITH ACCENT COLOR SUPPORT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .page .badge {
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .badgeDot {
+  background: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .heroAccent {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .primaryBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .primaryBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.25) !important;
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .page .secondaryBtn {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .secondaryBtn:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .eyebrow {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .signupBtn {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .signupBtn:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.25) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .page .avatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.2) !important;
+}
+
+[data-theme="dark"] .page .avatar:hover {
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .page .dropdownAvatar {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .ctaButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .ctaButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.25) !important;
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .page .mobileNavLinkSignup {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+}
+
+[data-theme="dark"] .page .loginBtn:hover {
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+  box-shadow: 0 2px 12px rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .page .iconBtn:hover {
+  color: var(--accent-color) !important;
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .navLink:hover {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .dropdownItem:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
+}
+
+/* ==================== BENTO CARD SHADOWS WITH ACCENT ==================== */
+[data-theme="dark"] .page .bentoCardLight:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(var(--accent-rgb), 0.04) !important;
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .bentoCardDark:hover {
+  box-shadow: 0 16px 40px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .bentoCardGray:hover {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(var(--accent-rgb), 0.03) !important;
+}
+
+/* ==================== SPLIT SECTION ACCENT ==================== */
+[data-theme="dark"] .page .splitSection::before {
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.05), transparent) !important;
+}
+
+[data-theme="dark"] .page .splitImage {
+  box-shadow: 0 4px 30px rgba(var(--accent-rgb), 0.06) !important;
+}
+
+/* ==================== CTA SECTION ACCENT ==================== */
+[data-theme="dark"] .page .ctaSection::before {
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--accent-rgb), 0.04) 0%, transparent 60%) !important;
+}
+
+[data-theme="dark"] .page .ctaInput:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1) !important;
+}
+
+/* ==================== DROPDOWN ACCENT ==================== */
+[data-theme="dark"] .page .dropdownMenu {
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .page .dropdownItemLogout:hover {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+}
+
+/* ==================== RITUAL RING ACCENT ==================== */
+[data-theme="dark"] .page .ritualRing {
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+}
+
+/* ==================== ACCENT COLOR VARIABLES ==================== */
+[data-theme="dark"] .page {
+  --accent-color: #FBBC00;
+  --accent-rgb: 251, 188, 0;
+}
+
+/* ==================== SCROLLBAR ACCENT ==================== */
+[data-theme="dark"] .page::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .page::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb), 0.5) !important;
+}
+
+/* ==================== CHECKLIST ICON ACCENT ==================== */
+[data-theme="dark"] .page .checklist li svg {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .checklist li svg circle {
+  stroke: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .page .checklist li svg path {
+  stroke: var(--accent-color) !important;
+}
+
+/* ==================== BOX BACKGROUND COLORS WITH ACCENT ==================== */
+
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .page .bentoCardLight {
+  background: rgba(var(--accent-rgb), 0.04) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .bentoCardLight:hover {
+  background: rgba(var(--accent-rgb), 0.06) !important;
+  border-color: rgba(var(--accent-rgb), 0.15) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(var(--accent-rgb), 0.04) !important;
+}
+
+[data-theme="dark"] .page .bentoCardDark {
+  background: rgba(var(--accent-rgb), 0.06) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .bentoCardDark:hover {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+  box-shadow: 0 16px 40px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page .bentoCardGray {
+  background: rgba(var(--accent-rgb), 0.03) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.06) !important;
+}
+
+[data-theme="dark"] .page .bentoCardGray:hover {
+  background: rgba(var(--accent-rgb), 0.05) !important;
+  border-color: rgba(var(--accent-rgb), 0.12) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(var(--accent-rgb), 0.03) !important;
+}
+
+/* ==================== DROPDOWN MENU BACKGROUND WITH ACCENT ==================== */
+[data-theme="dark"] .page .dropdownMenu {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.1) !important;
+}
+
+/* ==================== MOBILE MENU BACKGROUND WITH ACCENT ==================== */
+[data-theme="dark"] .page .mobileMenu {
+  background: rgba(0, 0, 0, 0.98) !important;
+  border-left: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== SEARCH BOX BACKGROUND WITH ACCENT ==================== */
+[data-theme="dark"] .page .searchBox {
+  background: rgba(var(--accent-rgb), 0.04) !important;
+  border: 1px solid rgba(var(--accent-rgb), 0.08) !important;
+}
+
+[data-theme="dark"] .page .searchBox:focus-within {
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12) !important;
+  border-color: var(--accent-color) !important;
+}
+
+/* ==================== AVATAR WRAPPER/DROPDOWN ==================== */
+[data-theme="dark"] .page .dropdownDivider {
+  background: rgba(var(--accent-rgb), 0.08) !important;
+}
+
+/* ==================== NAVBAR BACKGROUND WITH ACCENT ==================== */
+[data-theme="dark"] .page .navbar {
+  background: rgba(0, 0, 0, 0.95) !important;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.06) !important;
+}
+
+/* ==================== BENTO ICON COLOR ==================== */
+[data-theme="dark"] .page .bentoIcon {
+  color: var(--accent-color) !important;
+}
+
+/* ==================== STACK AVATAR MORE ==================== */
+[data-theme="dark"] .page .stackAvatarMore {
+  background: rgba(var(--accent-rgb), 0.06) !important;
+  border-color: rgba(var(--accent-rgb), 0.1) !important;
+  color: var(--accent-color) !important;
+}
+
+/* ==================== CARD RING ==================== */
+[data-theme="dark"] .page .cardRing circle {
+  stroke: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+/* ==================== CTA DARK MODE ==================== */
+/* Default dark mode - original background */
+[data-theme="dark"] .ctaSection {
+  background: #171511 !important;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .ctaSection::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(251, 188, 0, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* When accent color is NOT default amber - change background to #111117 */
+[data-theme="dark"] .page:not(.default-accent) .ctaSection {
+  background: #111117 !important;
+}
+
+[data-theme="dark"] .page:not(.default-accent) .ctaSection::before {
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--accent-rgb), 0.03) 0%, transparent 60%) !important;
+}
+
+[data-theme="dark"] .ctaTitle {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .ctaSubtitle {
+  color: #6A6255 !important;
+}
+
+[data-theme="dark"] .ctaInput {
+  background: #0F0D08 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #383B40 !important;
+}
+
+[data-theme="dark"] .ctaInput::placeholder {
+  color: #857B6B !important;
+}
+
+[data-theme="dark"] .ctaInput:focus {
+  border-color: #FBBC00 !important;
+  box-shadow: 0 0 0 3px rgba(251, 188, 0, 0.1) !important;
+}
+
+[data-theme="dark"] .ctaButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(251, 188, 0, 0.15) !important;
+}
+
+[data-theme="dark"] .ctaButton:hover {
+  background: #E2A900 !important;
+  box-shadow: 0 8px 30px rgba(251, 188, 0, 0.25) !important;
+}
+
+[data-theme="dark"] .ctaNote {
+  color: #857B6B !important;
+}
+
+/* ==================== CTA ACCENT COLOR OVERRIDES ==================== */
+/* When accent color is NOT default amber in dark mode */
+[data-theme="dark"] .page:not(.default-accent) .ctaSection {
+  background: #111117 !important;
+}
+
+[data-theme="dark"] .page:not(.default-accent) .ctaSection::before {
+  background: radial-gradient(ellipse at 50% 50%, rgba(var(--accent-rgb), 0.03) 0%, transparent 60%) !important;
+}
+
+[data-theme="dark"] .page:not(.default-accent) .ctaInput:focus {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.1) !important;
+}
+
+[data-theme="dark"] .page:not(.default-accent) .ctaButton {
+  background: var(--accent-color) !important;
+  color: #000000 !important;
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.15) !important;
+}
+
+[data-theme="dark"] .page:not(.default-accent) .ctaButton:hover {
+  background: var(--accent-color) !important;
+  opacity: 0.85;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.25) !important;
 }

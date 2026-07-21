@@ -1,10 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Home.module.css';
 // Import images
 import snoozeImage from '../../assets/Images/The-Snooze-Button-Testt-Spotting-the-Decisions-You-Keep-Deferring.jpg';
 import splitImage from '../../assets/Images/Image3.png';
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 function useReveal() {
   const ref = useRef(null);
@@ -38,6 +56,7 @@ function CheckIcon() {
 export default function HomePage() {
   const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const r1 = useReveal();
   const r2 = useReveal();
   const r3 = useReveal();
@@ -51,6 +70,12 @@ export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
+
+  // Determine if we should use accent color for elements
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
+  // Get accent color RGB
+  const accentRgb = hexToRgb(accentColor);
 
   useEffect(() => {
     // Check authentication status from localStorage
@@ -124,14 +149,58 @@ export default function HomePage() {
   };
 
   return (
-    <div className={styles.page}>
+    <div 
+      className={styles.page}
+      style={{
+        '--accent-color': accentColor,
+        '--accent-rgb': accentRgb,
+      }}
+    >
       {/* Background Decorations */}
       <div className={styles["home-bg"]}>
-        <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-orb"]} />
-        <div className={styles["home-bg-grid"]} />
-        <div className={styles["home-bg-glow"]} />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.12) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.08) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-orb"]}
+          style={{
+            background: shouldUseAccent ? `radial-gradient(circle, rgba(${accentRgb}, 0.06) 0%, rgba(${accentRgb}, 0) 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-grid"]}
+          style={{
+            backgroundImage: shouldUseAccent ? 
+              `linear-gradient(rgba(${accentRgb}, 0.03) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(${accentRgb}, 0.03) 1px, transparent 1px)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-glow"]}
+          style={{
+            background: shouldUseAccent ? 
+              `radial-gradient(circle, rgba(${accentRgb}, 0.08) 0%, transparent 70%)` : undefined,
+          }}
+        />
+        <div 
+          className={styles["home-bg-ambient"]}
+          style={{
+            background: shouldUseAccent ? 
+              `radial-gradient(ellipse at 20% 50%, rgba(${accentRgb}, 0.06) 0%, transparent 50%),
+               radial-gradient(ellipse at 80% 50%, rgba(${accentRgb}, 0.04) 0%, transparent 50%),
+               radial-gradient(ellipse at 50% 0%, rgba(${accentRgb}, 0.03) 0%, transparent 30%)` : undefined,
+            display: shouldUseAccent ? 'block' : 'none',
+          }}
+        />
       </div>
 
       {/* Navbar */}
@@ -205,14 +274,26 @@ export default function HomePage() {
               <div 
                 className={styles.avatar}
                 onClick={handleAvatarClick}
-                style={{ cursor: 'pointer' }}
+                style={{ 
+                  cursor: 'pointer',
+                  background: shouldUseAccent ? accentColor : undefined,
+                  color: shouldUseAccent ? '#000000' : undefined,
+                }}
               >
                 {getInitials(userName)}
               </div>
               {showDropdown && (
                 <div className={styles.dropdownMenu}>
                   <div className={styles.dropdownHeader}>
-                    <div className={styles.dropdownAvatar}>{getInitials(userName)}</div>
+                    <div 
+                      className={styles.dropdownAvatar}
+                      style={{
+                        background: shouldUseAccent ? accentColor : undefined,
+                        color: shouldUseAccent ? '#000000' : undefined,
+                      }}
+                    >
+                      {getInitials(userName)}
+                    </div>
                     <div className={styles.dropdownUserInfo}>
                       <span className={styles.dropdownUserName}>{userName}</span>
                       <span className={styles.dropdownUserEmail}>{userEmail}</span>
@@ -287,6 +368,10 @@ export default function HomePage() {
               </button>
               <button 
                 className={styles.signupBtn}
+                style={{
+                  background: shouldUseAccent ? accentColor : undefined,
+                  color: shouldUseAccent ? '#000000' : undefined,
+                }}
                 onClick={() => handleNavigate('/signup')}
               >
                 Sign Up
@@ -413,6 +498,10 @@ export default function HomePage() {
               <a 
                 href="#"
                 className={`${styles.mobileNavLink} ${styles.mobileNavLinkSignup}`}
+                style={{
+                  background: shouldUseAccent ? accentColor : undefined,
+                  color: shouldUseAccent ? '#000000' : undefined,
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                   handleNavigate('/signup');
@@ -429,13 +518,31 @@ export default function HomePage() {
       <section className={styles.hero}>
         <div className={styles.badgeWrap}>
           <span className={styles.ritualRing} aria-hidden="true" />
-          <span className={styles.badge}>
-            <span className={styles.badgeDot} />
+          <span 
+            className={styles.badge}
+            style={{
+              color: shouldUseAccent ? accentColor : undefined,
+              borderColor: shouldUseAccent ? accentColor : undefined,
+            }}
+          >
+            <span 
+              className={styles.badgeDot}
+              style={{
+                background: shouldUseAccent ? accentColor : undefined,
+              }}
+            />
             {isDarkMode ? 'NOCTURNAL ROAST V2.0' : 'NOW BREWING V2.0'}
           </span>
         </div>
         <h1 className={styles.heroTitle}>
-          Brew Your <span className={styles.heroAccent}>Best Work</span>
+          Brew Your <span 
+            className={styles.heroAccent}
+            style={{
+              color: shouldUseAccent ? accentColor : undefined,
+            }}
+          >
+            Best Work
+          </span>
         </h1>
         <p className={styles.heroSubtitle}>
           The premium task management ritual for professionals who value
@@ -445,12 +552,31 @@ export default function HomePage() {
         <div className={styles.heroActions}>
           <button 
             className={styles.primaryBtn}
+            style={{
+              background: shouldUseAccent ? accentColor : undefined,
+              color: shouldUseAccent ? '#000000' : undefined,
+              boxShadow: shouldUseAccent ? `0 4px 20px rgba(${accentRgb}, 0.15)` : undefined,
+            }}
+            onMouseEnter={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.boxShadow = `0 8px 30px rgba(${accentRgb}, 0.25)`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.boxShadow = `0 4px 20px rgba(${accentRgb}, 0.15)`;
+              }
+            }}
             onClick={handleStartBrewing}
           >
             {isAuthenticated ? 'Go to Dashboard' : 'Start Brewing Free'}
           </button>
           <button 
             className={styles.secondaryBtn}
+            style={{
+              borderColor: shouldUseAccent ? accentColor : undefined,
+              color: shouldUseAccent ? accentColor : undefined,
+            }}
             onClick={() => navigate('/demo')}
           >
             View Demo
@@ -468,7 +594,9 @@ export default function HomePage() {
       {/* Features intro */}
       <section className={styles.features}>
         <div ref={r1} className={styles.reveal}>
-          <h2 className={styles.featuresTitle}>Crafted for Clarity</h2>
+          <h2 className={styles.featuresTitle}>
+            Crafted for Clarity
+          </h2>
           <p className={styles.featuresSubtitle}>
             Every feature is designed to reduce cognitive load and help you enter a
             state of flow.
@@ -478,7 +606,9 @@ export default function HomePage() {
         <div ref={r2} className={`${styles.bentoGrid} ${styles.reveal}`}>
           <div className={styles.bentoCardLight}>
             <div className={styles.bentoIcon}>☕</div>
-            <h3 className={styles.bentoTitle}>Coffee-Powered Focus</h3>
+            <h3 className={styles.bentoTitle}>
+              Coffee-Powered Focus
+            </h3>
             <p className={styles.bentoText}>
               Integrate your deep work sessions with Pomodoro-style
               timers tuned to the perfect brew cycle. Sync your
@@ -496,7 +626,9 @@ export default function HomePage() {
           <div className={styles.bentoRight}>
             <div className={styles.bentoCardDark}>
               <div className={styles.bentoIcon}>📑</div>
-              <h3 className={styles.bentoTitleLight}>Ritual Tracking</h3>
+              <h3 className={styles.bentoTitleLight}>
+                Ritual Tracking
+              </h3>
               <p className={styles.bentoTextLight}>
                 Build lasting habits with recurring task
                 templates designed for creative workflows.
@@ -508,7 +640,9 @@ export default function HomePage() {
 
             <div className={styles.bentoCardGray}>
               <div className={styles.bentoIcon}>🎨</div>
-              <h3 className={styles.bentoTitle}>Seamless Collaboration</h3>
+              <h3 className={styles.bentoTitle}>
+                Seamless Collaboration
+              </h3>
               <p className={styles.bentoText}>
                 Shared workspaces that feel like a quiet
                 library, not a noisy chat room.
@@ -534,8 +668,17 @@ export default function HomePage() {
           />
         </div>
         <div className={styles.splitContent}>
-          <span className={styles.eyebrow}>THE AESTHETIC OF WORK</span>
-          <h2 className={styles.splitTitle}>A Workspace That Respects Your Mind</h2>
+          <span 
+            className={styles.eyebrow}
+            style={{
+              color: shouldUseAccent ? accentColor : undefined,
+            }}
+          >
+            THE AESTHETIC OF WORK
+          </span>
+          <h2 className={styles.splitTitle}>
+            A Workspace That Respects Your Mind
+          </h2>
           <p className={styles.splitText}>
             We believe your tools should be as refined as your ambitions. BrewTask
             removes the jarring alerts and cluttered interfaces of the past, replacing
@@ -543,16 +686,24 @@ export default function HomePage() {
             intentionality.
           </p>
           <ul className={styles.checklist}>
-            <li><CheckIcon /> Custom circular checkmarks for satisfying task completion</li>
-            <li><CheckIcon /> Glassmorphism overlays for deep architectural hierarchy</li>
-            <li><CheckIcon /> Ambient dark mode for midnight oil sessions</li>
+            <li>
+              <CheckIcon /> Custom circular checkmarks for satisfying task completion
+            </li>
+            <li>
+              <CheckIcon /> Glassmorphism overlays for deep architectural hierarchy
+            </li>
+            <li>
+              <CheckIcon /> Ambient dark mode for midnight oil sessions
+            </li>
           </ul>
         </div>
       </section>
 
       {/* CTA */}
       <section ref={r4} className={`${styles.ctaSection} ${styles.reveal}`}>
-        <h2 className={styles.ctaTitle}>Ready to start your ritual?</h2>
+        <h2 className={styles.ctaTitle}>
+          Ready to start your ritual?
+        </h2>
         <p className={styles.ctaSubtitle}>
           Join 50,000+ professionals who have traded chaos for the calm of
           BrewTask.
@@ -561,12 +712,29 @@ export default function HomePage() {
           <input type="email" placeholder="Enter your email" className={styles.ctaInput} />
           <button 
             className={styles.ctaButton}
+            style={{
+              background: shouldUseAccent ? accentColor : undefined,
+              color: shouldUseAccent ? '#000000' : undefined,
+              boxShadow: shouldUseAccent ? `0 4px 20px rgba(${accentRgb}, 0.15)` : undefined,
+            }}
+            onMouseEnter={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.boxShadow = `0 8px 30px rgba(${accentRgb}, 0.25)`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (shouldUseAccent) {
+                e.currentTarget.style.boxShadow = `0 4px 20px rgba(${accentRgb}, 0.15)`;
+              }
+            }}
             onClick={handleStartBrewing}
           >
             {isAuthenticated ? 'Go to Dashboard' : 'Get Started'}
           </button>
         </div>
-        <p className={styles.ctaNote}>No credit card required. Free 14-day trial.</p>
+        <p className={styles.ctaNote}>
+          No credit card required. Free 14-day trial.
+        </p>
       </section>
     </div>
   );
