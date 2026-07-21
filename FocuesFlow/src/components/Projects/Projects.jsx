@@ -734,7 +734,7 @@ const Projects = () => {
                 name="dueDate"
                 value={createForm.dueDate}
                 onChange={handleCreateInputChange}
-                className={`${styles.formInput} ${createErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
+                className={`${styles.formInput} ${createErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""} ${isDarkMode ? styles.darkDateInput : ""}`}
                 min={today}
                 disabled={isSubmitting}
               />
@@ -870,7 +870,7 @@ const Projects = () => {
                 type="date"
                 value={editForm.dueDate}
                 onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
-                className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ""}`}
+                className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ""} ${isDarkMode ? styles.darkDateInput : ""}`}
                 min={today}
               />
             </div>
