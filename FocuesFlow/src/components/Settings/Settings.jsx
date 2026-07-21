@@ -1,4 +1,4 @@
-// Settings.jsx - Updated with full dark mode support
+// Settings.jsx - Updated with system theme support
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -78,7 +78,22 @@ const SettingsRow = ({ label, description, control, isLast, icon: rowIcon, isDar
 const Settings = () => {
   const location = useLocation();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const [themeMode, setThemeMode] = useState(isDarkMode ? 'dark' : 'light');
+  
+  // Check system preference
+  const getSystemPreference = () => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
+  // Get initial theme mode from localStorage or system
+  const getInitialThemeMode = () => {
+    const savedMode = localStorage.getItem('themeMode');
+    if (savedMode) {
+      return savedMode;
+    }
+    return 'system';
+  };
+
+  const [themeMode, setThemeMode] = useState(getInitialThemeMode());
   const [accentColor, setAccentColor] = useState(ACCENT_COLORS[0]);
   const [language, setLanguage] = useState('en-US');
   const [desktopAlerts, setDesktopAlerts] = useState(true);
@@ -107,6 +122,24 @@ const Settings = () => {
   const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
   const sectionRefs = useRef({});
 
+  // Listen for system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemChange = (e) => {
+      if (themeMode === 'system') {
+        const systemPref = e.matches ? 'dark' : 'light';
+        const shouldBeDark = systemPref === 'dark';
+        if (isDarkMode !== shouldBeDark) {
+          toggleDarkMode();
+        }
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleSystemChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemChange);
+  }, [themeMode, isDarkMode, toggleDarkMode]);
+
+  // Apply theme based on mode
   useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash && sectionRefs.current[hash]) {
@@ -119,15 +152,37 @@ const Settings = () => {
     }
   }, [location]);
 
+  // Update theme when mode changes
   useEffect(() => {
-    setThemeMode(isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
+    localStorage.setItem('themeMode', themeMode);
+    
+    if (themeMode === 'system') {
+      const systemPref = getSystemPreference();
+      const shouldBeDark = systemPref === 'dark';
+      if (isDarkMode !== shouldBeDark) {
+        toggleDarkMode();
+      }
+    } else if (themeMode === 'dark') {
+      if (!isDarkMode) {
+        toggleDarkMode();
+      }
+    } else if (themeMode === 'light') {
+      if (isDarkMode) {
+        toggleDarkMode();
+      }
+    }
+  }, [themeMode]);
 
   const handleThemeChange = (mode) => {
     setThemeMode(mode);
-    if ((mode === 'dark' && !isDarkMode) || (mode === 'light' && isDarkMode)) {
-      toggleDarkMode();
+  };
+
+  // Get the actual current mode for display
+  const getCurrentDisplayMode = () => {
+    if (themeMode === 'system') {
+      return getSystemPreference();
     }
+    return themeMode;
   };
 
   const handleDeleteAccount = () => {
@@ -231,6 +286,13 @@ const Settings = () => {
   const handleFontSizeChange = (event, newValue) => {
     setFontSize(newValue);
   };
+  
+  const getActiveTheme = () => {
+    if (themeMode === 'system') {
+      return getSystemPreference();
+    }
+    return themeMode;
+  };
 
   return (
     <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
@@ -252,7 +314,7 @@ const Settings = () => {
 
         {/* Appearance */}
         <div ref={el => sectionRefs.current['appearance'] = el}>
-          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance" isDarkMode={isDarkMode}>
+          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance" isDarkMode={isDarkMode} >
             <SettingsRow
               label="Interface Theme"
               description="Choose your preferred visual style"
@@ -278,7 +340,7 @@ const Settings = () => {
                     onClick={() => handleThemeChange('system')}
                   >
                     <SettingsBrightnessIcon />
-                    System
+                    System {themeMode === 'system' && `(${getSystemPreference()})`}
                   </Box>
                 </Box>
               }
@@ -350,11 +412,7 @@ const Settings = () => {
                   className={`${styles.select} ${isDarkMode ? styles.darkSelect : ''}`}
                 >
                   <MenuItem value="en-US">🇺🇸 English (US)</MenuItem>
-                  <MenuItem value="en-GB">🇬🇧 English (UK)</MenuItem>
                   <MenuItem value="ar-EG">🇪🇬 العربية</MenuItem>
-                  <MenuItem value="fr-FR">🇫🇷 Français</MenuItem>
-                  <MenuItem value="es-ES">🇪🇸 Español</MenuItem>
-                  <MenuItem value="de-DE">🇩🇪 Deutsch</MenuItem>
                 </Select>
               }
             />
