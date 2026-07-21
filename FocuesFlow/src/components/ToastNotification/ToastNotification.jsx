@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './ToastNotification.module.css';
 
 const ToastNotification = ({ type = 'success', message, title, onClose }) => {
+  const { isDarkMode } = useDarkMode();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       if (onClose) onClose();
@@ -32,20 +35,20 @@ const ToastNotification = ({ type = 'success', message, title, onClose }) => {
   };
 
   return (
-    <div className={`${styles.toastContainer} ${styles[type]}`}>
-      <div className={styles.toastIcon}>
+    <div className={`${styles.toastContainer} ${styles[type]} ${isDarkMode ? styles.darkToastContainer : ''}`}>
+      <div className={`${styles.toastIcon} ${isDarkMode ? styles.darkToastIcon : ''}`}>
         {icons[type] || icons.info}
       </div>
-      <div className={styles.toastContent}>
-        {title && <div className={styles.toastTitle}>{title}</div>}
-        <div className={styles.toastMessage}>{message}</div>
+      <div className={`${styles.toastContent} ${isDarkMode ? styles.darkToastContent : ''}`}>
+        {title && <div className={`${styles.toastTitle} ${isDarkMode ? styles.darkToastTitle : ''}`}>{title}</div>}
+        <div className={`${styles.toastMessage} ${isDarkMode ? styles.darkToastMessage : ''}`}>{message}</div>
       </div>
-      <button className={styles.toastClose} onClick={onClose}>
+      <button className={`${styles.toastClose} ${isDarkMode ? styles.darkToastClose : ''}`} onClick={onClose}>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <path d="M18 6L6 18M6 6l12 12" />
         </svg>
       </button>
-      <div className={styles.toastProgress} />
+      <div className={`${styles.toastProgress} ${isDarkMode ? styles.darkToastProgress : ''}`} />
     </div>
   );
 };

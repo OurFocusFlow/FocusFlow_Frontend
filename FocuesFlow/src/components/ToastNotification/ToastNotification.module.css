@@ -229,3 +229,144 @@
     animation: none;
   }
 }
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Toast Container Dark Mode */
+.darkToastContainer {
+  background: rgba(3, 2, 2, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid #383B40 !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Success Dark Mode */
+.darkToastContainer.success {
+  border-left: 4px solid #10b981 !important;
+}
+
+.darkToastContainer.success .darkToastIcon {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkToastContainer.success .darkToastTitle {
+  color: #34d399 !important;
+}
+
+.darkToastContainer.success .darkToastProgress {
+  background: linear-gradient(90deg, #10b981, #34d399) !important;
+}
+
+/* Error Dark Mode */
+.darkToastContainer.error {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.darkToastContainer.error .darkToastIcon {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: #ef4444 !important;
+}
+
+.darkToastContainer.error .darkToastTitle {
+  color: #ef4444 !important;
+}
+
+.darkToastContainer.error .darkToastProgress {
+  background: linear-gradient(90deg, #ef4444, #f87171) !important;
+}
+
+/* Info Dark Mode */
+.darkToastContainer.info {
+  border-left: 4px solid #3b82f6 !important;
+}
+
+.darkToastContainer.info .darkToastIcon {
+  background: rgba(59, 130, 246, 0.15) !important;
+  color: #60a5fa !important;
+}
+
+.darkToastContainer.info .darkToastTitle {
+  color: #60a5fa !important;
+}
+
+.darkToastContainer.info .darkToastProgress {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+}
+
+/* Toast Icon Dark Mode */
+.darkToastIcon {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #6A6255 !important;
+}
+
+/* Toast Content Dark Mode */
+.darkToastContent {
+  color: #FFFFFF !important;
+}
+
+.darkToastTitle {
+  color: #FFFFFF !important;
+}
+
+.darkToastMessage {
+  color: #6A6255 !important;
+}
+
+/* Toast Close Button Dark Mode */
+.darkToastClose {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #6A6255 !important;
+}
+
+.darkToastClose:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+  transform: rotate(90deg) !important;
+}
+
+/* Toast Progress Dark Mode */
+.darkToastProgress {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Dark Mode for specific types (override for success/error/info) */
+.darkToastContainer.success .darkToastProgress {
+  background: linear-gradient(90deg, #10b981, #34d399) !important;
+}
+
+.darkToastContainer.error .darkToastProgress {
+  background: linear-gradient(90deg, #ef4444, #f87171) !important;
+}
+
+.darkToastContainer.info .darkToastProgress {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 600px) {
+  .darkToastContainer {
+    border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .darkToastContainer {
+    border-radius: 12px !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkToastContainer {
+    animation: none !important;
+  }
+  
+  .darkToastProgress {
+    animation: none !important;
+  }
+  
+  .darkToastClose:hover {
+    transform: none !important;
+  }
+}
