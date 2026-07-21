@@ -1401,3 +1401,518 @@
     transition: none !important;
   }
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkSettingsBg {
+  background: #000000 !important;
+}
+
+.darkSettingsBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkSettingsBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Page Header Dark Mode */
+.darkPageTitle {
+  color: #FFFFFF !important;
+}
+
+.darkPageSubtitle {
+  color: #6A6255 !important;
+}
+
+/* Section Dark Mode */
+.darkSection {
+  margin-bottom: 32px !important;
+}
+
+.darkSectionHeader {
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.darkSectionIcon {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkSectionTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSectionCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkSectionCard:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Row Dark Mode */
+.darkRow {
+  padding: 20px 28px !important;
+  gap: 20px !important;
+}
+
+.darkRow:hover {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.darkRow.rowDivider {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkRowIcon {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #6A6255 !important;
+}
+
+.darkRowLabel {
+  color: #FFFFFF !important;
+}
+
+.darkRowDescription {
+  color: #6A6255 !important;
+}
+
+/* Theme Toggle Dark Mode */
+.darkThemeToggle {
+  background: #0D0D0D !important;
+}
+
+.darkThemeOption {
+  color: #6A6255 !important;
+}
+
+.darkThemeOption:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkThemeOption.themeOptionActive {
+  background: #1A1A1A !important;
+  color: #FBBC00 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.darkThemeOption.themeOptionActive:hover {
+  color: #FBBC00 !important;
+  background: #1A1A1A !important;
+}
+
+/* Swatch Dark Mode */
+.darkSwatch {
+  border-color: transparent !important;
+}
+
+.darkSwatch.swatchActive {
+  border-color: #FBBC00 !important;
+  outline-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+/* Font Size Dark Mode */
+.darkFontSizeLabel {
+  color: #FFFFFF !important;
+}
+
+.darkFontSizeSlider {
+  color: #FBBC00 !important;
+}
+
+/* Select Dark Mode */
+.darkSelect {
+  background: #0D0D0D !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root) {
+  background: #0D0D0D !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
+  border-color: #383B40 !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
+  border-color: #FBBC00 !important;
+}
+
+.darkSelect :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
+  border-color: #FBBC00 !important;
+}
+
+.darkSelect :global(.MuiSelect-select) {
+  color: #FFFFFF !important;
+}
+
+.darkSelect :global(.MuiMenu-paper) {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkSelect :global(.MuiMenuItem-root) {
+  color: #FFFFFF !important;
+}
+
+.darkSelect :global(.MuiMenuItem-root:hover) {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkSelect :global(.MuiMenuItem-root.Mui-selected) {
+  background: rgba(251, 188, 0, 0.12) !important;
+}
+
+/* Buttons Dark Mode */
+.darkButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkButton:hover {
+  background: #E2A900 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(251, 188, 0, 0.3) !important;
+}
+
+.darkButton svg {
+  color: #000000 !important;
+}
+
+/* Danger Zone Dark Mode */
+.darkDangerSection {
+  margin-top: 12px !important;
+}
+
+.darkDangerIcon {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #ef4444 !important;
+}
+
+.darkDangerTitle {
+  color: #ef4444 !important;
+}
+
+.darkDangerCard {
+  background: rgba(239, 68, 68, 0.04) !important;
+  border: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+.darkDangerCard:hover {
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.05) !important;
+}
+
+.darkDangerIconWrapper {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #ef4444 !important;
+}
+
+.darkDangerLabel {
+  color: #ef4444 !important;
+}
+
+.darkDangerDescription {
+  color: #6A6255 !important;
+}
+
+.darkDeleteButton {
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteButton:hover {
+  background: #dc2626 !important;
+}
+
+/* Save Section Dark Mode */
+.darkSaveSection {
+  border-top-color: #383B40 !important;
+}
+
+/* Delete Modal Dark Mode */
+.darkDeleteModalBackdrop {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.darkDeleteModalContent {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkDeleteModalHeader {
+  gap: 12px !important;
+  margin-bottom: 16px !important;
+}
+
+.darkDeleteModalIconWrapper {
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+.darkDeleteModalIcon {
+  color: #ef4444 !important;
+}
+
+.darkDeleteModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkDeleteModalClose {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteModalClose:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteModalText {
+  color: #6A6255 !important;
+}
+
+.darkDeleteModalText strong {
+  color: #ef4444 !important;
+}
+
+.darkDeleteModalCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkDeleteModalCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteModalConfirm {
+  background: #ef4444 !important;
+  color: #FFFFFF !important;
+}
+
+.darkDeleteModalConfirm:hover {
+  background: #dc2626 !important;
+}
+
+/* Password Modal Dark Mode */
+.darkPasswordModalBackdrop {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.darkPasswordModalContent {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkPasswordModalHeader {
+  gap: 12px !important;
+  margin-bottom: 24px !important;
+}
+
+.darkPasswordModalIconWrapper {
+  background: rgba(251, 188, 0, 0.12) !important;
+}
+
+.darkPasswordModalIcon {
+  color: #FBBC00 !important;
+}
+
+.darkPasswordModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkPasswordModalClose {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #6A6255 !important;
+}
+
+.darkPasswordModalClose:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+
+.darkPasswordModalBody {
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.darkPasswordField {
+  gap: 4px !important;
+}
+
+.darkPasswordLabel {
+  color: #6A6255 !important;
+}
+
+.darkPasswordInputWrap {
+  background: #0D0D0D !important;
+  border: 1px solid #383B40 !important;
+  border-radius: 10px !important;
+}
+
+.darkPasswordInputWrap:focus-within {
+  border-color: #FBBC00 !important;
+  box-shadow: 0 0 0 3px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkPasswordInput {
+  background: #0D0D0D !important;
+  color: #FFFFFF !important;
+  border: none !important;
+}
+
+.darkPasswordInput:focus {
+  border: none !important;
+  background: #0D0D0D !important;
+}
+
+.darkPasswordInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkPasswordInputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.darkPasswordEyeBtn {
+  color: #6A6255 !important;
+}
+
+.darkPasswordEyeBtn:hover {
+  color: #FFFFFF !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.darkPasswordEyeIcon {
+  color: #6A6255 !important;
+}
+
+.darkPasswordError {
+  color: #ef4444 !important;
+}
+
+.darkPasswordModalActions {
+  gap: 12px !important;
+}
+
+.darkPasswordModalCancel {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkPasswordModalCancel:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkPasswordModalConfirm {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkPasswordModalConfirm:hover {
+  background: #E2A900 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkRow {
+    padding: 18px 20px !important;
+  }
+  
+  .darkThemeToggle {
+    width: 100% !important;
+  }
+  
+  .darkThemeOption {
+    font-size: 13px !important;
+    padding: 8px 12px !important;
+  }
+  
+  .darkDangerCard {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  
+  .darkDeleteButton {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkRow {
+    padding: 14px 16px !important;
+  }
+  
+  .darkRowLabel {
+    font-size: 15px !important;
+  }
+  
+  .darkRowDescription {
+    font-size: 13px !important;
+  }
+  
+  .darkThemeOption {
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+  }
+  
+  .darkSectionTitle {
+    font-size: 18px !important;
+  }
+  
+  .darkDangerCard {
+    padding: 16px 18px !important;
+  }
+  
+  .darkDeleteButton {
+    padding: 10px 20px !important;
+    font-size: 13px !important;
+  }
+  
+  .darkDeleteModalContent {
+    padding: 24px 20px !important;
+  }
+  
+  .darkPasswordModalContent {
+    padding: 24px 20px !important;
+  }
+  
+  .darkDeleteModalActions {
+    flex-direction: column !important;
+  }
+  
+  .darkPasswordModalActions {
+    flex-direction: column !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkPage,
+  .darkSectionCard,
+  .darkRow {
+    transition: none !important;
+  }
+  
+  .darkButton:hover,
+  .darkDeleteButton:hover,
+  .darkPasswordModalConfirm:hover {
+    transform: none !important;
+  }
+}

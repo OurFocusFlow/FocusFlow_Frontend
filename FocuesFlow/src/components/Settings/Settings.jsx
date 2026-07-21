@@ -1,4 +1,4 @@
-// Settings.jsx - Updated with dark mode support
+// Settings.jsx - Updated with full dark mode support
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -52,23 +52,23 @@ const CustomSwitch = ({
   );
 };
 
-const SettingsSection = ({ id, icon, title, children }) => (
-  <Box id={id} className={styles.section}>
-    <Box className={styles.sectionHeader}>
-      <Box className={styles.sectionIcon}>{icon}</Box>
-      <Typography className={styles.sectionTitle}>{title}</Typography>
+const SettingsSection = ({ id, icon, title, children, isDarkMode }) => (
+  <Box id={id} className={`${styles.section} ${isDarkMode ? styles.darkSection : ''}`}>
+    <Box className={`${styles.sectionHeader} ${isDarkMode ? styles.darkSectionHeader : ''}`}>
+      <Box className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`}>{icon}</Box>
+      <Typography className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>{title}</Typography>
     </Box>
-    <Box className={styles.sectionCard}>{children}</Box>
+    <Box className={`${styles.sectionCard} ${isDarkMode ? styles.darkSectionCard : ''}`}>{children}</Box>
   </Box>
 );
 
-const SettingsRow = ({ label, description, control, isLast, icon: rowIcon }) => (
-  <Box className={`${styles.row} ${isLast ? '' : styles.rowDivider}`}>
+const SettingsRow = ({ label, description, control, isLast, icon: rowIcon, isDarkMode }) => (
+  <Box className={`${styles.row} ${isLast ? '' : styles.rowDivider} ${isDarkMode ? styles.darkRow : ''}`}>
     <Box className={styles.rowLeft}>
-      {rowIcon && <Box className={styles.rowIcon}>{rowIcon}</Box>}
+      {rowIcon && <Box className={`${styles.rowIcon} ${isDarkMode ? styles.darkRowIcon : ''}`}>{rowIcon}</Box>}
       <Box>
-        <Typography className={styles.rowLabel}>{label}</Typography>
-        <Typography className={styles.rowDescription}>{description}</Typography>
+        <Typography className={`${styles.rowLabel} ${isDarkMode ? styles.darkRowLabel : ''}`}>{label}</Typography>
+        <Typography className={`${styles.rowDescription} ${isDarkMode ? styles.darkRowDescription : ''}`}>{description}</Typography>
       </Box>
     </Box>
     <Box className={styles.rowControl}>{control}</Box>
@@ -119,7 +119,6 @@ const Settings = () => {
     }
   }, [location]);
 
-  // Update themeMode when isDarkMode changes
   useEffect(() => {
     setThemeMode(isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
@@ -234,47 +233,48 @@ const Settings = () => {
   };
 
   return (
-    <Box className={styles.page}>
+    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
       {/* Background Decorations */}
-      <div className={styles["settings-bg"]}>
+      <div className={`${styles["settings-bg"]} ${isDarkMode ? styles.darkSettingsBg : ''}`}>
         <div className={styles["settings-bg-orb"]} />
         <div className={styles["settings-bg-orb"]} />
         <div className={styles["settings-bg-orb"]} />
-        <div className={styles["settings-bg-grid"]} />
-        <div className={styles["settings-bg-glow"]} />
+        <div className={`${styles["settings-bg-grid"]} ${isDarkMode ? styles.darkSettingsBgGrid : ''}`} />
+        <div className={`${styles["settings-bg-glow"]} ${isDarkMode ? styles.darkSettingsBgGlow : ''}`} />
       </div>
 
-      <Box className={styles.pageInner}>
+      <Box className={`${styles.pageInner} ${isDarkMode ? styles.darkPageInner : ''}`}>
         {/* Page Header */}
-        <Box className={styles.pageHeader}>
-          <Typography className={styles.pageTitle}>Settings</Typography>
-          <Typography className={styles.pageSubtitle}>Customize your BrewTask experience</Typography>
+        <Box className={`${styles.pageHeader} ${isDarkMode ? styles.darkPageHeader : ''}`}>
+          <Typography className={`${styles.pageTitle} ${isDarkMode ? styles.darkPageTitle : ''}`}>Settings</Typography>
+          <Typography className={`${styles.pageSubtitle} ${isDarkMode ? styles.darkPageSubtitle : ''}`}>Customize your BrewTask experience</Typography>
         </Box>
 
         {/* Appearance */}
         <div ref={el => sectionRefs.current['appearance'] = el}>
-          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance">
+          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance" isDarkMode={isDarkMode}>
             <SettingsRow
               label="Interface Theme"
               description="Choose your preferred visual style"
+              isDarkMode={isDarkMode}
               control={
-                <Box className={styles.themeToggle}>
+                <Box className={`${styles.themeToggle} ${isDarkMode ? styles.darkThemeToggle : ''}`}>
                   <Box
-                    className={`${styles.themeOption} ${themeMode === 'light' ? styles.themeOptionActive : ''}`}
+                    className={`${styles.themeOption} ${themeMode === 'light' ? styles.themeOptionActive : ''} ${isDarkMode ? styles.darkThemeOption : ''}`}
                     onClick={() => handleThemeChange('light')}
                   >
                     <LightModeIcon />
                     Light
                   </Box>
                   <Box
-                    className={`${styles.themeOption} ${themeMode === 'dark' ? styles.themeOptionActive : ''}`}
+                    className={`${styles.themeOption} ${themeMode === 'dark' ? styles.themeOptionActive : ''} ${isDarkMode ? styles.darkThemeOption : ''}`}
                     onClick={() => handleThemeChange('dark')}
                   >
                     <DarkModeIcon />
                     Dark
                   </Box>
                   <Box
-                    className={`${styles.themeOption} ${themeMode === 'system' ? styles.themeOptionActive : ''}`}
+                    className={`${styles.themeOption} ${themeMode === 'system' ? styles.themeOptionActive : ''} ${isDarkMode ? styles.darkThemeOption : ''}`}
                     onClick={() => handleThemeChange('system')}
                   >
                     <SettingsBrightnessIcon />
@@ -286,12 +286,13 @@ const Settings = () => {
             <SettingsRow
               label="Accent Color"
               description="Select your primary focus highlight color"
+              isDarkMode={isDarkMode}
               control={
                 <Box className={styles.swatchRow}>
                   {ACCENT_COLORS.map((color) => (
                     <Box
                       key={color}
-                      className={`${styles.swatch} ${accentColor === color ? styles.swatchActive : ''}`}
+                      className={`${styles.swatch} ${accentColor === color ? styles.swatchActive : ''} ${isDarkMode ? styles.darkSwatch : ''}`}
                       style={{ backgroundColor: color }}
                       onClick={() => setAccentColor(color)}
                     />
@@ -303,16 +304,17 @@ const Settings = () => {
               isLast
               label="Font Size"
               description="Adjust the interface text size"
+              isDarkMode={isDarkMode}
               control={
-                <Box className={styles.fontSizeControl}>
-                  <Typography className={styles.fontSizeLabel}>{fontSize}px</Typography>
+                <Box className={`${styles.fontSizeControl} ${isDarkMode ? styles.darkFontSizeControl : ''}`}>
+                  <Typography className={`${styles.fontSizeLabel} ${isDarkMode ? styles.darkFontSizeLabel : ''}`}>{fontSize}px</Typography>
                   <Slider
                     value={fontSize}
                     onChange={handleFontSizeChange}
                     min={12}
                     max={24}
                     step={1}
-                    className={styles.fontSizeSlider}
+                    className={`${styles.fontSizeSlider} ${isDarkMode ? styles.darkFontSizeSlider : ''}`}
                     sx={{
                       color: isDarkMode ? '#FBBC00' : '#885210',
                       '& .MuiSlider-thumb': {
@@ -334,17 +336,18 @@ const Settings = () => {
 
         {/* Language & Region */}
         <div ref={el => sectionRefs.current['language'] = el}>
-          <SettingsSection id="language" icon={<LanguageIcon />} title="Language & Region">
+          <SettingsSection id="language" icon={<LanguageIcon />} title="Language & Region" isDarkMode={isDarkMode}>
             <SettingsRow
               isLast
               label="Display Language"
               description="Preferred language for the BrewTask interface"
+              isDarkMode={isDarkMode}
               control={
                 <Select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
                   size="small"
-                  className={styles.select}
+                  className={`${styles.select} ${isDarkMode ? styles.darkSelect : ''}`}
                 >
                   <MenuItem value="en-US">🇺🇸 English (US)</MenuItem>
                   <MenuItem value="en-GB">🇬🇧 English (UK)</MenuItem>
@@ -360,10 +363,11 @@ const Settings = () => {
 
         {/* Notifications */}
         <div ref={el => sectionRefs.current['notifications'] = el}>
-          <SettingsSection id="notifications" icon={<NotificationsIcon />} title="Notifications">
+          <SettingsSection id="notifications" icon={<NotificationsIcon />} title="Notifications" isDarkMode={isDarkMode}>
             <SettingsRow
               label="Desktop Alerts"
               description="Show browser notifications for task reminders"
+              isDarkMode={isDarkMode}
               control={
                 <CustomSwitch
                   checked={desktopAlerts}
@@ -374,6 +378,7 @@ const Settings = () => {
             <SettingsRow
               label="Email Notifications"
               description="Receive email updates about your tasks"
+              isDarkMode={isDarkMode}
               control={
                 <CustomSwitch
                   checked={emailNotifications}
@@ -384,6 +389,7 @@ const Settings = () => {
             <SettingsRow
               label="Sound Effects"
               description="Play sounds for task completions and reminders"
+              isDarkMode={isDarkMode}
               control={
                 <CustomSwitch
                   checked={soundEffects}
@@ -395,6 +401,7 @@ const Settings = () => {
               isLast
               label="Daily Summary"
               description="Receive a morning digest of your upcoming tasks"
+              isDarkMode={isDarkMode}
               control={
                 <CustomSwitch
                   checked={dailySummary}
@@ -407,13 +414,14 @@ const Settings = () => {
 
         {/* Security */}
         <div ref={el => sectionRefs.current['security'] = el}>
-          <SettingsSection id="security" icon={<ShieldIcon />} title="Security">
+          <SettingsSection id="security" icon={<ShieldIcon />} title="Security" isDarkMode={isDarkMode}>
             <SettingsRow
               label="Change Password"
               description="Update your account password for better security"
+              isDarkMode={isDarkMode}
               control={
                 <Button 
-                  className={isDarkMode ? styles.darkButton : styles.primaryButton} 
+                  className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`} 
                   onClick={handleOpenPasswordModal}
                 >
                   <SecurityIcon />
@@ -425,8 +433,9 @@ const Settings = () => {
               isLast
               label="Two-Factor Authentication"
               description="Add an extra layer of protection to your account"
+              isDarkMode={isDarkMode}
               control={
-                <Button className={isDarkMode ? styles.darkButton : styles.primaryButton}>
+                <Button className={`${isDarkMode ? styles.darkButton : styles.primaryButton}`}>
                   Enable 2FA
                 </Button>
               }
@@ -436,16 +445,17 @@ const Settings = () => {
 
         {/* Privacy */}
         <div ref={el => sectionRefs.current['privacy'] = el}>
-          <SettingsSection id="privacy" icon={<VisibilityIcon />} title="Privacy">
+          <SettingsSection id="privacy" icon={<VisibilityIcon />} title="Privacy" isDarkMode={isDarkMode}>
             <SettingsRow
               label="Profile Visibility"
               description="Control who can see your profile information"
+              isDarkMode={isDarkMode}
               control={
                 <Select
                   value={profileVisibility}
                   onChange={(e) => setProfileVisibility(e.target.value)}
                   size="small"
-                  className={styles.select}
+                  className={`${styles.select} ${isDarkMode ? styles.darkSelect : ''}`}
                 >
                   <MenuItem value="public">🌍 Public</MenuItem>
                   <MenuItem value="private">🔒 Private</MenuItem>
@@ -457,6 +467,7 @@ const Settings = () => {
               isLast
               label="Activity Status"
               description="Show when you're active to team members"
+              isDarkMode={isDarkMode}
               control={
                 <CustomSwitch
                   checked={activityStatus}
@@ -469,25 +480,25 @@ const Settings = () => {
 
         {/* Danger Zone */}
         <div ref={el => sectionRefs.current['danger'] = el}>
-          <Box className={styles.dangerSection}>
-            <Box className={styles.sectionHeader}>
-              <Box className={styles.dangerIcon}><WarningIcon /></Box>
-              <Typography className={styles.dangerTitle}>Danger Zone</Typography>
+          <Box className={`${styles.dangerSection} ${isDarkMode ? styles.darkDangerSection : ''}`}>
+            <Box className={`${styles.sectionHeader} ${isDarkMode ? styles.darkSectionHeader : ''}`}>
+              <Box className={`${styles.dangerIcon} ${isDarkMode ? styles.darkDangerIcon : ''}`}><WarningIcon /></Box>
+              <Typography className={`${styles.dangerTitle} ${isDarkMode ? styles.darkDangerTitle : ''}`}>Danger Zone</Typography>
             </Box>
-            <Box className={styles.dangerCard}>
+            <Box className={`${styles.dangerCard} ${isDarkMode ? styles.darkDangerCard : ''}`}>
               <Box className={styles.dangerContent}>
-                <Box className={styles.dangerIconWrapper}>
+                <Box className={`${styles.dangerIconWrapper} ${isDarkMode ? styles.darkDangerIconWrapper : ''}`}>
                   <DeleteForeverIcon />
                 </Box>
                 <Box>
-                  <Typography className={styles.dangerLabel}>Delete Account</Typography>
-                  <Typography className={styles.dangerDescription}>
+                  <Typography className={`${styles.dangerLabel} ${isDarkMode ? styles.darkDangerLabel : ''}`}>Delete Account</Typography>
+                  <Typography className={`${styles.dangerDescription} ${isDarkMode ? styles.darkDangerDescription : ''}`}>
                     Permanently erase all your data and task history. This action cannot be undone.
                   </Typography>
                 </Box>
               </Box>
               <Button 
-                className={styles.deleteButton}
+                className={`${styles.deleteButton} ${isDarkMode ? styles.darkDeleteButton : ''}`}
                 onClick={handleOpenDeleteModal}
                 disabled={isDeleting}
               >
@@ -498,8 +509,8 @@ const Settings = () => {
         </div>
 
         {/* Save Button */}
-        <Box className={styles.saveSection}>
-          <Button className={isDarkMode ? styles.darkButton : styles.saveButton}>
+        <Box className={`${styles.saveSection} ${isDarkMode ? styles.darkSaveSection : ''}`}>
+          <Button className={`${isDarkMode ? styles.darkButton : styles.saveButton}`}>
             <CheckCircleIcon />
             Save Changes
           </Button>
@@ -510,20 +521,20 @@ const Settings = () => {
       <Modal
         open={deleteModalOpen}
         onClose={handleCloseDeleteModal}
-        className={styles.deleteModal}
+        className={`${styles.deleteModal} ${isDarkMode ? styles.darkDeleteModal : ''}`}
         closeAfterTransition
         BackdropProps={{
-          className: styles.deleteModalBackdrop,
+          className: `${styles.deleteModalBackdrop} ${isDarkMode ? styles.darkDeleteModalBackdrop : ''}`,
         }}
       >
-        <Box className={styles.deleteModalContent}>
-          <Box className={styles.deleteModalHeader}>
-            <Box className={styles.deleteModalIconWrapper}>
-              <WarningIcon className={styles.deleteModalIcon} />
+        <Box className={`${styles.deleteModalContent} ${isDarkMode ? styles.darkDeleteModalContent : ''}`}>
+          <Box className={`${styles.deleteModalHeader} ${isDarkMode ? styles.darkDeleteModalHeader : ''}`}>
+            <Box className={`${styles.deleteModalIconWrapper} ${isDarkMode ? styles.darkDeleteModalIconWrapper : ''}`}>
+              <WarningIcon className={`${styles.deleteModalIcon} ${isDarkMode ? styles.darkDeleteModalIcon : ''}`} />
             </Box>
-            <Typography className={styles.deleteModalTitle}>Delete Account?</Typography>
+            <Typography className={`${styles.deleteModalTitle} ${isDarkMode ? styles.darkDeleteModalTitle : ''}`}>Delete Account?</Typography>
             <button 
-              className={styles.deleteModalClose} 
+              className={`${styles.deleteModalClose} ${isDarkMode ? styles.darkDeleteModalClose : ''}`} 
               onClick={handleCloseDeleteModal}
               aria-label="Close modal"
             >
@@ -531,19 +542,19 @@ const Settings = () => {
             </button>
           </Box>
 
-          <Typography className={styles.deleteModalText}>
+          <Typography className={`${styles.deleteModalText} ${isDarkMode ? styles.darkDeleteModalText : ''}`}>
             This action <strong>cannot be undone</strong>. All your data, tasks, projects, and history will be permanently erased.
           </Typography>
 
           <Box className={styles.deleteModalActions}>
             <Button 
-              className={styles.deleteModalCancel} 
+              className={`${styles.deleteModalCancel} ${isDarkMode ? styles.darkDeleteModalCancel : ''}`} 
               onClick={handleCloseDeleteModal}
             >
               Cancel
             </Button>
             <Button 
-              className={styles.deleteModalConfirm}
+              className={`${styles.deleteModalConfirm} ${isDarkMode ? styles.darkDeleteModalConfirm : ''}`}
               onClick={handleDeleteAccount}
               disabled={isDeleting}
             >
@@ -557,20 +568,20 @@ const Settings = () => {
       <Modal
         open={passwordModalOpen}
         onClose={handleClosePasswordModal}
-        className={styles.passwordModal}
+        className={`${styles.passwordModal} ${isDarkMode ? styles.darkPasswordModal : ''}`}
         closeAfterTransition
         BackdropProps={{
-          className: styles.passwordModalBackdrop,
+          className: `${styles.passwordModalBackdrop} ${isDarkMode ? styles.darkPasswordModalBackdrop : ''}`,
         }}
       >
-        <Box className={styles.passwordModalContent}>
-          <Box className={styles.passwordModalHeader}>
-            <Box className={styles.passwordModalIconWrapper}>
-              <SecurityIcon className={styles.passwordModalIcon} />
+        <Box className={`${styles.passwordModalContent} ${isDarkMode ? styles.darkPasswordModalContent : ''}`}>
+          <Box className={`${styles.passwordModalHeader} ${isDarkMode ? styles.darkPasswordModalHeader : ''}`}>
+            <Box className={`${styles.passwordModalIconWrapper} ${isDarkMode ? styles.darkPasswordModalIconWrapper : ''}`}>
+              <SecurityIcon className={`${styles.passwordModalIcon} ${isDarkMode ? styles.darkPasswordModalIcon : ''}`} />
             </Box>
-            <Typography className={styles.passwordModalTitle}>Change Password</Typography>
+            <Typography className={`${styles.passwordModalTitle} ${isDarkMode ? styles.darkPasswordModalTitle : ''}`}>Change Password</Typography>
             <button 
-              className={styles.passwordModalClose} 
+              className={`${styles.passwordModalClose} ${isDarkMode ? styles.darkPasswordModalClose : ''}`} 
               onClick={handleClosePasswordModal}
               aria-label="Close modal"
             >
@@ -578,107 +589,107 @@ const Settings = () => {
             </button>
           </Box>
 
-          <Box className={styles.passwordModalBody}>
+          <Box className={`${styles.passwordModalBody} ${isDarkMode ? styles.darkPasswordModalBody : ''}`}>
             {/* Current Password */}
-            <div className={styles.passwordField}>
-              <label className={styles.passwordLabel}>Current Password</label>
-              <div className={styles.passwordInputWrap}>
+            <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+              <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Current Password</label>
+              <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                 <input
                   type={showCurrentPassword ? 'text' : 'password'}
                   name="currentPassword"
                   placeholder="Enter current password"
                   value={passwordData.currentPassword}
                   onChange={handlePasswordChange}
-                  className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''}`}
+                  className={`${styles.passwordInput} ${passwordErrors.currentPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                 />
                 <button
                   type="button"
-                  className={styles.passwordEyeBtn}
+                  className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                   onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                   aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
                 >
                   {showCurrentPassword ? (
-                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   ) : (
-                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                    <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   )}
                 </button>
               </div>
               {passwordErrors.currentPassword && (
-                <span className={styles.passwordError}>{passwordErrors.currentPassword}</span>
+                <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.currentPassword}</span>
               )}
             </div>
 
             {/* New Password */}
-            <div className={styles.passwordField}>
-              <label className={styles.passwordLabel}>New Password</label>
-              <div className={styles.passwordInputWrap}>
+            <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+              <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>New Password</label>
+              <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                 <input
                   type={showNewPassword ? 'text' : 'password'}
                   name="newPassword"
                   placeholder="Enter new password"
                   value={passwordData.newPassword}
                   onChange={handlePasswordChange}
-                  className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''}`}
+                  className={`${styles.passwordInput} ${passwordErrors.newPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                 />
                 <button
                   type="button"
-                  className={styles.passwordEyeBtn}
+                  className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                   onClick={() => setShowNewPassword(!showNewPassword)}
                   aria-label={showNewPassword ? 'Hide password' : 'Show password'}
                 >
                   {showNewPassword ? (
-                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   ) : (
-                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                    <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   )}
                 </button>
               </div>
               {passwordErrors.newPassword && (
-                <span className={styles.passwordError}>{passwordErrors.newPassword}</span>
+                <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.newPassword}</span>
               )}
             </div>
 
             {/* Confirm New Password */}
-            <div className={styles.passwordField}>
-              <label className={styles.passwordLabel}>Confirm New Password</label>
-              <div className={styles.passwordInputWrap}>
+            <div className={`${styles.passwordField} ${isDarkMode ? styles.darkPasswordField : ''}`}>
+              <label className={`${styles.passwordLabel} ${isDarkMode ? styles.darkPasswordLabel : ''}`}>Confirm New Password</label>
+              <div className={`${styles.passwordInputWrap} ${isDarkMode ? styles.darkPasswordInputWrap : ''}`}>
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   name="confirmPassword"
                   placeholder="Confirm new password"
                   value={passwordData.confirmPassword}
                   onChange={handlePasswordChange}
-                  className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''}`}
+                  className={`${styles.passwordInput} ${passwordErrors.confirmPassword ? styles.passwordInputError : ''} ${isDarkMode ? styles.darkPasswordInput : ''}`}
                 />
                 <button
                   type="button"
-                  className={styles.passwordEyeBtn}
+                  className={`${styles.passwordEyeBtn} ${isDarkMode ? styles.darkPasswordEyeBtn : ''}`}
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                 >
                   {showConfirmPassword ? (
-                    <VisibilityOffIcon className={styles.passwordEyeIcon} />
+                    <VisibilityOffIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   ) : (
-                    <VisibilityIcon className={styles.passwordEyeIcon} />
+                    <VisibilityIcon className={`${styles.passwordEyeIcon} ${isDarkMode ? styles.darkPasswordEyeIcon : ''}`} />
                   )}
                 </button>
               </div>
               {passwordErrors.confirmPassword && (
-                <span className={styles.passwordError}>{passwordErrors.confirmPassword}</span>
+                <span className={`${styles.passwordError} ${isDarkMode ? styles.darkPasswordError : ''}`}>{passwordErrors.confirmPassword}</span>
               )}
             </div>
           </Box>
 
-          <Box className={styles.passwordModalActions}>
+          <Box className={`${styles.passwordModalActions} ${isDarkMode ? styles.darkPasswordModalActions : ''}`}>
             <Button 
-              className={styles.passwordModalCancel} 
+              className={`${styles.passwordModalCancel} ${isDarkMode ? styles.darkPasswordModalCancel : ''}`} 
               onClick={handleClosePasswordModal}
             >
               Cancel
             </Button>
             <Button 
-              className={styles.passwordModalConfirm}
+              className={`${styles.passwordModalConfirm} ${isDarkMode ? styles.darkPasswordModalConfirm : ''}`}
               onClick={handleUpdatePassword}
               disabled={isUpdatingPassword}
             >
