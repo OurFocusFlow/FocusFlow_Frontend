@@ -65,11 +65,28 @@ const isDarkColor = (hex) => {
     const r = parseInt(result[1], 16);
     const g = parseInt(result[2], 16);
     const b = parseInt(result[3], 16);
-    // Calculate luminance
     const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
     return luminance < 0.5;
   }
   return false;
+};
+
+// Helper function to check if color is light
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
 };
 
 const Layout = ({ children }) => {
@@ -340,14 +357,19 @@ const Layout = ({ children }) => {
   const accentRgb = hexToRgb(accentColor);
   
   // Determine text color for the button
-  // In dark mode, always use white for better readability
-  // In light mode, use white for dark colors, black for light colors
   const getButtonTextColor = () => {
     if (isDarkMode) {
-      return '#FFFFFF'; // Always white in dark mode
+      return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
     }
-    // In light mode, check if accent color is dark
     return isDarkColor(accentColor) ? '#FFFFFF' : '#33231D';
+  };
+
+  // Get color for all MuiTypography text and icons in dark mode when accent is NOT default amber
+  const getTextAndIconColor = () => {
+    if (isDarkMode && !isDefaultAmber(accentColor)) {
+      return '#e9e9e9';
+    }
+    return undefined; // Use default
   };
 
   const drawerContent = (
@@ -370,10 +392,22 @@ const Layout = ({ children }) => {
             </svg>
           </Box>
           <Box>
-            <Typography variant="h6" className={styles.logoText}>
+            <Typography 
+              variant="h6" 
+              className={styles.logoText}
+              sx={{
+                color: getTextAndIconColor(),
+              }}
+            >
               BrewTask
             </Typography>
-            <Typography variant="caption" className={styles.logoSubtext}>
+            <Typography 
+              variant="caption" 
+              className={styles.logoSubtext}
+              sx={{
+                color: getTextAndIconColor(),
+              }}
+            >
               Workspace
             </Typography>
           </Box>
@@ -399,7 +433,12 @@ const Layout = ({ children }) => {
                 '--accent-rgb': accentRgb,
               }}
             >
-              <ListItemIcon className={styles.navIcon}>
+              <ListItemIcon 
+                className={styles.navIcon}
+                sx={{
+                  color: getTextAndIconColor(),
+                }}
+              >
                 {item.badge > 0 ? (
                   <Badge badgeContent={item.badge} color="error" className={styles.badge}>
                     {item.icon}
@@ -413,6 +452,9 @@ const Layout = ({ children }) => {
                 className={styles.navText}
                 primaryTypographyProps={{
                   className: styles.navTextPrimary,
+                  sx: {
+                    color: getTextAndIconColor(),
+                  },
                 }}
               />
               {activeItem === item.text && (
@@ -425,12 +467,12 @@ const Layout = ({ children }) => {
 
       <Divider className={styles.divider} />
 
-      {/* Modern New Task Button - Using accent color with white text in dark mode */}
+      {/* Modern New Task Button - Using accent color with proper text color */}
       <Box className={styles.newTaskWrapper}>
         <Button
           fullWidth
           variant="contained"
-          startIcon={<AddIcon />}
+          startIcon={<AddIcon sx={{ color: getButtonTextColor() }} />}
           className={styles.newTaskButton}
           onClick={handleNewTaskClick}
           style={{
@@ -477,7 +519,12 @@ const Layout = ({ children }) => {
                 '--accent-rgb': accentRgb,
               }}
             >
-              <ListItemIcon className={styles.navIcon}>
+              <ListItemIcon 
+                className={styles.navIcon}
+                sx={{
+                  color: getTextAndIconColor(),
+                }}
+              >
                 {item.icon}
               </ListItemIcon>
               <ListItemText 
@@ -485,6 +532,9 @@ const Layout = ({ children }) => {
                 className={styles.navText}
                 primaryTypographyProps={{
                   className: styles.navTextPrimary,
+                  sx: {
+                    color: getTextAndIconColor(),
+                  },
                 }}
               />
               {item.subItems && (
@@ -509,6 +559,9 @@ const Layout = ({ children }) => {
                         className={styles.subNavText}
                         primaryTypographyProps={{
                           className: styles.subNavTextPrimary,
+                          sx: {
+                            color: getTextAndIconColor(),
+                          },
                         }}
                       />
                     </ListItem>
@@ -533,16 +586,28 @@ const Layout = ({ children }) => {
             className={styles.avatar}
             style={{
               background: accentColor,
-              color: isDarkMode ? '#FFFFFF' : (isDarkColor(accentColor) ? '#FFFFFF' : '#33231D'),
+              color: getButtonTextColor(),
             }}
           >
             JD
           </Avatar>
           <Box className={styles.userText}>
-            <Typography variant="body2" className={styles.userName}>
+            <Typography 
+              variant="body2" 
+              className={styles.userName}
+              sx={{
+                color: getTextAndIconColor(),
+              }}
+            >
               John Doe
             </Typography>
-            <Typography variant="caption" className={styles.userEmail}>
+            <Typography 
+              variant="caption" 
+              className={styles.userEmail}
+              sx={{
+                color: getTextAndIconColor(),
+              }}
+            >
               john@company.com
             </Typography>
           </Box>

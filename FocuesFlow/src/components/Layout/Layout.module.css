@@ -751,27 +751,19 @@
 }
 
 [data-theme="dark"] .activeNavItem .navIcon {
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .activeNavItem .navTextPrimary {
-  color: #FFFFFF;
-}
-
-[data-theme="dark"] .navTextPrimary {
-  color: #6A6255;
-}
-
-[data-theme="dark"] .navIcon {
-  color: #6A6255;
+  color: #FFFFFF !important;
 }
 
 [data-theme="dark"] .navItem:hover .navIcon {
-  color: var(--accent-color);
+  color: var(--accent-color) !important;
 }
 
 [data-theme="dark"] .navItem:hover .navTextPrimary {
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 
 [data-theme="dark"] .newTaskButton {
@@ -794,17 +786,8 @@
   color: #6A6255;
 }
 
-[data-theme="dark"] .avatar {
-  background: var(--accent-color) !important;
-  color: #000000 !important;
-}
-
-[data-theme="dark"] .subNavTextPrimary {
-  color: #6A6255;
-}
-
 [data-theme="dark"] .subNavItem:hover .subNavTextPrimary {
-  color: #FFFFFF;
+  color: #FFFFFF !important;
 }
 
 [data-theme="dark"] .subNavItem:hover {
@@ -1028,35 +1011,120 @@
     min-height: 44px;
   }
 }
+/* ==================== DARK MODE STYLES ==================== */
+[data-theme="dark"] .drawerPaper {
+  background: rgba(0, 0, 0, 0.92);
+  border-right: 1px solid rgba(56, 59, 64, 0.3);
+}
 
-/* ==================== NEW TASK BUTTON - DARK MODE TEXT COLOR ==================== */
-/* Override for dark mode - always use white text */
-[data-theme="dark"] .newTaskButton {
+[data-theme="dark"] .drawerHeader {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .logoText {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .logoSubtext {
+  color: #6A6255;
+}
+
+[data-theme="dark"] .navItem:hover {
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+[data-theme="dark"] .activeNavItem {
+  background: rgba(var(--accent-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .activeNavItem::after {
+  background: var(--accent-color);
+}
+
+[data-theme="dark"] .activeNavItem .navIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .activeNavItem .navTextPrimary {
   color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .navItem:hover .navIcon {
+  color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .navItem:hover .navTextPrimary {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .newTaskButton {
+  box-shadow: 0 4px 24px rgba(var(--accent-rgb), 0.25);
 }
 
 [data-theme="dark"] .newTaskButton:hover {
-  color: #FFFFFF !important;
+  box-shadow: 0 8px 28px rgba(var(--accent-rgb), 0.35);
 }
 
-[data-theme="dark"] .newTaskButton:active {
-  color: #FFFFFF !important;
+[data-theme="dark"] .userInfo:hover {
+  background: rgba(var(--accent-rgb), 0.08);
 }
 
-[data-theme="dark"] .newTaskButton :global(.MuiButton-startIcon) {
-  color: #FFFFFF !important;
-}
-
-[data-theme="dark"] .newTaskButton:hover :global(.MuiButton-startIcon) {
-  color: #FFFFFF !important;
-}
-
-/* ==================== AVATAR - DARK MODE TEXT COLOR ==================== */
-[data-theme="dark"] .avatar {
-  color: #FFFFFF !important;
-}
-
-/* ==================== DARK MODE NAV ITEM TEXT ==================== */
-[data-theme="dark"] .navItem:hover .navTextPrimary {
+[data-theme="dark"] .userName {
   color: #FFFFFF;
+}
+
+[data-theme="dark"] .userEmail {
+  color: #6A6255;
+}
+
+[data-theme="dark"] .subNavItem:hover .subNavTextPrimary {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .subNavItem:hover {
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+[data-theme="dark"] .navbarWrapper {
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(56, 59, 64, 0.3);
+}
+
+[data-theme="dark"] .profileNavbarWrapper {
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid rgba(56, 59, 64, 0.3);
+}
+
+[data-theme="dark"] .profileLogoText {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .menuButton {
+  color: #6A6255;
+}
+
+[data-theme="dark"] .menuButton:hover {
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent-color);
+}
+
+[data-theme="dark"] .divider {
+  border-color: #383B40;
+}
+
+[data-theme="dark"] .expandIcon {
+  color: #6A6255;
+}
+
+[data-theme="dark"] .expandIcon:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme="dark"] .drawerContent::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.2);
+}
+
+[data-theme="dark"] .drawerContent::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb), 0.4);
 }
