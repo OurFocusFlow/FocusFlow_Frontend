@@ -1,4 +1,4 @@
-// CreateTaskModal.jsx – using accent color
+// CreateTaskModal.jsx – using accent color only in dark mode
 import React, { useState } from 'react';
 import { useDarkMode } from '../Context/DarkModeContext';
 import { useAccentColor } from '../Context/AccentColorContext';
@@ -29,6 +29,11 @@ const isLightColor = (hex) => {
   return false;
 };
 
+// Helper to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
+
 const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   const { isDarkMode } = useDarkMode();
   const { accentColor } = useAccentColor();
@@ -45,6 +50,9 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   const categoryOptions = ['Design', 'Marketing', 'Content', 'Development', 'Research', 'Documentation'];
 
   if (!isOpen) return null;
+
+  // Determine if accent should be used (only in dark mode AND when not default amber)
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,14 +84,34 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     }
   };
 
+  // Determine accent color to use
+  const getAccentColor = () => {
+    if (shouldUseAccent) {
+      return accentColor;
+    }
+    if (isDarkMode) {
+      return '#FBBC00'; // Default amber in dark mode
+    }
+    return '#4B3832'; // Default brown in light mode
+  };
+
+  const getAccentRgb = () => {
+    if (shouldUseAccent) {
+      return hexToRgb(accentColor);
+    }
+    if (isDarkMode) {
+      return '251, 188, 0'; // Default amber RGB
+    }
+    return '75, 56, 50'; // Default brown RGB
+  };
+
   // Determine text color for elements on accent background
   const getButtonTextColor = () => {
-    // In dark mode, if accent is light, use black; otherwise white.
     if (isDarkMode) {
-      return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
+      const colorToCheck = shouldUseAccent ? accentColor : '#FBBC00';
+      return isLightColor(colorToCheck) ? '#000000' : '#FFFFFF';
     }
-    // In light mode, use dark brown for contrast (or white if accent is very dark)
-    return isLightColor(accentColor) ? '#33231D' : '#FFFFFF';
+    return '#FFFFFF'; // White text on brown button in light mode
   };
 
   const accentRgb = hexToRgb(accentColor);
@@ -92,7 +120,10 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     <div
       className={`${styles.modalOverlay} ${isDarkMode ? styles.darkModalOverlay : ''}`}
       onClick={handleOverlayClick}
-      style={{ '--accent-color': accentColor, '--accent-rgb': accentRgb }}
+      style={{ 
+        '--accent-color': getAccentColor(),
+        '--accent-rgb': getAccentRgb(),
+      }}
     >
       <div className={`${styles.modalContainer} ${isDarkMode ? styles.darkModalContainer : ''}`}>
         {/* Modal Header */}
@@ -100,7 +131,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           <div className={styles.modalHeaderLeft}>
             <div
               className={`${styles.modalIconWrapper} ${isDarkMode ? styles.darkModalIconWrapper : ''}`}
-              style={{ background: accentColor, color: getButtonTextColor() }}
+              style={{ background: getAccentColor(), color: getButtonTextColor() }}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12h14" strokeLinecap="round" />
@@ -255,7 +286,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               type="submit"
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ''}`}
               disabled={isSubmitting}
-              style={{ background: accentColor, color: getButtonTextColor() }}
+              style={{ background: getAccentColor(), color: getButtonTextColor() }}
             >
               {isSubmitting ? (
                 <>

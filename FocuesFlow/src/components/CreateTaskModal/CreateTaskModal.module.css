@@ -67,17 +67,18 @@
   gap: 12px;
 }
 
+/* Default (light mode) - use brown */
 .modalIconWrapper {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: var(--accent-color, #4B3832);
+  background: #4B3832;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(var(--accent-rgb, 75, 56, 50), 0.25);
+  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
 }
 
 .modalIconWrapper svg {
@@ -153,6 +154,7 @@
   margin-left: 2px;
 }
 
+/* Default (light mode) - use orange for focus */
 .formInput {
   width: 100%;
   padding: 0.6rem 0.85rem;
@@ -167,9 +169,9 @@
 
 .formInput:focus {
   outline: none;
-  border-color: var(--accent-color, #885210);
+  border-color: var(--color-accent-orange, #885210);
   background: var(--color-cream-light, #FDF8F5);
-  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
 }
 
 .formInput::placeholder {
@@ -217,9 +219,10 @@
   color: white;
 }
 
+/* Default (light mode) - use orange */
 .priorityBtnActive.priorityBtnMedium {
-  background: #d97706;
-  border-color: #d97706;
+  background: var(--color-accent-orange, #885210);
+  border-color: var(--color-accent-orange, #885210);
   color: white;
 }
 
@@ -236,10 +239,11 @@
   color: white;
 }
 
+/* Default (light mode) - use orange */
 .priorityBtnMedium:hover,
 .priorityBtnMedium.priorityBtnActive {
-  background: var(--accent-color, #d97706);
-  border-color: var(--accent-color, #d97706);
+  background: var(--color-accent-orange, #885210);
+  border-color: var(--color-accent-orange, #885210);
   color: white;
 }
 
@@ -259,10 +263,11 @@
   transition: all 0.2s ease;
 }
 
+/* Default (light mode) - use orange */
 .categoriesContainer:focus-within {
-  border-color: var(--accent-color, #885210);
+  border-color: var(--color-accent-orange, #885210);
   background: var(--color-cream-light, #FDF8F5);
-  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
 }
 
 .categoriesList {
@@ -373,11 +378,12 @@
   min-height: 80px;
 }
 
+/* Default (light mode) - use orange */
 .formTextarea:focus {
   outline: none;
-  border-color: var(--accent-color, #885210);
+  border-color: var(--color-accent-orange, #885210);
   background: var(--color-cream-light, #FDF8F5);
-  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
 }
 
 .formTextarea::placeholder {
@@ -400,9 +406,10 @@
   background: var(--color-cream-light, #FDF8F5);
 }
 
+/* Default (light mode) - use orange */
 .dropZoneDragging {
-  border-color: var(--accent-color, #885210);
-  background: rgba(var(--accent-rgb, 136, 82, 16), 0.04);
+  border-color: var(--color-accent-orange, #885210);
+  background: rgba(136, 82, 16, 0.04);
   transform: scale(1.01);
 }
 
@@ -425,8 +432,9 @@
   margin: 0;
 }
 
+/* Default (light mode) - use orange */
 .dropZoneLink {
-  color: var(--accent-color, #885210);
+  color: var(--color-accent-orange, #885210);
   font-weight: 600;
   cursor: pointer;
 }
@@ -477,6 +485,7 @@
   color: var(--color-dark-brown, #33231D);
 }
 
+/* Default (light mode) - use brown */
 .saveBtn {
   display: flex;
   align-items: center;
@@ -484,26 +493,26 @@
   padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 10px;
-  background: var(--accent-color, #4B3832);
+  background: #4B3832;
   color: white;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(var(--accent-rgb, 75, 56, 50), 0.25);
+  box-shadow: 0 4px 16px rgba(75, 56, 50, 0.25);
   font-family: inherit;
 }
 
 .saveBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(var(--accent-rgb, 75, 56, 50), 0.35);
+  box-shadow: 0 8px 24px rgba(75, 56, 50, 0.35);
 }
 
 .saveBtn:active {
   transform: translateY(0);
 }
 
-/* Scrollbar - Updated to use accent color */
+/* Scrollbar - Default (light mode) use brown */
 .modalContainer::-webkit-scrollbar {
   width: 4px;
 }
@@ -513,18 +522,18 @@
 }
 
 .modalContainer::-webkit-scrollbar-thumb {
-  background: var(--accent-color, rgba(75, 56, 50, 0.2));
+  background: rgba(75, 56, 50, 0.2);
   border-radius: 4px;
 }
 
 .modalContainer::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-color, rgba(75, 56, 50, 0.4));
+  background: rgba(75, 56, 50, 0.4);
 }
 
 /* Firefox scrollbar */
 .modalContainer {
   scrollbar-width: thin;
-  scrollbar-color: var(--accent-color, rgba(75, 56, 50, 0.2)) transparent;
+  scrollbar-color: rgba(75, 56, 50, 0.2) transparent;
 }
 
 /* Responsive */
@@ -697,11 +706,12 @@
   cursor: pointer;
 }
 
+/* Default (light mode) - use orange */
 .formSelect:focus {
   outline: none;
-  border-color: var(--accent-color, #885210);
+  border-color: var(--color-accent-orange, #885210);
   background: var(--color-cream-light, #FDF8F5);
-  box-shadow: 0 0 0 4px rgba(var(--accent-rgb, 136, 82, 16), 0.08);
+  box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
 }
 
 .formSelect:disabled {
@@ -737,6 +747,7 @@
   border-bottom: 1px solid #383B40 !important;
 }
 
+/* Dark mode - use accent color */
 .darkModalIconWrapper {
   background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
@@ -781,6 +792,7 @@
   color: #FFFFFF !important;
 }
 
+/* Dark mode - use accent color */
 .darkFormInput:focus {
   border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
@@ -832,10 +844,11 @@
   color: #FFFFFF !important;
 }
 
+/* Dark mode - use accent color */
 .darkPriorityBtn.priorityBtnMedium.priorityBtnActive {
-  background: #d97706 !important;
-  border-color: #d97706 !important;
-  color: #FFFFFF !important;
+  background: var(--accent-color, #FBBC00) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
+  color: #000000 !important;
 }
 
 .darkPriorityBtn.priorityBtnHigh.priorityBtnActive {
@@ -851,6 +864,7 @@
   color: #FFFFFF !important;
 }
 
+/* Dark mode - use accent color */
 .darkFormSelect:focus {
   border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
@@ -873,6 +887,7 @@
   color: #FFFFFF !important;
 }
 
+/* Dark mode - use accent color */
 .darkFormTextarea:focus {
   border-color: var(--accent-color, #FBBC00) !important;
   background: #030202 !important;
@@ -894,6 +909,7 @@
   background: rgba(var(--accent-rgb, 251, 188, 0), 0.04) !important;
 }
 
+/* Dark mode - use accent color */
 .darkDropZone.dropZoneDragging {
   border-color: var(--accent-color, #FBBC00) !important;
   background: rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
@@ -907,6 +923,7 @@
   color: #FFFFFF !important;
 }
 
+/* Dark mode - use accent color */
 .darkDropZoneLink {
   color: var(--accent-color, #FBBC00) !important;
 }
@@ -937,6 +954,7 @@
 }
 
 /* Save Button Dark Mode */
+/* Dark mode - use accent color */
 .darkSaveBtn {
   background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
