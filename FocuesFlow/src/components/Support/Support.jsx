@@ -15,6 +15,7 @@ import {
   ArrowOutward as ArrowOutwardIcon,
   Help as HelpIcon,
 } from '@mui/icons-material';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Support.module.css';
 
 // FAQ data with topics
@@ -43,6 +44,7 @@ const CHANNELS = [
 ];
 
 const Support = () => {
+  const { isDarkMode } = useDarkMode();
   const [search, setSearch] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('All');
   const [expanded, setExpanded] = useState(false);
@@ -77,98 +79,95 @@ const Support = () => {
     setSearch('');
   };
 
-  // Filter FAQs based on search and selected topic
   const filteredFaqs = FAQS.filter((item) => {
-    // Search filter
     const matchesSearch = search === '' || 
       item.q.toLowerCase().includes(search.toLowerCase()) ||
       item.a.toLowerCase().includes(search.toLowerCase());
     
-    // Topic filter
     const matchesTopic = selectedTopic === 'All' || item.topic === selectedTopic;
     
     return matchesSearch && matchesTopic;
   });
 
   return (
-    <Box className={styles.page}>
+    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
       {/* Background Decorations - Same as MyTasks */}
-      <div className={styles["support-bg"]}>
+      <div className={`${styles["support-bg"]} ${isDarkMode ? styles.darkSupportBg : ''}`}>
         <div className={styles["support-bg-orb"]} />
         <div className={styles["support-bg-orb"]} />
         <div className={styles["support-bg-orb"]} />
-        <div className={styles["support-bg-grid"]} />
-        <div className={styles["support-bg-glow"]} />
+        <div className={`${styles["support-bg-grid"]} ${isDarkMode ? styles.darkSupportBgGrid : ''}`} />
+        <div className={`${styles["support-bg-glow"]} ${isDarkMode ? styles.darkSupportBgGlow : ''}`} />
       </div>
 
-      <Box className={styles.pageInner}>
+      <Box className={`${styles.pageInner} ${isDarkMode ? styles.darkPageInner : ''}`}>
         {/* Page Header - Same style as MyTasks */}
-        <Box className={styles.pageHeader}>
-          <Typography className={styles.pageTitle} style={{ fontSize: "50px" , fontWeight: "bold" , color: "#33231D" }}>Support</Typography>
-          <Typography className={styles.pageSubtitle} style={{ fontSize: "20px" , color: "#6B4C42" }}>Find answers, or reach out and we'll help you brew through it.</Typography>
+        <Box className={`${styles.pageHeader} ${isDarkMode ? styles.darkPageHeader : ''}`}>
+          <Typography className={`${styles.pageTitle} ${isDarkMode ? styles.darkPageTitle : ''}`} style={{ fontSize: "50px" , fontWeight: "bold" }}>Support</Typography>
+          <Typography className={`${styles.pageSubtitle} ${isDarkMode ? styles.darkPageSubtitle : ''}`} style={{ fontSize: "20px" }}>Find answers, or reach out and we'll help you brew through it.</Typography>
         </Box>
 
         {/* Stats Row - Similar to MyTasks stats */}
         <Box className={styles.statsRow}>
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ''}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconFaq}`}>
-                <HelpIcon className={styles.statIcon} />
+              <Box className={`${styles.statIconWrap} ${styles.iconFaq} ${isDarkMode ? styles.darkIconFaq : ''}`}>
+                <HelpIcon className={`${styles.statIcon} ${isDarkMode ? styles.darkStatIcon : ''}`} />
               </Box>
-              <span className={styles.statTrend}>{FAQS.length}</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ''}`}>{FAQS.length}</span>
             </Box>
-            <span className={styles.statLabel}>Articles</span>
-            <span className={styles.statValue}>FAQ</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ''}`}>Articles</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ''}`}>FAQ</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ''}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconChannels}`}>
-                <ChatIcon className={styles.statIcon} />
+              <Box className={`${styles.statIconWrap} ${styles.iconChannels} ${isDarkMode ? styles.darkIconChannels : ''}`}>
+                <ChatIcon className={`${styles.statIcon} ${isDarkMode ? styles.darkStatIcon : ''}`} />
               </Box>
-              <span className={styles.statTrend}>{CHANNELS.length}</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ''}`}>{CHANNELS.length}</span>
             </Box>
-            <span className={styles.statLabel}>Support Channels</span>
-            <span className={styles.statValue}>Available</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ''}`}>Support Channels</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ''}`}>Available</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ''}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconTicket}`}>
-                <TicketIcon className={styles.statIcon} />
+              <Box className={`${styles.statIconWrap} ${styles.iconTicket} ${isDarkMode ? styles.darkIconTicket : ''}`}>
+                <TicketIcon className={`${styles.statIcon} ${isDarkMode ? styles.darkStatIcon : ''}`} />
               </Box>
-              <span className={styles.statTrend}>24/7</span>
+              <span className={`${styles.statTrend} ${isDarkMode ? styles.darkStatTrend : ''}`}>24/7</span>
             </Box>
-            <span className={styles.statLabel}>Support Hours</span>
-            <span className={styles.statValue}>Always Open</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ''}`}>Support Hours</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ''}`}>Always Open</span>
           </Box>
 
-          <Box className={styles.statBox}>
+          <Box className={`${styles.statBox} ${isDarkMode ? styles.darkStatBox : ''}`}>
             <Box className={styles.statTop}>
-              <Box className={`${styles.statIconWrap} ${styles.iconResponse}`}>
-                <CheckCircleIcon className={styles.statIcon} />
+              <Box className={`${styles.statIconWrap} ${styles.iconResponse} ${isDarkMode ? styles.darkIconResponse : ''}`}>
+                <CheckCircleIcon className={`${styles.statIcon} ${isDarkMode ? styles.darkStatIcon : ''}`} />
               </Box>
-              <span className={`${styles.statTrend} ${styles.trendPositive}`}>~4 min</span>
+              <span className={`${styles.statTrend} ${styles.trendPositive} ${isDarkMode ? styles.darkStatTrend : ''}`}>~4 min</span>
             </Box>
-            <span className={styles.statLabel}>Avg Response</span>
-            <span className={styles.statValue}>Fast</span>
+            <span className={`${styles.statLabel} ${isDarkMode ? styles.darkStatLabel : ''}`}>Avg Response</span>
+            <span className={`${styles.statValue} ${isDarkMode ? styles.darkStatValue : ''}`}>Fast</span>
           </Box>
         </Box>
 
         {/* Search + Topics */}
-        <Box className={styles.section}>
-          <Box className={styles.searchWrapper}>
-            <SearchIcon className={styles.searchIcon} />
+        <Box className={`${styles.section} ${isDarkMode ? styles.darkSection : ''}`}>
+          <Box className={`${styles.searchWrapper} ${isDarkMode ? styles.darkSearchWrapper : ''}`}>
+            <SearchIcon className={`${styles.searchIcon} ${isDarkMode ? styles.darkSearchIcon : ''}`} />
             <input
               type="text"
               placeholder="Search the help center…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className={styles.searchInput}
+              className={`${styles.searchInput} ${isDarkMode ? styles.darkSearchInput : ''}`}
             />
             {search && (
               <button 
-                className={styles.clearSearchBtn}
+                className={`${styles.clearSearchBtn} ${isDarkMode ? styles.darkClearSearchBtn : ''}`}
                 onClick={() => setSearch('')}
                 aria-label="Clear search"
               >
@@ -180,7 +179,7 @@ const Support = () => {
             {TOPICS.map((topic) => (
               <Box 
                 key={topic} 
-                className={`${styles.topicChip} ${selectedTopic === topic ? styles.topicChipActive : ''}`}
+                className={`${styles.topicChip} ${selectedTopic === topic ? styles.topicChipActive : ''} ${isDarkMode ? styles.darkTopicChip : ''}`}
                 onClick={() => handleTopicClick(topic)}
               >
                 {topic}
@@ -190,27 +189,27 @@ const Support = () => {
         </Box>
 
         {/* FAQ Section - Using Settings-style section */}
-        <Box className={styles.section}>
-          <Box className={styles.sectionHeader}>
-            <Box className={styles.sectionIcon}><HelpIcon /></Box>
-            <Typography className={styles.sectionTitle}>
+        <Box className={`${styles.section} ${isDarkMode ? styles.darkSection : ''}`}>
+          <Box className={`${styles.sectionHeader} ${isDarkMode ? styles.darkSectionHeader : ''}`}>
+            <Box className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`}><HelpIcon /></Box>
+            <Typography className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>
               Frequently Asked Questions
             </Typography>
-            <span className={styles.resultCount}>{filteredFaqs.length} results</span>
+            <span className={`${styles.resultCount} ${isDarkMode ? styles.darkResultCount : ''}`}>{filteredFaqs.length} results</span>
           </Box>
-          <Box className={styles.sectionCard}>
+          <Box className={`${styles.sectionCard} ${isDarkMode ? styles.darkSectionCard : ''}`}>
             {filteredFaqs.length === 0 ? (
-              <Box className={styles.emptyState}>
-                <span className={styles.emptyIcon}>🔍</span>
-                <Typography className={styles.emptyTitle}>No results found</Typography>
-                <Typography className={styles.emptyText}>
+              <Box className={`${styles.emptyState} ${isDarkMode ? styles.darkEmptyState : ''}`}>
+                <span className={`${styles.emptyIcon} ${isDarkMode ? styles.darkEmptyIcon : ''}`}>🔍</span>
+                <Typography className={`${styles.emptyTitle} ${isDarkMode ? styles.darkEmptyTitle : ''}`}>No results found</Typography>
+                <Typography className={`${styles.emptyText} ${isDarkMode ? styles.darkEmptyText : ''}`}>
                   {selectedTopic !== 'All' 
                     ? `No articles found for "${selectedTopic}". Try selecting a different topic.`
                     : 'Try a different search term or submit a ticket below.'}
                 </Typography>
                 {selectedTopic !== 'All' && (
                   <button 
-                    className={styles.clearTopicBtn}
+                    className={`${styles.clearTopicBtn} ${isDarkMode ? styles.darkClearTopicBtn : ''}`}
                     onClick={() => setSelectedTopic('All')}
                   >
                     View all topics
@@ -223,18 +222,18 @@ const Support = () => {
                   key={item.q}
                   expanded={expanded === item.q}
                   onChange={handleAccordionChange(item.q)}
-                  className={styles.accordion}
+                  className={`${styles.accordion} ${isDarkMode ? styles.darkAccordion : ''}`}
                   disableGutters
                   elevation={0}
                 >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon className={styles.expandIcon} />}>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon className={`${styles.expandIcon} ${isDarkMode ? styles.darkExpandIcon : ''}`} />}>
                     <Box className={styles.faqHeader}>
-                      <Typography className={styles.faqQuestion}>{item.q}</Typography>
-                      <span className={styles.faqTopic}>{item.topic}</span>
+                      <Typography className={`${styles.faqQuestion} ${isDarkMode ? styles.darkFaqQuestion : ''}`}>{item.q}</Typography>
+                      <span className={`${styles.faqTopic} ${isDarkMode ? styles.darkFaqTopic : ''}`}>{item.topic}</span>
                     </Box>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography className={styles.faqAnswer}>{item.a}</Typography>
+                    <Typography className={`${styles.faqAnswer} ${isDarkMode ? styles.darkFaqAnswer : ''}`}>{item.a}</Typography>
                   </AccordionDetails>
                 </Accordion>
               ))
@@ -243,31 +242,31 @@ const Support = () => {
         </Box>
 
         {/* Submit a Ticket - Using Settings-style section */}
-        <Box className={styles.section}>
-          <Box className={styles.sectionHeader}>
-            <Box className={styles.sectionIcon}><TicketIcon /></Box>
-            <Typography className={styles.sectionTitle}>Submit a Ticket</Typography>
+        <Box className={`${styles.section} ${isDarkMode ? styles.darkSection : ''}`}>
+          <Box className={`${styles.sectionHeader} ${isDarkMode ? styles.darkSectionHeader : ''}`}>
+            <Box className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`}><TicketIcon /></Box>
+            <Typography className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>Submit a Ticket</Typography>
           </Box>
-          <Box className={styles.sectionCard}>
+          <Box className={`${styles.sectionCard} ${isDarkMode ? styles.darkSectionCard : ''}`}>
             {submitted ? (
-              <Box className={styles.confirmState}>
-                <Box className={styles.confirmIcon}>✅</Box>
-                <Typography className={styles.confirmTitle}>Ticket {ticketNumber} submitted!</Typography>
-                <Typography className={styles.confirmText}>
+              <Box className={`${styles.confirmState} ${isDarkMode ? styles.darkConfirmState : ''}`}>
+                <Box className={`${styles.confirmIcon} ${isDarkMode ? styles.darkConfirmIcon : ''}`}>✅</Box>
+                <Typography className={`${styles.confirmTitle} ${isDarkMode ? styles.darkConfirmTitle : ''}`}>Ticket {ticketNumber} submitted!</Typography>
+                <Typography className={`${styles.confirmText} ${isDarkMode ? styles.darkConfirmText : ''}`}>
                   We'll reply to your account email within one business day.
                 </Typography>
-                <Button className={styles.darkButton} onClick={handleNewTicket}>
+                <Button className={`${styles.darkButton} ${isDarkMode ? styles.darkButton : ''}`} onClick={handleNewTicket}>
                   Submit another ticket
                 </Button>
               </Box>
             ) : (
-              <Box className={styles.ticketForm}>
+              <Box className={`${styles.ticketForm} ${isDarkMode ? styles.darkTicketForm : ''}`}>
                 <Box className={styles.formRow}>
-                  <label className={styles.formLabel}>Category</label>
+                  <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className={styles.formSelect}
+                    className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ''}`}
                   >
                     <option value="technical">Technical Issue</option>
                     <option value="billing">Billing & Account</option>
@@ -276,27 +275,27 @@ const Support = () => {
                   </select>
                 </Box>
                 <Box className={styles.formRow}>
-                  <label className={styles.formLabel}>Subject <span className={styles.requiredStar}>*</span></label>
+                  <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Subject <span className={styles.requiredStar}>*</span></label>
                   <input
                     type="text"
                     placeholder="Briefly describe the issue"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    className={styles.formInput}
+                    className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ''}`}
                   />
                 </Box>
                 <Box className={styles.formRow}>
-                  <label className={styles.formLabel}>Message <span className={styles.requiredStar}>*</span></label>
+                  <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Message <span className={styles.requiredStar}>*</span></label>
                   <textarea
                     rows="4"
                     placeholder="Give us the details — what happened, what you expected, and any steps to reproduce it"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className={styles.formTextarea}
+                    className={`${styles.formTextarea} ${isDarkMode ? styles.darkFormTextarea : ''}`}
                   />
                 </Box>
                 <Button
-                  className={styles.primaryButton}
+                  className={`${styles.primaryButton} ${isDarkMode ? styles.darkPrimaryButton : ''}`}
                   onClick={handleSubmitTicket}
                   disabled={!subject.trim() || !message.trim()}
                 >
@@ -309,25 +308,25 @@ const Support = () => {
         </Box>
 
         {/* Other Channels - Using Settings-style section */}
-        <Box className={styles.section}>
-          <Box className={styles.sectionHeader}>
-            <Box className={styles.sectionIcon}><EmailIcon /></Box>
-            <Typography className={styles.sectionTitle}>Other Ways to Reach Us</Typography>
+        <Box className={`${styles.section} ${isDarkMode ? styles.darkSection : ''}`}>
+          <Box className={`${styles.sectionHeader} ${isDarkMode ? styles.darkSectionHeader : ''}`}>
+            <Box className={`${styles.sectionIcon} ${isDarkMode ? styles.darkSectionIcon : ''}`}><EmailIcon /></Box>
+            <Typography className={`${styles.sectionTitle} ${isDarkMode ? styles.darkSectionTitle : ''}`}>Other Ways to Reach Us</Typography>
           </Box>
           <Box className={styles.channelGrid}>
             {CHANNELS.map((ch) => (
-              <Box key={ch.label} className={styles.channelCard}>
-                <Box className={styles.channelIcon}>{ch.icon}</Box>
+              <Box key={ch.label} className={`${styles.channelCard} ${isDarkMode ? styles.darkChannelCard : ''}`}>
+                <Box className={`${styles.channelIcon} ${isDarkMode ? styles.darkChannelIcon : ''}`}>{ch.icon}</Box>
                 <Box className={styles.channelInfo}>
-                  <Typography className={styles.channelLabel}>{ch.label}</Typography>
-                  <Typography className={styles.channelDetail}>{ch.detail}</Typography>
+                  <Typography className={`${styles.channelLabel} ${isDarkMode ? styles.darkChannelLabel : ''}`}>{ch.label}</Typography>
+                  <Typography className={`${styles.channelDetail} ${isDarkMode ? styles.darkChannelDetail : ''}`}>{ch.detail}</Typography>
                 </Box>
                 <Box
                   component={ch.href ? 'a' : 'button'}
                   href={ch.href}
-                  className={styles.channelAction}
+                  className={`${styles.channelAction} ${isDarkMode ? styles.darkChannelAction : ''}`}
                 >
-                  {ch.action} <ArrowOutwardIcon className={styles.channelActionIcon} />
+                  {ch.action} <ArrowOutwardIcon className={`${styles.channelActionIcon} ${isDarkMode ? styles.darkChannelActionIcon : ''}`} />
                 </Box>
               </Box>
             ))}

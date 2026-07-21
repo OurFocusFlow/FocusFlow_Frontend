@@ -960,3 +960,386 @@
     padding: 2px 8px;
   }
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
+}
+
+/* Background Dark Mode */
+.darkSupportBg {
+  background: #000000 !important;
+}
+
+.darkSupportBgGrid {
+  background-image: 
+    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+}
+
+.darkSupportBgGlow {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+}
+
+/* Page Header Dark Mode */
+.darkPageHeader {
+  margin-bottom: 24px !important;
+}
+
+.darkPageTitle {
+  color: #FFFFFF !important;
+}
+
+.darkPageSubtitle {
+  color: #6A6255 !important;
+}
+
+/* Stats Row Dark Mode */
+.darkStatBox {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkStatBox:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkStatValue {
+  color: #FFFFFF !important;
+}
+
+.darkStatLabel {
+  color: #6A6255 !important;
+}
+
+.darkStatTrend {
+  color: #FBBC00 !important;
+}
+
+/* Icon Wrappers Dark Mode */
+.darkIconFaq {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkIconChannels {
+  background: rgba(107, 98, 88, 0.2) !important;
+  color: #6A6255 !important;
+}
+
+.darkIconTicket {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+}
+
+.darkIconResponse {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #ef4444 !important;
+}
+
+.darkStatIcon {
+  color: inherit !important;
+}
+
+/* Section Dark Mode */
+.darkSection {
+  margin-bottom: 28px !important;
+}
+
+.darkSectionHeader {
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.darkSectionIcon {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkSectionTitle {
+  color: #FFFFFF !important;
+}
+
+.darkSectionCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkSectionCard:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Search Dark Mode */
+.darkSearchWrapper {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkSearchWrapper:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkSearchIcon {
+  color: #6A6255 !important;
+}
+
+.darkSearchInput {
+  color: #FFFFFF !important;
+}
+
+.darkSearchInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkClearSearchBtn {
+  color: #6A6255 !important;
+}
+
+.darkClearSearchBtn:hover {
+  color: #FFFFFF !important;
+}
+
+/* Topic Chips Dark Mode */
+.darkTopicChip {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkTopicChip:hover {
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.06) !important;
+}
+
+.darkTopicChip.topicChipActive {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkTopicChip.topicChipActive:hover {
+  background: #E2A900 !important;
+}
+
+/* FAQ Accordion Dark Mode */
+.darkAccordion {
+  border-bottom-color: #383B40 !important;
+}
+
+.darkFaqQuestion {
+  color: #FFFFFF !important;
+}
+
+.darkFaqAnswer {
+  color: #6A6255 !important;
+}
+
+.darkFaqTopic {
+  background: rgba(251, 188, 0, 0.12) !important;
+  color: #FBBC00 !important;
+}
+
+.darkExpandIcon {
+  color: #FBBC00 !important;
+}
+
+/* Result Count Dark Mode */
+.darkResultCount {
+  color: #6A6255 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Empty State Dark Mode */
+.darkEmptyState {
+  color: #6A6255 !important;
+}
+
+.darkEmptyIcon {
+  color: #6A6255 !important;
+}
+
+.darkEmptyTitle {
+  color: #FFFFFF !important;
+}
+
+.darkEmptyText {
+  color: #6A6255 !important;
+}
+
+.darkClearTopicBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkClearTopicBtn:hover {
+  background: #E2A900 !important;
+}
+
+/* Ticket Form Dark Mode */
+.darkTicketForm {
+  background: transparent !important;
+}
+
+.darkFormLabel {
+  color: #6A6255 !important;
+}
+
+.darkFormInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormInput:focus {
+  border-color: #FBBC00 !important;
+  background: #0D0D0D !important;
+}
+
+.darkFormInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormTextarea {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #0D0D0D !important;
+}
+
+.darkFormTextarea::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #0D0D0D !important;
+}
+
+.darkFormSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+/* Buttons Dark Mode */
+.darkPrimaryButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkPrimaryButton:hover {
+  background: #E2A900 !important;
+}
+
+.darkButton {
+  background: #1A1A1A !important;
+  color: #FFFFFF !important;
+}
+
+.darkButton:hover {
+  background: #2A2A2A !important;
+}
+
+/* Confirmation Dark Mode */
+.darkConfirmState {
+  color: #FFFFFF !important;
+}
+
+.darkConfirmIcon {
+  color: #FFFFFF !important;
+}
+
+.darkConfirmTitle {
+  color: #FFFFFF !important;
+}
+
+.darkConfirmText {
+  color: #6A6255 !important;
+}
+
+/* Channel Cards Dark Mode */
+.darkChannelCard {
+  background: #030202 !important;
+  border-color: #383B40 !important;
+}
+
+.darkChannelCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+}
+
+.darkChannelIcon {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FBBC00 !important;
+}
+
+.darkChannelLabel {
+  color: #FFFFFF !important;
+}
+
+.darkChannelDetail {
+  color: #6A6255 !important;
+}
+
+.darkChannelAction {
+  color: #FBBC00 !important;
+}
+
+.darkChannelAction:hover {
+  color: #E2A900 !important;
+}
+
+.darkChannelActionIcon {
+  color: #FBBC00 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 768px) {
+  .darkStatBox {
+    border-color: #383B40 !important;
+  }
+  
+  .darkChannelCard {
+    border-color: #383B40 !important;
+  }
+  
+  .darkTopicChip {
+    border-color: #383B40 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .darkStatBox {
+    border-color: #383B40 !important;
+  }
+  
+  .darkChannelCard {
+    border-color: #383B40 !important;
+  }
+  
+  .darkTopicChip {
+    border-color: #383B40 !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkPage,
+  .darkStatBox,
+  .darkSectionCard,
+  .darkChannelCard {
+    transition: none !important;
+  }
+}
