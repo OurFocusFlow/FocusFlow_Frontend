@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './Signup.module.css'
 
 export default function Signup() {
+  const { isDarkMode } = useDarkMode();
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [agree, setAgree] = useState(false)
@@ -66,8 +68,8 @@ export default function Signup() {
   }
 
   return (
-    <div className={styles.page}>
-      <Link to="/Home" className={styles.floatButton}>
+    <div className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
+      <Link to="/Home" className={`${styles.floatButton} ${isDarkMode ? styles.darkFloatButton : ''}`}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           <path d="M12 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -75,11 +77,11 @@ export default function Signup() {
         Back to Home
       </Link>
 
-      <div className={styles.blobTopLeft} />
+      <div className={`${styles.blobTopLeft} ${isDarkMode ? styles.darkBlobTopLeft : ''}`} />
 
       <div className={styles.layout}>
-        <div className={styles.promo}>
-          <span className={styles.badge}>
+        <div className={`${styles.promo} ${isDarkMode ? styles.darkPromo : ''}`}>
+          <span className={`${styles.badge} ${isDarkMode ? styles.darkBadge : ''}`}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
               <path d="M4 9h13a3 3 0 0 1 0 6h-1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               <path d="M4 9v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -87,41 +89,41 @@ export default function Signup() {
             Premium Focus
           </span>
 
-          <h1 className={styles.headline}>Brew Your Most Productive Self.</h1>
+          <h1 className={`${styles.headline} ${isDarkMode ? styles.darkHeadline : ''}`}>Brew Your Most Productive Self.</h1>
 
-          <p className={styles.subtext}>
+          <p className={`${styles.subtext} ${isDarkMode ? styles.darkSubtext : ''}`}>
             Join 50,000+ professionals using BrewTask to cultivate deep focus and master their daily rituals.
           </p>
 
           <div className={styles.proofRow}>
-            <div className={styles.testimonialCard}>
+            <div className={`${styles.testimonialCard} ${isDarkMode ? styles.darkTestimonialCard : ''}`}>
               <div className={styles.avatars}>
-                <span className={styles.avatar} style={{ background: '#f3ece2' }} />
-                <span className={styles.avatar} style={{ background: '#cfc6bb' }} />
-                <span className={styles.avatar} style={{ background: '#e8d9c4' }} />
+                <span className={`${styles.avatar} ${isDarkMode ? styles.darkAvatar : ''}`} style={{ background: '#f3ece2' }} />
+                <span className={`${styles.avatar} ${isDarkMode ? styles.darkAvatar : ''}`} style={{ background: '#cfc6bb' }} />
+                <span className={`${styles.avatar} ${isDarkMode ? styles.darkAvatar : ''}`} style={{ background: '#e8d9c4' }} />
               </div>
-              <p className={styles.quote}>&quot;The only task manager that actually feels calm.&quot;</p>
+              <p className={`${styles.quote} ${isDarkMode ? styles.darkQuote : ''}`}>&quot;The only task manager that actually feels calm.&quot;</p>
             </div>
 
-            <div className={styles.ratingCard}>
-              <p className={styles.ratingScore}>4.9/5</p>
-              <p className={styles.ratingLabel}>App Store Rating</p>
+            <div className={`${styles.ratingCard} ${isDarkMode ? styles.darkRatingCard : ''}`}>
+              <p className={`${styles.ratingScore} ${isDarkMode ? styles.darkRatingScore : ''}`}>4.9/5</p>
+              <p className={`${styles.ratingLabel} ${isDarkMode ? styles.darkRatingLabel : ''}`}>App Store Rating</p>
             </div>
           </div>
         </div>
 
-        <form className={styles.card} onSubmit={handleSubmit}>
+        <form className={`${styles.card} ${isDarkMode ? styles.darkCard : ''}`} onSubmit={handleSubmit}>
           <div className={styles.cardHeader}>
-            <h2 className={styles.cardTitle}>Create Account</h2>
-            <p className={styles.cardSubtext}>Start your journey toward intentional productivity today.</p>
+            <h2 className={`${styles.cardTitle} ${isDarkMode ? styles.darkCardTitle : ''}`}>Create Account</h2>
+            <p className={`${styles.cardSubtext} ${isDarkMode ? styles.darkCardSubtext : ''}`}>Start your journey toward intentional productivity today.</p>
           </div>
 
-          {error && <div className={styles.errorMessage}>{error}</div>}
+          {error && <div className={`${styles.errorMessage} ${isDarkMode ? styles.darkErrorMessage : ''}`}>{error}</div>}
 
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor="name">Full name</label>
-            <div className={styles.inputWrap}>
-              <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <div className={`${styles.field} ${isDarkMode ? styles.darkField : ''}`}>
+            <label className={`${styles.label} ${isDarkMode ? styles.darkLabel : ''}`} htmlFor="name">Full name</label>
+            <div className={`${styles.inputWrap} ${isDarkMode ? styles.darkInputWrap : ''}`}>
+              <svg className={`${styles.icon} ${isDarkMode ? styles.darkIcon : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
                 <path d="M4 20c0-4 3.58-6 8-6s8 2 8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
@@ -133,14 +135,15 @@ export default function Signup() {
                 value={form.name}
                 onChange={handleChange}
                 required
+                className={isDarkMode ? styles.darkInput : ''}
               />
             </div>
           </div>
 
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor="email">Email address</label>
-            <div className={styles.inputWrap}>
-              <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <div className={`${styles.field} ${isDarkMode ? styles.darkField : ''}`}>
+            <label className={`${styles.label} ${isDarkMode ? styles.darkLabel : ''}`} htmlFor="email">Email address</label>
+            <div className={`${styles.inputWrap} ${isDarkMode ? styles.darkInputWrap : ''}`}>
+              <svg className={`${styles.icon} ${isDarkMode ? styles.darkIcon : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" strokeWidth="2" />
                 <path d="M2 6l10 7 10-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -152,15 +155,16 @@ export default function Signup() {
                 value={form.email}
                 onChange={handleChange}
                 required
+                className={isDarkMode ? styles.darkInput : ''}
               />
             </div>
           </div>
 
           <div className={styles.fieldRow}>
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="password">Password</label>
-              <div className={styles.inputWrap}>
-                <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <div className={`${styles.field} ${isDarkMode ? styles.darkField : ''}`}>
+              <label className={`${styles.label} ${isDarkMode ? styles.darkLabel : ''}`} htmlFor="password">Password</label>
+              <div className={`${styles.inputWrap} ${isDarkMode ? styles.darkInputWrap : ''}`}>
+                <svg className={`${styles.icon} ${isDarkMode ? styles.darkIcon : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <rect x="4" y="10" width="16" height="10" rx="2" stroke="currentColor" strokeWidth="2" />
                   <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2" />
                 </svg>
@@ -172,10 +176,11 @@ export default function Signup() {
                   value={form.password}
                   onChange={handleChange}
                   required
+                  className={isDarkMode ? styles.darkInput : ''}
                 />
                 <button
                   type="button"
-                  className={styles.eyeButton}
+                  className={`${styles.eyeButton} ${isDarkMode ? styles.darkEyeButton : ''}`}
                   onClick={() => setShowPassword((s) => !s)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
@@ -195,10 +200,10 @@ export default function Signup() {
               </div>
             </div>
 
-            <div className={styles.field}>
-              <label className={styles.label} htmlFor="confirmPassword">Confirm</label>
-              <div className={styles.inputWrap}>
-                <svg className={styles.icon} width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <div className={`${styles.field} ${isDarkMode ? styles.darkField : ''}`}>
+              <label className={`${styles.label} ${isDarkMode ? styles.darkLabel : ''}`} htmlFor="confirmPassword">Confirm</label>
+              <div className={`${styles.inputWrap} ${isDarkMode ? styles.darkInputWrap : ''}`}>
+                <svg className={`${styles.icon} ${isDarkMode ? styles.darkIcon : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none">
                   <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                   <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -210,10 +215,11 @@ export default function Signup() {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   required
+                  className={isDarkMode ? styles.darkInput : ''}
                 />
                 <button
                   type="button"
-                  className={styles.eyeButton}
+                  className={`${styles.eyeButton} ${isDarkMode ? styles.darkEyeButton : ''}`}
                   onClick={() => setShowConfirmPassword((s) => !s)}
                   aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                 >
@@ -234,21 +240,21 @@ export default function Signup() {
             </div>
           </div>
 
-          <label className={styles.checkboxRow}>
+          <label className={`${styles.checkboxRow} ${isDarkMode ? styles.darkCheckboxRow : ''}`}>
             <span
-              className={`${styles.customCheckbox} ${agree ? styles.checked : ''}`}
+              className={`${styles.customCheckbox} ${agree ? styles.checked : ''} ${isDarkMode ? styles.darkCustomCheckbox : ''}`}
               onClick={() => setAgree((a) => !a)}
               role="checkbox"
               aria-checked={agree}
               tabIndex={0}
             />
             <span>
-              I agree to the <Link to="/terms" className={styles.inlineLink}>Terms of Service</Link> and{' '}
-              <Link to="/privacy" className={styles.inlineLink}>Privacy Policy</Link>.
+              I agree to the <Link to="/terms" className={`${styles.inlineLink} ${isDarkMode ? styles.darkInlineLink : ''}`}>Terms of Service</Link> and{' '}
+              <Link to="/privacy" className={`${styles.inlineLink} ${isDarkMode ? styles.darkInlineLink : ''}`}>Privacy Policy</Link>.
             </span>
           </label>
 
-          <button type="submit" className={styles.submitButton} disabled={isLoading}>
+          <button type="submit" className={`${styles.submitButton} ${isDarkMode ? styles.darkSubmitButton : ''}`} disabled={isLoading}>
             {isLoading ? (
               <>
                 <span className={styles.spinner} />
@@ -264,14 +270,14 @@ export default function Signup() {
             )}
           </button>
 
-          <div className={styles.divider}>
+          <div className={`${styles.divider} ${isDarkMode ? styles.darkDivider : ''}`}>
             <span />
             <p>or join with</p>
             <span />
           </div>
 
-          <div className={styles.oauthRow}>
-            <button type="button" className={styles.oauthButton}>
+          <div className={`${styles.oauthRow} ${isDarkMode ? styles.darkOauthRow : ''}`}>
+            <button type="button" className={`${styles.oauthButton} ${isDarkMode ? styles.darkOauthButton : ''}`}>
               <svg width="16" height="16" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.19-2.27H12v4.51h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.87c2.27-2.09 3.55-5.17 3.55-8.87z" />
                 <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.3v3.09A12 12 0 0 0 12 24z" />
@@ -280,7 +286,7 @@ export default function Signup() {
               </svg>
               Google
             </button>
-            <button type="button" className={styles.oauthButton}>
+            <button type="button" className={`${styles.oauthButton} ${isDarkMode ? styles.darkOauthButton : ''}`}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16.365 1.43c0 1.14-.462 2.24-1.216 3.03-.83.87-2.15 1.53-3.24 1.44-.15-1.1.42-2.26 1.19-3.02.83-.85 2.28-1.5 3.27-1.45zM20.6 17.24c-.53 1.22-.78 1.77-1.46 2.85-.95 1.5-2.29 3.37-3.95 3.39-1.47.02-1.85-.96-3.85-.95-2 .01-2.42.97-3.9.95-1.66-.02-2.93-1.71-3.88-3.2-2.68-4.2-2.96-9.13-1.31-11.75 1.17-1.87 3.02-2.97 4.76-2.97 1.77 0 2.89.98 4.35.98 1.42 0 2.29-.98 4.35-.98 1.55 0 3.2.85 4.37 2.31-3.84 2.11-3.22 7.61.52 9.37z" />
               </svg>
@@ -288,8 +294,8 @@ export default function Signup() {
             </button>
           </div>
 
-          <p className={styles.loginPrompt}>
-            Already part of the community? <Link to="/login" className={styles.loginLink}>Log in here</Link>
+          <p className={`${styles.loginPrompt} ${isDarkMode ? styles.darkLoginPrompt : ''}`}>
+            Already part of the community? <Link to="/login" className={`${styles.loginLink} ${isDarkMode ? styles.darkLoginLink : ''}`}>Log in here</Link>
           </p>
         </form>
       </div>

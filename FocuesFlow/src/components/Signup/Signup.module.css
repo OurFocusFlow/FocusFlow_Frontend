@@ -454,8 +454,8 @@
 
   .floatButton {
     padding: 10px 12px;
-    border-radius: 50%;
-    width: 44px;
+    border-radius: 40px;
+    width: 125px;
     height: 44px;
     justify-content: center;
   }
@@ -615,5 +615,331 @@
   .eyeButton,
   .eyeButton:hover {
     transition: none;
+  }
+}
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Page Dark Mode */
+.darkPage {
+  background: #000000 !important;
+}
+
+/* Blob Dark Mode */
+.darkBlobTopLeft {
+  background: radial-gradient(circle, rgba(251, 188, 0, 0.08) 0%, rgba(251, 188, 0, 0) 70%) !important;
+  opacity: 0.5 !important;
+}
+
+/* Promo Dark Mode */
+.darkPromo {
+  color: #FFFFFF !important;
+}
+
+.darkBadge {
+  background: rgba(251, 188, 0, 0.15) !important;
+  color: #FBBC00 !important;
+}
+
+.darkBadge svg {
+  stroke: #FBBC00 !important;
+}
+
+.darkHeadline {
+  color: #FFFFFF !important;
+}
+
+.darkSubtext {
+  color: #6A6255 !important;
+}
+
+.darkTestimonialCard {
+  background: #0D0D0D !important;
+  border: 1px solid #383B40 !important;
+}
+
+.darkAvatar {
+  border-color: #0D0D0D !important;
+}
+
+.darkQuote {
+  color: #6A6255 !important;
+}
+
+.darkRatingCard {
+  background: #1A1A1A !important;
+}
+
+.darkRatingScore {
+  color: #FBBC00 !important;
+}
+
+.darkRatingLabel {
+  color: #6A6255 !important;
+}
+
+/* Card Dark Mode */
+.darkCard {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  box-shadow: 0 30px 60px -25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.darkCardTitle {
+  color: #FFFFFF !important;
+}
+
+.darkCardSubtext {
+  color: #6A6255 !important;
+}
+
+/* Field Dark Mode */
+.darkField {
+  color: #FFFFFF !important;
+}
+
+.darkLabel {
+  color: #6A6255 !important;
+}
+
+.darkInputWrap {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+}
+
+.darkInputWrap:focus-within {
+  border-color: #FBBC00 !important;
+}
+
+.darkIcon {
+  color: #6A6255 !important;
+}
+
+.darkInput {
+  color: #FFFFFF !important;
+  background: #0D0D0D !important;
+}
+
+.darkInput::placeholder {
+  color: #857B6B !important;
+}
+
+/* Eye Button Dark Mode */
+.darkEyeButton {
+  color: #6A6255 !important;
+}
+
+.darkEyeButton:hover {
+  color: #FFFFFF !important;
+}
+
+/* Checkbox Dark Mode */
+.darkCheckboxRow {
+  color: #6A6255 !important;
+}
+
+.darkCustomCheckbox {
+  border-color: #383B40 !important;
+}
+
+.darkCustomCheckbox.checked {
+  background: #FBBC00 !important;
+  border-color: #FBBC00 !important;
+}
+
+.darkInlineLink {
+  color: #FBBC00 !important;
+}
+
+/* Submit Button Dark Mode */
+.darkSubmitButton {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSubmitButton:hover:not(:disabled) {
+  background: #E2A900 !important;
+}
+
+.darkSubmitButton svg {
+  stroke: #000000 !important;
+}
+
+/* Divider Dark Mode */
+.darkDivider span {
+  background: #383B40 !important;
+}
+
+.darkDivider p {
+  color: #6A6255 !important;
+}
+
+/* OAuth Buttons Dark Mode */
+.darkOauthButton {
+  color: #6A6255 !important;
+}
+
+.darkOauthButton:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* Login Prompt Dark Mode */
+.darkLoginPrompt {
+  color: #6A6255 !important;
+}
+
+.darkLoginLink {
+  color: #FBBC00 !important;
+}
+
+/* Error Message Dark Mode */
+.darkErrorMessage {
+  background: rgba(239, 68, 68, 0.08) !important;
+  border-color: rgba(239, 68, 68, 0.2) !important;
+  color: #ef4444 !important;
+}
+
+/* ==================== FLOATING BACK BUTTON - DARK MODE ==================== */
+
+/* Floating Button Dark Mode - Desktop */
+.darkFloatButton {
+  background: rgba(3, 2, 2, 0.9) !important;
+  border: 1.5px solid #383B40 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  padding: 10px 18px !important;
+  gap: 8px !important;
+  font-size: 14px !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  z-index: 100 !important;
+}
+
+.darkFloatButton:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+  border-color: #FBBC00 !important;
+  color: #FBBC00 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 24px rgba(251, 188, 0, 0.1) !important;
+}
+
+.darkFloatButton svg {
+  stroke: #6A6255 !important;
+  transition: stroke 0.3s ease !important;
+}
+
+.darkFloatButton:hover svg {
+  stroke: #FBBC00 !important;
+}
+
+/* Floating Button Dark Mode - Tablet */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .darkFloatButton {
+    top: 20px !important;
+    right: 24px !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Floating Button Dark Mode - Mobile */
+@media (max-width: 768px) {
+  .darkFloatButton {
+    top: 16px !important;
+    right: 16px !important;
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    border-radius: 10px !important;
+    gap: 6px !important;
+    background: rgba(3, 2, 2, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Floating Button Dark Mode - Small Mobile */
+@media (max-width: 480px) {
+  .darkFloatButton {
+    top: 12px !important;
+    right: 12px !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    gap: 4px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    justify-content: center !important;
+  }
+  
+  .darkFloatButton span {
+    display: none !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  .darkFloatButton {
+    border-radius: 40px !important;
+    width: 125px !important;
+    height: 40px !important;
+    padding: 0 !important;
+  }
+}
+
+/* Floating Button Dark Mode - Extra Small Mobile */
+@media (max-width: 380px) {
+  .darkFloatButton {
+    top: 10px !important;
+    right: 10px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .darkFloatButton svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Spinner Dark Mode */
+.darkSubmitButton .spinner {
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  border-top-color: #000000 !important;
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .page,
+  .floatButton,
+  .darkPage,
+  .darkFloatButton {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .floatButton:hover,
+  .darkFloatButton:hover {
+    transform: none !important;
+  }
+  
+  .spinner {
+    animation: none !important;
   }
 }
