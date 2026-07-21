@@ -1,4 +1,4 @@
-// Settings.jsx - Updated with system theme support
+// Settings.jsx - Updated with mode-specific accent colors and reset functionality
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Box, Typography, Select, MenuItem, Button, Slider, Modal, TextField, IconButton, InputAdornment } from '@mui/material';
@@ -19,9 +19,19 @@ import {
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Settings.module.css';
 
-const ACCENT_COLORS = ['#FBBC00', '#E2A900', '#885210', '#4B3832', '#C17A3F', '#2E6FE8'];
+// Dark mode accent colors
+const DARK_MODE_COLORS = [
+  { hex: '#FBBC00', name: 'Amber' },
+  { hex: '#2E6FE8', name: 'Blue' },
+];
+
+// Light mode accent colors
+const LIGHT_MODE_COLORS = [
+  { hex: '#885210', name: 'Brown' }
+];
 
 // ==================== CUSTOM SWITCH COMPONENT ====================
 const CustomSwitch = ({ 
@@ -78,6 +88,7 @@ const SettingsRow = ({ label, description, control, isLast, icon: rowIcon, isDar
 const Settings = () => {
   const location = useLocation();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { accentColor, setAccentColor, LIGHT_MODE_DEFAULT, DARK_MODE_DEFAULT } = useAccentColor();
   
   // Check system preference
   const getSystemPreference = () => {
@@ -94,7 +105,6 @@ const Settings = () => {
   };
 
   const [themeMode, setThemeMode] = useState(getInitialThemeMode());
-  const [accentColor, setAccentColor] = useState(ACCENT_COLORS[0]);
   const [language, setLanguage] = useState('en-US');
   const [desktopAlerts, setDesktopAlerts] = useState(true);
   const [dailySummary, setDailySummary] = useState(false);
@@ -131,13 +141,19 @@ const Settings = () => {
         const shouldBeDark = systemPref === 'dark';
         if (isDarkMode !== shouldBeDark) {
           toggleDarkMode();
+          // Reset accent color based on system preference
+          if (systemPref === 'dark') {
+            setAccentColor(DARK_MODE_DEFAULT);
+          } else {
+            setAccentColor(LIGHT_MODE_DEFAULT);
+          }
         }
       }
     };
     
     mediaQuery.addEventListener('change', handleSystemChange);
     return () => mediaQuery.removeEventListener('change', handleSystemChange);
-  }, [themeMode, isDarkMode, toggleDarkMode]);
+  }, [themeMode, isDarkMode, toggleDarkMode, setAccentColor, DARK_MODE_DEFAULT, LIGHT_MODE_DEFAULT]);
 
   // Apply theme based on mode
   useEffect(() => {
@@ -161,28 +177,54 @@ const Settings = () => {
       const shouldBeDark = systemPref === 'dark';
       if (isDarkMode !== shouldBeDark) {
         toggleDarkMode();
+        // Reset accent color based on system preference
+        if (systemPref === 'dark') {
+          setAccentColor(DARK_MODE_DEFAULT);
+        } else {
+          setAccentColor(LIGHT_MODE_DEFAULT);
+        }
       }
     } else if (themeMode === 'dark') {
       if (!isDarkMode) {
         toggleDarkMode();
+        // Reset to dark default (#FBBC00) when switching to dark mode
+        setAccentColor(DARK_MODE_DEFAULT);
       }
     } else if (themeMode === 'light') {
       if (isDarkMode) {
         toggleDarkMode();
+        // Reset to light default (#885210) when switching to light mode
+        setAccentColor(LIGHT_MODE_DEFAULT);
       }
     }
-  }, [themeMode]);
+  }, [themeMode, isDarkMode, toggleDarkMode, setAccentColor, DARK_MODE_DEFAULT, LIGHT_MODE_DEFAULT]);
 
   const handleThemeChange = (mode) => {
     setThemeMode(mode);
+    
+    // Immediately set accent color based on the selected mode
+    if (mode === 'light') {
+      setAccentColor(LIGHT_MODE_DEFAULT); // #885210
+    } else if (mode === 'dark') {
+      setAccentColor(DARK_MODE_DEFAULT); // #FBBC00
+    } else if (mode === 'system') {
+      const systemPref = getSystemPreference();
+      if (systemPref === 'dark') {
+        setAccentColor(DARK_MODE_DEFAULT); // #FBBC00
+      } else {
+        setAccentColor(LIGHT_MODE_DEFAULT); // #885210
+      }
+    }
   };
 
-  // Get the actual current mode for display
-  const getCurrentDisplayMode = () => {
-    if (themeMode === 'system') {
-      return getSystemPreference();
-    }
-    return themeMode;
+  // Handle accent color selection
+  const handleAccentColorChange = (color) => {
+    setAccentColor(color);
+  };
+
+  // Get available colors based on current mode
+  const getAvailableColors = () => {
+    return isDarkMode ? DARK_MODE_COLORS : LIGHT_MODE_COLORS;
   };
 
   const handleDeleteAccount = () => {
@@ -286,13 +328,16 @@ const Settings = () => {
   const handleFontSizeChange = (event, newValue) => {
     setFontSize(newValue);
   };
-  
+
+  // Get display theme for active state
   const getActiveTheme = () => {
     if (themeMode === 'system') {
       return getSystemPreference();
     }
     return themeMode;
   };
+
+  const availableColors = getAvailableColors();
 
   return (
     <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
@@ -314,7 +359,7 @@ const Settings = () => {
 
         {/* Appearance */}
         <div ref={el => sectionRefs.current['appearance'] = el}>
-          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance" isDarkMode={isDarkMode} >
+          <SettingsSection id="appearance" icon={<PaletteIcon />} title="Appearance" isDarkMode={isDarkMode}>
             <SettingsRow
               label="Interface Theme"
               description="Choose your preferred visual style"
@@ -347,16 +392,17 @@ const Settings = () => {
             />
             <SettingsRow
               label="Accent Color"
-              description="Select your primary focus highlight color"
+              description={isDarkMode ? "Choose your dark mode accent color" : "Choose your light mode accent color"}
               isDarkMode={isDarkMode}
               control={
                 <Box className={styles.swatchRow}>
-                  {ACCENT_COLORS.map((color) => (
+                  {availableColors.map((color) => (
                     <Box
-                      key={color}
-                      className={`${styles.swatch} ${accentColor === color ? styles.swatchActive : ''} ${isDarkMode ? styles.darkSwatch : ''}`}
-                      style={{ backgroundColor: color }}
-                      onClick={() => setAccentColor(color)}
+                      key={color.hex}
+                      className={`${styles.swatch} ${accentColor === color.hex ? styles.swatchActive : ''} ${isDarkMode ? styles.darkSwatch : styles.lightSwatch}`}
+                      style={{ backgroundColor: color.hex }}
+                      onClick={() => handleAccentColorChange(color.hex)}
+                      title={color.name}
                     />
                   ))}
                 </Box>
@@ -378,12 +424,12 @@ const Settings = () => {
                     step={1}
                     className={`${styles.fontSizeSlider} ${isDarkMode ? styles.darkFontSizeSlider : ''}`}
                     sx={{
-                      color: isDarkMode ? '#FBBC00' : '#885210',
+                      color: isDarkMode ? accentColor : '#885210',
                       '& .MuiSlider-thumb': {
-                        backgroundColor: isDarkMode ? '#FBBC00' : '#885210',
+                        backgroundColor: isDarkMode ? accentColor : '#885210',
                       },
                       '& .MuiSlider-track': {
-                        backgroundColor: isDarkMode ? '#FBBC00' : '#885210',
+                        backgroundColor: isDarkMode ? accentColor : '#885210',
                       },
                       '& .MuiSlider-rail': {
                         backgroundColor: isDarkMode ? '#383B40' : '#E6E2DF',
@@ -427,8 +473,20 @@ const Settings = () => {
                   <MenuItem value="en-US" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
                     🇺🇸 English (US)
                   </MenuItem>
+                  <MenuItem value="en-GB" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇬🇧 English (UK)
+                  </MenuItem>
                   <MenuItem value="ar-EG" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
                     🇪🇬 العربية
+                  </MenuItem>
+                  <MenuItem value="fr-FR" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇫🇷 Français
+                  </MenuItem>
+                  <MenuItem value="es-ES" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇪🇸 Español
+                  </MenuItem>
+                  <MenuItem value="de-DE" className={`${styles.menuItem} ${isDarkMode ? styles.darkMenuItem : ''}`}>
+                    🇩🇪 Deutsch
                   </MenuItem>
                 </Select>
               }

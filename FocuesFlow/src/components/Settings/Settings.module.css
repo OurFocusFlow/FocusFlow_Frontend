@@ -159,6 +159,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .sectionIcon svg {
@@ -297,7 +298,7 @@
   background: #FFFFFF;
 }
 
-/* ==================== SWATCH ROW ==================== */
+/* ==================== SWATCH ROW - LIGHT MODE FIXED TO #885210 ==================== */
 .swatchRow {
   display: flex;
   gap: 12px;
@@ -317,10 +318,16 @@
   transform: scale(1.15);
 }
 
+/* Light mode - always #885210 when selected */
 .swatchActive {
   border-color: #33231D;
   outline: 3px solid #FBEAD9;
   outline-offset: 3px;
+}
+
+/* Light mode - always use #885210 for checked state */
+.swatch[style*="background-color"] {
+  /* Keep original colors for swatches */
 }
 
 /* ==================== FONT SIZE CONTROL ==================== */
@@ -374,6 +381,10 @@
   font-weight: 500;
   color: #33231D;
   font-family: inherit;
+}
+
+.select :global(.MuiSelect-icon) {
+  color: #7E7471;
 }
 
 /* ==================== BUTTONS ==================== */
@@ -1409,19 +1420,50 @@
   background: #000000 !important;
 }
 
-/* Background Dark Mode */
+/* Background Dark Mode - ACCENT COLOR APPLIED */
 .darkSettingsBg {
   background: #000000 !important;
 }
 
 .darkSettingsBgGrid {
   background-image: 
-    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+    linear-gradient(rgba(var(--accent-color-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-color-rgb), 0.03) 1px, transparent 1px) !important;
 }
 
 .darkSettingsBgGlow {
-  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, transparent 70%) !important;
+}
+
+/* Dark Mode Orbs with ACCENT COLOR */
+[data-theme="dark"] .settings-bg-orb:nth-child(1) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.12) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  right: -100px;
+  filter: blur(80px);
+  opacity: 0.6 !important;
+}
+
+[data-theme="dark"] .settings-bg-orb:nth-child(2) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.08) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  filter: blur(80px);
+  opacity: 0.5 !important;
+}
+
+[data-theme="dark"] .settings-bg-orb:nth-child(3) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 350px;
+  height: 350px;
+  top: 40%;
+  left: 60%;
+  filter: blur(80px);
+  opacity: 0.4 !important;
 }
 
 /* Page Header Dark Mode */
@@ -1444,8 +1486,8 @@
 }
 
 .darkSectionIcon {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  color: var(--accent-color) !important;
 }
 
 .darkSectionTitle {
@@ -1504,35 +1546,40 @@
 
 .darkThemeOption.themeOptionActive {
   background: #1A1A1A !important;
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 .darkThemeOption.themeOptionActive:hover {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
   background: #1A1A1A !important;
 }
 
-/* Swatch Dark Mode */
+/* ==================== SWATCH ROW - ACCENT COLORS DARK MODE ==================== */
 .darkSwatch {
   border-color: transparent !important;
 }
 
 .darkSwatch.swatchActive {
-  border-color: #FBBC00 !important;
-  outline-color: rgba(251, 188, 0, 0.2) !important;
+  border-color: var(--accent-color) !important;
+  outline: 3px solid rgba(var(--accent-color-rgb), 0.3) !important;
+  outline-offset: 3px !important;
 }
 
-/* Font Size Dark Mode */
+.darkSwatch:hover {
+  transform: scale(1.15) !important;
+}
+
+/* ==================== FONT SIZE DARK MODE ==================== */
 .darkFontSizeLabel {
   color: #FFFFFF !important;
 }
 
 .darkFontSizeSlider {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
-/* Select Dark Mode */
+/* ==================== SELECT DARK MODE ==================== */
 .darkSelect {
   background: #0D0D0D !important;
 }
@@ -1546,11 +1593,11 @@
 }
 
 .darkSelect :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color) !important;
 }
 
 .darkSelect :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color) !important;
 }
 
 .darkSelect :global(.MuiSelect-select) {
@@ -1567,30 +1614,31 @@
 }
 
 .darkSelect :global(.MuiMenuItem-root:hover) {
-  background: rgba(251, 188, 0, 0.08) !important;
+  background: rgba(var(--accent-color-rgb), 0.08) !important;
 }
 
 .darkSelect :global(.MuiMenuItem-root.Mui-selected) {
-  background: rgba(251, 188, 0, 0.12) !important;
+  background: rgba(var(--accent-color-rgb), 0.12) !important;
 }
 
-/* Buttons Dark Mode */
+/* ==================== BUTTONS DARK MODE ==================== */
 .darkButton {
-  background: #FBBC00 !important;
+  background: var(--accent-color) !important;
   color: #000000 !important;
 }
 
 .darkButton:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color) !important;
+  opacity: 0.85;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(251, 188, 0, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(var(--accent-color-rgb), 0.3) !important;
 }
 
 .darkButton svg {
   color: #000000 !important;
 }
 
-/* Danger Zone Dark Mode */
+/* ==================== DANGER ZONE DARK MODE ==================== */
 .darkDangerSection {
   margin-top: 12px !important;
 }
@@ -1636,12 +1684,12 @@
   background: #dc2626 !important;
 }
 
-/* Save Section Dark Mode */
+/* ==================== SAVE SECTION DARK MODE ==================== */
 .darkSaveSection {
   border-top-color: #383B40 !important;
 }
 
-/* Delete Modal Dark Mode */
+/* ==================== DELETE MODAL DARK MODE ==================== */
 .darkDeleteModalBackdrop {
   background: rgba(0, 0, 0, 0.8) !important;
   backdrop-filter: blur(8px) !important;
@@ -1706,7 +1754,7 @@
   background: #dc2626 !important;
 }
 
-/* Password Modal Dark Mode */
+/* ==================== PASSWORD MODAL DARK MODE ==================== */
 .darkPasswordModalBackdrop {
   background: rgba(0, 0, 0, 0.8) !important;
   backdrop-filter: blur(8px) !important;
@@ -1723,11 +1771,11 @@
 }
 
 .darkPasswordModalIconWrapper {
-  background: rgba(251, 188, 0, 0.12) !important;
+  background: rgba(var(--accent-color-rgb), 0.12) !important;
 }
 
 .darkPasswordModalIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color) !important;
 }
 
 .darkPasswordModalTitle {
@@ -1764,8 +1812,8 @@
 }
 
 .darkPasswordInputWrap:focus-within {
-  border-color: #FBBC00 !important;
-  box-shadow: 0 0 0 3px rgba(251, 188, 0, 0.08) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.08) !important;
 }
 
 .darkPasswordInput {
@@ -1820,15 +1868,74 @@
 }
 
 .darkPasswordModalConfirm {
-  background: #FBBC00 !important;
+  background: var(--accent-color) !important;
   color: #000000 !important;
 }
 
 .darkPasswordModalConfirm:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color) !important;
+  opacity: 0.85;
 }
 
-/* Responsive Dark Mode */
+/* ==================== SWITCH DARK MODE - WITH ACCENT COLOR ==================== */
+[data-theme="dark"] .switch .switchSlider {
+  background: #383B40;
+  border-color: #383B40;
+}
+
+[data-theme="dark"] .switch .switchSlider::before {
+  background: #6A6255;
+}
+
+[data-theme="dark"] .switch:hover .switchSlider {
+  border-color: #6A6255;
+}
+
+[data-theme="dark"] .switch input:checked + .switchSlider {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+[data-theme="dark"] .switch input:checked + .switchSlider::before {
+  background: #FFFFFF;
+}
+
+[data-theme="dark"] .switch input:focus + .switchSlider {
+  box-shadow: 0 0 0 4px rgba(var(--accent-color-rgb), 0.3) !important;
+}
+
+[data-theme="dark"] .switch input:checked:active + .switchSlider::before {
+  transform: translateX(24px) scale(0.9);
+}
+
+[data-theme="dark"] .switch input:disabled + .switchSlider {
+  opacity: 0.4;
+}
+
+/* Switch with Label Dark Mode */
+[data-theme="dark"] .switchWrapper .switchLabel {
+  color: #FFFFFF !important;
+}
+
+/* Small switch dark mode */
+[data-theme="dark"] .switchSmall input:checked + .switchSlider::before {
+  transform: translateX(18px);
+}
+
+[data-theme="dark"] .switchSmall input:checked:active + .switchSlider::before {
+  transform: translateX(18px) scale(0.9);
+}
+
+/* Large switch dark mode */
+[data-theme="dark"] .switchLarge input:checked + .switchSlider::before {
+  transform: translateX(30px);
+}
+
+[data-theme="dark"] .switchLarge input:checked:active + .switchSlider::before {
+  transform: translateX(30px) scale(0.9);
+}
+
+/* ==================== RESPONSIVE DARK MODE ==================== */
 @media (max-width: 768px) {
   .darkRow {
     padding: 18px 20px !important;
@@ -1902,7 +2009,7 @@
   }
 }
 
-/* Accessibility - Reduced Motion */
+/* ==================== ACCESSIBILITY - REDUCED MOTION ==================== */
 @media (prefers-reduced-motion: reduce) {
   .darkPage,
   .darkSectionCard,
@@ -1915,6 +2022,86 @@
   .darkPasswordModalConfirm:hover {
     transform: none !important;
   }
+}
+
+/* ==================== SWATCH ROW ==================== */
+.swatchRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.25s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.swatch:hover {
+  transform: scale(1.15);
+}
+
+/* Light mode swatch active */
+.lightSwatch.swatchActive {
+  border-color: #33231D;
+  outline: 3px solid #FBEAD9;
+  outline-offset: 3px;
+}
+
+/* Dark mode swatch active */
+.darkSwatch.swatchActive {
+  border-color: var(--accent-color) !important;
+  outline: 3px solid rgba(var(--accent-color-rgb), 0.3) !important;
+  outline-offset: 3px !important;
+}
+
+/* ==================== DARK MODE BACKGROUND ORBS ==================== */
+[data-theme="dark"] .settings-bg-orb:nth-child(1) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.12) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 500px;
+  height: 500px;
+  top: -150px;
+  right: -100px;
+  filter: blur(80px);
+  opacity: 0.6 !important;
+}
+
+[data-theme="dark"] .settings-bg-orb:nth-child(2) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.08) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 400px;
+  height: 400px;
+  bottom: -100px;
+  left: -100px;
+  filter: blur(80px);
+  opacity: 0.5 !important;
+}
+
+[data-theme="dark"] .settings-bg-orb:nth-child(3) {
+  background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.06) 0%, rgba(var(--accent-color-rgb), 0) 70%) !important;
+  width: 350px;
+  height: 350px;
+  top: 40%;
+  left: 60%;
+  filter: blur(80px);
+  opacity: 0.4 !important;
+}
+
+/* Light mode background orbs - fixed colors */
+.settings-bg-orb:nth-child(1) {
+  background: rgba(136, 82, 16, 0.15);
+}
+
+.settings-bg-orb:nth-child(2) {
+  background: rgba(75, 56, 50, 0.08);
+}
+
+.settings-bg-orb:nth-child(3) {
+  background: rgba(253, 181, 108, 0.08);
 }
 
 /* ==================== SELECT MENU ITEMS ==================== */
@@ -1974,94 +2161,22 @@
 }
 
 .darkMenuItem:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-color-rgb), 0.08) !important;
+  color: var(--accent-color) !important;
 }
 
 .darkMenuItem.Mui-selected {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-color-rgb), 0.12) !important;
+  color: var(--accent-color) !important;
 }
 
 .darkMenuItem.Mui-selected:hover {
-  background: rgba(251, 188, 0, 0.16) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-color-rgb), 0.16) !important;
+  color: var(--accent-color) !important;
 }
 
 .darkMenuItem .MuiListItemIcon-root {
   color: #6A6255 !important;
-}
-
-/* ==================== SELECT - DARK MODE (Update existing) ==================== */
-
-.darkSelect {
-  background: #0D0D0D !important;
-}
-
-.darkSelect :global(.MuiOutlinedInput-root) {
-  background: #0D0D0D !important;
-}
-
-.darkSelect :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
-  border-color: #383B40 !important;
-}
-
-.darkSelect :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
-  border-color: #FBBC00 !important;
-}
-
-.darkSelect :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
-  border-color: #FBBC00 !important;
-  border-width: 2px !important;
-}
-
-.darkSelect :global(.MuiSelect-select) {
-  color: #FFFFFF !important;
-}
-
-.darkSelect :global(.MuiSelect-icon) {
-  color: #6A6255 !important;
-}
-
-.darkSelect :global(.MuiSvgIcon-root) {
-  color: #6A6255 !important;
-}
-
-/* Select - Light Mode (ensure consistency) */
-.select {
-  min-width: 180px;
-  background: #FAF5F2;
-  border-radius: 10px;
-  font-size: 14px;
-  font-family: inherit;
-}
-
-.select :global(.MuiOutlinedInput-root) {
-  border-radius: 10px;
-  font-family: inherit;
-}
-
-.select :global(.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline) {
-  border-color: #E6E2DF;
-}
-
-.select :global(.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline) {
-  border-color: #885210;
-}
-
-.select :global(.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline) {
-  border-color: #885210;
-  border-width: 2px;
-}
-
-.select :global(.MuiSelect-select) {
-  font-weight: 500;
-  color: #33231D;
-  font-family: inherit;
-}
-
-.select :global(.MuiSelect-icon) {
-  color: #7E7471;
 }
 
 /* Scrollbar for menu */
@@ -2083,11 +2198,11 @@
 }
 
 .darkMenuPaper::-webkit-scrollbar-thumb {
-  background: rgba(251, 188, 0, 0.15);
+  background: rgba(var(--accent-color-rgb), 0.15);
 }
 
 .darkMenuPaper::-webkit-scrollbar-thumb:hover {
-  background: rgba(251, 188, 0, 0.3);
+  background: rgba(var(--accent-color-rgb), 0.3);
 }
 
 /* ==================== RESPONSIVE SELECT ==================== */
