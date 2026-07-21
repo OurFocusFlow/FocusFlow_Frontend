@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useDarkMode } from '../Context/DarkModeContext';
 import styles from './CreateTaskModal.module.css';
 
 const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
+  const { isDarkMode } = useDarkMode();
   const [taskData, setTaskData] = useState({
     title: '',
     dueDate: '',
@@ -41,7 +43,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     // Validate due date is not in the past
     if (taskData.dueDate && taskData.dueDate < today) {
       if (onSave) {
-        // Convert category string to array for compatibility
         const taskToSave = {
           ...taskData,
           categories: [taskData.category]
@@ -52,7 +53,6 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     }
     
     if (onSave) {
-      // Convert category string to array for compatibility
       const taskToSave = {
         ...taskData,
         categories: [taskData.category]
@@ -68,23 +68,26 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   };
 
   return (
-    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
-      <div className={styles.modalContainer}>
+    <div 
+      className={`${styles.modalOverlay} ${isDarkMode ? styles.darkModalOverlay : ''}`} 
+      onClick={handleOverlayClick}
+    >
+      <div className={`${styles.modalContainer} ${isDarkMode ? styles.darkModalContainer : ''}`}>
         {/* Modal Header */}
-        <div className={styles.modalHeader}>
+        <div className={`${styles.modalHeader} ${isDarkMode ? styles.darkModalHeader : ''}`}>
           <div className={styles.modalHeaderLeft}>
-            <div className={styles.modalIconWrapper}>
+            <div className={`${styles.modalIconWrapper} ${isDarkMode ? styles.darkModalIconWrapper : ''}`}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12h14" strokeLinecap="round" />
               </svg>
             </div>
             <div>
-              <h2 className={styles.modalTitle}>Create New Task</h2>
-              <p className={styles.modalSubtitle}>Set your focus and define the objective.</p>
+              <h2 className={`${styles.modalTitle} ${isDarkMode ? styles.darkModalTitle : ''}`}>Create New Task</h2>
+              <p className={`${styles.modalSubtitle} ${isDarkMode ? styles.darkModalSubtitle : ''}`}>Set your focus and define the objective.</p>
             </div>
           </div>
           <button 
-            className={styles.modalCloseBtn} 
+            className={`${styles.modalCloseBtn} ${isDarkMode ? styles.darkModalCloseBtn : ''}`} 
             onClick={onClose}
             disabled={isSubmitting}
           >
@@ -94,10 +97,10 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className={styles.modalForm}>
+        <form onSubmit={handleSubmit} className={`${styles.modalForm} ${isDarkMode ? styles.darkModalForm : ''}`}>
           {/* Task Title */}
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>
+            <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
               Task Title
               <span className={styles.requiredStar}>*</span>
             </label>
@@ -107,7 +110,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               value={taskData.title}
               onChange={handleInputChange}
               placeholder="e.g. Design System Documentation"
-              className={styles.formInput}
+              className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ''}`}
               disabled={isSubmitting}
             />
           </div>
@@ -115,7 +118,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           {/* Due Date & Priority */}
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
                 Due Date
                 <span className={styles.requiredStar}>*</span>
               </label>
@@ -124,13 +127,13 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
                 name="dueDate"
                 value={taskData.dueDate}
                 onChange={handleInputChange}
-                className={styles.formInput}
+                className={`${styles.formInput} ${isDarkMode ? styles.darkFormInput : ''}`}
                 disabled={isSubmitting}
                 min={today}
               />
             </div>
             <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Priority</label>
+              <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Priority</label>
               <div className={styles.priorityGroup}>
                 {['Low', 'Medium', 'High'].map((priority) => (
                   <button
@@ -138,7 +141,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
                     type="button"
                     className={`${styles.priorityBtn} ${
                       taskData.priority === priority ? styles.priorityBtnActive : ''
-                    } ${styles[`priorityBtn${priority}`]}`}
+                    } ${styles[`priorityBtn${priority}`]} ${isDarkMode ? styles.darkPriorityBtn : ''}`}
                     onClick={() => handlePrioritySelect(priority)}
                     disabled={isSubmitting}
                   >
@@ -151,7 +154,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
           {/* Category - Select Dropdown */}
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>
+            <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
               Category
               <span className={styles.requiredStar}>*</span>
             </label>
@@ -159,7 +162,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               name="category"
               value={taskData.category}
               onChange={handleInputChange}
-              className={styles.formSelect}
+              className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ''}`}
               disabled={isSubmitting}
             >
               {categoryOptions.map((category) => (
@@ -172,7 +175,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
           {/* Description */}
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>
+            <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
               Description
               <span className={styles.requiredStar}>*</span>
             </label>
@@ -181,7 +184,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               value={taskData.description}
               onChange={handleInputChange}
               placeholder="Briefly describe the task goals and deliverables..."
-              className={styles.formTextarea}
+              className={`${styles.formTextarea} ${isDarkMode ? styles.darkFormTextarea : ''}`}
               rows="4"
               disabled={isSubmitting}
             />
@@ -189,9 +192,9 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
           {/* File Upload */}
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>Attachments</label>
+            <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Attachments</label>
             <div 
-              className={`${styles.dropZone} ${isDragging ? styles.dropZoneDragging : ''}`}
+              className={`${styles.dropZone} ${isDragging ? styles.dropZoneDragging : ''} ${isDarkMode ? styles.darkDropZone : ''}`}
               onDragEnter={() => setIsDragging(true)}
               onDragLeave={() => setIsDragging(false)}
               onDragOver={(e) => e.preventDefault()}
@@ -204,26 +207,26 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               }}
             >
               <div className={styles.dropZoneContent}>
-                <div className={styles.dropZoneIcon}>
+                <div className={`${styles.dropZoneIcon} ${isDarkMode ? styles.darkDropZoneIcon : ''}`}>
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M21 12.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6.5" strokeLinecap="round" />
                     <path d="M15.5 3H21v5.5M11 13l9-9" strokeLinecap="round" />
                   </svg>
                 </div>
-                <p className={styles.dropZoneText}>
-                  Drop relevant assets here or <span className={styles.dropZoneLink}>browse</span>
+                <p className={`${styles.dropZoneText} ${isDarkMode ? styles.darkDropZoneText : ''}`}>
+                  Drop relevant assets here or <span className={`${styles.dropZoneLink} ${isDarkMode ? styles.darkDropZoneLink : ''}`}>browse</span>
                 </p>
-                <p className={styles.dropZoneSubtext}>PNG, JPG, PDF up to 10MB</p>
+                <p className={`${styles.dropZoneSubtext} ${isDarkMode ? styles.darkDropZoneSubtext : ''}`}>PNG, JPG, PDF up to 10MB</p>
               </div>
               <input type="file" className={styles.dropZoneInput} multiple disabled={isSubmitting} />
             </div>
           </div>
 
           {/* Modal Footer */}
-          <div className={styles.modalFooter}>
+          <div className={`${styles.modalFooter} ${isDarkMode ? styles.darkModalFooter : ''}`}>
             <button 
               type="button" 
-              className={styles.cancelBtn} 
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ''}`} 
               onClick={onClose}
               disabled={isSubmitting}
             >
@@ -231,7 +234,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
             </button>
             <button 
               type="submit" 
-              className={styles.saveBtn}
+              className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ''}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? (

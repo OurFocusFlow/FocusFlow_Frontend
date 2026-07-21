@@ -704,3 +704,297 @@
   color: var(--color-dark-brown, #33231D);
   background: var(--color-cream-light, #FDF8F5);
 }
+
+/* ==================== DARK MODE STYLES ==================== */
+
+/* Modal Overlay Dark Mode */
+.darkModalOverlay {
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Modal Container Dark Mode */
+.darkModalContainer {
+  background: #030202 !important;
+  border: 1px solid #383B40 !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Modal Header Dark Mode */
+.darkModalHeader {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom: 1px solid #383B40 !important;
+}
+
+.darkModalIconWrapper {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkModalIconWrapper svg {
+  stroke: #000000 !important;
+}
+
+.darkModalTitle {
+  color: #FFFFFF !important;
+}
+
+.darkModalSubtitle {
+  color: #6A6255 !important;
+}
+
+.darkModalCloseBtn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #6A6255 !important;
+}
+
+.darkModalCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+/* Modal Form Dark Mode */
+.darkModalForm {
+  background: #030202 !important;
+}
+
+/* Form Labels Dark Mode */
+.darkFormLabel {
+  color: #6A6255 !important;
+}
+
+/* Form Inputs Dark Mode */
+.darkFormInput {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormInput:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormInput::placeholder {
+  color: #857B6B !important;
+}
+
+.darkFormInput[type="date"] {
+  color-scheme: dark !important;
+}
+
+.darkFormInput[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) !important;
+}
+
+/* Priority Buttons Dark Mode */
+.darkPriorityBtn {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkPriorityBtn:hover {
+  background: rgba(251, 188, 0, 0.06) !important;
+  border-color: rgba(251, 188, 0, 0.2) !important;
+  color: #FFFFFF !important;
+}
+
+.darkPriorityBtn.priorityBtnActive {
+  background: currentColor !important;
+  border-color: currentColor !important;
+  color: #FFFFFF !important;
+}
+
+.darkPriorityBtn.priorityBtnLow.priorityBtnActive {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #FFFFFF !important;
+}
+
+.darkPriorityBtn.priorityBtnMedium.priorityBtnActive {
+  background: #d97706 !important;
+  border-color: #d97706 !important;
+  color: #FFFFFF !important;
+}
+
+.darkPriorityBtn.priorityBtnHigh.priorityBtnActive {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #FFFFFF !important;
+}
+
+/* Form Select Dark Mode */
+.darkFormSelect {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormSelect:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormSelect option {
+  background: #030202 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormSelect option:hover {
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+/* Form Textarea Dark Mode */
+.darkFormTextarea {
+  background: #0D0D0D !important;
+  border-color: #383B40 !important;
+  color: #FFFFFF !important;
+}
+
+.darkFormTextarea:focus {
+  border-color: #FBBC00 !important;
+  background: #030202 !important;
+  box-shadow: 0 0 0 4px rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkFormTextarea::placeholder {
+  color: #857B6B !important;
+}
+
+/* Drop Zone Dark Mode */
+.darkDropZone {
+  border-color: #383B40 !important;
+  background: #0D0D0D !important;
+}
+
+.darkDropZone:hover {
+  border-color: rgba(251, 188, 0, 0.2) !important;
+  background: rgba(251, 188, 0, 0.04) !important;
+}
+
+.darkDropZone.dropZoneDragging {
+  border-color: #FBBC00 !important;
+  background: rgba(251, 188, 0, 0.08) !important;
+}
+
+.darkDropZoneIcon {
+  color: #6A6255 !important;
+}
+
+.darkDropZoneText {
+  color: #FFFFFF !important;
+}
+
+.darkDropZoneLink {
+  color: #FBBC00 !important;
+}
+
+.darkDropZoneSubtext {
+  color: #6A6255 !important;
+}
+
+/* Modal Footer Dark Mode */
+.darkModalFooter {
+  border-top: 1px solid #383B40 !important;
+}
+
+/* Cancel Button Dark Mode */
+.darkCancelBtn {
+  border-color: #383B40 !important;
+  color: #6A6255 !important;
+}
+
+.darkCancelBtn:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important;
+}
+
+.darkCancelBtn:disabled:hover {
+  background: transparent !important;
+  color: #6A6255 !important;
+}
+
+/* Save Button Dark Mode */
+.darkSaveBtn {
+  background: #FBBC00 !important;
+  color: #000000 !important;
+}
+
+.darkSaveBtn:hover {
+  background: #E2A900 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(251, 188, 0, 0.35) !important;
+}
+
+.darkSaveBtn:disabled {
+  opacity: 0.6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Scrollbar Dark Mode */
+.darkModalContainer::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.darkModalContainer::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.darkModalContainer::-webkit-scrollbar-thumb {
+  background: rgba(251, 188, 0, 0.3) !important;
+  border-radius: 4px !important;
+}
+
+.darkModalContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 188, 0, 0.5) !important;
+}
+
+/* Spinner Dark Mode */
+.darkSaveBtn .spinner {
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  border-top-color: #000000 !important;
+}
+
+/* Responsive Dark Mode */
+@media (max-width: 640px) {
+  .darkModalContainer {
+    border-radius: 16px !important;
+  }
+  
+  .darkModalHeader {
+    padding: 1rem 1.25rem !important;
+  }
+  
+  .darkModalForm {
+    padding: 1.25rem !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .darkModalHeader {
+    padding: 0.75rem 1rem !important;
+  }
+  
+  .darkModalForm {
+    padding: 1rem !important;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .darkModalOverlay,
+  .darkModalContainer {
+    animation: none !important;
+  }
+  
+  .darkModalCloseBtn,
+  .darkSaveBtn,
+  .darkCancelBtn {
+    transition: none !important;
+  }
+}
