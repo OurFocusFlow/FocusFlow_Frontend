@@ -1,8 +1,9 @@
-// Layout.jsx - Updated with dark mode support
+// Layout.jsx - Updated with dynamic accent color support
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTasks } from '../Context/TaskContext';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import {
   Box,
   Typography,
@@ -45,11 +46,38 @@ import CreateTaskModal from '../CreateTaskModal/CreateTaskModal';
 import ToastNotification from '../ToastNotification/ToastNotification';
 import styles from './Layout.module.css';
 
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if color is dark
+const isDarkColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    // Calculate luminance
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance < 0.5;
+  }
+  return false;
+};
+
 const Layout = ({ children }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -308,6 +336,20 @@ const Layout = ({ children }) => {
     { id: 4, text: 'You have a new message', time: '5 hours ago', read: true },
   ];
 
+  // Get accent color RGB for CSS
+  const accentRgb = hexToRgb(accentColor);
+  
+  // Determine text color for the button
+  // In dark mode, always use white for better readability
+  // In light mode, use white for dark colors, black for light colors
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      return '#FFFFFF'; // Always white in dark mode
+    }
+    // In light mode, check if accent color is dark
+    return isDarkColor(accentColor) ? '#FFFFFF' : '#33231D';
+  };
+
   const drawerContent = (
     <Box className={styles.drawerContent}>
       {/* Modern Header with Glass Effect */}
@@ -315,7 +357,7 @@ const Layout = ({ children }) => {
         <Box className={styles.logoWrapper} onClick={() => handleNavItemClick('Home', '/')} style={{ cursor: 'pointer' }}>
           <Box className={styles.logoIcon}>
             <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <rect width="36" height="36" rx="10" fill={isDarkMode ? "#FBBC00" : "url(#gradient)"} />
+              <rect width="36" height="36" rx="10" fill={isDarkMode ? accentColor : "url(#gradient)"} />
               <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
               {!isDarkMode && (
                 <defs>
@@ -352,6 +394,10 @@ const Layout = ({ children }) => {
             <ListItem
               className={`${styles.navItem} ${activeItem === item.text ? styles.activeNavItem : ''}`}
               onClick={() => handleNavItemClick(item.text, item.path)}
+              style={{
+                '--accent-color': accentColor,
+                '--accent-rgb': accentRgb,
+              }}
             >
               <ListItemIcon className={styles.navIcon}>
                 {item.badge > 0 ? (
@@ -370,7 +416,7 @@ const Layout = ({ children }) => {
                 }}
               />
               {activeItem === item.text && (
-                <Box className={styles.activeIndicator} />
+                <Box className={styles.activeIndicator} style={{ background: accentColor }} />
               )}
             </ListItem>
           </Tooltip>
@@ -379,7 +425,7 @@ const Layout = ({ children }) => {
 
       <Divider className={styles.divider} />
 
-      {/* Modern New Task Button */}
+      {/* Modern New Task Button - Using accent color with white text in dark mode */}
       <Box className={styles.newTaskWrapper}>
         <Button
           fullWidth
@@ -387,6 +433,23 @@ const Layout = ({ children }) => {
           startIcon={<AddIcon />}
           className={styles.newTaskButton}
           onClick={handleNewTaskClick}
+          style={{
+            backgroundColor: accentColor,
+            color: getButtonTextColor(),
+            boxShadow: `0 4px 24px rgba(${accentRgb}, 0.25)`,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = accentColor;
+            e.currentTarget.style.opacity = '0.85';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = `0 8px 28px rgba(${accentRgb}, 0.35)`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = accentColor;
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = `0 4px 24px rgba(${accentRgb}, 0.25)`;
+          }}
         >
           New Task
         </Button>
@@ -408,6 +471,10 @@ const Layout = ({ children }) => {
                 } else {
                   handleNavItemClick(item.text);
                 }
+              }}
+              style={{
+                '--accent-color': accentColor,
+                '--accent-rgb': accentRgb,
               }}
             >
               <ListItemIcon className={styles.navIcon}>
@@ -462,7 +529,15 @@ const Layout = ({ children }) => {
           onMouseLeave={() => setIsHovered(false)}
           onClick={() => handleNavItemClick('Profile', '/profile')}
         >
-          <Avatar className={styles.avatar}>JD</Avatar>
+          <Avatar 
+            className={styles.avatar}
+            style={{
+              background: accentColor,
+              color: isDarkMode ? '#FFFFFF' : (isDarkColor(accentColor) ? '#FFFFFF' : '#33231D'),
+            }}
+          >
+            JD
+          </Avatar>
           <Box className={styles.userText}>
             <Typography variant="body2" className={styles.userName}>
               John Doe
@@ -546,7 +621,7 @@ const Layout = ({ children }) => {
                 </Tooltip>
                 <Box className={styles.profileLogo}>
                   <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-                    <rect width="36" height="36" rx="10" fill={isDarkMode ? "#FBBC00" : "url(#gradient)"} />
+                    <rect width="36" height="36" rx="10" fill={isDarkMode ? accentColor : "url(#gradient)"} />
                     <path d="M11 18L16 23L25 13" stroke={isDarkMode ? "#000000" : "white"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     {!isDarkMode && (
                       <defs>
