@@ -61,6 +61,7 @@ function Icon({ name, className }) {
   );
 }
 
+// Priority order: High -> Medium -> Low
 const PRIORITY_ORDER = { High: 0, Medium: 1, Low: 2 };
 
 export default function Dashboard() {
@@ -243,10 +244,40 @@ export default function Dashboard() {
     return true;
   });
 
+  // Apply sorting
   if (sortBy === "dueDate") {
-    visibleTasks = [...visibleTasks].sort((a, b) => a.dueSort - b.dueSort);
+    // Sort by due date: newest first (descending order)
+    visibleTasks = [...visibleTasks].sort((a, b) => {
+      // Handle tasks with no due date
+      if (!a.dueSort && !b.dueSort) return 0;
+      if (!a.dueSort) return 1;
+      if (!b.dueSort) return -1;
+      // Newest first (descending)
+      return b.dueSort - a.dueSort;
+    });
   } else if (sortBy === "priority") {
-    visibleTasks = [...visibleTasks].sort((a, b) => PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority]);
+    // Sort by priority: High -> Medium -> Low
+    visibleTasks = [...visibleTasks].sort((a, b) => {
+      // Tasks without priority go to the bottom
+      if (!a.priority && !b.priority) return 0;
+      if (!a.priority) return 1;
+      if (!b.priority) return -1;
+      return PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+    });
+  } else {
+    // Default sort: incomplete first, then by due date (newest first)
+    visibleTasks = [...visibleTasks].sort((a, b) => {
+      // Completed tasks go to the bottom
+      if (a.completed && !b.completed) return 1;
+      if (!a.completed && b.completed) return -1;
+      // If both completed or both not completed, sort by due date (newest first)
+      if (a.dueSort && b.dueSort) {
+        return b.dueSort - a.dueSort;
+      }
+      if (a.dueSort) return -1;
+      if (b.dueSort) return 1;
+      return 0;
+    });
   }
 
   const activeFilterCount = (filterPriority !== "all" ? 1 : 0) + (filterCategory !== "all" ? 1 : 0);
@@ -383,8 +414,8 @@ export default function Dashboard() {
                 <div className={`${styles["home-dropdown"]} ${isDarkMode ? styles["darkDropdown"] : ""}`}>
                   {[
                     { key: "default", label: "Default" },
-                    { key: "dueDate", label: "Due date" },
-                    { key: "priority", label: "Priority" },
+                    { key: "dueDate", label: "Due Date (Newest First)" },
+                    { key: "priority", label: "Priority (High → Low)" },
                   ].map((opt) => (
                     <button
                       key={opt.key}
