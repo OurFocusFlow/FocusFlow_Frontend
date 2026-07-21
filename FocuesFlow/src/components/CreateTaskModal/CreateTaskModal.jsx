@@ -1,9 +1,37 @@
+// CreateTaskModal.jsx – using accent color
 import React, { useState } from 'react';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './CreateTaskModal.module.css';
+
+// Helper to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper to check if color is light
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
 
 const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const [taskData, setTaskData] = useState({
     title: '',
     dueDate: '',
@@ -13,18 +41,8 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
   });
   const [isDragging, setIsDragging] = useState(false);
 
-  // Get today's date for validation
   const today = new Date().toISOString().split('T')[0];
-
-  // Category options
-  const categoryOptions = [
-    'Design',
-    'Marketing',
-    'Content',
-    'Development',
-    'Research',
-    'Documentation'
-  ];
+  const categoryOptions = ['Design', 'Marketing', 'Content', 'Development', 'Research', 'Documentation'];
 
   if (!isOpen) return null;
 
@@ -39,24 +57,15 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Validate due date is not in the past
     if (taskData.dueDate && taskData.dueDate < today) {
       if (onSave) {
-        const taskToSave = {
-          ...taskData,
-          categories: [taskData.category]
-        };
+        const taskToSave = { ...taskData, categories: [taskData.category] };
         onSave(taskToSave);
       }
       return;
     }
-    
     if (onSave) {
-      const taskToSave = {
-        ...taskData,
-        categories: [taskData.category]
-      };
+      const taskToSave = { ...taskData, categories: [taskData.category] };
       onSave(taskToSave);
     }
   };
@@ -67,16 +76,32 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
     }
   };
 
+  // Determine text color for elements on accent background
+  const getButtonTextColor = () => {
+    // In dark mode, if accent is light, use black; otherwise white.
+    if (isDarkMode) {
+      return isLightColor(accentColor) ? '#000000' : '#FFFFFF';
+    }
+    // In light mode, use dark brown for contrast (or white if accent is very dark)
+    return isLightColor(accentColor) ? '#33231D' : '#FFFFFF';
+  };
+
+  const accentRgb = hexToRgb(accentColor);
+
   return (
-    <div 
-      className={`${styles.modalOverlay} ${isDarkMode ? styles.darkModalOverlay : ''}`} 
+    <div
+      className={`${styles.modalOverlay} ${isDarkMode ? styles.darkModalOverlay : ''}`}
       onClick={handleOverlayClick}
+      style={{ '--accent-color': accentColor, '--accent-rgb': accentRgb }}
     >
       <div className={`${styles.modalContainer} ${isDarkMode ? styles.darkModalContainer : ''}`}>
         {/* Modal Header */}
         <div className={`${styles.modalHeader} ${isDarkMode ? styles.darkModalHeader : ''}`}>
           <div className={styles.modalHeaderLeft}>
-            <div className={`${styles.modalIconWrapper} ${isDarkMode ? styles.darkModalIconWrapper : ''}`}>
+            <div
+              className={`${styles.modalIconWrapper} ${isDarkMode ? styles.darkModalIconWrapper : ''}`}
+              style={{ background: accentColor, color: getButtonTextColor() }}
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 5v14M5 12h14" strokeLinecap="round" />
               </svg>
@@ -86,8 +111,8 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               <p className={`${styles.modalSubtitle} ${isDarkMode ? styles.darkModalSubtitle : ''}`}>Set your focus and define the objective.</p>
             </div>
           </div>
-          <button 
-            className={`${styles.modalCloseBtn} ${isDarkMode ? styles.darkModalCloseBtn : ''}`} 
+          <button
+            className={`${styles.modalCloseBtn} ${isDarkMode ? styles.darkModalCloseBtn : ''}`}
             onClick={onClose}
             disabled={isSubmitting}
           >
@@ -101,8 +126,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           {/* Task Title */}
           <div className={styles.formGroup}>
             <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
-              Task Title
-              <span className={styles.requiredStar}>*</span>
+              Task Title <span className={styles.requiredStar}>*</span>
             </label>
             <input
               type="text"
@@ -119,8 +143,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
               <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
-                Due Date
-                <span className={styles.requiredStar}>*</span>
+                Due Date <span className={styles.requiredStar}>*</span>
               </label>
               <input
                 type="date"
@@ -152,11 +175,10 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
             </div>
           </div>
 
-          {/* Category - Select Dropdown */}
+          {/* Category */}
           <div className={styles.formGroup}>
             <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
-              Category
-              <span className={styles.requiredStar}>*</span>
+              Category <span className={styles.requiredStar}>*</span>
             </label>
             <select
               name="category"
@@ -165,10 +187,8 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
               className={`${styles.formSelect} ${isDarkMode ? styles.darkFormSelect : ''}`}
               disabled={isSubmitting}
             >
-              {categoryOptions.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
+              {categoryOptions.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
           </div>
@@ -176,8 +196,7 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
           {/* Description */}
           <div className={styles.formGroup}>
             <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>
-              Description
-              <span className={styles.requiredStar}>*</span>
+              Description <span className={styles.requiredStar}>*</span>
             </label>
             <textarea
               name="description"
@@ -190,10 +209,10 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
             />
           </div>
 
-          {/* File Upload */}
+          {/* Attachments */}
           <div className={styles.formGroup}>
             <label className={`${styles.formLabel} ${isDarkMode ? styles.darkFormLabel : ''}`}>Attachments</label>
-            <div 
+            <div
               className={`${styles.dropZone} ${isDragging ? styles.dropZoneDragging : ''} ${isDarkMode ? styles.darkDropZone : ''}`}
               onDragEnter={() => setIsDragging(true)}
               onDragLeave={() => setIsDragging(false)}
@@ -224,18 +243,19 @@ const CreateTaskModal = ({ isOpen, onClose, onSave, isSubmitting = false }) => {
 
           {/* Modal Footer */}
           <div className={`${styles.modalFooter} ${isDarkMode ? styles.darkModalFooter : ''}`}>
-            <button 
-              type="button" 
-              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ''}`} 
+            <button
+              type="button"
+              className={`${styles.cancelBtn} ${isDarkMode ? styles.darkCancelBtn : ''}`}
               onClick={onClose}
               disabled={isSubmitting}
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={`${styles.saveBtn} ${isDarkMode ? styles.darkSaveBtn : ''}`}
               disabled={isSubmitting}
+              style={{ background: accentColor, color: getButtonTextColor() }}
             >
               {isSubmitting ? (
                 <>
