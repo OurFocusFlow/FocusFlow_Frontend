@@ -2350,7 +2350,7 @@
 }
 
 [data-theme="dark"] .themeOption {
-  color: #6A6255 !important;
+  color: #e9e9e9 !important;
 }
 
 [data-theme="dark"] .themeOptionActive {
@@ -2358,7 +2358,7 @@
 }
 
 [data-theme="dark"] .themeOption svg {
-  color: #6A6255 !important;
+  color: #e9e9e9 !important;
 }
 
 [data-theme="dark"] .themeOptionActive svg {
@@ -2521,4 +2521,30 @@
 [data-theme="dark"] .deleteModalConfirm:hover {
   background: #dc2626 !important;
   color: #FFFFFF !important;
+}
+
+/* ==================== BUTTON ICON COLOR MATCHING ==================== */
+/* Ensure icons inside buttons inherit the button text color */
+.primaryButton svg,
+.saveButton svg,
+.darkButton svg,
+.deleteButton svg,
+.passwordModalConfirm svg {
+  transition: color 0.25s ease;
+}
+
+/* Dark mode - icons follow button text color */
+[data-theme="dark"] .primaryButton svg,
+[data-theme="dark"] .saveButton svg,
+[data-theme="dark"] .darkButton svg,
+[data-theme="dark"] .passwordModalConfirm svg {
+  /* Color will be set by inline styles from JSX */
+  transition: color 0.25s ease;
+}
+
+/* Button icon wrapper */
+.buttonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
