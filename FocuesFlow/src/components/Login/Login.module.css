@@ -488,14 +488,14 @@
   background: #000000 !important;
 }
 
-/* Blobs Dark Mode */
+/* Blobs Dark Mode - use accent color */
 .darkBlobTopLeft {
-  background: radial-gradient(circle, rgba(251, 188, 0, 0.08) 0%, rgba(251, 188, 0, 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb, 251, 188, 0), 0.08) 0%, rgba(var(--accent-rgb, 251, 188, 0), 0) 70%) !important;
   opacity: 0.5 !important;
 }
 
 .darkBlobBottomRight {
-  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, rgba(251, 188, 0, 0) 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb, 251, 188, 0), 0.06) 0%, rgba(var(--accent-rgb, 251, 188, 0), 0) 70%) !important;
   opacity: 0.5 !important;
 }
 
@@ -512,9 +512,9 @@
   color: #6A6255 !important;
 }
 
-/* Logo Mark Dark Mode */
+/* Logo Mark Dark Mode - use accent color */
 .darkLogoMark {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
 }
 
 .darkLogoMark svg {
@@ -543,7 +543,7 @@
 }
 
 .darkInputWrap:focus-within {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkIcon {
@@ -559,9 +559,9 @@
   color: #857B6B !important;
 }
 
-/* Forgot Link Dark Mode */
+/* Forgot Link Dark Mode - use accent color */
 .darkForgotLink {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkForgotLink:hover {
@@ -577,23 +577,23 @@
   color: #FFFFFF !important;
 }
 
-/* Checkbox Dark Mode */
+/* Checkbox Dark Mode - use accent color */
 .darkCheckboxRow {
   color: #6A6255 !important;
 }
 
 .darkCheckbox {
-  accent-color: #FBBC00 !important;
+  accent-color: var(--accent-color, #FBBC00) !important;
 }
 
-/* Submit Button Dark Mode */
+/* Submit Button Dark Mode - use accent color */
 .darkSubmitButton {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkSubmitButton:hover:not(:disabled) {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* Divider Dark Mode */
@@ -623,8 +623,9 @@
   color: #6A6255 !important;
 }
 
+/* Signup Link Dark Mode - use accent color */
 .darkSignupLink {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkCopyright {
@@ -663,7 +664,7 @@
 
 /* ==================== FLOATING BACK BUTTON - DARK MODE ==================== */
 
-/* Floating Button Dark Mode - Desktop */
+/* Floating Button Dark Mode - Desktop - use accent color */
 .darkFloatButton {
   background: rgba(3, 2, 2, 0.9) !important;
   border: 1.5px solid #383B40 !important;
@@ -681,11 +682,11 @@
 }
 
 .darkFloatButton:hover {
-  background: rgba(251, 188, 0, 0.08) !important;
-  border-color: #FBBC00 !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.08) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
+  color: var(--accent-color, #FBBC00) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 24px rgba(251, 188, 0, 0.1) !important;
+  box-shadow: 0 6px 24px rgba(var(--accent-rgb, 251, 188, 0), 0.1) !important;
 }
 
 .darkFloatButton svg {
@@ -694,7 +695,7 @@
 }
 
 .darkFloatButton:hover svg {
-  stroke: #FBBC00 !important;
+  stroke: var(--accent-color, #FBBC00) !important;
 }
 
 /* Floating Button Dark Mode - Tablet */
@@ -780,7 +781,7 @@
   }
 }
 
-/* Spinner Dark Mode */
+/* Spinner Dark Mode - uses accent color for border-top */
 .darkSubmitButton .spinner {
   border-color: rgba(0, 0, 0, 0.3) !important;
   border-top-color: #000000 !important;

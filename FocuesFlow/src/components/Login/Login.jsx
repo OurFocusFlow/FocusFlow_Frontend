@@ -1,10 +1,40 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Login.module.css'
+
+// Helper functions
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
+
+const isLightColor = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.5;
+  }
+  return false;
+};
 
 export default function Login() {
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -13,6 +43,30 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' })
   const navigate = useNavigate()
   const location = useLocation()
+
+  // Determine accent usage
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  const accentRgb = hexToRgb(accentColor);
+
+  const getAccentColor = () => {
+    if (shouldUseAccent) return accentColor;
+    if (isDarkMode) return '#FBBC00';
+    return '#885210'; // fallback for light mode (not used)
+  };
+
+  const getAccentRgb = () => {
+    if (shouldUseAccent) return accentRgb;
+    if (isDarkMode) return '251, 188, 0';
+    return '136, 82, 16';
+  };
+
+  const getButtonTextColor = () => {
+    if (isDarkMode) {
+      const color = shouldUseAccent ? accentColor : '#FBBC00';
+      return isLightColor(color) ? '#000000' : '#FFFFFF';
+    }
+    return '#FFFFFF';
+  };
 
   // Check for success message from location state
   useEffect(() => {
@@ -62,7 +116,13 @@ export default function Login() {
   }
 
   return (
-    <div className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
+    <div 
+      className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}
+      style={{
+        '--accent-color': getAccentColor(),
+        '--accent-rgb': getAccentRgb(),
+      }}
+    >
       <Link to="/Home" className={`${styles.floatButton} ${isDarkMode ? styles.darkFloatButton : ''}`}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
           <path d="M19 12H5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
