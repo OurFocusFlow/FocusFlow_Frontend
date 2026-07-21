@@ -16,7 +16,25 @@ import {
   Help as HelpIcon,
 } from '@mui/icons-material';
 import { useDarkMode } from '../Context/DarkModeContext';
+import { useAccentColor } from '../Context/AccentColorContext';
 import styles from './Support.module.css';
+
+// Helper function to convert hex to rgb
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    const r = parseInt(result[1], 16);
+    const g = parseInt(result[2], 16);
+    const b = parseInt(result[3], 16);
+    return `${r}, ${g}, ${b}`;
+  }
+  return '251, 188, 0';
+};
+
+// Helper function to check if accent color is the default amber
+const isDefaultAmber = (hex) => {
+  return hex && hex.toLowerCase() === '#fbbc00';
+};
 
 // FAQ data with topics
 const FAQS = [
@@ -45,6 +63,7 @@ const CHANNELS = [
 
 const Support = () => {
   const { isDarkMode } = useDarkMode();
+  const { accentColor } = useAccentColor();
   const [search, setSearch] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('All');
   const [expanded, setExpanded] = useState(false);
@@ -55,6 +74,33 @@ const Support = () => {
   const [ticketNumber, setTicketNumber] = useState('');
 
   const issuedDate = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+
+  // Determine if accent should be used (only in dark mode AND when not default amber)
+  const shouldUseAccent = isDarkMode && !isDefaultAmber(accentColor);
+  
+  // Convert accent color to RGB for CSS variables
+  const accentRgb = hexToRgb(accentColor);
+
+  // Determine the accent color to use
+  const getAccentColor = () => {
+    if (shouldUseAccent) {
+      return accentColor;
+    }
+    if (isDarkMode) {
+      return '#FBBC00'; // Default amber in dark mode
+    }
+    return '#885210'; // Default orange in light mode
+  };
+
+  const getAccentRgb = () => {
+    if (shouldUseAccent) {
+      return accentRgb;
+    }
+    if (isDarkMode) {
+      return '251, 188, 0';
+    }
+    return '136, 82, 16';
+  };
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -90,7 +136,13 @@ const Support = () => {
   });
 
   return (
-    <Box className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}>
+    <Box 
+      className={`${styles.page} ${isDarkMode ? styles.darkPage : ''}`}
+      style={{
+        '--accent-color': getAccentColor(),
+        '--accent-rgb': getAccentRgb(),
+      }}
+    >
       {/* Background Decorations - Same as MyTasks */}
       <div className={`${styles["support-bg"]} ${isDarkMode ? styles.darkSupportBg : ''}`}>
         <div className={styles["support-bg-orb"]} />

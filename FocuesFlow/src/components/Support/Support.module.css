@@ -1,4 +1,4 @@
-/* Support.module.css - Redesigned to match MyTasks and Settings */
+/* Support.module.css - Redesigned to match MyTasks and Settings with accent color support */
 
 /* ==================== ROOT ==================== */
 .page {
@@ -242,7 +242,7 @@
 }
 
 .searchWrapper:focus-within {
-  border-color: #885210;
+  border-color: var(--color-accent-orange, #885210);
   box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
 }
 
@@ -287,8 +287,8 @@
 }
 
 .topicChip:hover {
-  border-color: #885210;
-  color: #885210;
+  border-color: var(--color-accent-orange, #885210);
+  color: var(--color-accent-orange, #885210);
   background: rgba(136, 82, 16, 0.04);
 }
 
@@ -377,7 +377,7 @@
 }
 
 .expandIcon {
-  color: #885210;
+  color: var(--color-accent-orange, #885210);
 }
 
 /* ==================== EMPTY STATE ==================== */
@@ -450,7 +450,7 @@
 .formInput:focus,
 .formTextarea:focus,
 .formSelect:focus {
-  border-color: #885210;
+  border-color: var(--color-accent-orange, #885210);
   box-shadow: 0 0 0 4px rgba(136, 82, 16, 0.08);
   background: #FFFFFF;
 }
@@ -475,7 +475,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: #885210;
+  background: var(--color-accent-orange, #885210);
   color: #FFFFFF;
   border: none;
   border-radius: 12px;
@@ -583,7 +583,7 @@
   height: 36px;
   border-radius: 10px;
   background: #FAF5F2;
-  color: #885210;
+  color: var(--color-accent-orange, #885210);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -615,7 +615,7 @@
   gap: 4px;
   font-size: 13px;
   font-weight: 600;
-  color: #885210;
+  color: var(--color-accent-orange, #885210);
   text-decoration: none;
   background: none;
   border: none;
@@ -859,9 +859,9 @@
 
 /* ==================== TOPIC CHIP ACTIVE ==================== */
 .topicChipActive {
-  background: #885210;
+  background: var(--color-accent-orange, #885210);
   color: #FFFFFF;
-  border-color: #885210;
+  border-color: var(--color-accent-orange, #885210);
 }
 
 .topicChipActive:hover {
@@ -901,7 +901,7 @@
 .faqTopic {
   font-size: 10px;
   font-weight: 600;
-  color: #885210;
+  color: var(--color-accent-orange, #885210);
   background: #FBEAD9;
   padding: 2px 10px;
   border-radius: 20px;
@@ -922,7 +922,7 @@
 
 /* ==================== CLEAR TOPIC BUTTON ==================== */
 .clearTopicBtn {
-  background: #885210;
+  background: var(--color-accent-orange, #885210);
   color: #FFFFFF;
   border: none;
   border-radius: 8px;
@@ -975,12 +975,12 @@
 
 .darkSupportBgGrid {
   background-image: 
-    linear-gradient(rgba(251, 188, 0, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(251, 188, 0, 0.02) 1px, transparent 1px) !important;
+    linear-gradient(rgba(var(--accent-rgb, 251, 188, 0), 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb, 251, 188, 0), 0.02) 1px, transparent 1px) !important;
 }
 
 .darkSupportBgGlow {
-  background: radial-gradient(circle, rgba(251, 188, 0, 0.06) 0%, transparent 70%) !important;
+  background: radial-gradient(circle, rgba(var(--accent-rgb, 251, 188, 0), 0.06) 0%, transparent 70%) !important;
 }
 
 /* Page Header Dark Mode */
@@ -1015,13 +1015,13 @@
 }
 
 .darkStatTrend {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 /* Icon Wrappers Dark Mode */
 .darkIconFaq {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkIconChannels {
@@ -1054,8 +1054,8 @@
 }
 
 .darkSectionIcon {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkSectionTitle {
@@ -1078,7 +1078,7 @@
 }
 
 .darkSearchWrapper:focus-within {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkSearchIcon {
@@ -1109,19 +1109,19 @@
 }
 
 .darkTopicChip:hover {
-  border-color: #FBBC00 !important;
-  color: #FBBC00 !important;
-  background: rgba(251, 188, 0, 0.06) !important;
+  border-color: var(--accent-color, #FBBC00) !important;
+  color: var(--accent-color, #FBBC00) !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.06) !important;
 }
 
 .darkTopicChip.topicChipActive {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkTopicChip.topicChipActive:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* FAQ Accordion Dark Mode */
@@ -1138,12 +1138,12 @@
 }
 
 .darkFaqTopic {
-  background: rgba(251, 188, 0, 0.12) !important;
-  color: #FBBC00 !important;
+  background: rgba(var(--accent-rgb, 251, 188, 0), 0.12) !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkExpandIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 /* Result Count Dark Mode */
@@ -1170,12 +1170,12 @@
 }
 
 .darkClearTopicBtn {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkClearTopicBtn:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 /* Ticket Form Dark Mode */
@@ -1194,7 +1194,7 @@
 }
 
 .darkFormInput:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #0D0D0D !important;
 }
 
@@ -1209,7 +1209,7 @@
 }
 
 .darkFormTextarea:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #0D0D0D !important;
 }
 
@@ -1224,7 +1224,7 @@
 }
 
 .darkFormSelect:focus {
-  border-color: #FBBC00 !important;
+  border-color: var(--accent-color, #FBBC00) !important;
   background: #0D0D0D !important;
 }
 
@@ -1235,12 +1235,12 @@
 
 /* Buttons Dark Mode */
 .darkPrimaryButton {
-  background: #FBBC00 !important;
+  background: var(--accent-color, #FBBC00) !important;
   color: #000000 !important;
 }
 
 .darkPrimaryButton:hover {
-  background: #E2A900 !important;
+  background: var(--accent-color, #E2A900) !important;
 }
 
 .darkButton {
@@ -1277,12 +1277,12 @@
 
 .darkChannelCard:hover {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
-  border-color: rgba(251, 188, 0, 0.2) !important;
+  border-color: rgba(var(--accent-rgb, 251, 188, 0), 0.2) !important;
 }
 
 .darkChannelIcon {
   background: rgba(255, 255, 255, 0.04) !important;
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkChannelLabel {
@@ -1294,15 +1294,15 @@
 }
 
 .darkChannelAction {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 .darkChannelAction:hover {
-  color: #E2A900 !important;
+  color: var(--accent-color, #E2A900) !important;
 }
 
 .darkChannelActionIcon {
-  color: #FBBC00 !important;
+  color: var(--accent-color, #FBBC00) !important;
 }
 
 /* Responsive Dark Mode */
