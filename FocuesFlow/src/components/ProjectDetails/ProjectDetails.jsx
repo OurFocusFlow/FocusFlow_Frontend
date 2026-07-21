@@ -731,7 +731,7 @@ const ProjectDetails = () => {
                 name="dueDate"
                 value={editForm.dueDate}
                 onChange={handleEditChange}
-                className={`${styles.formInput} ${editErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""}`}
+                className={`${styles.formInput} ${editErrors.dueDate ? styles.formInputError : ''} ${isDarkMode ? styles.darkFormInput : ""} ${isDarkMode ? styles.darkDateInput : ""}`}
                 min={new Date().toISOString().split('T')[0]}
                 disabled={isSubmitting}
               />
